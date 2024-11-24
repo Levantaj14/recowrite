@@ -7,7 +7,7 @@ from .serializers import ListSerializer, BlogTitleSerializer
 
 @api_view(['GET'])
 def blog_list(request):
-    query = request.GET.get('query', "tfidf/query4.txt")
+    query = request.GET.get('query', "tfidf/query1.txt")
     k = request.GET.get('k', 1)
     data = tf_idf.search(query, k)[0]
     serializer = ListSerializer(data={'data': data})
