@@ -24,7 +24,7 @@ def read_file(filename):
 def filtering(blog):
     stop_words = set(stopwords.words('english'))
     words = word_tokenize(blog)
-    filtered_words = [word for word in words if word.lower() not in stop_words and word not in string.punctuation]
+    filtered_words = [word.lower() for word in words if word.lower() not in stop_words and word not in string.punctuation]
     return " ".join(filtered_words)
 
 

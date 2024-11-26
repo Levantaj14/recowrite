@@ -1,13 +1,18 @@
 package edu.bbte.licensz.slim2299.recowrite.presentation.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bbte.licensz.slim2299.recowrite.business.BlogService;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 import java.util.List;
 import java.util.Optional;
@@ -38,20 +43,40 @@ public class BlogController {
     }
 
     @PostMapping("/getRecommendation")
-    public int getRecommendation(@RequestBody String file) {
-        if (file == null) {
-            return -1;
-        }
+    public List<Integer> getRecommendation(@RequestBody String requestBody) {
         try {
-            URL url = new URI("http://localhost:8000/blogs/").toURL();
+            ObjectMapper objectMapper = new ObjectMapper();
+            String apiHost = "http://localhost:8000/blogs";
+            String fileName = objectMapper.readTree(requestBody).get("file").toString();
+            URI uri = UriComponentsBuilder.fromUriString(apiHost)
+                    .queryParam("file", fileName.substring(1, fileName.length() - 1))
+                    .queryParam("k", 3)
+                    .build()
+                    .toUri();
+
+            URL url = uri.toURL();
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
+            var br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            var sb = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                sb.append(output);
+            }
+            // Converting response body from JSON to Java Object with Jackson
+            List<Integer> data = objectMapper.readValue(
+                    objectMapper.readTree(sb.toString()).get("data").toString(),
+                    new TypeReference<>() {
+                    }
+            );
+
             log.info("Response code: {}", conn.getResponseCode());
-        } catch (IOException | URISyntaxException e) {
+            log.info("Response message: {}", data.toString());
+            return data;
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return 3;
     }
 }
