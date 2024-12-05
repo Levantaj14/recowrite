@@ -1,4 +1,5 @@
 import {Flex, Link, Spacer, Container, Heading, Box, Button} from "@chakra-ui/react";
+import {NavLink} from "react-router";
 
 const StickyNavbar = () => {
     return (
@@ -9,18 +10,23 @@ const StickyNavbar = () => {
              p={4}
              backdropFilter="saturate(180%) blur(5px)"
         >
-            <Container mt="2" mb="2" maxW="6xl">
+            <Container mt="1" mb="1" maxW="6xl">
                 <Flex align="center">
-                    <Heading as="h1">recowrite</Heading>
+                    <NavLink to="/">
+                        <Heading>
+                            <Link color="white" _hover={{textDecoration: "underline"}}>
+                                recowrite
+                            </Link>
+                        </Heading>
+                    </NavLink>
                     <Spacer/>
-                    <Flex gap={4}>
-                        <Link href="#home" _hover={{textDecoration: "underline"}}>
-                            Home
-                        </Link>
-                        <Link href="#about" _hover={{textDecoration: "underline"}}>
-                            About
-                        </Link>
-                        <a href="#login"><Button size="xs">Login</Button></a>
+                    <Flex gap={4} alignItems="center">
+                        <NavLink to="/about">
+                            <Link _hover={{textDecoration: "underline"}}>
+                                About
+                            </Link>
+                        </NavLink>
+                        <NavLink to="/login"><Button size="xs">Login</Button></NavLink>
                     </Flex>
                 </Flex>
             </Container>
