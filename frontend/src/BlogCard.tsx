@@ -1,4 +1,4 @@
-import {Box, Card, Image, LinkBox} from "@chakra-ui/react";
+import {Box, Card, Image, LinkBox, Text} from "@chakra-ui/react";
 import {Link} from "react-router";
 import {motion} from "framer-motion";
 
@@ -12,6 +12,7 @@ type Props = {
 
 function BlogCard({imageUrl, title, description, author, href}: Props) {
     return (
+        // TODO: Limit character limit for description based on device
         <motion.div initial={{opacity: 0}} animate={{opacity: 1}}>
             <LinkBox
                 as="article"
@@ -27,9 +28,11 @@ function BlogCard({imageUrl, title, description, author, href}: Props) {
                         />
                         <Box>
                             <Card.Body>
-                                <Card.Title mb="2">{title}</Card.Title>
+                                <Text fontSize="sm" mb="1">
+                                    {author}
+                                </Text>
+                                <Card.Title mb={1}>{title}</Card.Title>
                                 <Card.Description>{description}</Card.Description>
-                                <Card.Description>{author}</Card.Description>
                             </Card.Body>
                         </Box>
                     </Card.Root>

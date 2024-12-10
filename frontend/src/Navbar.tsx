@@ -14,9 +14,7 @@ const StickyNavbar = () => {
                 <Flex align="center">
                     <NavLink to="/">
                         <Heading>
-                            <Link color="white" _hover={{textDecoration: "underline"}}>
-                                recowrite
-                            </Link>
+                            recowrite
                         </Heading>
                     </NavLink>
                     <Spacer/>
