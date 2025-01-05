@@ -67,9 +67,7 @@ function Story() {
                 />
                 <Stack gap={3}>
                   <Stack gap="1">
-                    <Text textStyle="sm" fontWeight="semibold">
-                      Brent Denton
-                    </Text>
+                    <Text textStyle="sm" fontWeight="semibold">{data?.userData.name}</Text>
                     <Text textStyle="sm" color="fg.muted">{data?.userData.bio}</Text>
                   </Stack>
                 </Stack>
