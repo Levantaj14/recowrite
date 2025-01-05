@@ -1,0 +1,14 @@
+node_modules/
+build/
+dist/
+coverage/
+docs/
+jsdoc/
+tmp/
+test.js
+.idea/
+.vscode/
+vite.config.ts
+
+
+src/components/ui
