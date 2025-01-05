@@ -7,17 +7,16 @@ import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("blogs")
+@Document("users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class BlogModel {
+public class UserModel {
     private ObjectId _id;
-    private String title;
-    private String content;
-    private String description;
-    private String author;
-    private String banner;
-    private String date;
+    private String username;
+    private String name;
+    private String avatar;
+    private String bio;
+    private Object socials;
 }

@@ -1,0 +1,17 @@
+package edu.bbte.licensz.slim2299.recowrite.controllers.dto;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
+@Getter
+@Setter
+public class UserDtoOut {
+    private String id;
+    private String username;
+    private String name;
+    private String avatar;
+    private String bio;
+    private Object socials;
+}

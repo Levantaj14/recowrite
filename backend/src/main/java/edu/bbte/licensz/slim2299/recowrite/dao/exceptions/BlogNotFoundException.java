@@ -1,0 +1,11 @@
+package edu.bbte.licensz.slim2299.recowrite.dao.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class BlogNotFoundException extends RuntimeException {
+    public BlogNotFoundException(String message) {
+        super(message);
+    }
+}

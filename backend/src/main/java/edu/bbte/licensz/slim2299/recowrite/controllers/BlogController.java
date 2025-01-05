@@ -1,8 +1,10 @@
-package edu.bbte.licensz.slim2299.recowrite.presentation.controllers;
+package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bbte.licensz.slim2299.recowrite.business.BlogService;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogIdDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +15,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 
-@RestController
+@RestController()
+@RequestMapping("/blogs")
 public class BlogController {
     private static final Logger log = LoggerFactory.getLogger(BlogController.class);
     private final BlogService blogService;
@@ -27,22 +31,27 @@ public class BlogController {
         this.blogService = blogService;
     }
 
-    @GetMapping("/blogs")
-    public List<BlogModel> getBlogs() {
+    @GetMapping()
+    public List<BlogDtoOut> getBlogs() {
         return blogService.getAllBlogs();
     }
 
-    @RequestMapping(value="/blogsById", method = RequestMethod.GET)
-    public Optional<BlogModel> getBlogsByPage(@RequestParam(value="id", defaultValue="null") String blogId) {
-        return blogService.getBlogById(blogId);
+    @GetMapping("/author")
+    public List<BlogDtoOut> getBlogsByAuthor(@RequestParam(value = "id") String authorId) {
+        return blogService.getBlogsByAuthor(authorId);
     }
 
-    @PostMapping("/addBlog")
-    public void addBlog(@RequestBody BlogModel blog) {
-        blogService.addBlog(blog);
+    @GetMapping("/{id}")
+    public BlogDtoOut getBlogsByPage(@PathVariable("id") String id) {
+        return blogService.getBlogById(id);
     }
 
-    @PostMapping("/getRecommendation")
+    @PostMapping()
+    public BlogIdDtoOut addBlog(@RequestBody BlogModel blog) {
+        return new BlogIdDtoOut(blogService.addBlog(blog));
+    }
+
+    @PostMapping("/recommendation")
     public List<Integer> getRecommendation(@RequestBody String requestBody) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
