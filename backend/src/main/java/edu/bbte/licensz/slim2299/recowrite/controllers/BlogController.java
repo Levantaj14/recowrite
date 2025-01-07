@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController()
@@ -42,7 +43,7 @@ public class BlogController {
     }
 
     @GetMapping("/{id}")
-    public BlogDtoOut getBlogsByPage(@PathVariable("id") String id) {
+    public BlogDtoOut getBlogsById(@PathVariable("id") String id) {
         return blogService.getBlogById(id);
     }
 
@@ -51,14 +52,13 @@ public class BlogController {
         return new BlogIdDtoOut(blogService.addBlog(blog));
     }
 
-    @PostMapping("/recommendation")
-    public List<Integer> getRecommendation(@RequestBody String requestBody) {
+    @GetMapping("/recommendation")
+    public List<BlogDtoOut> getRecommendation(@RequestParam("id") String blogId) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String apiHost = "http://localhost:8000/blogs";
-            String fileName = objectMapper.readTree(requestBody).get("file").toString();
+            String apiHost = "http://localhost:8000/recommendation";
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
-                    .queryParam("file", fileName.substring(1, fileName.length() - 1))
+                    .queryParam("id", blogId)
                     .queryParam("k", 3)
                     .build()
                     .toUri();
@@ -75,15 +75,19 @@ public class BlogController {
                 sb.append(output);
             }
             // Converting response body from JSON to Java Object with Jackson
-            List<Integer> data = objectMapper.readValue(
+            List<String> data = objectMapper.readValue(
                     objectMapper.readTree(sb.toString()).get("data").toString(),
-                    new TypeReference<>() {
-                    }
+                    new TypeReference<>() {}
             );
 
+            List<BlogDtoOut> blogs = new ArrayList<>();
+            for (String s : data) {
+                blogs.add(blogService.getBlogById(s));
+            }
+
             log.info("Response code: {}", conn.getResponseCode());
-            log.info("Response message: {}", data.toString());
-            return data;
+            log.info("Response message: {}", data);
+            return blogs;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
