@@ -16,7 +16,7 @@ import { HoverCardArrow, HoverCardContent, HoverCardRoot, HoverCardTrigger } fro
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import { fetchBlog } from '@/apis/blogApi.ts';
+import { fetchBlog, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
 import { useEffect } from 'react';
 
@@ -28,7 +28,12 @@ function Story() {
     queryFn: async () => {
       const blogData = await fetchBlog(blogId);
       const userData = await fetchUser(blogData.author);
-      return { blogData, userData };
+      const recommendationData = await fetchBlogRecommendation(blogId);
+      for (const rec of recommendationData) {
+        const author = await fetchUser(rec.author);
+        rec.author = author.name
+      }
+      return { blogData, userData, recommendationData };
     },
   });
 
@@ -94,52 +99,24 @@ function Story() {
                     viewport={{ once: true }}>
           <VStack align="flex-start">
             <Stack direction="row" mb={10}>
-              <LinkBox
-                flexShrink="0"
-                as="article"
-                _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
-              >
-                <Link to="/story/2">
-                  <Card.Root maxW="sm" overflow="hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1642783770696-5ce1b9e24263?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    />
-                    <Card.Body gap="2">
-                      <Text>Regina Grimes</Text>
-                      <Card.Title>Embracing Digital Detox: Rediscovering Balance in a Hyperconnected
-                        World</Card.Title>
-                      <Card.Description>
-                        Technology dominates our lives, leading to stress and burnout. Digital detoxes,
-                        periods of intentional disconnection, can improve focus, mental health, and
-                        well-being.
-                      </Card.Description>
-                    </Card.Body>
-                  </Card.Root>
-                </Link>
-              </LinkBox>
-              <LinkBox
-                flexShrink="0"
-                as="article"
-                _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
-              >
-                <Link to="/story/3">
-                  <Card.Root maxW="sm" overflow="hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1664575198308-3959904fa430?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    />
-                    <Card.Body gap="2">
-                      <Text>Bernadette Underwood</Text>
-                      <Card.Title>The Rise of Remote Work: Transforming Our Approach to Work and
-                        Life</Card.Title>
-                      <Card.Description>
-                        Remote work, initially a temporary solution, has become a long-term arrangement
-                        reshaping modern work culture. This shift influences both professional and
-                        personal lives.
-                      </Card.Description>
-                    </Card.Body>
-                  </Card.Root>
-                </Link>
-              </LinkBox>
+              {data?.recommendationData.map((recommendation) => (
+                <LinkBox
+                  flexShrink="0"
+                  as="article"
+                  _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
+                >
+                  <Link to={`/blog/${recommendation.id}`}>
+                    <Card.Root maxW="sm" overflow="hidden">
+                      <Image src={recommendation.banner} />
+                      <Card.Body gap="2">
+                        <Text>{recommendation.author}</Text>
+                        <Card.Title>{recommendation.title}</Card.Title>
+                        <Card.Description>{recommendation.description}</Card.Description>
+                      </Card.Body>
+                    </Card.Root>
+                  </Link>
+                </LinkBox>
+              ))}
             </Stack>
           </VStack>
         </motion.div>

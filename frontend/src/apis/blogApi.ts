@@ -31,3 +31,8 @@ export async function fetchBlogsByAuthor(authorId: string | null | undefined): P
   const res = await blogApi.get<BlogType[]>(`/author?id=${authorId}`);
   return res.data;
 }
+
+export async function fetchBlogRecommendation(blogId: string | null | undefined): Promise<BlogType[]> {
+  const res = await blogApi.get<BlogType[]>(`/recommendation?id=${blogId}`);
+  return res.data;
+}
