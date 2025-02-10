@@ -12,7 +12,7 @@ public class BlogDtoOut {
     private String title;
     private String content;
     private String description;
-    private String author;
+    private long author;
     private String banner;
     private String date;
 }

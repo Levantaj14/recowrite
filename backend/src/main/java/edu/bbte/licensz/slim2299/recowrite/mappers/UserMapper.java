@@ -13,7 +13,7 @@ public class UserMapper {
         dto.setName(user.getName());
         dto.setAvatar(user.getAvatar());
         dto.setBio(user.getBio());
-        //dto.setSocials(user.getSocials());
+        dto.setSocials(user.getSocials());
         return dto;
     }
 }

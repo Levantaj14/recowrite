@@ -2,7 +2,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.UserDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
-import edu.bbte.licensz.slim2299.recowrite.dao.managers.users.UserManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;

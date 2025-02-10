@@ -11,15 +11,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "blogs")
-public class BlogModel extends BaseEntity {
-    private String title;
-    @Lob
-    private String content;
-    private String description;
-    private String banner;
-    private String date;
-
+@Table(name = "socials")
+public class SocialsModel extends BaseEntity {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel user;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private SocialsTypesModel socialsType;
+
+    private String link;
 }

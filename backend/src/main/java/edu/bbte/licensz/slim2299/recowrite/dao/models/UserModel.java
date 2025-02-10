@@ -14,9 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "users")
-public class UserModel {
-    @Id
-    private long id;
+public class UserModel extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String username;
     private String name;
@@ -30,6 +28,10 @@ public class UserModel {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
     private List<BlogModel> blogs;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    private List<SocialsModel> socials;
 }
 
 

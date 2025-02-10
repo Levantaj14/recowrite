@@ -1,4 +1,4 @@
-package edu.bbte.licensz.slim2299.recowrite.controllers.configs;
+package edu.bbte.licensz.slim2299.recowrite.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

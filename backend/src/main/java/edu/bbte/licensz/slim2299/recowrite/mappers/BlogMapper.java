@@ -11,7 +11,7 @@ public class BlogMapper {
         blogDtoOut.setId(blog.getId());
         blogDtoOut.setTitle(blog.getTitle());
         blogDtoOut.setDescription(blog.getDescription());
-        //blogDtoOut.setAuthor(blog.getAuthor());
+        blogDtoOut.setAuthor(blog.getUser().getId());
         blogDtoOut.setContent(blog.getContent());
         blogDtoOut.setBanner(blog.getBanner());
         blogDtoOut.setDate(blog.getDate());
