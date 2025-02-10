@@ -1,6 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.SocialMediaNotSupported;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.SocialMediaNotSupportedException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.SocialsTypeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsTypesModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,6 @@ public class SocialsTypeService implements SocialsTypeInterface{
         if (socialsTypes.isPresent()) {
             return socialsTypes.get();
         }
-        throw new SocialMediaNotSupported("Socials type not found");
+        throw new SocialMediaNotSupportedException("Socials type not found");
     }
 }
