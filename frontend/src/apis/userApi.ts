@@ -1,12 +1,17 @@
 import axios from 'axios';
 
+type Social = {
+  name: string;
+  url: string;
+}
+
 export type UserType = {
   id: string;
   username: string;
   name: string;
   avatar: string;
   bio: string;
-  socials: object;
+  socials: Social[];
 }
 
 const userApi = axios.create({

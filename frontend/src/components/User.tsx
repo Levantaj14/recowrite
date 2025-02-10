@@ -26,11 +26,11 @@ function User() {
   }, [data])
 
   const iconMap: { [key: string]: ReactNode } = {
-    instagram: <FaInstagram />,
-    x: <FaXTwitter />,
-    bluesky: <FaBluesky />,
-    mastodon: <FaMastodon />,
-    medium: <FaMedium />,
+    Instagram: <FaInstagram />,
+    X: <FaXTwitter />,
+    Bluesky: <FaBluesky />,
+    Mastodon: <FaMastodon />,
+    Medium: <FaMedium />,
   };
 
   function loading() {
@@ -64,10 +64,10 @@ function User() {
           <Spacer />
           <Box>
             <Flex direction="row">
-              {data !== undefined && Object.entries(data.userData.socials).map(([key, value]) => (
+              {data !== undefined && data.userData.socials.map((data) => (
                 <LinkBox>
                   <IconButton variant="ghost">
-                    <LinkOverlay href={value} target="_blank">{iconMap[key]}</LinkOverlay>
+                    <LinkOverlay href={data.url} target="_blank">{iconMap[data.name]}</LinkOverlay>
                   </IconButton>
                 </LinkBox>
               ))}
