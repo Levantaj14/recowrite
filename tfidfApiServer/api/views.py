@@ -1,4 +1,3 @@
-from bson import ObjectId
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -6,7 +5,7 @@ from tfidf import tf_idf
 from utils import get_db_handle
 from .serializers import ListSerializer, BlogTitleSerializer
 
-blogs = get_db_handle()['blogs']
+db = get_db_handle()
 
 
 @api_view(['GET'])
@@ -14,14 +13,18 @@ def blog_list(request):
     blog_id = request.GET.get('id', '')
     k = int(request.GET.get('k', 3))
 
-    result = blogs.find_one({'_id': ObjectId(blog_id)})
-    if result:
-        data = tf_idf.search(result['content'], k)
-        serializer = ListSerializer(data={'data': data})
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response('', status=status.HTTP_200_OK)
+    if blog_id.isnumeric():
+        mycursor = db.cursor()
+        mycursor.execute("SELECT * FROM blogs WHERE id = %s", [blog_id])
+        result = mycursor.fetchone()
+        if result:
+            data = tf_idf.search(result[2], k)
+            serializer = ListSerializer(data={'data': data})
+            if serializer.is_valid():
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response('', status=status.HTTP_200_OK)
+    return Response('ID must be an integer greater than 0', status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
