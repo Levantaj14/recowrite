@@ -3,9 +3,9 @@ package edu.bbte.licensz.slim2299.recowrite.dao.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message) {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class SocialMediaNotSupported extends RuntimeException {
+    public SocialMediaNotSupported(String message) {
         super(message);
     }
 }
