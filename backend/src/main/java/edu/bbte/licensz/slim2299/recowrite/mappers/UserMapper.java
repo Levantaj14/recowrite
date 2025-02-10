@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
     public UserDtoOut modelToDto(UserModel user) {
         UserDtoOut dto = new UserDtoOut();
-        dto.setId(user.get_id().toString());
+        dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setName(user.getName());
         dto.setAvatar(user.getAvatar());
         dto.setBio(user.getBio());
-        dto.setSocials(user.getSocials());
+        //dto.setSocials(user.getSocials());
         return dto;
     }
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDtoOut {
-    private String id;
+    private Long id;
     private String username;
     private String name;
     private String avatar;

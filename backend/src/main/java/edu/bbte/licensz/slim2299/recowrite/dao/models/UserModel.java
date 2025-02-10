@@ -1,22 +1,36 @@
 package edu.bbte.licensz.slim2299.recowrite.dao.models;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("users")
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "users")
 public class UserModel {
-    private ObjectId _id;
+    @Id
+    private long id;
+    @Column(unique = true, nullable = false)
     private String username;
     private String name;
     private String avatar;
     private String bio;
-    private Object socials;
+    private String email;
+    private String password;
+    private String salt;
+    private String role = "USER";
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    private List<BlogModel> blogs;
 }
+
+
+

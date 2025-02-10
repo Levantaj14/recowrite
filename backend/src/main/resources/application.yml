@@ -1,6 +1,18 @@
 spring:
   application:
     name: backend
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/recowrite
+  datasource:
+    url: jdbc:mysql://localhost:3306/recowrite
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: kerekecske
+    hikari:
+      maximum-pool-size: 4
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET}
