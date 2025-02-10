@@ -9,25 +9,24 @@ type Props = {
   author: string;
   href: string;
   index: number;
-}
+};
 
 function BlogCard({ imageUrl, title, description, author, href, index }: Props) {
   return (
     // TODO: Limit character limit for description based on device
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, ease: 'easeInOut', delay: index / 25 }}>
-      <LinkBox
-        as="article"
-        _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
-      >
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, ease: 'easeInOut', delay: index / 25 }}
+      whileHover={{
+        scale: 1.02,
+        transition: { duration: 0.2, ease: 'easeInOut' },
+      }}
+    >
+      <LinkBox as="article">
         <Link to={href}>
           <Card.Root flexDirection="row" overflow="hidden" maxW="100%" size="sm" mb={4}>
-            <Image
-              objectFit="cover"
-              maxH="100%"
-              maxW="110px"
-              src={imageUrl}
-            />
+            <Image objectFit="cover" maxH="100%" maxW="110px" src={imageUrl} />
             <Box>
               <Card.Body>
                 <Text fontSize="sm" mb="1">
