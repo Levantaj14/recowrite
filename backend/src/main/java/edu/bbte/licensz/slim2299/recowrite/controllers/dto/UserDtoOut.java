@@ -4,14 +4,16 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Data
 @Getter
 @Setter
 public class UserDtoOut {
-    private String id;
+    private Long id;
     private String username;
     private String name;
     private String avatar;
     private String bio;
-    private Object socials;
+    private List<SocialMediaDtoOut> socials;
 }

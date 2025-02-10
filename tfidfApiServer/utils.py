@@ -1,7 +1,12 @@
-from pymongo import MongoClient
+import mysql.connector
+
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="kerekecske",
+    database="recowrite"
+)
 
 
 def get_db_handle():
-    client = MongoClient(host='localhost', port=27017)
-    db_handle = client['recowrite']
-    return db_handle
+    return mydb

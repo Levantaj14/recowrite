@@ -1,6 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
-import edu.bbte.licensz.slim2299.recowrite.business.UserService;
+import edu.bbte.licensz.slim2299.recowrite.services.UserService;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.UserDtoOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDtoOut getUserById(@PathVariable("id") String id) {
+    public UserDtoOut getUserById(@PathVariable("id") long id) {
         return userService.getUserById(id);
     }
 }

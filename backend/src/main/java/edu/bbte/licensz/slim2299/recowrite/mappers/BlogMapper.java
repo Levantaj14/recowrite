@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 public class BlogMapper {
     public BlogDtoOut modelToDto(BlogModel blog) {
         BlogDtoOut blogDtoOut = new BlogDtoOut();
-        blogDtoOut.setId(blog.get_id().toString());
+        blogDtoOut.setId(blog.getId());
         blogDtoOut.setTitle(blog.getTitle());
         blogDtoOut.setDescription(blog.getDescription());
-        blogDtoOut.setAuthor(blog.getAuthor());
+        blogDtoOut.setAuthor(blog.getUser().getId());
         blogDtoOut.setContent(blog.getContent());
         blogDtoOut.setBanner(blog.getBanner());
         blogDtoOut.setDate(blog.getDate());

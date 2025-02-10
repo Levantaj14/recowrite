@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 class ListSerializer(serializers.Serializer):
-    data = serializers.ListField(child=serializers.CharField())
+    data = serializers.ListField(child=serializers.IntegerField())
     created_at = serializers.DateTimeField(read_only=True)
 
 class BlogTitleSerializer(serializers.Serializer):

@@ -2,7 +2,7 @@ package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.bbte.licensz.slim2299.recowrite.business.BlogService;
+import edu.bbte.licensz.slim2299.recowrite.services.BlogService;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogIdDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
@@ -38,7 +38,7 @@ public class BlogController {
     }
 
     @GetMapping("/author")
-    public List<BlogDtoOut> getBlogsByAuthor(@RequestParam(value = "id") String authorId) {
+    public List<BlogDtoOut> getBlogsByAuthor(@RequestParam(value = "id") long authorId) {
         return blogService.getBlogsByAuthor(authorId);
     }
 

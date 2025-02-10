@@ -12,13 +12,6 @@ nltk.download('stopwords')
 nltk.download('punkt_tab')
 
 
-mongo_id = {
-    0: '6742c8022f358cfd5c5d80cf',
-    1: '677c89c2dfef7212b57043fc',
-    2: '677c8820dfef7212b57043f9'
-}
-
-
 def read_file(filename):
     f = open(filename, 'r')
     document = []
@@ -87,7 +80,7 @@ def search(blog_content, k=1):
     print(distances, indices)
     ids = []
     for faiss_index in indices[0]:
-        ids.append(mongo_id[faiss_index])
+        ids.append(faiss_index + 1)
     return ids
 
 
