@@ -31,15 +31,16 @@ function Story() {
       const recommendationData = await fetchBlogRecommendation(blogId);
       for (const rec of recommendationData) {
         const author = await fetchUser(rec.author);
-        rec.author = author.name
+        rec.author = author.name;
       }
       return { blogData, userData, recommendationData };
     },
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     document.title = data?.blogData.title ?? 'Loading...';
-  }, [data])
+  }, [data]);
 
   function loading() {
     return (
