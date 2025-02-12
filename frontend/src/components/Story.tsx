@@ -104,22 +104,25 @@ function Story() {
           <VStack align="flex-start">
             <Stack direction="row" mb={10}>
               {data?.recommendationData.map((recommendation) => (
-                <LinkBox
-                  flexShrink="0"
-                  as="article"
-                  _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
+                <motion.div
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.2, ease: 'easeInOut' },
+                  }}
                 >
-                  <Link to={`/blog/${recommendation.id}`}>
-                    <Card.Root maxW="sm" overflow="hidden">
-                      <Image src={recommendation.banner} />
-                      <Card.Body gap="2">
-                        <Text>{recommendation.author}</Text>
-                        <Card.Title>{recommendation.title}</Card.Title>
-                        <Card.Description>{recommendation.description}</Card.Description>
-                      </Card.Body>
-                    </Card.Root>
-                  </Link>
-                </LinkBox>
+                  <LinkBox flexShrink="0" as="article">
+                    <Link to={`/blog/${recommendation.id}`}>
+                      <Card.Root maxW="sm" overflow="hidden">
+                        <Image src={recommendation.banner} />
+                        <Card.Body gap="2">
+                          <Text>{recommendation.author}</Text>
+                          <Card.Title>{recommendation.title}</Card.Title>
+                          <Card.Description>{recommendation.description}</Card.Description>
+                        </Card.Body>
+                      </Card.Root>
+                    </Link>
+                  </LinkBox>
+                </motion.div>
               ))}
             </Stack>
           </VStack>
