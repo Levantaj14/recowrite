@@ -1,7 +1,12 @@
 import { Flex, Link, Spacer, Container, Heading, Box, Button } from '@chakra-ui/react';
 import { NavLink } from 'react-router';
+import { useContext } from 'react';
+import { UserDetailContext } from '@/contexts/userDetailContext.ts';
+import LoggedInAvatar from '@/components/Navbar/LoggedInAvatar.tsx';
 
 const StickyNavbar = () => {
+  const { userDetails } = useContext(UserDetailContext);
+
   return (
     <Box as="nav"
          position="sticky"
@@ -24,7 +29,14 @@ const StickyNavbar = () => {
                 About
               </Link>
             </NavLink>
-            <NavLink to="/login"><Button size="xs">Login</Button></NavLink>
+            {!userDetails && (
+              <NavLink to="/login">
+                <Button size="xs">Login</Button>
+              </NavLink>
+            )}
+            {userDetails && (
+              <LoggedInAvatar />
+            )}
           </Flex>
         </Flex>
       </Container>

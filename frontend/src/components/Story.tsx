@@ -52,9 +52,12 @@ function Story() {
 
   function blogPost() {
     return (
-      <motion.div initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}>
+      <motion.div
+        key={blogId}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      >
         <Heading size="4xl" mb="3">{data?.blogData.title}</Heading>
         <Flex flexDirection="row" justifyContent="flex-start" mb={5} alignItems="center">
           <Text textStyle="md" mr={1}>Written by</Text>
