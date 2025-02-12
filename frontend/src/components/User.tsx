@@ -4,14 +4,13 @@ import { Avatar } from '@/components/ui/avatar.tsx';
 import { motion } from 'motion/react';
 import BlogCard from '@/components/BlogCard.tsx';
 import { FaBluesky, FaInstagram, FaMastodon, FaMedium, FaXTwitter } from 'react-icons/fa6';
-import { useParams, useSearchParams } from 'react-router';
+import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from '@/apis/userApi.ts';
 import { fetchBlogsByAuthor } from '@/apis/blogApi.ts';
 
 function User() {
   const { userId } = useParams();
-  const [searchParams] = useSearchParams();
 
   const { data, isLoading } = useQuery({
     queryKey: ['user', userId],
@@ -92,7 +91,7 @@ function User() {
               index={index}
             />
           )) : (
-            <Text>{`${data?.userData.id}` === searchParams.get('id') ? 'This user' : 'You'} doesn't have any articles.</Text>
+            <Text>{`${data?.userData.id}` === userId ? 'You' : 'This user'} doesn't have any articles.</Text>
           )}
 
       </motion.div>

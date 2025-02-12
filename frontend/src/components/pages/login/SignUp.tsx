@@ -1,6 +1,6 @@
 import { Button, Field, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,6 +23,7 @@ type FormFields = z.infer<typeof schema>;
 export default function SignUp() {
   const { setUserDetails } = useContext(UserDetailContext);
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     document.title = 'Sign Up';
@@ -46,17 +47,21 @@ export default function SignUp() {
       if (/[^A-Za-z0-9]/.test(password)) score++;
     }
     return score;
-  }
+  };
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
+    setIsSubmitting(true);
     toast.promise(signup(data), {
       loading: CustomLoading('Signing up...'),
       success: () => {
         navigate('/');
-        return 'Signed up successfully'
+        return 'Signed up successfully';
       },
       error: 'An error occurred',
-    }).unwrap().then(r => setUserDetails(r));
+    }).unwrap().then(r => {
+      setIsSubmitting(false);
+      setUserDetails(r);
+    });
   };
 
   return (
@@ -100,8 +105,8 @@ export default function SignUp() {
           </Field.Root>
         </Fieldset.Content>
 
-        <Button type="submit" alignSelf="flex-start">
-          Sign Up
+        <Button type="submit" alignSelf="flex-start" disabled={isSubmitting}>
+          {isSubmitting ? 'Signing up...' : 'Sign Up'}
         </Button>
       </Fieldset.Root>
     </form>

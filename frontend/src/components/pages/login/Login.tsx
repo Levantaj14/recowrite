@@ -1,6 +1,6 @@
 import { Button, Field, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { PasswordInput } from '@/components/ui/password-input.tsx';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,6 +19,7 @@ type FormFields = z.infer<typeof schema>;
 
 export default function Login() {
   const { setUserDetails } = useContext(UserDetailContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,12 +29,13 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
+    setIsSubmitting(true);
     toast.promise(login(data), {
       loading: CustomLoading('Logging in...'),
       success: () => {
@@ -41,7 +43,10 @@ export default function Login() {
         return 'Logged in successfully'
       },
       error: 'An error occurred',
-    }).unwrap().then(r => setUserDetails(r));
+    }).unwrap().then(r => {
+      setIsSubmitting(false);
+      setUserDetails(r);
+    });
   };
 
   return (
