@@ -31,15 +31,16 @@ function Story() {
       const recommendationData = await fetchBlogRecommendation(blogId);
       for (const rec of recommendationData) {
         const author = await fetchUser(rec.author);
-        rec.author = author.name
+        rec.author = author.name;
       }
       return { blogData, userData, recommendationData };
     },
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     document.title = data?.blogData.title ?? 'Loading...';
-  }, [data])
+  }, [data]);
 
   function loading() {
     return (
@@ -51,9 +52,12 @@ function Story() {
 
   function blogPost() {
     return (
-      <motion.div initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}>
+      <motion.div
+        key={blogId}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      >
         <Heading size="4xl" mb="3">{data?.blogData.title}</Heading>
         <Flex flexDirection="row" justifyContent="flex-start" mb={5} alignItems="center">
           <Text textStyle="md" mr={1}>Written by</Text>
@@ -100,22 +104,25 @@ function Story() {
           <VStack align="flex-start">
             <Stack direction="row" mb={10}>
               {data?.recommendationData.map((recommendation) => (
-                <LinkBox
-                  flexShrink="0"
-                  as="article"
-                  _hover={{ transform: 'scale(1.02)', transition: '0.2s' }}
+                <motion.div
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.2, ease: 'easeInOut' },
+                  }}
                 >
-                  <Link to={`/blog/${recommendation.id}`}>
-                    <Card.Root maxW="sm" overflow="hidden">
-                      <Image src={recommendation.banner} />
-                      <Card.Body gap="2">
-                        <Text>{recommendation.author}</Text>
-                        <Card.Title>{recommendation.title}</Card.Title>
-                        <Card.Description>{recommendation.description}</Card.Description>
-                      </Card.Body>
-                    </Card.Root>
-                  </Link>
-                </LinkBox>
+                  <LinkBox flexShrink="0" as="article">
+                    <Link to={`/blog/${recommendation.id}`}>
+                      <Card.Root maxW="sm" overflow="hidden">
+                        <Image src={recommendation.banner} />
+                        <Card.Body gap="2">
+                          <Text>{recommendation.author}</Text>
+                          <Card.Title>{recommendation.title}</Card.Title>
+                          <Card.Description>{recommendation.description}</Card.Description>
+                        </Card.Body>
+                      </Card.Root>
+                    </Link>
+                  </LinkBox>
+                </motion.div>
               ))}
             </Stack>
           </VStack>

@@ -1,11 +1,14 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.SignUpDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.UserDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserAlreadyExistsException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ public class UserService implements UserServiceInterface {
     @Autowired
     private UserMapper userMapper;
 
+    @Override
     public List<UserDtoOut> getAllUsers() {
         List<UserDtoOut> users = new ArrayList<>();
         for (UserModel user : userManager.findAll()) {
@@ -28,6 +32,7 @@ public class UserService implements UserServiceInterface {
         return users;
     }
 
+    @Override
     public UserDtoOut getUserById(Long id) {
         Optional<UserModel> user = userManager.findById(id);
         if (user.isPresent()) {
@@ -36,11 +41,30 @@ public class UserService implements UserServiceInterface {
         throw new UserNotFoundException("User with id " + id + " not found");
     }
 
+    @Override
     public UserModel getUserByUsername(String username) {
         Optional<UserModel> user = userManager.findByUsername(username);
         if (user.isPresent()) {
             return user.get();
         }
         throw new UserNotFoundException("User with username " + username + " not found");
+    }
+
+    @Override
+    public UserDtoOut returnUserByUsername(String username) {
+        Optional<UserModel> user = userManager.findByUsername(username);
+        if (user.isPresent()) {
+            return userMapper.modelToDto(user.get());
+        }
+        throw new UserNotFoundException("User " + username + " not found");
+    }
+
+    @Override
+    public void createUser(SignUpDtoIn signUpDtoIn) throws UserAlreadyExistsException {
+        UserModel user = userMapper.signupDtoToModel(signUpDtoIn);
+        String salt = BCrypt.gensalt(12);
+        user.setSalt(salt);
+        user.setPassword(BCrypt.hashpw(user.getPassword(), salt));
+        userManager.save(user);
     }
 }

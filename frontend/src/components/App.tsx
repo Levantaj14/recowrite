@@ -1,50 +1,55 @@
-import BlogCard from '@/components/BlogCard.tsx';
-import { useQuery } from '@tanstack/react-query';
-import { BlogType, fetchAllBlogs } from '@/apis/blogApi.ts';
-import { Center, Spinner } from '@chakra-ui/react';
-import { fetchAllUsers } from '@/apis/userApi.ts';
-import { useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Container } from '@chakra-ui/react';
+import { StrictMode, useMemo, useState } from 'react';
+import { Provider } from '@/components/ui/provider.tsx';
+import { UserDetailContext, UserDetailContextType, UserDetailType } from '@/contexts/userDetailContext.ts';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import StickyNavbar from '@/components/navbar/Navbar.tsx';
+import Story from '@/components/Story.tsx';
+import User from '@/components/User.tsx';
+import LoginPage from '@/components/pages/login/LoginPage.tsx';
+import NotFound from '@/components/NotFound.tsx';
+import { Toaster } from 'sonner';
+import Home from '@/components/Home.tsx';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10000,
+      refetchInterval: 30000,
+    },
+  },
+});
 
 function App() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['blogs'],
-    queryFn: async () => {
-      const blogData = await fetchAllBlogs();
-      const userData = await fetchAllUsers();
-      return { blogData, userData };
-    },
-  });
+  const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
+  const userDetailsMemo: UserDetailContextType = {
+    userDetails,
+    setUserDetails,
+  };
+  const userDetailContext = useMemo(() => userDetailsMemo, [userDetails]);
 
-  useEffect(() => {
-    document.title = 'recowrite';
-  }, [data])
-
-  function loadingScreen() {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
-
-  function blogList() {
-    return (
-      <>
-        {data?.blogData.map((blog: BlogType, index) => (
-          <BlogCard
-            imageUrl={blog.banner}
-            title={blog.title}
-            description={blog.description}
-            author={data?.userData.find(u => u.id === blog.author)?.name ?? 'unknown'}
-            href={`/blog/${blog.id}`}
-            index={index}
-          />
-        ))}
-      </>
-    );
-  }
-
-  return isLoading ? loadingScreen() : blogList();
+  return (<StrictMode>
+    <Provider>
+      <QueryClientProvider client={queryClient}>
+        <UserDetailContext.Provider value={userDetailContext}>
+          <BrowserRouter>
+            <StickyNavbar />
+            <Container as="main" mt="4" mb="4" maxW="6xl">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/blog/:blogId" element={<Story />} />
+                <Route path="/user/:userId" element={<User />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Container>
+          </BrowserRouter>
+        </UserDetailContext.Provider>
+      </QueryClientProvider>
+      <Toaster theme="system" />
+    </Provider>
+  </StrictMode>);
 }
 
 export default App;

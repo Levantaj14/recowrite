@@ -23,7 +23,7 @@ function User() {
 
   useEffect(() => {
     document.title = data?.userData.name ?? 'Loading...';
-  }, [data])
+  }, [data]);
 
   const iconMap: { [key: string]: ReactNode } = {
     Instagram: <FaInstagram />,
@@ -42,7 +42,6 @@ function User() {
   }
 
   function userPage() {
-    console.log(data?.userBlogs)
     return (
       // TODO: Make it look good on phones
       <motion.div initial={{ opacity: 0 }}
@@ -74,19 +73,27 @@ function User() {
             </Flex>
           </Box>
         </Flex>
-        <Heading mt={6} size="xl">About me</Heading>
-        <Text>{data?.userData.bio}</Text>
+        {data?.userData.bio && (
+          <>
+            <Heading mt={6} size="xl">About me</Heading>
+            <Text>{data?.userData.bio}</Text>
+          </>
+        )}
         <Heading size="xl" mt={6} mb={2}>Articles</Heading>
-        {data?.userBlogs.map((blog, index) => (
-          <BlogCard
-            imageUrl={blog.banner}
-            title={blog.title}
-            description={blog.description}
-            author={data?.userData.name}
-            href={`/blog/${blog.id}`}
-            index={index}
-          />
-        ))}
+        {data !== undefined && data.userBlogs.length > 0
+          ? data.userBlogs.map((blog, index) => (
+            <BlogCard
+              imageUrl={blog.banner}
+              title={blog.title}
+              description={blog.description}
+              author={data?.userData.name}
+              href={`/blog/${blog.id}`}
+              index={index}
+            />
+          )) : (
+            <Text>{`${data?.userData.id}` === userId ? 'You' : 'This user'} doesn't have any articles.</Text>
+          )}
+
       </motion.div>
     );
   }

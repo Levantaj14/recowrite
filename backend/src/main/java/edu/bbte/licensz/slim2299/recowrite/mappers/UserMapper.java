@@ -1,5 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.mappers;
 
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.SignUpDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.SocialMediaDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.UserDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsModel;
@@ -24,10 +25,21 @@ public class UserMapper {
         dto.setAvatar(user.getAvatar());
         dto.setBio(user.getBio());
         List<SocialMediaDtoOut> socials = new ArrayList<>();
-        for (SocialsModel social : user.getSocials()) {
-            socials.add(socialsMapper.modelToDto(social));
+        if (user.getSocials() != null) {
+            for (SocialsModel social : user.getSocials()) {
+                socials.add(socialsMapper.modelToDto(social));
+            }
         }
         dto.setSocials(socials);
         return dto;
+    }
+
+    public UserModel signupDtoToModel(SignUpDtoIn signupDtoIn) {
+        UserModel userModel = new UserModel();
+        userModel.setName(signupDtoIn.getName());
+        userModel.setUsername(signupDtoIn.getUsername());
+        userModel.setEmail(signupDtoIn.getEmail());
+        userModel.setPassword(signupDtoIn.getPassword());
+        return userModel;
     }
 }
