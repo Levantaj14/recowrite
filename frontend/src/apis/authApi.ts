@@ -16,7 +16,6 @@ export type LoginType = {
 const authApi = axios.create({
   baseURL: 'http://localhost:8080/authentication',
   withCredentials: true,
-  validateStatus: () => true,
   headers: {
     Accept: 'application/json',
   }
@@ -41,4 +40,12 @@ export async function signup(user: SignUpType): Promise<UserDetailType | null> {
 export async function logout(): Promise<boolean> {
   const res = await authApi.post('/logout');
   return res.status === 200;
+}
+
+export async function checkCookie(): Promise<UserDetailType | null> {
+  const res = await authApi.get('/check');
+  if (res.status === 200) {
+    return res.data;
+  }
+  return null;
 }

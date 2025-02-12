@@ -4,13 +4,14 @@ import { Avatar } from '@/components/ui/avatar.tsx';
 import { motion } from 'motion/react';
 import BlogCard from '@/components/BlogCard.tsx';
 import { FaBluesky, FaInstagram, FaMastodon, FaMedium, FaXTwitter } from 'react-icons/fa6';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from '@/apis/userApi.ts';
 import { fetchBlogsByAuthor } from '@/apis/blogApi.ts';
 
 function User() {
   const { userId } = useParams();
+  const [searchParams] = useSearchParams();
 
   const { data, isLoading } = useQuery({
     queryKey: ['user', userId],
@@ -23,7 +24,7 @@ function User() {
 
   useEffect(() => {
     document.title = data?.userData.name ?? 'Loading...';
-  }, [data])
+  }, [data]);
 
   const iconMap: { [key: string]: ReactNode } = {
     Instagram: <FaInstagram />,
@@ -42,7 +43,6 @@ function User() {
   }
 
   function userPage() {
-    console.log(data?.userBlogs)
     return (
       // TODO: Make it look good on phones
       <motion.div initial={{ opacity: 0 }}
@@ -74,19 +74,27 @@ function User() {
             </Flex>
           </Box>
         </Flex>
-        <Heading mt={6} size="xl">About me</Heading>
-        <Text>{data?.userData.bio}</Text>
+        {data?.userData.bio && (
+          <>
+            <Heading mt={6} size="xl">About me</Heading>
+            <Text>{data?.userData.bio}</Text>
+          </>
+        )}
         <Heading size="xl" mt={6} mb={2}>Articles</Heading>
-        {data?.userBlogs.map((blog, index) => (
-          <BlogCard
-            imageUrl={blog.banner}
-            title={blog.title}
-            description={blog.description}
-            author={data?.userData.name}
-            href={`/blog/${blog.id}`}
-            index={index}
-          />
-        ))}
+        {data !== undefined && data.userBlogs.length > 0
+          ? data.userBlogs.map((blog, index) => (
+            <BlogCard
+              imageUrl={blog.banner}
+              title={blog.title}
+              description={blog.description}
+              author={data?.userData.name}
+              href={`/blog/${blog.id}`}
+              index={index}
+            />
+          )) : (
+            <Text>{`${data?.userData.id}` === searchParams.get('id') ? 'This user' : 'You'} doesn't have any articles.</Text>
+          )}
+
       </motion.div>
     );
   }

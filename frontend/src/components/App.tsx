@@ -4,7 +4,7 @@ import { StrictMode, useMemo, useState } from 'react';
 import { Provider } from '@/components/ui/provider.tsx';
 import { UserDetailContext, UserDetailContextType, UserDetailType } from '@/contexts/userDetailContext.ts';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import StickyNavbar from '@/components/Navbar/Navbar.tsx';
+import StickyNavbar from '@/components/navbar/Navbar.tsx';
 import Story from '@/components/Story.tsx';
 import User from '@/components/User.tsx';
 import LoginPage from '@/components/pages/login/LoginPage.tsx';

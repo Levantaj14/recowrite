@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import CustomLoading from '@/components/CustomLoading.tsx';
 import { login } from '@/apis/authApi.ts';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
+import { useNavigate } from 'react-router';
 
 const schema = z.object({
   username: z.string().nonempty('Username is required'),
@@ -18,6 +19,7 @@ type FormFields = z.infer<typeof schema>;
 
 export default function Login() {
   const { setUserDetails } = useContext(UserDetailContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = 'Login';
@@ -34,7 +36,10 @@ export default function Login() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     toast.promise(login(data), {
       loading: CustomLoading('Logging in...'),
-      success: 'Logged in successfully',
+      success: () => {
+        navigate('/dashboard');
+        return 'Logged in successfully'
+      },
       error: 'An error occurred',
     }).unwrap().then(r => setUserDetails(r));
   };

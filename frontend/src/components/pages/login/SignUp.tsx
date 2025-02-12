@@ -1,17 +1,29 @@
 import { Button, Field, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { signup } from '@/apis/authApi.ts';
+import CustomLoading from '@/components/CustomLoading.tsx';
+import { UserDetailContext } from '@/contexts/userDetailContext.ts';
+import { useNavigate } from 'react-router';
 
-type FormFields = {
-  name: string;
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-};
+const schema = z.object({
+  name: z.string().nonempty(),
+  email: z.string().email(),
+  username: z.string().nonempty(),
+  password: z.string().min(8),
+  passwordConfirm: z.string().min(8),
+});
+
+type FormFields = z.infer<typeof schema>;
 
 export default function SignUp() {
+  const { setUserDetails } = useContext(UserDetailContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = 'Sign Up';
   }, []);
@@ -20,10 +32,31 @@ export default function SignUp() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>();
+    watch,
+  } = useForm<FormFields>({
+    resolver: zodResolver(schema),
+  });
+
+  const passwordStrengthMeter = (password: string) => {
+    let score = 0;
+    if (password !== undefined) {
+      if (password.length >= 8) score++;
+      if (/[A-Z]/.test(password)) score++;
+      if (/\d/.test(password)) score++;
+      if (/[^A-Za-z0-9]/.test(password)) score++;
+    }
+    return score;
+  }
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
+    toast.promise(signup(data), {
+      loading: CustomLoading('Signing up...'),
+      success: () => {
+        navigate('/');
+        return 'Signed up successfully'
+      },
+      error: 'An error occurred',
+    }).unwrap().then(r => setUserDetails(r));
   };
 
   return (
@@ -37,50 +70,32 @@ export default function SignUp() {
         <Fieldset.Content>
           <Field.Root invalid={!!errors.name}>
             <Field.Label>Name</Field.Label>
-            <Input {...register('name', { required: 'Name is required' })} />
+            <Input {...register('name')} />
             <Field.ErrorText>{errors.name?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.email}>
             <Field.Label>Email</Field.Label>
-            <Input
-              {...register('email', {
-                required: 'Email is required',
-                validate: (value) => {
-                  if (!value.includes('@')) {
-                    return 'Not a valid email';
-                  }
-                  return true;
-                },
-              })}
-            />
+            <Input {...register('email')} />
             <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.username}>
             <Field.Label>Username</Field.Label>
-            <Input {...register('username', { required: 'Username is required' })} />
+            <Input {...register('username')} />
             <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.password}>
             <Field.Label>Password</Field.Label>
-            <PasswordInput
-              {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 8,
-                  message: 'Password must be at least 8 characters',
-                },
-              })}
-            />
+            <PasswordInput {...register('password')} />
             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
-            <PasswordStrengthMeter width="xs" value={1} />
+            <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('password'))} />
           </Field.Root>
 
           <Field.Root invalid={!!errors.passwordConfirm}>
             <Field.Label>Confirm your password</Field.Label>
-            <PasswordInput {...register('passwordConfirm', { required: 'Password confirmation is required' })} />
+            <PasswordInput {...register('passwordConfirm')} />
             <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
           </Field.Root>
         </Fieldset.Content>
