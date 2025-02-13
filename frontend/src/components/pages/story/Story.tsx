@@ -45,7 +45,7 @@ function Story() {
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = data?.blogData.title ?? 'Loading...';
-  }, [data]);
+  }, [data?.blogData.title]);
 
   function loading() {
     return (
