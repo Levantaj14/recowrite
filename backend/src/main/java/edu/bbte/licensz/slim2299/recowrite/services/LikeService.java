@@ -24,13 +24,13 @@ public class LikeService implements LikeServiceInterface{
     @Override
     public void changeLike(long blogId, String username) {
         UserModel user = userService.getUserModelByUsername(username);
-        Optional<LikeModel> likeModel = likeManager.findByIdAndUser(blogId, user);
+        BlogModel blog = blogService.getBlogModelById(blogId);
+        Optional<LikeModel> likeModel = likeManager.findByBlogAndUser(blog, user);
         if (likeModel.isPresent()) {
             LikeModel like = likeModel.get();
             likeManager.delete(like);
         } else {
             LikeModel like = new LikeModel();
-            BlogModel blog = blogService.getBlogModelById(blogId);
             like.setBlog(blog);
             like.setUser(user);
             likeManager.save(like);
@@ -40,7 +40,8 @@ public class LikeService implements LikeServiceInterface{
     @Override
     public boolean isLike(long blogId, String username) {
         UserModel user = userService.getUserModelByUsername(username);
-        Optional<LikeModel> likeModel = likeManager.findByIdAndUser(blogId, user);
+        BlogModel blog = blogService.getBlogModelById(blogId);
+        Optional<LikeModel> likeModel = likeManager.findByBlogAndUser(blog, user);
         return likeModel.isPresent();
     }
 }

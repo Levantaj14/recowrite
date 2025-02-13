@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface LikeManager extends JpaRepository<LikeModel, Long> {
-    Optional<LikeModel> findByIdAndUser(long id, UserModel user);
-
     long countByBlog(BlogModel blog);
+
+    Optional<LikeModel> findByBlogAndUser(BlogModel blog, UserModel user);
 }
