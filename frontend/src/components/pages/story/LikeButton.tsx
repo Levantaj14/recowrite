@@ -29,25 +29,13 @@ export default function LikeButton({ blogData }: Props) {
 
   const clickedLike = async () => {
     setLiked(!liked);
-    try {
-      changeLike(blogData?.id);
-      if (blogData) {
-        if (liked) {
-          blogData.likeCount--;
-        } else {
-          blogData.likeCount++;
-        }
+    changeLike(blogData?.id);
+    if (blogData) {
+      if (liked) {
+        blogData.likeCount--;
+      } else {
+        blogData.likeCount++;
       }
-    } catch (error) {
-      setLiked(!liked);
-      if (blogData) {
-        if (liked) {
-          blogData.likeCount--;
-        } else {
-          blogData.likeCount++;
-        }
-      }
-      console.error(error);
     }
   };
 
