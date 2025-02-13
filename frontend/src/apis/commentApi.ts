@@ -21,3 +21,8 @@ export async function getComments(blogId: string | undefined): Promise<CommentTy
   const res = await commmentApi.get(`/${blogId}`);
   return res.data;
 }
+
+export async function postComment(blogId: string | undefined, comment: string): Promise<boolean> {
+  const res = await commmentApi.post(`/${blogId}`, { comment });
+  return res.status === 200;
+}
