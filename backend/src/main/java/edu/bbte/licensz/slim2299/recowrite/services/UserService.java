@@ -33,7 +33,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserDtoOut getUserById(Long id) {
+    public UserDtoOut findUserById(Long id) {
         Optional<UserModel> user = userManager.findById(id);
         if (user.isPresent()) {
             return userMapper.modelToDto(user.get());
@@ -42,7 +42,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public UserModel getUserByUsername(String username) {
+    public UserModel getUserModelByUsername(String username) {
         Optional<UserModel> user = userManager.findByUsername(username);
         if (user.isPresent()) {
             return user.get();

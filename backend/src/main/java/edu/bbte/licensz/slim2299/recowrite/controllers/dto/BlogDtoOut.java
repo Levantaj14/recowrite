@@ -15,4 +15,5 @@ public class BlogDtoOut {
     private long author;
     private String banner;
     private String date;
+    private long likeCount;
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,4 +24,8 @@ public class BlogModel extends BaseEntity {
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel user;
+
+    @OneToMany(mappedBy = "blog", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    private List<LikeModel> likes;
 }

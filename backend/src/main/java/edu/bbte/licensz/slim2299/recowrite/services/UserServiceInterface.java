@@ -10,9 +10,9 @@ import java.util.List;
 public interface UserServiceInterface {
     List<UserDtoOut> getAllUsers();
 
-    UserDtoOut getUserById(Long id);
+    UserDtoOut findUserById(Long id);
 
-    UserModel getUserByUsername(String username);
+    UserModel getUserModelByUsername(String username);
 
     UserDtoOut returnUserByUsername(String username);
 

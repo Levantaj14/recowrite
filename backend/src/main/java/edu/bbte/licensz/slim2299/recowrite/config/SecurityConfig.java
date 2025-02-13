@@ -89,7 +89,7 @@ public class SecurityConfig {
 
     private UserDetailsService userDetailsService() {
         return username -> {
-            UserModel user = userService.getUserByUsername(username);
+            UserModel user = userService.getUserModelByUsername(username);
             return new User(user.getUsername(), user.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
         };
