@@ -11,4 +11,8 @@ public interface LikeManager extends JpaRepository<LikeModel, Long> {
     long countByBlog(BlogModel blog);
 
     Optional<LikeModel> findByBlogAndUser(BlogModel blog, UserModel user);
+
+    Optional<LikeModel> findByBlog_IdAndUser(long blogId, UserModel user);
+
+    long countByBlog_Id(long blogId);
 }

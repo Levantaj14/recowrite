@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "comments")
-public class CommentModel extends BaseEntity{
+public class CommentModel extends BaseEntity {
     @Column(nullable = false)
     private String comment;
 

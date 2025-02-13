@@ -1,7 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.LikeManager;
-import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.LikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +21,20 @@ public class LikeService implements LikeServiceInterface{
     private BlogService blogService;
 
     @Override
+    public long likeCount(long blogId) {
+        return likeManager.countByBlog_Id(blogId);
+    }
+
+    @Override
     public void changeLike(long blogId, String username) {
         UserModel user = userService.getUserModelByUsername(username);
-        BlogModel blog = blogService.getBlogModelById(blogId);
-        Optional<LikeModel> likeModel = likeManager.findByBlogAndUser(blog, user);
+        Optional<LikeModel> likeModel = likeManager.findByBlog_IdAndUser(blogId, user);
         if (likeModel.isPresent()) {
             LikeModel like = likeModel.get();
             likeManager.delete(like);
         } else {
             LikeModel like = new LikeModel();
-            like.setBlog(blog);
+            like.setBlog(blogService.getBlogModelById(blogId));
             like.setUser(user);
             likeManager.save(like);
         }
@@ -40,8 +43,7 @@ public class LikeService implements LikeServiceInterface{
     @Override
     public boolean isLike(long blogId, String username) {
         UserModel user = userService.getUserModelByUsername(username);
-        BlogModel blog = blogService.getBlogModelById(blogId);
-        Optional<LikeModel> likeModel = likeManager.findByBlogAndUser(blog, user);
+        Optional<LikeModel> likeModel = likeManager.findByBlog_IdAndUser(blogId, user);
         return likeModel.isPresent();
     }
 }

@@ -1,7 +1,8 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.LikeDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.LikeCountDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.LikedDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.MessageDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.LikeServiceInterface;
 import jakarta.servlet.http.Cookie;
@@ -25,13 +26,18 @@ public class LikeController {
     private JwtUtil jwtUtil;
 
     @GetMapping("/{id}")
-    public ResponseEntity<LikeDtoOut> like(HttpServletRequest request, @PathVariable long id) {
+    public ResponseEntity<LikedDtoOut> like(HttpServletRequest request, @PathVariable long id) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             boolean liked = likeService.isLike(id, jwtUtil.extractUsername(cookie.getValue()));
-            return ResponseEntity.status(HttpStatus.OK).body(new LikeDtoOut(liked));
+            return ResponseEntity.status(HttpStatus.OK).body(new LikedDtoOut(liked));
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @GetMapping("/count/{blogId}")
+    public ResponseEntity<LikeCountDtoOut> likeCount(@PathVariable long blogId) {
+    return ResponseEntity.status(HttpStatus.OK).body(new LikeCountDtoOut(likeService.likeCount(blogId)));
     }
 
     @PutMapping("/{id}")

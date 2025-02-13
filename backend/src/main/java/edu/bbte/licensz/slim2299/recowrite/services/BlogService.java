@@ -4,7 +4,6 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
-import edu.bbte.licensz.slim2299.recowrite.dao.managers.LikeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
@@ -27,13 +26,10 @@ public class BlogService {
     @Autowired
     private UserManager userManager;
 
-    @Autowired
-    private LikeManager likeManager;
-
     public List<BlogDtoOut> getAllBlogs() {
         List<BlogDtoOut> blogList = new ArrayList<>();
         for (BlogModel blog : blogManager.findAll()) {
-            blogList.add(blogMapper.modelToDto(blog, likeManager.countByBlog(blog)));
+            blogList.add(blogMapper.modelToDto(blog));
         }
         return blogList;
     }
@@ -47,7 +43,7 @@ public class BlogService {
         Optional<List<BlogModel>> result = blogManager.findByUser(userResult.get());
         if (result.isPresent()) {
             for (BlogModel blog : result.get()) {
-                blogList.add(blogMapper.modelToDto(blog, likeManager.countByBlog(blog)));
+                blogList.add(blogMapper.modelToDto(blog));
             }
         }
         return blogList;
@@ -56,7 +52,7 @@ public class BlogService {
     public BlogDtoOut getBlogById(long id) {
         Optional<BlogModel> blog = blogManager.findById(id);
         if (blog.isPresent()) {
-            return blogMapper.modelToDto(blog.get(), likeManager.countByBlog(blog.get()));
+            return blogMapper.modelToDto(blog.get());
         }
         throw new BlogNotFoundException("Blog with id " + id + " not found");
     }

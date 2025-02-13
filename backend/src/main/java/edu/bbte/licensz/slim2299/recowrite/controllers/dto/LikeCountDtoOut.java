@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BlogIdDtoOut {
-    private Long id;
+public class LikeCountDtoOut {
+    private long count;
 }

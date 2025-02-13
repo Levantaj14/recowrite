@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LikeDtoOut {
-    private boolean liked;
+public class CommentDtoIn {
+    private long id;
+    private String comment;
 }
