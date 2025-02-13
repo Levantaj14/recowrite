@@ -1,7 +1,7 @@
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Button } from '@chakra-ui/react';
 import { BlogType } from '@/apis/blogApi.ts';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Tooltip } from '@/components/ui/tooltip.tsx';
 import { changeLike, LikeCountType, LikedType } from '@/apis/likesApi.ts';
@@ -20,7 +20,6 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
 
   const clickedLike = async () => {
     setLocalLiked(!localLiked);
-    console.log(localLiked, localLikeCount);
     if (localLikeCount !== undefined) {
       if (localLiked) {
         setLocalLikeCount(localLikeCount - 1);
@@ -30,6 +29,12 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
     }
     await changeLike(blogData?.id);
   };
+
+  useEffect(() => {
+    if (userDetails === null) {
+      setLocalLiked(false);
+    }
+  }, [userDetails]);
 
   return (
     <Tooltip content={'You must be logged in'} disabled={userDetails !== null} openDelay={100} closeDelay={100}

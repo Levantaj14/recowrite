@@ -18,13 +18,12 @@ import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchBlog, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import LikeButton from '@/components/pages/story/LikeButton.tsx';
 import { getLikeCount, getLiked } from '@/apis/likesApi.ts';
-import { UserDetailContext } from '@/contexts/userDetailContext.ts';
+import CommentSection from '@/components/pages/story/CommentSection.tsx';
 
 function Story() {
-  const { userDetails } = useContext(UserDetailContext);
   const { blogId } = useParams();
 
   const { data, isLoading } = useQuery({
@@ -37,12 +36,7 @@ function Story() {
         const author = await fetchUser(rec.author);
         rec.author = author.name;
       }
-      let liked;
-      if (userDetails) {
-        liked = await getLiked(blogId);
-      } else {
-        liked = { liked: false };
-      }
+      const liked = await getLiked(blogId);
       const likeCount = await getLikeCount(blogId);
       return { blogData, userData, recommendationData, liked, likeCount };
     },
@@ -109,6 +103,8 @@ function Story() {
           <Text mt={15}>{data?.blogData.content}</Text>
         </Box>
         <Separator />
+        <CommentSection blogId={blogId} />
+        <Separator />
         <Heading size="3xl" mt="5" mb="5">
           Continue reading
         </Heading>
@@ -119,6 +115,7 @@ function Story() {
             <Stack direction="row" mb={10}>
               {data?.recommendationData.map((recommendation) => (
                 <motion.div
+                  key={recommendation.id}
                   whileHover={{
                     scale: 1.02,
                     transition: { duration: 0.2, ease: 'easeInOut' },

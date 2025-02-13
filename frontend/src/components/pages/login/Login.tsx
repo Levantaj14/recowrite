@@ -9,6 +9,7 @@ import CustomLoading from '@/components/CustomLoading.tsx';
 import { login } from '@/apis/authApi.ts';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
+import { useQueryClient } from '@tanstack/react-query';
 
 const schema = z.object({
   username: z.string().nonempty('Username is required'),
@@ -21,6 +22,7 @@ export default function Login() {
   const { setUserDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     document.title = 'Login';
@@ -38,11 +40,17 @@ export default function Login() {
     setIsSubmitting(true);
     toast.promise(login(data), {
       loading: CustomLoading('Logging in...'),
-      success: () => {
+      success: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: ['blog'],
+        });
         navigate('/dashboard');
-        return 'Logged in successfully'
+        return 'Logged in successfully';
       },
-      error: 'An error occurred',
+      error: () => {
+        setIsSubmitting(false);
+        return 'An error occurred';
+      },
     }).unwrap().then(r => {
       setIsSubmitting(false);
       setUserDetails(r);

@@ -17,7 +17,9 @@ const likesApi = axios.create({
 });
 
 export async function getLiked(id: string | undefined): Promise<LikedType> {
-  const res = await likesApi.get(`/${id}`);
+  const res = await likesApi.get(`/${id}`, {
+    validateStatus: () => true
+  });
   return res.data;
 }
 
