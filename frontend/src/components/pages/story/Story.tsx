@@ -18,10 +18,13 @@ import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchBlog, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import LikeButton from '@/components/pages/story/LikeButton.tsx';
+import { getLikeCount, getLiked } from '@/apis/likesApi.ts';
+import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 
 function Story() {
+  const { userDetails } = useContext(UserDetailContext);
   const { blogId } = useParams();
 
   const { data, isLoading } = useQuery({
@@ -34,7 +37,14 @@ function Story() {
         const author = await fetchUser(rec.author);
         rec.author = author.name;
       }
-      return { blogData, userData, recommendationData };
+      let liked;
+      if (userDetails) {
+        liked = await getLiked(blogId);
+      } else {
+        liked = { liked: false };
+      }
+      const likeCount = await getLikeCount(blogId);
+      return { blogData, userData, recommendationData, liked, likeCount };
     },
   });
 
@@ -86,7 +96,7 @@ function Story() {
               </HoverCardContent>
             </HoverCardRoot>
           </Flex>
-          <LikeButton userData={data?.userData} blogData={data?.blogData} />
+          <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
         </Flex>
         <Image
           rounded="lg"

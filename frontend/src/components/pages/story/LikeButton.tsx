@@ -1,50 +1,42 @@
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Button } from '@chakra-ui/react';
 import { BlogType } from '@/apis/blogApi.ts';
-import { UserType } from '@/apis/userApi.ts';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Tooltip } from '@/components/ui/tooltip.tsx';
-import { useQuery } from '@tanstack/react-query';
-import { changeLike, getLikes } from '@/apis/likesApi.ts';
+import { changeLike, LikeCountType, LikedType } from '@/apis/likesApi.ts';
 import NumberFlow from '@number-flow/react';
 
 type Props = {
   blogData: BlogType | undefined;
-  userData: UserType | undefined;
+  liked: LikedType | undefined;
+  likeCount: LikeCountType | undefined;
 }
 
-export default function LikeButton({ blogData }: Props) {
+export default function LikeButton({ blogData, liked, likeCount }: Props) {
   const { userDetails } = useContext(UserDetailContext);
-  const [liked, setLiked] = useState(false);
-
-  const { data } = useQuery({
-    queryKey: ['likes', blogData?.id],
-    queryFn: () => getLikes(blogData?.id),
-  });
-
-  useEffect(() => {
-    setLiked(data?.liked !== undefined && data.liked && userDetails !== null);
-  }, [data?.liked, userDetails]);
+  const [localLiked, setLocalLiked] = useState(liked?.liked);
+  const [localLikeCount, setLocalLikeCount] = useState(likeCount?.count);
 
   const clickedLike = async () => {
-    setLiked(!liked);
-    changeLike(blogData?.id);
-    if (blogData) {
-      if (liked) {
-        blogData.likeCount--;
+    setLocalLiked(!localLiked);
+    console.log(localLiked, localLikeCount);
+    if (localLikeCount !== undefined) {
+      if (localLiked) {
+        setLocalLikeCount(localLikeCount - 1);
       } else {
-        blogData.likeCount++;
+        setLocalLikeCount(localLikeCount + 1);
       }
     }
+    await changeLike(blogData?.id);
   };
 
   return (
     <Tooltip content={'You must be logged in'} disabled={userDetails !== null} openDelay={100} closeDelay={100}
              positioning={{ placement: 'top' }}>
       <Button variant="ghost" disabled={userDetails === null} onClick={clickedLike}>
-        {blogData !== undefined && <NumberFlow value={blogData.likeCount} />}
-        {liked ? <FaHeart /> : <FaRegHeart />}
+        {localLikeCount !== undefined && <NumberFlow value={localLikeCount} />}
+        {localLiked ? <FaHeart /> : <FaRegHeart />}
       </Button>
     </Tooltip>
   );
