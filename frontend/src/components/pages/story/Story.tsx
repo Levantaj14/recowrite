@@ -124,7 +124,7 @@ function Story() {
                   <LinkBox flexShrink="0" as="article">
                     <Link to={`/blog/${recommendation.id}`}>
                       <Card.Root maxW="sm" overflow="hidden">
-                        <Image src={recommendation.banner} />
+                        <Image h="2xs" src={recommendation.banner} />
                         <Card.Body gap="2">
                           <Text>{recommendation.author}</Text>
                           <Card.Title>{recommendation.title}</Card.Title>

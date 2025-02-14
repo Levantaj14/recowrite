@@ -32,7 +32,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             String apiHost = "http://localhost:8000/recommendation";
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
                     .queryParam("id", blogId)
-                    .queryParam("k", 3)
+                    .queryParam("k", 4)
                     .build()
                     .toUri();
 
@@ -54,7 +54,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             );
 
             List<BlogDtoOut> blogs = new ArrayList<>();
-            for (String s : data) {
+            for (String s : data.subList(1, data.size())) {
                 blogs.add(blogService.getBlogById(Long.parseLong(s)));
             }
 

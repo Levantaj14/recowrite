@@ -8,6 +8,10 @@ import string
 import os
 from joblib import dump, load
 
+from utils import get_db_handle
+
+db = get_db_handle()
+
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 
@@ -37,10 +41,12 @@ def setup():
     vectorizer_path = 'tfidf/vectorizer.joblib'
     # initialize vectorizer and creating a fit
     if not os.path.exists(index_path) or not os.path.exists(vectorizer_path):
-        corpora = [read_file('tfidf/blog1.txt'), read_file('tfidf/blog2.txt'), read_file('tfidf/blog3.txt')]
+        mycursor = db.cursor()
+        mycursor.execute("SELECT * FROM blogs")
+        corpora = mycursor.fetchall()
         filtered_corpus = []
         for corpus in corpora:
-            filtered_corpus.append(filtering(corpus))
+            filtered_corpus.append(filtering(corpus[2]))
 
         vectorizer = ft.TfidfVectorizer()
         fit = vectorizer.fit_transform(filtered_corpus)
