@@ -103,7 +103,7 @@ function Story() {
           <Text mt={15}>{data?.blogData.content}</Text>
         </Box>
         <Separator />
-        <CommentSection blogId={blogId} />
+        <CommentSection />
         <Separator />
         <Heading size="3xl" mt="5" mb="5">
           Continue reading

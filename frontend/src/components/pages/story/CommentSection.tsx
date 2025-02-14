@@ -1,20 +1,31 @@
-import { Box, Button, Flex, Heading, Text, Textarea, Center, Spinner, Link, Field } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  Textarea,
+  Center,
+  Spinner,
+  Link,
+  Field,
+  MenuTrigger, MenuContent, MenuItem, MenuRoot, Spacer, MenuSelectionDetails,
+} from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getComments, postComment } from '@/apis/commentApi.ts';
-import { NavLink } from 'react-router';
+import { NavLink, useParams } from 'react-router';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import CustomLoading from '@/components/CustomLoading.tsx';
 import { motion } from 'motion/react';
-
-type Props = {
-  blogId: string | undefined;
-}
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
+import DeleteDialog from '@/components/pages/story/DeleteDialog.tsx';
+import EditDialog from '@/components/pages/story/EditDialog.tsx';
 
 const schema = z.object({
   comment: z.string().nonempty().max(256),
@@ -22,10 +33,15 @@ const schema = z.object({
 
 type FormFields = z.infer<typeof schema>
 
-export default function CommentSection({ blogId }: Props) {
+export default function CommentSection() {
+  const { blogId } = useParams();
   const { userDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+  const [selectedCommentContent, setSelectedCommentContent] = useState<string | undefined>(undefined);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -70,6 +86,20 @@ export default function CommentSection({ blogId }: Props) {
     );
   }
 
+  const selectedItem = (menuSelectionDetails: MenuSelectionDetails,
+                        selectedId: number, selectedContent: string) => {
+    setSelectedCommentId(selectedId);
+    setSelectedCommentContent(selectedContent);
+    switch (menuSelectionDetails.value) {
+      case 'edit':
+        setEditDialogOpen(true);
+        break;
+      case 'delete':
+        setDeleteDialogOpen(true);
+        break;
+    }
+  };
+
   function Comments() {
     if (!data || data.length === 0) {
       return <Text>There are no comments</Text>;
@@ -80,14 +110,17 @@ export default function CommentSection({ blogId }: Props) {
 
     return (
       <>
+        <DeleteDialog open={deleteDialogOpen} setOpen={setDeleteDialogOpen} commentId={selectedCommentId} />
+        <EditDialog open={editDialogOpen} setOpen={setEditDialogOpen}
+                    commentId={selectedCommentId} commentContent={selectedCommentContent} />
         {visibleComments.map((comment) => (
           <motion.div
+            key={comment.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
-            <Flex key={comment.id} mt={4} ml={2} flexDirection="row" justifyContent="start">
+            <Flex mt={4} ml={2} flexDirection="row" justifyContent="start">
               <Avatar size="xs" mr={4} name={comment.authorName} src={comment.authorAvatar} />
               <Flex flexDirection="column">
                 <Link asChild>
@@ -97,6 +130,27 @@ export default function CommentSection({ blogId }: Props) {
                 </Link>
                 <Text>{comment.comment}</Text>
               </Flex>
+              <Spacer />
+              {userDetails?.id === comment.authorId && (
+                <Box position="relative">
+                  <MenuRoot positioning={{ placement: 'bottom-end' }}
+                            onSelect={(e) => selectedItem(e, comment.id, comment.comment)}>
+                    <MenuTrigger asChild>
+                      <Button variant="ghost"><HiOutlineDotsHorizontal /></Button>
+                    </MenuTrigger>
+                    <MenuContent zIndex="popover" position="absolute" right="0">
+                      <MenuItem value="edit">Edit</MenuItem>
+                      <MenuItem
+                        value="delete"
+                        color="fg.error"
+                        _hover={{ bg: 'bg.error', color: 'fg.error' }}
+                      >
+                        Delete
+                      </MenuItem>
+                    </MenuContent>
+                  </MenuRoot>
+                </Box>
+              )}
             </Flex>
           </motion.div>
         ))}

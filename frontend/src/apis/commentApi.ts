@@ -26,3 +26,13 @@ export async function postComment(blogId: string | undefined, comment: string): 
   const res = await commmentApi.post(`/${blogId}`, { comment });
   return res.status === 200;
 }
+
+export async function deleteComment(commentId: number | null): Promise<boolean> {
+  const res = await commmentApi.delete(`/${commentId}`);
+  return res.status === 200;
+}
+
+export async function editComments(commentId: number | null, comment: string): Promise<boolean> {
+  const res = await commmentApi.put(`/${commentId}`, { comment });
+  return res.status === 200;
+}

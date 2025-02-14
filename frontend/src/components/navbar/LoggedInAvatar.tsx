@@ -12,8 +12,8 @@ export default function LoggedInAvatar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const selectedItem = (something: MenuSelectionDetails) => {
-    switch (something.value) {
+  const selectedItem = (menuSelectionDetails: MenuSelectionDetails) => {
+    switch (menuSelectionDetails.value) {
       case 'dashboard':
         navigate('/dashboard');
         break;
