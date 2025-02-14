@@ -49,10 +49,18 @@ public class BlogService {
         return blogList;
     }
 
-    public BlogDtoOut getBlogById(String id) {
-        Optional<BlogModel> blog = blogManager.findById(Long.valueOf(id));
+    public BlogDtoOut getBlogById(long id) {
+        Optional<BlogModel> blog = blogManager.findById(id);
         if (blog.isPresent()) {
             return blogMapper.modelToDto(blog.get());
+        }
+        throw new BlogNotFoundException("Blog with id " + id + " not found");
+    }
+
+    public BlogModel getBlogModelById(long id) {
+        Optional<BlogModel> blog = blogManager.findById(id);
+        if (blog.isPresent()) {
+            return blog.get();
         }
         throw new BlogNotFoundException("Blog with id " + id + " not found");
     }

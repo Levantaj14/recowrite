@@ -5,6 +5,7 @@ import edu.bbte.licensz.slim2299.recowrite.services.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -38,10 +39,14 @@ public class SecurityConfig {
     @Autowired
     private UserServiceInterface userService;
 
+    @Autowired
+    private CommentOwnerFilter commentOwnerFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // NOPMD
         http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*").permitAll()
                         .requestMatchers("/authentication/*", "/error", "/blogs/*",
                                 "/blogs", "/user/*", "/user").permitAll()
                         .anyRequest().authenticated())
@@ -51,7 +56,8 @@ public class SecurityConfig {
                 .sessionManagement((session) ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(commentOwnerFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -89,7 +95,7 @@ public class SecurityConfig {
 
     private UserDetailsService userDetailsService() {
         return username -> {
-            UserModel user = userService.getUserByUsername(username);
+            UserModel user = userService.getUserModelByUsername(username);
             return new User(user.getUsername(), user.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole())));
         };

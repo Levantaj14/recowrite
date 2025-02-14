@@ -9,6 +9,7 @@ import { signup } from '@/apis/authApi.ts';
 import CustomLoading from '@/components/CustomLoading.tsx';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
+import { useQueryClient } from '@tanstack/react-query';
 
 const schema = z.object({
   name: z.string().nonempty(),
@@ -24,6 +25,7 @@ export default function SignUp() {
   const { setUserDetails } = useContext(UserDetailContext);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     document.title = 'Sign Up';
@@ -53,7 +55,10 @@ export default function SignUp() {
     setIsSubmitting(true);
     toast.promise(signup(data), {
       loading: CustomLoading('Signing up...'),
-      success: () => {
+      success: async () => {
+        await queryClient.invalidateQueries({
+          queryKey: ['blog'],
+        });
         navigate('/');
         return 'Signed up successfully';
       },

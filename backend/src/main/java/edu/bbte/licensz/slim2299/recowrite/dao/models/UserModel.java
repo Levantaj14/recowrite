@@ -32,7 +32,8 @@ public class UserModel extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
     private List<SocialsModel> socials;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    private List<LikeModel> likes;
 }
-
-
-

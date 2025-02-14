@@ -6,7 +6,7 @@ type Social = {
 }
 
 export type UserType = {
-  id: string;
+  id: number;
   username: string;
   name: string;
   avatar: string;

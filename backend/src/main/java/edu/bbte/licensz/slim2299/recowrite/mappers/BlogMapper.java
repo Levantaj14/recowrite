@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BlogMapper {
+
     public BlogDtoOut modelToDto(BlogModel blog) {
         BlogDtoOut blogDtoOut = new BlogDtoOut();
         blogDtoOut.setId(blog.getId());

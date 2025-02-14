@@ -12,13 +12,16 @@ import {
   VStack, Center, Spinner,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { HoverCardArrow, HoverCardContent, HoverCardRoot, HoverCardTrigger } from './ui/hover-card.tsx';
+import { HoverCardArrow, HoverCardContent, HoverCardRoot, HoverCardTrigger } from '../../ui/hover-card.tsx';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchBlog, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
 import { useEffect } from 'react';
+import LikeButton from '@/components/pages/story/LikeButton.tsx';
+import { getLikeCount, getLiked } from '@/apis/likesApi.ts';
+import CommentSection from '@/components/pages/story/CommentSection.tsx';
 
 function Story() {
   const { blogId } = useParams();
@@ -33,14 +36,16 @@ function Story() {
         const author = await fetchUser(rec.author);
         rec.author = author.name;
       }
-      return { blogData, userData, recommendationData };
+      const liked = await getLiked(blogId);
+      const likeCount = await getLikeCount(blogId);
+      return { blogData, userData, recommendationData, liked, likeCount };
     },
   });
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = data?.blogData.title ?? 'Loading...';
-  }, [data]);
+  }, [data?.blogData.title]);
 
   function loading() {
     return (
@@ -58,31 +63,34 @@ function Story() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
       >
-        <Heading size="4xl" mb="3">{data?.blogData.title}</Heading>
-        <Flex flexDirection="row" justifyContent="flex-start" mb={5} alignItems="center">
-          <Text textStyle="md" mr={1}>Written by</Text>
-          <HoverCardRoot>
-            <HoverCardTrigger>
-              <Link to={`/user/${data?.blogData.author}`}>
-                <ChakraLink>@{data?.userData.username}</ChakraLink>
-              </Link>
-            </HoverCardTrigger>
-            <HoverCardContent>
-              <HoverCardArrow />
-              <Stack gap="4" direction="row">
-                <Avatar
-                  name={data?.userData.name}
-                  src={data?.userData.avatar}
-                />
-                <Stack gap={3}>
-                  <Stack gap="1">
-                    <Text textStyle="sm" fontWeight="semibold">{data?.userData.name}</Text>
-                    <Text textStyle="sm" color="fg.muted">{data?.userData.bio}</Text>
+        <Heading size="4xl" mb="1">{data?.blogData.title}</Heading>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={3}>
+          <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
+            <Text textStyle="md" mr={1}>Written by</Text>
+            <HoverCardRoot>
+              <HoverCardTrigger>
+                <Link to={`/user/${data?.blogData.author}`}>
+                  <ChakraLink>@{data?.userData.username}</ChakraLink>
+                </Link>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <HoverCardArrow />
+                <Stack gap="4" direction="row">
+                  <Avatar
+                    name={data?.userData.name}
+                    src={data?.userData.avatar}
+                  />
+                  <Stack gap={3}>
+                    <Stack gap="1">
+                      <Text textStyle="sm" fontWeight="semibold">{data?.userData.name}</Text>
+                      <Text textStyle="sm" color="fg.muted">{data?.userData.bio}</Text>
+                    </Stack>
                   </Stack>
                 </Stack>
-              </Stack>
-            </HoverCardContent>
-          </HoverCardRoot>
+              </HoverCardContent>
+            </HoverCardRoot>
+          </Flex>
+          <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
         </Flex>
         <Image
           rounded="lg"
@@ -95,6 +103,8 @@ function Story() {
           <Text mt={15}>{data?.blogData.content}</Text>
         </Box>
         <Separator />
+        <CommentSection />
+        <Separator />
         <Heading size="3xl" mt="5" mb="5">
           Continue reading
         </Heading>
@@ -105,6 +115,7 @@ function Story() {
             <Stack direction="row" mb={10}>
               {data?.recommendationData.map((recommendation) => (
                 <motion.div
+                  key={recommendation.id}
                   whileHover={{
                     scale: 1.02,
                     transition: { duration: 0.2, ease: 'easeInOut' },
