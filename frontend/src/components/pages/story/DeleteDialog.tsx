@@ -53,7 +53,7 @@ export default function DeleteDialog({ open, setOpen, commentId }: Props) {
           <DialogTitle>Are you sure?</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          This action is irreversible and this comment will be gone forever.
+          This action cannot be undone. This will permanently delete this comment.
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
