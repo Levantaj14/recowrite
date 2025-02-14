@@ -15,7 +15,7 @@ public class AuthService implements AuthServiceInterface {
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @Override
     public String login(LoginDtoIn user) {

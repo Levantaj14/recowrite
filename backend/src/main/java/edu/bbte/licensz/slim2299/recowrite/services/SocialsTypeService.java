@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class SocialsTypeService implements SocialsTypeInterface{
+public class SocialsTypeService implements SocialsTypeServiceInterface {
 
     @Autowired
     private SocialsTypeManager socialsTypeManager;

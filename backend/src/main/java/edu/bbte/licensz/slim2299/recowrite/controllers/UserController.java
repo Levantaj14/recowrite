@@ -1,7 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
-import edu.bbte.licensz.slim2299.recowrite.services.UserService;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.UserDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.services.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @GetMapping()
     public List<UserDtoOut> getUser() {

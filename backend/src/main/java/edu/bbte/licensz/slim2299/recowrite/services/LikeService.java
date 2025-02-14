@@ -15,10 +15,10 @@ public class LikeService implements LikeServiceInterface{
     private LikeManager likeManager;
 
     @Autowired
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @Autowired
-    private BlogService blogService;
+    private BlogServiceInterface blogService;
 
     @Override
     public long likeCount(long blogId) {

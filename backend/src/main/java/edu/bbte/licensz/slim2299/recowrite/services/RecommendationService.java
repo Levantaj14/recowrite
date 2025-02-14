@@ -22,12 +22,8 @@ import java.util.List;
 public class RecommendationService implements RecommendationServiceInterface {
     private static final Logger log = LoggerFactory.getLogger(RecommendationService.class);
 
-    private final BlogService blogService;
-
     @Autowired
-    public RecommendationService(BlogService blogService) {
-        this.blogService = blogService;
-    }
+    private BlogServiceInterface blogService;
 
     @Override
     public List<BlogDtoOut> getRecommendations(String blogId) {

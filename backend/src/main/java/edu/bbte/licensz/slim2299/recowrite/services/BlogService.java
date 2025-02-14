@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BlogService {
+public class BlogService implements BlogServiceInterface {
     @Autowired
     private BlogManager blogManager;
 
@@ -26,6 +26,7 @@ public class BlogService {
     @Autowired
     private UserManager userManager;
 
+    @Override
     public List<BlogDtoOut> getAllBlogs() {
         List<BlogDtoOut> blogList = new ArrayList<>();
         for (BlogModel blog : blogManager.findAll()) {
@@ -34,6 +35,7 @@ public class BlogService {
         return blogList;
     }
 
+    @Override
     public List<BlogDtoOut> getBlogsByAuthor(Long userId) {
         List<BlogDtoOut> blogList = new ArrayList<>();
         Optional<UserModel> userResult = userManager.findById(userId);
@@ -49,6 +51,7 @@ public class BlogService {
         return blogList;
     }
 
+    @Override
     public BlogDtoOut getBlogById(long id) {
         Optional<BlogModel> blog = blogManager.findById(id);
         if (blog.isPresent()) {
@@ -57,6 +60,7 @@ public class BlogService {
         throw new BlogNotFoundException("Blog with id " + id + " not found");
     }
 
+    @Override
     public BlogModel getBlogModelById(long id) {
         Optional<BlogModel> blog = blogManager.findById(id);
         if (blog.isPresent()) {
@@ -65,6 +69,7 @@ public class BlogService {
         throw new BlogNotFoundException("Blog with id " + id + " not found");
     }
 
+    @Override
     public Long addBlog(BlogModel blog) {
         return blogManager.save(blog).getId();
     }
