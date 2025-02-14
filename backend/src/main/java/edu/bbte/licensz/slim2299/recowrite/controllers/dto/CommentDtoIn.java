@@ -10,6 +10,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommentDtoIn {
-    private long id;
     private String comment;
 }

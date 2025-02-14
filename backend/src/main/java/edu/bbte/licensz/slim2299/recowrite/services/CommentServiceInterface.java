@@ -9,7 +9,9 @@ public interface CommentServiceInterface {
 
     long addComment(CommentDtoIn commentDtoIn, long blogId, String username);
 
-    void editComment(CommentDtoIn commentDtoIn);
+    boolean isCommentOwnedByUser(Long commentId, String username);
+
+    void editComment(CommentDtoIn commentDtoIn, Long commentId);
 
     void deleteCommentById(Long id);
 }

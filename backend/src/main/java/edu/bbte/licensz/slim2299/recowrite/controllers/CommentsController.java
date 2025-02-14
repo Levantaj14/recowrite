@@ -4,6 +4,7 @@ import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.IdDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.MessageDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.CommentServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,5 +43,17 @@ public class CommentsController {
                             blogId, jwtUtil.extractUsername(cookie.getValue()))));
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDtoOut> deleteComment(@PathVariable Long id) {
+        commentService.deleteCommentById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageDtoOut> editComment(@PathVariable Long id, @RequestBody CommentDtoIn commentDtoIn) {
+        commentService.editComment(commentDtoIn, id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

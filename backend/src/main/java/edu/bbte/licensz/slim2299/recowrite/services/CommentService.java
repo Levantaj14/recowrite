@@ -64,8 +64,18 @@ public class CommentService implements CommentServiceInterface{
     }
 
     @Override
-    public void editComment(CommentDtoIn commentDtoIn) {
-        Optional<CommentModel> comment = commentManager.findById(commentDtoIn.getId());
+    public boolean isCommentOwnedByUser(Long commentId, String username) {
+        Optional<UserModel> user = userManager.findByUsername(username);
+        if (user.isEmpty()) {
+            return false;
+        }
+        Optional<CommentModel> comment = commentManager.findByIdAndUser(commentId, user.get());
+        return comment.isPresent();
+    }
+
+    @Override
+    public void editComment(CommentDtoIn commentDtoIn, Long commentId) {
+        Optional<CommentModel> comment = commentManager.findById(commentId);
         if (comment.isEmpty()) {
             throw new CommentNotFoundException("Comment not found");
         }

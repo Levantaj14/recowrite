@@ -39,6 +39,9 @@ public class SecurityConfig {
     @Autowired
     private UserServiceInterface userService;
 
+    @Autowired
+    private CommentOwnerFilter commentOwnerFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // NOPMD
         http.cors(Customizer.withDefaults())
@@ -53,7 +56,8 @@ public class SecurityConfig {
                 .sessionManagement((session) ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(commentOwnerFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
