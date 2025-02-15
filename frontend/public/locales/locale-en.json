@@ -17,7 +17,12 @@
     },
     "signup": {
       "title": "Sign Up",
-      "desc": "Invest time and to read and improve"
+      "desc": "Invest time and to read and improve",
+      "passwordMeter": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      }
     },
     "toast": {
       "login": {
