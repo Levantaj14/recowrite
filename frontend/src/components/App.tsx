@@ -11,6 +11,7 @@ import LoginPage from '@/components/pages/login/LoginPage.tsx';
 import NotFound from '@/components/NotFound.tsx';
 import { Toaster } from 'sonner';
 import Home from '@/components/Home.tsx';
+import '../i18n.ts';
 
 const queryClient = new QueryClient({
   defaultOptions: {

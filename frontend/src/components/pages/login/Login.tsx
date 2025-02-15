@@ -10,6 +10,7 @@ import { login } from '@/apis/authApi.ts';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 const schema = z.object({
   username: z.string().nonempty('Username is required'),
@@ -19,14 +20,15 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 export default function Login() {
+  const { t } = useTranslation();
   const { setUserDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    document.title = 'Login';
-  }, []);
+    document.title = t('loginPage.login.title');
+  }, [t]);
 
   const {
     register,
@@ -39,17 +41,17 @@ export default function Login() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(login(data), {
-      loading: CustomLoading('Logging in...'),
+      loading: CustomLoading(t('loginPage.toast.login.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['blog'],
         });
         navigate('/dashboard');
-        return 'Logged in successfully';
+        return t('loginPage.toast.login.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return 'An error occurred';
+        return t('loginPage.toast.login.error');
       },
     }).unwrap().then(r => {
       setIsSubmitting(false);
@@ -61,26 +63,26 @@ export default function Login() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Fieldset.Root size="lg" maxW="md">
         <Stack>
-          <Fieldset.Legend>Login</Fieldset.Legend>
-          <Fieldset.HelperText>Welcome back! Just a few more steps for a better experience</Fieldset.HelperText>
+          <Fieldset.Legend>{t('loginPage.login.title')}</Fieldset.Legend>
+          <Fieldset.HelperText>{t('loginPage.login.desc')}</Fieldset.HelperText>
         </Stack>
 
         <Fieldset.Content>
           <Field.Root invalid={!!errors.username}>
-            <Field.Label>Username</Field.Label>
+            <Field.Label>{t('loginPage.fields.username')}</Field.Label>
             <Input {...register('username')} />
             <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.password}>
-            <Field.Label>Password</Field.Label>
+            <Field.Label>{t('loginPage.fields.password')}</Field.Label>
             <PasswordInput {...register('password')} />
             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
           </Field.Root>
         </Fieldset.Content>
 
         <Button type="submit" alignSelf="flex-start" disabled={isSubmitting}>
-          {isSubmitting ? 'Logging in...' : 'Login'}
+          {t('buttons.login')}
         </Button>
       </Fieldset.Root>
     </form>

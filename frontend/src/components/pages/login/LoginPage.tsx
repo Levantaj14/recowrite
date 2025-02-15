@@ -2,13 +2,15 @@ import { Tabs } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import Login from '@/components/pages/login/Login.tsx';
 import SignUp from '@/components/pages/login/SignUp.tsx';
+import { useTranslation } from 'react-i18next';
 
 function LoginPage() {
+  const { t } = useTranslation();
   return (
     <Tabs.Root lazyMount unmountOnExit defaultValue="login">
       <Tabs.List>
-        <Tabs.Trigger value="login">Login</Tabs.Trigger>
-        <Tabs.Trigger value="signup">Sign Up</Tabs.Trigger>
+        <Tabs.Trigger value="login">{t('loginPage.login.title')}</Tabs.Trigger>
+        <Tabs.Trigger value="signup">{t('loginPage.signup.title')}</Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="login">
         <motion.div

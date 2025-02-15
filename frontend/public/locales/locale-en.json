@@ -1,0 +1,35 @@
+{
+  "buttons": {
+    "login": "Login",
+    "signup": "Sign up"
+  },
+  "loginPage": {
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "username": "Username",
+      "password": "Password",
+      "confPassword": "Confirm your password"
+    },
+    "login": {
+      "title": "Login",
+      "desc": "Welcome back! Just a few more steps for a better experience"
+    },
+    "signup": {
+      "title": "Sign Up",
+      "desc": "Invest time and to read and improve"
+    },
+    "toast": {
+      "login": {
+        "loading": "Logging in...",
+        "success": "Logged in successfully",
+        "error": "The credentials are incorrect"
+      },
+      "signup": {
+        "loading": "Signing up...",
+        "success": "Signed up successfully",
+        "error": "Something went wrong"
+      }
+    }
+  }
+}
