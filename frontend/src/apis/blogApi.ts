@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export type BlogType = {
   id: string;
-  author: string;
+  author: number;
   title: string;
   content: string;
   description: string;

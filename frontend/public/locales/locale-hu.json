@@ -1,0 +1,112 @@
+{
+  "buttons": {
+    "login": "Bejelentkezés",
+    "signup": "Feliratkozás",
+    "edit": "Szerkesztés",
+    "delete": "Törlés",
+    "comment": "Szólj hozzá",
+    "cancel": "Mégse",
+    "save": "Mentés"
+  },
+  "tabLoading": "Betöltés...",
+  "loginPage": {
+    "errors": {
+      "password": {
+        "req": "A jelszó kötelező"
+      },
+      "username": "A felhasználónév kötelező"
+    },
+    "fields": {
+      "confPassword": "Írja be újra a jelszót",
+      "email": "Email",
+      "name": "Név",
+      "password": "Jelszó",
+      "username": "Felhasználónév"
+    },
+    "login": {
+      "title": "Bejelentkezés",
+      "desc": "Isten hozott! Még egy pár lépés egy személyre szabott élményig"
+    },
+    "signup": {
+      "title": "Feliratkozás",
+      "desc": "Valami leírás",
+      "passwordMeter": {
+        "low": "Gyenge",
+        "medium": "Közepes",
+        "high": "Erős"
+      }
+    },
+    "toast": {
+      "login": {
+        "error": "A jelszó vagy felhasználónév nem helyes",
+        "loading": "Bejelentkezés...",
+        "success": "A bejelentkezés sikerült"
+      },
+      "signup": {
+        "error": "Hiba történt",
+        "loading": "Feliratkozás...",
+        "success": "Sikeresen feliratkozott"
+      }
+    }
+  },
+  "navbar": {
+    "toast": {
+      "logout": {
+        "loading": "Kijelentkezés...",
+        "success": "Sikeresen kejelentkezve",
+        "error": "Hiba történt kijelentkezés közben"
+      }
+    },
+    "buttons": {
+      "dashboard": "Műszerfal",
+      "profile": "Profil",
+      "logout": "Kijelentkezés"
+    }
+  },
+  "story": {
+    "written": "Írta",
+    "like": {
+      "noLogin": "Be kell légy jelentkezve"
+    },
+    "comments": {
+      "title": "Hozzászólások",
+      "new": "Új hozzászólás hozzáadása",
+      "none": "Nincs hozzászólás",
+      "delete": {
+        "desc": "Ez a művelet visszafordíthatatlan. Ez véglegesen törölni fogja ezt a hozzászólást.",
+        "title": "Biztos vagy benne?"
+      },
+      "edit": {
+        "title": "Hozzászólás szerkesztése"
+      },
+      "toasts": {
+        "delete": {
+          "error": "Hiba történt a hozzászólás törlése közben",
+          "loading": "Hozzászólás törlése...",
+          "success": "Hozzászólás sikeresen törölve"
+        },
+        "edit": {
+          "error": "Hiba történt a hozzászólás törlése közben",
+          "loading": "Hozzászólás szerkesztése...",
+          "success": "Hozzászólás sikeresen szerkesztve"
+        },
+        "post": {
+          "error": "Hiba történt a hozzászólás posztolásakor",
+          "loading": "Hozzászólás posztolása...",
+          "success": "Hozzászólás sikeresen posztolva"
+        }
+      }
+    },
+    "continue": "Olvass tovább"
+  },
+  "notFound": {
+    "tabTile": "Nem található",
+    "title": "Talán el vagy veszlődve",
+    "desc": "Az oldal amit el akarsz érni nem létezik"
+  },
+  "user": {
+    "about": "Rólam",
+    "articles": "Cikkek",
+    "noArticles": "Nem található cikk"
+  }
+}

@@ -12,15 +12,14 @@ import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-const schema = z.object({
-  username: z.string().nonempty('Username is required'),
-  password: z.string().nonempty('Password is required').min(8),
-});
-
-type FormFields = z.infer<typeof schema>;
-
 export default function Login() {
   const { t } = useTranslation();
+  const schema = z.object({
+    username: z.string().nonempty(t('loginPage.errors.username')),
+    password: z.string().nonempty(t('loginPage.errors.password.req')).min(8),
+  });
+
+  type FormFields = z.infer<typeof schema>;
   const { setUserDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -40,23 +39,26 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
-    toast.promise(login(data), {
-      loading: CustomLoading(t('loginPage.toast.login.loading')),
-      success: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: ['blog'],
-        });
-        navigate('/dashboard');
-        return t('loginPage.toast.login.success');
-      },
-      error: () => {
+    toast
+      .promise(login(data), {
+        loading: CustomLoading(t('loginPage.toast.login.loading')),
+        success: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: ['blog'],
+          });
+          navigate('/dashboard');
+          return t('loginPage.toast.login.success');
+        },
+        error: () => {
+          setIsSubmitting(false);
+          return t('loginPage.toast.login.error');
+        },
+      })
+      .unwrap()
+      .then((r) => {
         setIsSubmitting(false);
-        return t('loginPage.toast.login.error');
-      },
-    }).unwrap().then(r => {
-      setIsSubmitting(false);
-      setUserDetails(r);
-    });
+        setUserDetails(r);
+      });
   };
 
   return (

@@ -6,14 +6,16 @@ import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Tooltip } from '@/components/ui/tooltip.tsx';
 import { changeLike, LikeCountType, LikedType } from '@/apis/likesApi.ts';
 import NumberFlow from '@number-flow/react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   blogData: BlogType | undefined;
   liked: LikedType | undefined;
   likeCount: LikeCountType | undefined;
-}
+};
 
 export default function LikeButton({ blogData, liked, likeCount }: Props) {
+  const { t } = useTranslation();
   const { userDetails } = useContext(UserDetailContext);
   const [localLiked, setLocalLiked] = useState(liked?.liked);
   const [localLikeCount, setLocalLikeCount] = useState(likeCount?.count);
@@ -37,8 +39,13 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
   }, [userDetails]);
 
   return (
-    <Tooltip content={'You must be logged in'} disabled={userDetails !== null} openDelay={100} closeDelay={100}
-             positioning={{ placement: 'top' }}>
+    <Tooltip
+      content={t('story.like.noLogin')}
+      disabled={userDetails !== null}
+      openDelay={100}
+      closeDelay={100}
+      positioning={{ placement: 'top' }}
+    >
       <Button variant="ghost" disabled={userDetails === null} onClick={clickedLike}>
         {localLikeCount !== undefined && <NumberFlow value={localLikeCount} />}
         {localLiked ? <FaHeart /> : <FaRegHeart />}

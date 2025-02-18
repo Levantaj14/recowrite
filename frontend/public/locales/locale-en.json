@@ -1,15 +1,27 @@
 {
   "buttons": {
     "login": "Login",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "edit": "Edit",
+    "delete": "Delete",
+    "comment": "Comment",
+    "cancel": "Cancel",
+    "save": "Save"
   },
+  "tabLoading": "Loading...",
   "loginPage": {
+    "errors": {
+      "password": {
+        "req": "Password is required"
+      },
+      "username": "Username is required"
+    },
     "fields": {
-      "name": "Name",
+      "confPassword": "Confirm your password",
       "email": "Email",
-      "username": "Username",
+      "name": "Name",
       "password": "Password",
-      "confPassword": "Confirm your password"
+      "username": "Username"
     },
     "login": {
       "title": "Login",
@@ -26,15 +38,75 @@
     },
     "toast": {
       "login": {
+        "error": "The credentials are incorrect",
         "loading": "Logging in...",
-        "success": "Logged in successfully",
-        "error": "The credentials are incorrect"
+        "success": "Logged in successfully"
       },
       "signup": {
+        "error": "Something went wrong",
         "loading": "Signing up...",
-        "success": "Signed up successfully",
-        "error": "Something went wrong"
+        "success": "Signed up successfully"
       }
     }
+  },
+  "navbar": {
+    "toast": {
+      "logout": {
+        "loading": "Logging out...",
+        "success": "Successfully logged out",
+        "error": "There was an error logging you out"
+      }
+    },
+    "buttons": {
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "logout": "Log out"
+    }
+  },
+  "story": {
+    "written": "Written by",
+    "like": {
+      "noLogin": "You must be logged in"
+    },
+    "comments": {
+      "title": "Comments",
+      "new": "Add a new comment",
+      "none": "There are no comments",
+      "delete": {
+        "title": "Are you sure?",
+        "desc": "This action cannot be undone. This will permanently delete this comment."
+      },
+      "edit": {
+        "title": "Edit Comment"
+      },
+      "toasts": {
+        "post": {
+          "loading": "Posting comment...",
+          "success": "Comment posted successfully",
+          "error": "There was an error while posting comment"
+        },
+        "delete": {
+          "loading": "Deleting comment...",
+          "success": "Comment deleted successfully",
+          "error": "There was an error while deleting the comment"
+        },
+        "edit": {
+          "loading": "Editing comment...",
+          "success": "Comment edited successfully",
+          "error": "There was an error while editing the comment"
+        }
+      }
+    },
+    "continue": "Continue reading"
+  },
+  "notFound": {
+    "tabTile": "Not Found",
+    "title": "Maybe your lost",
+    "desc": "The page that your trying to access does not exist"
+  },
+  "user": {
+    "about": "About me",
+    "articles": "Articles",
+    "noArticles": "No articles found"
   }
 }
