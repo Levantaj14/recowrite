@@ -5,16 +5,12 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@/components/ui/select';
-import { UserDetailContext } from '@/contexts/userDetailContext';
 import { createListCollection, Flex, Heading, Text } from '@chakra-ui/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
 
 export default function Preferences() {
   const { i18n, t } = useTranslation();
-  const navigate = useNavigate();
-  const { userDetails } = useContext(UserDetailContext);
 
   const languages = createListCollection({
     items: [
@@ -32,10 +28,8 @@ export default function Preferences() {
   });
 
   useEffect(() => {
-    if (!userDetails) {
-      navigate('/');
-    }
-  }, [navigate, userDetails]);
+    document.title = t('dashboard.tabs.preferences');
+  }, [t]);
 
   return (
     <>

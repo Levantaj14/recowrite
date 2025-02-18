@@ -114,6 +114,7 @@
     "tabs": {
       "preferences": "Preferences",
       "account": "Account",
+      "posts": "Posts",
       "comments": "Comments",
       "likes": "Likes"
     },

@@ -6,11 +6,11 @@ import { UserDetailContext, UserDetailContextType, UserDetailType } from '@/cont
 import { BrowserRouter, Route, Routes } from 'react-router';
 import StickyNavbar from '@/components/elements/navbar/Navbar.tsx';
 import Story from '@/components/pages/story/Story.tsx';
-import User from '@/components/User.tsx';
+import User from '@/components/pages/User.tsx';
 import LoginPage from '@/components/pages/login/LoginPage.tsx';
-import NotFound from '@/components/NotFound.tsx';
+import NotFound from '@/components/pages/NotFound.tsx';
 import { Toaster } from 'sonner';
-import Home from '@/components/Home.tsx';
+import Home from '@/components/pages/Home.tsx';
 import '../i18n.ts';
 import Dashboard from './pages/dashboard/Dashboard.tsx';
 
