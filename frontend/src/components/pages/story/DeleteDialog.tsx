@@ -12,7 +12,7 @@ import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { deleteComment } from '@/apis/commentApi.ts';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';

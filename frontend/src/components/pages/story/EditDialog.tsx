@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { editComments } from '@/apis/commentApi.ts';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';

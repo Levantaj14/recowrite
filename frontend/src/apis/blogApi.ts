@@ -8,6 +8,7 @@ export type BlogType = {
   description: string;
   date: string;
   banner: string;
+  authorName?: string;
 }
 
 const blogApi = axios.create({

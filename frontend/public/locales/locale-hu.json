@@ -108,5 +108,31 @@
     "about": "Rólam",
     "articles": "Cikkek",
     "noArticles": "Nem található cikk"
+  },
+  "dashboard": {
+    "preferences": {
+      "language": {
+        "desc": "Tedd személyesebbé",
+        "select": "Válassz egy nyelvet",
+        "title": "Nyelv"
+      },
+      "theme": {
+        "desc": "Válassz egy témát, amely neked megfelel",
+        "select": "Válassz egy témát",
+        "themes": {
+          "dark": "Sötét",
+          "light": "Világos",
+          "system": "Rendszer"
+        },
+        "title": "Téma"
+      }
+    },
+    "tabs": {
+      "account": "Fiók",
+      "comments": "Hozzászólások",
+      "likes": "Likok",
+      "preferences": "Preferenciák"
+    },
+    "title": "Műszerfal"
   }
 }

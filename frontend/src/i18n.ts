@@ -14,5 +14,5 @@ i18n
     fallbackLng: 'en',
     ns: ['translation'],
     defaultNS: 'translation',
-    debug: false,
+    debug: true,
   });

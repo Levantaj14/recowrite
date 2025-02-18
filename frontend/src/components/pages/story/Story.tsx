@@ -38,7 +38,7 @@ function Story() {
       const recommendationData = await fetchBlogRecommendation(blogId);
       for (const rec of recommendationData) {
         const author = await fetchUser(rec.author);
-        rec.author = author.name;
+        rec.authorName = author.name;
       }
       const liked = await getLiked(blogId);
       const likeCount = await getLikeCount(blogId);
@@ -132,7 +132,7 @@ function Story() {
                       <Card.Root maxW="sm" overflow="hidden">
                         <Image h="2xs" src={recommendation.banner} />
                         <Card.Body gap="2">
-                          <Text>{recommendation.author}</Text>
+                          <Text>{recommendation.authorName}</Text>
                           <Card.Title>{recommendation.title}</Card.Title>
                           <Card.Description>{recommendation.description}</Card.Description>
                         </Card.Body>

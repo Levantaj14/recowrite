@@ -108,5 +108,31 @@
     "about": "About me",
     "articles": "Articles",
     "noArticles": "No articles found"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "tabs": {
+      "preferences": "Preferences",
+      "account": "Account",
+      "comments": "Comments",
+      "likes": "Likes"
+    },
+    "preferences": {
+      "language": {
+        "title": "Language",
+        "desc": "Make it more personal",
+        "select": "Select a language"
+      },
+      "theme": {
+        "title": "Theme",
+        "desc": "Choose a theme that suits you",
+        "select": "Select a theme",
+        "themes": {
+          "light": "Light",
+          "dark": "Dark",
+          "system": "System"
+        }
+      }
+    }
   }
 }

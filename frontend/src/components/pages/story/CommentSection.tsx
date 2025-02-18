@@ -21,7 +21,7 @@ import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { motion } from 'motion/react';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import DeleteDialog from '@/components/pages/story/DeleteDialog.tsx';

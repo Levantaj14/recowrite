@@ -4,7 +4,7 @@ import { StrictMode, useMemo, useState } from 'react';
 import { Provider } from '@/components/ui/provider.tsx';
 import { UserDetailContext, UserDetailContextType, UserDetailType } from '@/contexts/userDetailContext.ts';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import StickyNavbar from '@/components/navbar/Navbar.tsx';
+import StickyNavbar from '@/components/elements/navbar/Navbar.tsx';
 import Story from '@/components/pages/story/Story.tsx';
 import User from '@/components/User.tsx';
 import LoginPage from '@/components/pages/login/LoginPage.tsx';
@@ -12,6 +12,7 @@ import NotFound from '@/components/NotFound.tsx';
 import { Toaster } from 'sonner';
 import Home from '@/components/Home.tsx';
 import '../i18n.ts';
+import Dashboard from './pages/dashboard/Dashboard.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,27 +31,30 @@ function App() {
   };
   const userDetailContext = useMemo(() => userDetailsMemo, [userDetails]);
 
-  return (<StrictMode>
-    <Provider>
-      <QueryClientProvider client={queryClient}>
-        <UserDetailContext.Provider value={userDetailContext}>
-          <BrowserRouter>
-            <StickyNavbar />
-            <Container as="main" mt="4" mb="4" maxW="6xl">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/blog/:blogId" element={<Story />} />
-                <Route path="/user/:userId" element={<User />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Container>
-          </BrowserRouter>
-        </UserDetailContext.Provider>
-      </QueryClientProvider>
-      <Toaster theme="system" />
-    </Provider>
-  </StrictMode>);
+  return (
+    <StrictMode>
+      <Provider>
+        <QueryClientProvider client={queryClient}>
+          <UserDetailContext.Provider value={userDetailContext}>
+            <BrowserRouter>
+              <StickyNavbar />
+              <Container as="main" mt="4" mb="4" maxW="6xl">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/blog/:blogId" element={<Story />} />
+                  <Route path="/user/:userId" element={<User />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Container>
+            </BrowserRouter>
+          </UserDetailContext.Provider>
+        </QueryClientProvider>
+        <Toaster theme="system" />
+      </Provider>
+    </StrictMode>
+  );
 }
 
 export default App;

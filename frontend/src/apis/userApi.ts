@@ -26,7 +26,7 @@ export async function fetchAllUsers(): Promise<UserType[]> {
   return res.data;
 }
 
-export async function fetchUser(userId: string | null | undefined): Promise<UserType> {
+export async function fetchUser(userId: number | null | undefined): Promise<UserType> {
   const res = await userApi.get<UserType>(`/${userId}`);
   return res.data;
 }

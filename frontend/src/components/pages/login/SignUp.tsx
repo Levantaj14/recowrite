@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { signup } from '@/apis/authApi.ts';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';

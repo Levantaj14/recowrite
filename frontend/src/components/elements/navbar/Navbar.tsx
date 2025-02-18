@@ -2,7 +2,7 @@ import { Flex, Spacer, Container, Heading, Box, Button } from '@chakra-ui/react'
 import { NavLink } from 'react-router';
 import { useContext, useEffect } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
-import LoggedInAvatar from '@/components/navbar/LoggedInAvatar.tsx';
+import LoggedInAvatar from '@/components/elements/navbar/LoggedInAvatar.tsx';
 import { checkCookie } from '@/apis/authApi.ts';
 import { useTranslation } from 'react-i18next';
 

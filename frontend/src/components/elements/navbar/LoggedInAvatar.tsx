@@ -5,7 +5,7 @@ import { Box, MenuContent, MenuItem, MenuRoot, MenuSelectionDetails, MenuTrigger
 import { useNavigate, useLocation } from 'react-router';
 import { toast } from 'sonner';
 import { logout } from '@/apis/authApi.ts';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { useTranslation } from 'react-i18next';
 
 export default function LoggedInAvatar() {

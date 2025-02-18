@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from 'react';
 import { Box, Center, Flex, Heading, IconButton, LinkBox, LinkOverlay, Spacer, Spinner, Text } from '@chakra-ui/react';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { motion } from 'motion/react';
-import BlogCard from '@/components/BlogCard.tsx';
+import BlogCard from '@/components/elements/BlogCard';
 import { FaBluesky, FaInstagram, FaMastodon, FaMedium, FaXTwitter } from 'react-icons/fa6';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
@@ -17,7 +17,7 @@ function User() {
   const { data, isLoading } = useQuery({
     queryKey: ['user', userId],
     queryFn: async () => {
-      const userData = await fetchUser(userId);
+      const userData = await fetchUser(Number(userId));
       const userBlogs = await fetchBlogsByAuthor(userId);
       return { userData, userBlogs };
     },
