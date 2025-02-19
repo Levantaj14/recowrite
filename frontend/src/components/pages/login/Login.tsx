@@ -16,7 +16,7 @@ export default function Login() {
   const { t } = useTranslation();
   const schema = z.object({
     username: z.string().nonempty(t('loginPage.errors.username')),
-    password: z.string().nonempty(t('loginPage.errors.password.req')).min(8),
+    password: z.string().min(8, t('loginPage.errors.password')),
   });
 
   type FormFields = z.infer<typeof schema>;

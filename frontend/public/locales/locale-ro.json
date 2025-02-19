@@ -37,10 +37,10 @@
   },
   "loginPage": {
     "errors": {
-      "password": {
-        "req": "Parola e necesară"
-      },
-      "username": "Numele de utilizator e necesar"
+      "password": "Parola trebuie să aibă cel puțin 8 caractere",
+      "username": "Numele de utilizator e necesar",
+      "email": "Această adresă de email nu este validă",
+      "name": "Numele este obligatorie"
     },
     "fields": {
       "confPassword": "Reintroduceți parola",
@@ -127,6 +127,9 @@
           "loading": "Postarea comentariului...",
           "success": "Comentariu postat cu succes"
         }
+      },
+      "errors": {
+        "commentLength": "Comentariul nu poate fi mai lung de 256 de caractere"
       }
     },
     "continue": "Citește mai departe",

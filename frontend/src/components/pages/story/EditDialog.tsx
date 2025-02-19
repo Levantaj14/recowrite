@@ -27,14 +27,15 @@ type Props = {
   setOpen: (open: boolean) => void;
 };
 
-const schema = z.object({
-  comment: z.string().nonempty(),
-});
-
-type FormFields = z.infer<typeof schema>;
-
 export default function EditDialog({ open, setOpen, commentId, commentContent }: Props) {
   const { t } = useTranslation();
+
+  const schema = z.object({
+    comment: z.string().nonempty().max(256, t('story.comments.errors.commentLength')),
+  });
+  
+  type FormFields = z.infer<typeof schema>;
+
   const { blogId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const queryClient = useQueryClient();

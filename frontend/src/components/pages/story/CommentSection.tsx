@@ -33,14 +33,15 @@ import DeleteDialog from '@/components/pages/story/DeleteDialog.tsx';
 import EditDialog from '@/components/pages/story/EditDialog.tsx';
 import { useTranslation } from 'react-i18next';
 
-const schema = z.object({
-  comment: z.string().nonempty().max(256),
-});
-
-type FormFields = z.infer<typeof schema>;
-
 export default function CommentSection() {
   const { t } = useTranslation();
+
+  const schema = z.object({
+    comment: z.string().nonempty().max(256, t('story.comments.errors.commentLength')),
+  });
+  
+  type FormFields = z.infer<typeof schema>;
+
   const { blogId } = useParams();
   const { userDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);

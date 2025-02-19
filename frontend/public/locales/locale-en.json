@@ -11,10 +11,10 @@
   "tabLoading": "Loading...",
   "loginPage": {
     "errors": {
-      "password": {
-        "req": "Password is required"
-      },
-      "username": "Username is required"
+      "password": "The password must have at least 8 characters",
+      "username": "Username is required",
+      "name": "Name is required",
+      "email": "The email must be valid"
     },
     "fields": {
       "confPassword": "Confirm your password",
@@ -100,6 +100,9 @@
           "success": "Comment edited successfully",
           "error": "There was an error while editing the comment"
         }
+      },
+      "errors": {
+        "commentLength": "Comments can't be longer than 256 characters"
       }
     },
     "continue": "Continue reading"

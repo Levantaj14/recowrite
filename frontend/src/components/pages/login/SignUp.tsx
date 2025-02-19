@@ -12,18 +12,19 @@ import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-const schema = z.object({
-  name: z.string().nonempty(),
-  email: z.string().email(),
-  username: z.string().nonempty(),
-  password: z.string().min(8),
-  passwordConfirm: z.string().min(8),
-});
-
-type FormFields = z.infer<typeof schema>;
-
 export default function SignUp() {
   const { t } = useTranslation();
+
+  const schema = z.object({
+    name: z.string().nonempty(t('loginPage.errors.name')),
+    email: z.string().email(t('loginPage.errors.email')),
+    username: z.string().nonempty(t('loginPage.errors.username')),
+    password: z.string().min(8, t('loginPage.errors.password')),
+    passwordConfirm: z.string().min(8, t('loginPage.errors.password'))
+  });
+  
+  type FormFields = z.infer<typeof schema>;
+
   const { setUserDetails } = useContext(UserDetailContext);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -11,10 +11,10 @@
   "tabLoading": "Betöltés...",
   "loginPage": {
     "errors": {
-      "password": {
-        "req": "A jelszó kötelező"
-      },
-      "username": "A felhasználónév kötelező"
+      "password": "A jelszó legalább 8 karakter hosszú kell legyen",
+      "username": "A felhasználónév kötelező",
+      "email": "Ez nem egy helyes email",
+      "name": "A név kötelező"
     },
     "fields": {
       "confPassword": "Írja be újra a jelszót",
@@ -98,6 +98,9 @@
           "loading": "Hozzászólás posztolása...",
           "success": "Hozzászólás sikeresen posztolva"
         }
+      },
+      "errors": {
+        "commentLength": "A hozzászólás nem lehet hosszabb 256 karakternél"
       }
     },
     "continue": "Olvass tovább"
