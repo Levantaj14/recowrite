@@ -1,6 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.mappers;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.SocialMediaDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.SocialMediaDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsModel;
 import edu.bbte.licensz.slim2299.recowrite.services.SocialsTypeService;
 import org.springframework.beans.factory.annotation.Autowired;

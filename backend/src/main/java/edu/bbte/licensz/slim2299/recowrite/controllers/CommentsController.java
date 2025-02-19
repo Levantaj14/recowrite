@@ -1,10 +1,10 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.IdDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.MessageDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.CommentDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.CommentDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.IdDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.CommentServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

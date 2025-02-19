@@ -1,7 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.CommentDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.CommentDtoOut;
 import java.util.List;
 
 public interface CommentServiceInterface {

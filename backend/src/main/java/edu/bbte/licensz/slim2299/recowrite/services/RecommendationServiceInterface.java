@@ -1,6 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 
 import java.util.List;
 

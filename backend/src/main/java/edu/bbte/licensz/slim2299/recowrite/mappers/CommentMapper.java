@@ -1,6 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.mappers;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.CommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.CommentModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import org.springframework.stereotype.Component;

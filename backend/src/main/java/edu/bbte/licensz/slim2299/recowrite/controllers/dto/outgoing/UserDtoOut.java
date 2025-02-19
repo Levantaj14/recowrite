@@ -1,4 +1,4 @@
-package edu.bbte.licensz.slim2299.recowrite.controllers.dto;
+package edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing;
 
 import lombok.Data;
 import lombok.Getter;

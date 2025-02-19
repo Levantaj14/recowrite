@@ -1,7 +1,8 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.SignUpDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.UserDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.SettingsDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.SignUpDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserAlreadyExistsException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
@@ -66,5 +67,16 @@ public class UserService implements UserServiceInterface {
         user.setSalt(salt);
         user.setPassword(BCrypt.hashpw(user.getPassword(), salt));
         userManager.save(user);
+    }
+
+    @Override
+    public void updateUserPreferences(String username, SettingsDtoIn user) {
+        Optional<UserModel> result = userManager.findByUsername(username);
+        if (result.isPresent()) {
+            UserModel userModel = result.get();
+            userModel.setLanguage(user.getLanguage());
+            userManager.save(userModel);
+        }
+        throw new UserNotFoundException("User with username " + username + " not found");
     }
 }

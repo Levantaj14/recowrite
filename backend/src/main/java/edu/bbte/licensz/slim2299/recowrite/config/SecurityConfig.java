@@ -46,9 +46,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // NOPMD
         http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*", "/user/*").permitAll()
                         .requestMatchers("/authentication/*", "/error", "/blogs/*",
-                                "/blogs", "/user/*", "/user").permitAll()
+                                "/blogs", "/user").permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

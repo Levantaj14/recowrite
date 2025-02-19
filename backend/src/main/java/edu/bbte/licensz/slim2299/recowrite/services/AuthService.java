@@ -1,8 +1,11 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.LoginDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.SignUpDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.LoginDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.SignUpDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LoginDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
+import edu.bbte.licensz.slim2299.recowrite.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +19,8 @@ public class AuthService implements AuthServiceInterface {
     private JwtUtil jwtUtil;
     @Autowired
     private UserServiceInterface userService;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public String login(LoginDtoIn user) {
@@ -28,5 +33,11 @@ public class AuthService implements AuthServiceInterface {
     public String signup(SignUpDtoIn user) {
         userService.createUser(user);
         return jwtUtil.generateToken(user.getUsername());
+    }
+
+    @Override
+    public LoginDtoOut getNecessaryUserData(String username) {
+        UserModel model = userService.getUserModelByUsername(username);
+        return userMapper.modelToLoginDto(model);
     }
 }
