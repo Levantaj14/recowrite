@@ -23,21 +23,50 @@
         }
 
         .left-text {
-            display: grid
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: "text image";
+            align-items: center;
+            text-align: left;
+        }
+
+        .left-text .text {
+            grid-area: text;
+        }
+
+        .left-text .image {
+            grid-area: image;
         }
 
         .right-text {
             display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: "image text";
+            align-items: center;
             text-align: right;
+        }
+
+        .right-text .image {
+            grid-area: image;
+        }
+
+        .right-text .text {
+            grid-area: text;
         }
 
         @media (max-width: 768px) {
             .left-text {
-                display: block;
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
             }
 
             .right-text {
-                display: block;
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
                 text-align: left;
             }
 
@@ -48,11 +77,17 @@
 
         @media (max-width: 480px) {
             .left-text {
-                display: block;
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
             }
 
             .right-text {
-                display: block;
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
                 text-align: left;
             }
 
@@ -70,32 +105,32 @@
         <h2>Here’s what you can start exploring right away</h2>
     </div>
     <div class="left-text">
-        <div style="grid-column: 1">
+        <div class="text">
             <h3>Write Without Limits</h3>
             <p>You can write and publish unlimited articles. Share your thoughts, ideas, and expertise with the world—no
                 restrictions, just pure creativity!</p>
         </div>
-        <div style="grid-column: 2; max-width: 600px">
+        <div class="image" style="max-width: 600px;">
             <img src="" alt="Write unlimited aricles" style="width: 100%; height: auto; display: block;">
         </div>
     </div>
     <div class="right-text">
-        <div style="grid-column: 2">
+        <div class="text">
             <h3>Discover & Connect</h3>
             <p>Not only can you write, but you can also explore a world of articles from other writers. Engage with
                 their stories, leave comments, and be part of a growing community of passionate writers and readers.</p>
         </div>
-        <div style="grid-column: 1; max-width: 600px">
+        <div class="image" style="max-width: 600px">
             <img src="cid:comments" alt="Comments" style="width: 100%; height: auto; display: block;">
         </div>
     </div>
     <div class="left-text">
-        <div style="grid-column: 1">
+        <div class="text">
             <h3>Keep Exploring</h3>
             <p>Finished an article? There’s always more to discover! Our AI curates a selection of articles to keep the
                 journey going—so you’ll never run out of great reads.</p>
         </div>
-        <div style="grid-column: 2; max-width: 600px">
+        <div class="image" style="max-width: 600px;">
             <img src="cid:continue-reading" alt="Continue reading" style="width: 100%; height: auto; display: block;">
         </div>
     </div>
