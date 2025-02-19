@@ -61,11 +61,16 @@ export default function SignUp() {
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['blog'],
+          refetchType: 'all',
+          exact: false
         });
         navigate('/');
         return t('loginPage.toast.signup.success');
       },
-      error: t('loginPage.toast.signup.error'),
+      error: () => {
+        setIsSubmitting(false);
+        return t('loginPage.toast.signup.error')
+      },
     }).unwrap().then(r => {
       setIsSubmitting(false);
       setUserDetails(r);

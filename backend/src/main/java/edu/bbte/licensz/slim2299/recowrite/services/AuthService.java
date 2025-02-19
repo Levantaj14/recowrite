@@ -11,6 +11,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AuthService implements AuthServiceInterface {
     @Autowired
@@ -21,6 +24,8 @@ public class AuthService implements AuthServiceInterface {
     private UserServiceInterface userService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private MailServiceInterface mailService;
 
     @Override
     public String login(LoginDtoIn user) {
@@ -32,6 +37,9 @@ public class AuthService implements AuthServiceInterface {
     @Override
     public String signup(SignUpDtoIn user) {
         userService.createUser(user);
+        Map<String, String> model = new HashMap<>();
+        model.put("username", user.getUsername());
+        mailService.sendMessage(user.getEmail(), "Welcome to recowrite!", "signup", model);
         return jwtUtil.generateToken(user.getUsername());
     }
 
