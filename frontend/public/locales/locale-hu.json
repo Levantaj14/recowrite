@@ -58,7 +58,7 @@
       }
     },
     "buttons": {
-      "dashboard": "Műszerfal",
+      "dashboard": "Irányítópult",
       "profile": "Profil",
       "logout": "Kijelentkezés"
     }
@@ -133,10 +133,10 @@
     "tabs": {
       "account": "Fiók",
       "comments": "Hozzászólások",
-      "likes": "Likok",
+      "likes": "Likeok",
       "preferences": "Preferenciák",
       "posts": "Posztok"
     },
-    "title": "Műszerfal"
+    "title": "Irányítópult"
   }
 }

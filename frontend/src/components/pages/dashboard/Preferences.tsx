@@ -23,10 +23,11 @@ export default function Preferences() {
   }, [t]);
 
   const languageChanged = (e: SelectValueChangeDetails) => {
+    console.log(e.value[0]);
     i18n.changeLanguage(e.value[0]);
     localStorage.setItem('language', e.value[0]);
     if (userDetails) {
-      updatePreferences(i18n.language);
+      updatePreferences(e.value[0]);
     }
   };
 

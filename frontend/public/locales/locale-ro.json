@@ -28,12 +28,12 @@
     },
     "tabs": {
       "account": "Cont",
-      "comments": "Comentarii",
+      "comments": "Comentării",
       "likes": "Likeuri",
       "posts": "Postări",
       "preferences": "Preferințe"
     },
-    "title": "Tablou de bord"
+    "title": "Panou de control"
   },
   "loginPage": {
     "errors": {
@@ -77,7 +77,7 @@
   },
   "navbar": {
     "buttons": {
-      "dashboard": "Tablou de bord",
+      "dashboard": "Panou de control",
       "logout": "Deconectare",
       "profile": "Profil"
     },
@@ -110,7 +110,7 @@
         "comment_one": "comentariu",
         "comment_other": "comentarii"
       },
-      "title": "Comentarii",
+      "title": "Comentării",
       "toasts": {
         "delete": {
           "error": "Ștergerea comentariului a eșuat",

@@ -76,7 +76,8 @@ public class UserService implements UserServiceInterface {
             UserModel userModel = result.get();
             userModel.setLanguage(user.getLanguage());
             userManager.save(userModel);
+        } else {
+            throw new UserNotFoundException("User with username " + username + " not found");
         }
-        throw new UserNotFoundException("User with username " + username + " not found");
     }
 }
