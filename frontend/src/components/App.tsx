@@ -38,8 +38,6 @@ function App() {
     if (userDetails) {
       i18n.changeLanguage(userDetails.language);
       localStorage.setItem('language', userDetails.language);
-    } else {
-      i18n.changeLanguage(localStorage.getItem('language') || 'en');
     }
   }, [i18n, userDetails]);
 

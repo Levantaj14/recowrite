@@ -9,7 +9,7 @@ i18n
     backend: {
       loadPath: '/locales/locale-{{lng}}.json',
     },
-    lng: 'en',
+    lng: localStorage.getItem('language') || 'en',
     supportedLngs: ['en', 'hu', 'ro'],
     fallbackLng: 'en',
     ns: ['translation'],
