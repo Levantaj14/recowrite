@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from '@/components/ui/dialog.tsx';
 import { Button, Textarea, Field } from '@chakra-ui/react';
 import { useParams } from 'react-router';
@@ -53,7 +53,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
     reset({
       comment: commentContent || '',
     });
-  }, [commentContent, reset]);
+  }, [commentContent, reset, open]);
 
   const clickedEdit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
@@ -75,7 +75,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
   };
 
   return (
-    <DialogRoot placement="top" open={open} onOpenChange={(e) => setOpen(e.open)}>
+    <DialogRoot unmountOnExit={true} placement="top" open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('story.comments.edit.title')}</DialogTitle>
