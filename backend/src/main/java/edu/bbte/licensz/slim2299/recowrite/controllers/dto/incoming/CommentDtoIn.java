@@ -1,4 +1,4 @@
-package edu.bbte.licensz.slim2299.recowrite.controllers.dto;
+package edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LikedDtoOut {
-    private boolean liked;
+public class CommentDtoIn {
+    private String comment;
 }

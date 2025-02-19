@@ -2,16 +2,17 @@ import axios from 'axios';
 
 export type BlogType = {
   id: string;
-  author: string;
+  author: number;
   title: string;
   content: string;
   description: string;
   date: string;
   banner: string;
+  authorName?: string;
 }
 
 const blogApi = axios.create({
-  baseURL: 'http://localhost:8080/blogs',
+  baseURL: `${import.meta.env.VITE_BASE_URL}/blogs`,
   headers: {
     Accept: 'application/json',
   },

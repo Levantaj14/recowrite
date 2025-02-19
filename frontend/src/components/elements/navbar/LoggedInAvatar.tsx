@@ -2,15 +2,16 @@ import { Avatar } from '@/components/ui/avatar.tsx';
 import { useContext } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Box, MenuContent, MenuItem, MenuRoot, MenuSelectionDetails, MenuTrigger } from '@chakra-ui/react';
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { logout } from '@/apis/authApi.ts';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
+import { useTranslation } from 'react-i18next';
 
 export default function LoggedInAvatar() {
+  const { t } = useTranslation();
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const selectedItem = (menuSelectionDetails: MenuSelectionDetails) => {
     switch (menuSelectionDetails.value) {
@@ -22,15 +23,12 @@ export default function LoggedInAvatar() {
         break;
       case 'logout':
         toast.promise(logout, {
-          loading: CustomLoading('Logging out...'),
+          loading: CustomLoading(t('navbar.toast.logout.loading')),
           success: () => {
-            if (location.pathname === '/dashboard') {
-              navigate('/');
-            }
             setUserDetails(null);
-            return 'Successfully logged out';
+            return t('navbar.toast.logout.success');
           },
-          error: 'There was an error logging you out',
+          error: t('navbar.toast.logout.error'),
         });
         break;
     }
@@ -40,21 +38,12 @@ export default function LoggedInAvatar() {
     <Box position="relative">
       <MenuRoot positioning={{ placement: 'bottom-end' }} onSelect={selectedItem}>
         <MenuTrigger asChild>
-          <Avatar
-            size="xs"
-            name={userDetails?.name}
-            src={userDetails?.avatar}
-          />
+          <Avatar size="xs" name={userDetails?.name} src={userDetails?.avatar} />
         </MenuTrigger>
         <MenuContent zIndex="popover" position="absolute" right="0">
-          <MenuItem value="dashboard">Dashboard</MenuItem>
-          <MenuItem value="profile">Profile</MenuItem>
-          <MenuItem
-            value="logout"
-            color="fg.error"
-            _hover={{ bg: 'bg.error', color: 'fg.error' }}
-          >
-            Log out
+          <MenuItem value="profile">{t('navbar.buttons.profile')}</MenuItem>
+          <MenuItem value="logout" color="fg.error" _hover={{ bg: 'bg.error', color: 'fg.error' }}>
+            {t('navbar.buttons.logout')}
           </MenuItem>
         </MenuContent>
       </MenuRoot>

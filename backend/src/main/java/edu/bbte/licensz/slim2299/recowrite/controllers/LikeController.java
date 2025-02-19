@@ -1,9 +1,9 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.LikeCountDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.LikedDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.MessageDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LikeCountDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LikedDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.LikeServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,2 +1,7 @@
 */.idea
 */.vscode
+.gitignore
+.DS_Store
+*/.DS_Store
+*/.gitignore
+*/README.md

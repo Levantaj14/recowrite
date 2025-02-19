@@ -18,6 +18,8 @@ import {
 import * as React from "react"
 import { LuEye, LuEyeOff } from "react-icons/lu"
 import { InputGroup } from "./input-group"
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 
 export interface PasswordVisibilityProps {
   defaultVisible?: boolean
@@ -107,10 +109,11 @@ export const PasswordStrengthMeter = React.forwardRef<
   HTMLDivElement,
   PasswordStrengthMeterProps
 >(function PasswordStrengthMeter(props, ref) {
+  const { t } = useTranslation();
   const { max = 4, value, ...rest } = props
 
   const percent = (value / max) * 100
-  const { label, colorPalette } = getColorPalette(percent)
+  const { label, colorPalette } = getColorPalette(percent, t)
 
   return (
     <Stack align="flex-end" gap="1" ref={ref} {...rest}>
@@ -136,13 +139,13 @@ export const PasswordStrengthMeter = React.forwardRef<
   )
 })
 
-function getColorPalette(percent: number) {
+function getColorPalette(percent: number, t: TFunction<"translation", undefined> ) {
   switch (true) {
     case percent < 33:
-      return { label: "Low", colorPalette: "red" }
+      return { label: t('loginPage.signup.passwordMeter.low'), colorPalette: "red" }
     case percent < 66:
-      return { label: "Medium", colorPalette: "orange" }
+      return { label: t('loginPage.signup.passwordMeter.medium'), colorPalette: "orange" }
     default:
-      return { label: "High", colorPalette: "green" }
+      return { label: t('loginPage.signup.passwordMeter.high'), colorPalette: "green" }
   }
 }

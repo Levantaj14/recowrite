@@ -9,7 +9,12 @@ import {
   Spinner,
   Link,
   Field,
-  MenuTrigger, MenuContent, MenuItem, MenuRoot, Spacer, MenuSelectionDetails,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  Spacer,
+  MenuSelectionDetails,
 } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
@@ -21,19 +26,22 @@ import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { motion } from 'motion/react';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import DeleteDialog from '@/components/pages/story/DeleteDialog.tsx';
 import EditDialog from '@/components/pages/story/EditDialog.tsx';
-
-const schema = z.object({
-  comment: z.string().nonempty().max(256),
-});
-
-type FormFields = z.infer<typeof schema>
+import { useTranslation } from 'react-i18next';
 
 export default function CommentSection() {
+  const { t } = useTranslation();
+
+  const schema = z.object({
+    comment: z.string().nonempty(t('story.comments.errors.commentRequired')).max(255, t('story.comments.errors.commentLength')),
+  });
+  
+  type FormFields = z.infer<typeof schema>;
+
   const { blogId } = useParams();
   const { userDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,18 +70,18 @@ export default function CommentSection() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(postComment(blogId, data.comment), {
-      loading: CustomLoading('Posting comment...'),
+      loading: CustomLoading(t('story.comments.toasts.post.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],
         });
         setIsSubmitting(false);
         reset();
-        return 'Comment posted successfully';
+        return t('story.comments.toasts.post.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return 'There was an error while posting comment';
+        return t('story.comments.toasts.post.error');
       },
     });
   };
@@ -86,8 +94,7 @@ export default function CommentSection() {
     );
   }
 
-  const selectedItem = (menuSelectionDetails: MenuSelectionDetails,
-                        selectedId: number, selectedContent: string) => {
+  const selectedItem = (menuSelectionDetails: MenuSelectionDetails, selectedId: number, selectedContent: string) => {
     setSelectedCommentId(selectedId);
     setSelectedCommentContent(selectedContent);
     switch (menuSelectionDetails.value) {
@@ -102,7 +109,7 @@ export default function CommentSection() {
 
   function Comments() {
     if (!data || data.length === 0) {
-      return <Text>There are no comments</Text>;
+      return <Text>{t('story.comments.none')}</Text>;
     }
 
     const visibleComments = showAll ? data : [data[0]];
@@ -111,8 +118,12 @@ export default function CommentSection() {
     return (
       <>
         <DeleteDialog open={deleteDialogOpen} setOpen={setDeleteDialogOpen} commentId={selectedCommentId} />
-        <EditDialog open={editDialogOpen} setOpen={setEditDialogOpen}
-                    commentId={selectedCommentId} commentContent={selectedCommentContent} />
+        <EditDialog
+          open={editDialogOpen}
+          setOpen={setEditDialogOpen}
+          commentId={selectedCommentId}
+          commentContent={selectedCommentContent}
+        />
         {visibleComments.map((comment) => (
           <motion.div
             key={comment.id}
@@ -133,19 +144,19 @@ export default function CommentSection() {
               <Spacer />
               {userDetails?.id === comment.authorId && (
                 <Box position="relative">
-                  <MenuRoot positioning={{ placement: 'bottom-end' }}
-                            onSelect={(e) => selectedItem(e, comment.id, comment.comment)}>
+                  <MenuRoot
+                    positioning={{ placement: 'bottom-end' }}
+                    onSelect={(e) => selectedItem(e, comment.id, comment.comment)}
+                  >
                     <MenuTrigger asChild>
-                      <Button variant="ghost"><HiOutlineDotsHorizontal /></Button>
+                      <Button variant="ghost">
+                        <HiOutlineDotsHorizontal />
+                      </Button>
                     </MenuTrigger>
                     <MenuContent zIndex="popover" position="absolute" right="0">
-                      <MenuItem value="edit">Edit</MenuItem>
-                      <MenuItem
-                        value="delete"
-                        color="fg.error"
-                        _hover={{ bg: 'bg.error', color: 'fg.error' }}
-                      >
-                        Delete
+                      <MenuItem value="edit">{t('buttons.edit')}</MenuItem>
+                      <MenuItem value="delete" color="fg.error" _hover={{ bg: 'bg.error', color: 'fg.error' }}>
+                        {t('buttons.delete')}
                       </MenuItem>
                     </MenuContent>
                   </MenuRoot>
@@ -156,11 +167,11 @@ export default function CommentSection() {
         ))}
 
         {remainingComments > 0 && !showAll && (
-          <Button
-            mt={4}
-            onClick={() => setShowAll(true)}
-          >
-            Show {remainingComments} more {remainingComments === 1 ? 'comment' : 'comments'}
+          <Button mt={4} onClick={() => setShowAll(true)}>
+            {t('story.comments.showMore.base', {
+              count: remainingComments,
+              comment: t('story.comments.showMore.comment', { count: remainingComments }),
+            })}
           </Button>
         )}
       </>
@@ -169,15 +180,21 @@ export default function CommentSection() {
 
   return (
     <Box mt={5} mb={7}>
-      <Heading size="3xl" mb={3}>Comments</Heading>
+      <Heading size="3xl" mb={3}>
+        {t('story.comments.title')}
+      </Heading>
       {userDetails !== null && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Heading size="xl" mb={3}>Add a new comment</Heading>
+          <Heading size="xl" mb={3}>
+            {t('story.comments.new')}
+          </Heading>
           <Field.Root invalid={!!errors.comment}>
             <Textarea {...register('comment')} />
             <Field.ErrorText>{errors.comment?.message}</Field.ErrorText>
           </Field.Root>
-          <Button type="submit" mt={3} mb={3} disabled={isSubmitting}>Comment</Button>
+          <Button type="submit" mt={3} mb={3} disabled={isSubmitting}>
+            {t('buttons.comment')}
+          </Button>
         </form>
       )}
       {isLoading ? loadingScreen() : Comments()}

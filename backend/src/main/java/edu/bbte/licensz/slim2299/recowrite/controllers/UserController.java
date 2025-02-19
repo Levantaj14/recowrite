@@ -1,6 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.UserDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

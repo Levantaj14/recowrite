@@ -1,4 +1,4 @@
-import BlogCard from '@/components/BlogCard.tsx';
+import BlogCard from '@/components/elements/BlogCard';
 import { useQuery } from '@tanstack/react-query';
 import { BlogType, fetchAllBlogs } from '@/apis/blogApi.ts';
 import { Center, Spinner } from '@chakra-ui/react';

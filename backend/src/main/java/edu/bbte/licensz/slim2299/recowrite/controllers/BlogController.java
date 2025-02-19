@@ -1,7 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.IdDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.IdDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.services.BlogServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.RecommendationServiceInterface;

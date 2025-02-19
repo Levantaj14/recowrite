@@ -14,25 +14,28 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { editComments } from '@/apis/commentApi.ts';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   commentId: number | null;
   commentContent: string | undefined;
-  open: boolean,
-  setOpen: (open: boolean) => void,
-}
-
-const schema = z.object({
-  comment: z.string().nonempty(),
-});
-
-type FormFields = z.infer<typeof schema>;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
 
 export default function EditDialog({ open, setOpen, commentId, commentContent }: Props) {
+  const { t } = useTranslation();
+
+  const schema = z.object({
+    comment: z.string().nonempty(t('story.comments.errors.commentRequired')).max(255, t('story.comments.errors.commentLength')),
+  });
+  
+  type FormFields = z.infer<typeof schema>;
+
   const { blogId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const queryClient = useQueryClient();
@@ -55,18 +58,18 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
   const clickedEdit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(editComments(commentId, data.comment), {
-      loading: CustomLoading('Editing comment...'),
+      loading: CustomLoading(t('story.comments.toasts.edit.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],
         });
         setOpen(false);
         setIsSubmitting(false);
-        return 'Comment edited successfully';
+        return t('story.comments.toasts.edit.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return 'There was an error while editing the comment';
+        return t('story.comments.toasts.edit.error');
       },
     });
   };
@@ -75,7 +78,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
     <DialogRoot placement="top" open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Comment</DialogTitle>
+          <DialogTitle>{t('story.comments.edit.title')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(clickedEdit)}>
           <DialogBody pb="4">
@@ -86,9 +89,13 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
-              <Button variant="outline" disabled={isSubmitting}>Cancel</Button>
+              <Button variant="outline" disabled={isSubmitting}>
+                {t('buttons.cancel')}
+              </Button>
             </DialogActionTrigger>
-            <Button type="submit" disabled={isSubmitting}>Save</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {t('buttons.save')}
+            </Button>
           </DialogFooter>
         </form>
         <DialogCloseTrigger />

@@ -24,6 +24,7 @@ public class UserModel extends BaseEntity {
     private String password;
     private String salt;
     private String role = "USER";
+    private String language = "en";
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})

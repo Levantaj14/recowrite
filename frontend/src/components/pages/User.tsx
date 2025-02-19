@@ -2,28 +2,30 @@ import { ReactNode, useEffect } from 'react';
 import { Box, Center, Flex, Heading, IconButton, LinkBox, LinkOverlay, Spacer, Spinner, Text } from '@chakra-ui/react';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { motion } from 'motion/react';
-import BlogCard from '@/components/BlogCard.tsx';
+import BlogCard from '@/components/elements/BlogCard';
 import { FaBluesky, FaInstagram, FaMastodon, FaMedium, FaXTwitter } from 'react-icons/fa6';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from '@/apis/userApi.ts';
 import { fetchBlogsByAuthor } from '@/apis/blogApi.ts';
+import { useTranslation } from 'react-i18next';
 
 function User() {
+  const { t } = useTranslation();
   const { userId } = useParams();
 
   const { data, isLoading } = useQuery({
     queryKey: ['user', userId],
     queryFn: async () => {
-      const userData = await fetchUser(userId);
+      const userData = await fetchUser(Number(userId));
       const userBlogs = await fetchBlogsByAuthor(userId);
       return { userData, userBlogs };
     },
   });
 
   useEffect(() => {
-    document.title = data?.userData.name ?? 'Loading...';
-  }, [data]);
+    document.title = data?.userData.name ?? t('tabLoading');
+  }, [data, t]);
 
   const iconMap: { [key: string]: ReactNode } = {
     Instagram: <FaInstagram />,
@@ -44,16 +46,11 @@ function User() {
   function userPage() {
     return (
       // TODO: Make it look good on phones
-      <motion.div initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <Flex direction="row" alignItems="center" justifyContent="space-between">
           <Box>
             <Flex gap={6} alignItems="center">
-              <Avatar
-                size="2xl"
-                name={data?.userData.name}
-                src={data?.userData.avatar}
-              />
+              <Avatar size="2xl" name={data?.userData.name} src={data?.userData.avatar} />
               <Box>
                 <Heading size="4xl">{data?.userData.name}</Heading>
                 <Text color={'gray'}>@{data?.userData.username}</Text>
@@ -63,25 +60,32 @@ function User() {
           <Spacer />
           <Box>
             <Flex direction="row">
-              {data !== undefined && data.userData.socials.map((data) => (
-                <LinkBox>
-                  <IconButton variant="ghost">
-                    <LinkOverlay href={data.url} target="_blank">{iconMap[data.name]}</LinkOverlay>
-                  </IconButton>
-                </LinkBox>
-              ))}
+              {data !== undefined &&
+                data.userData.socials.map((data) => (
+                  <LinkBox>
+                    <IconButton variant="ghost">
+                      <LinkOverlay href={data.url} target="_blank">
+                        {iconMap[data.name]}
+                      </LinkOverlay>
+                    </IconButton>
+                  </LinkBox>
+                ))}
             </Flex>
           </Box>
         </Flex>
         {data?.userData.bio && (
           <>
-            <Heading mt={6} size="xl">About me</Heading>
+            <Heading mt={6} size="xl">
+              {t('user.about')}
+            </Heading>
             <Text>{data?.userData.bio}</Text>
           </>
         )}
-        <Heading size="xl" mt={6} mb={2}>Articles</Heading>
-        {data !== undefined && data.userBlogs.length > 0
-          ? data.userBlogs.map((blog, index) => (
+        <Heading size="xl" mt={6} mb={2}>
+          {t('user.articles')}
+        </Heading>
+        {data !== undefined && data.userBlogs.length > 0 ? (
+          data.userBlogs.map((blog, index) => (
             <BlogCard
               imageUrl={blog.banner}
               title={blog.title}
@@ -90,10 +94,10 @@ function User() {
               href={`/blog/${blog.id}`}
               index={index}
             />
-          )) : (
-            <Text>{`${data?.userData.id}` === userId ? 'You' : 'This user'} doesn't have any articles.</Text>
-          )}
-
+          ))
+        ) : (
+          <Text>{t('user.noArticles')}</Text>
+        )}
       </motion.div>
     );
   }

@@ -2,7 +2,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

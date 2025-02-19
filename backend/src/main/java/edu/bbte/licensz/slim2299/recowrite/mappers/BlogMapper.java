@@ -1,6 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.mappers;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import org.springframework.stereotype.Component;
 

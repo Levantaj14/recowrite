@@ -9,7 +9,7 @@ export type LikeCountType = {
 }
 
 const likesApi = axios.create({
-  baseURL: 'http://localhost:8080/likes',
+  baseURL: `${import.meta.env.VITE_BASE_URL}/likes`,
   withCredentials: true,
   headers: {
     Accept: 'application/json',

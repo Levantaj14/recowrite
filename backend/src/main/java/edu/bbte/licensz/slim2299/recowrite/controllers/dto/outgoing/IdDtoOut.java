@@ -1,4 +1,4 @@
-package edu.bbte.licensz.slim2299.recowrite.controllers.dto;
+package edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LikeCountDtoOut {
-    private long count;
+public class IdDtoOut {
+    private Long id;
 }

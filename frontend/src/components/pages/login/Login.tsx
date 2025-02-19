@@ -5,28 +5,29 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { login } from '@/apis/authApi.ts';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
-
-const schema = z.object({
-  username: z.string().nonempty('Username is required'),
-  password: z.string().nonempty('Password is required').min(8),
-});
-
-type FormFields = z.infer<typeof schema>;
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
+  const { t } = useTranslation();
+  const schema = z.object({
+    username: z.string().nonempty(t('loginPage.errors.username')),
+    password: z.string().min(8, t('loginPage.errors.password')),
+  });
+
+  type FormFields = z.infer<typeof schema>;
   const { setUserDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    document.title = 'Login';
-  }, []);
+    document.title = t('loginPage.login.title');
+  }, [t]);
 
   const {
     register,
@@ -38,49 +39,52 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
-    toast.promise(login(data), {
-      loading: CustomLoading('Logging in...'),
-      success: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: ['blog'],
-        });
-        navigate('/dashboard');
-        return 'Logged in successfully';
-      },
-      error: () => {
+    toast
+      .promise(login(data), {
+        loading: CustomLoading(t('loginPage.toast.login.loading')),
+        success: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: ['blog'],
+          });
+          navigate('/dashboard');
+          return t('loginPage.toast.login.success');
+        },
+        error: () => {
+          setIsSubmitting(false);
+          return t('loginPage.toast.login.error');
+        },
+      })
+      .unwrap()
+      .then((r) => {
         setIsSubmitting(false);
-        return 'An error occurred';
-      },
-    }).unwrap().then(r => {
-      setIsSubmitting(false);
-      setUserDetails(r);
-    });
+        setUserDetails(r);
+      });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Fieldset.Root size="lg" maxW="md">
         <Stack>
-          <Fieldset.Legend>Login</Fieldset.Legend>
-          <Fieldset.HelperText>Welcome back! Just a few more steps for a better experience</Fieldset.HelperText>
+          <Fieldset.Legend>{t('loginPage.login.title')}</Fieldset.Legend>
+          <Fieldset.HelperText>{t('loginPage.login.desc')}</Fieldset.HelperText>
         </Stack>
 
         <Fieldset.Content>
           <Field.Root invalid={!!errors.username}>
-            <Field.Label>Username</Field.Label>
+            <Field.Label>{t('loginPage.fields.username')}</Field.Label>
             <Input {...register('username')} />
             <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.password}>
-            <Field.Label>Password</Field.Label>
+            <Field.Label>{t('loginPage.fields.password')}</Field.Label>
             <PasswordInput {...register('password')} />
             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
           </Field.Root>
         </Fieldset.Content>
 
         <Button type="submit" alignSelf="flex-start" disabled={isSubmitting}>
-          {isSubmitting ? 'Logging in...' : 'Login'}
+          {t('buttons.login')}
         </Button>
       </Fieldset.Root>
     </form>

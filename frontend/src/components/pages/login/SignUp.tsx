@@ -6,30 +6,33 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { signup } from '@/apis/authApi.ts';
-import CustomLoading from '@/components/CustomLoading.tsx';
+import CustomLoading from '@/components/elements/CustomLoading';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
-
-const schema = z.object({
-  name: z.string().nonempty(),
-  email: z.string().email(),
-  username: z.string().nonempty(),
-  password: z.string().min(8),
-  passwordConfirm: z.string().min(8),
-});
-
-type FormFields = z.infer<typeof schema>;
+import { useTranslation } from 'react-i18next';
 
 export default function SignUp() {
+  const { t } = useTranslation();
+
+  const schema = z.object({
+    name: z.string().nonempty(t('loginPage.errors.name')),
+    email: z.string().email(t('loginPage.errors.email')),
+    username: z.string().nonempty(t('loginPage.errors.username')),
+    password: z.string().min(8, t('loginPage.errors.password')),
+    passwordConfirm: z.string().min(8, t('loginPage.errors.password'))
+  });
+  
+  type FormFields = z.infer<typeof schema>;
+
   const { setUserDetails } = useContext(UserDetailContext);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    document.title = 'Sign Up';
-  }, []);
+    document.title = t('loginPage.signup.title');
+  }, [t]);
 
   const {
     register,
@@ -54,15 +57,15 @@ export default function SignUp() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(signup(data), {
-      loading: CustomLoading('Signing up...'),
+      loading: CustomLoading(t('loginPage.toast.signup.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['blog'],
         });
         navigate('/');
-        return 'Signed up successfully';
+        return t('loginPage.toast.signup.success');
       },
-      error: 'An error occurred',
+      error: t('loginPage.toast.signup.error'),
     }).unwrap().then(r => {
       setIsSubmitting(false);
       setUserDetails(r);
@@ -73,45 +76,45 @@ export default function SignUp() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Fieldset.Root size="lg" maxW="md">
         <Stack>
-          <Fieldset.Legend>Sign Up</Fieldset.Legend>
-          <Fieldset.HelperText>Invest time and to read and improve </Fieldset.HelperText>
+          <Fieldset.Legend>{t('loginPage.signup.title')}</Fieldset.Legend>
+          <Fieldset.HelperText>{t('loginPage.signup.desc')}</Fieldset.HelperText>
         </Stack>
 
         <Fieldset.Content>
           <Field.Root invalid={!!errors.name}>
-            <Field.Label>Name</Field.Label>
+            <Field.Label>{t('loginPage.fields.name')}</Field.Label>
             <Input {...register('name')} />
             <Field.ErrorText>{errors.name?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.email}>
-            <Field.Label>Email</Field.Label>
+            <Field.Label>{t('loginPage.fields.email')}</Field.Label>
             <Input {...register('email')} />
             <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.username}>
-            <Field.Label>Username</Field.Label>
+            <Field.Label>{t('loginPage.fields.username')}</Field.Label>
             <Input {...register('username')} />
             <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.password}>
-            <Field.Label>Password</Field.Label>
+            <Field.Label>{t('loginPage.fields.password')}</Field.Label>
             <PasswordInput {...register('password')} />
             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
             <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('password'))} />
           </Field.Root>
 
           <Field.Root invalid={!!errors.passwordConfirm}>
-            <Field.Label>Confirm your password</Field.Label>
+            <Field.Label>{t('loginPage.fields.confPassword')}</Field.Label>
             <PasswordInput {...register('passwordConfirm')} />
             <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
           </Field.Root>
         </Fieldset.Content>
 
         <Button type="submit" alignSelf="flex-start" disabled={isSubmitting}>
-          {isSubmitting ? 'Signing up...' : 'Sign Up'}
+          {t('buttons.signup')}
         </Button>
       </Fieldset.Root>
     </form>

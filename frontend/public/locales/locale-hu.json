@@ -1,0 +1,146 @@
+{
+  "buttons": {
+    "login": "Bejelentkezés",
+    "signup": "Feliratkozás",
+    "edit": "Szerkesztés",
+    "delete": "Törlés",
+    "comment": "Szólj hozzá",
+    "cancel": "Mégse",
+    "save": "Mentés"
+  },
+  "tabLoading": "Betöltés...",
+  "loginPage": {
+    "errors": {
+      "password": "A jelszó legalább 8 karakter hosszú kell legyen",
+      "username": "A felhasználónév kötelező",
+      "email": "Ez nem egy helyes email",
+      "name": "A név kötelező"
+    },
+    "fields": {
+      "confPassword": "Írja be újra a jelszót",
+      "email": "Email",
+      "name": "Név",
+      "password": "Jelszó",
+      "username": "Felhasználónév"
+    },
+    "login": {
+      "title": "Bejelentkezés",
+      "desc": "Isten hozott! Még egy pár lépés és máris készen vagy"
+    },
+    "signup": {
+      "title": "Feliratkozás",
+      "desc": "Egy új kaland egy pár kattintás mögött van van",
+      "passwordMeter": {
+        "low": "Gyenge",
+        "medium": "Közepes",
+        "high": "Erős"
+      }
+    },
+    "toast": {
+      "login": {
+        "error": "A jelszó vagy felhasználónév nem helyes",
+        "loading": "Bejelentkezés...",
+        "success": "A bejelentkezés sikerült"
+      },
+      "signup": {
+        "error": "Hiba történt",
+        "loading": "Feliratkozás...",
+        "success": "Sikeresen feliratkozott"
+      }
+    }
+  },
+  "navbar": {
+    "toast": {
+      "logout": {
+        "loading": "Kijelentkezés...",
+        "success": "Sikeresen kejelentkezve",
+        "error": "Hiba történt kijelentkezés közben"
+      }
+    },
+    "buttons": {
+      "dashboard": "Irányítópult",
+      "profile": "Profil",
+      "logout": "Kijelentkezés"
+    }
+  },
+  "story": {
+    "written": "Írta",
+    "like": {
+      "noLogin": "Be kell légy jelentkezve"
+    },
+    "comments": {
+      "title": "Hozzászólások",
+      "new": "Új hozzászólás hozzáadása",
+      "none": "Nincs hozzászólás",
+      "showMore": {
+        "base": "Mutassd a maradék {{count}} hozzászólást"
+      },
+      "delete": {
+        "desc": "Ez a művelet visszafordíthatatlan. Ez véglegesen törölni fogja ezt a hozzászólást.",
+        "title": "Biztos vagy benne?"
+      },
+      "edit": {
+        "title": "Hozzászólás szerkesztése"
+      },
+      "toasts": {
+        "delete": {
+          "error": "Hiba történt a hozzászólás törlése közben",
+          "loading": "Hozzászólás törlése...",
+          "success": "Hozzászólás sikeresen törölve"
+        },
+        "edit": {
+          "error": "Hiba történt a hozzászólás törlése közben",
+          "loading": "Szerkesztések mentése...",
+          "success": "Hozzászólás sikeresen szerkesztve"
+        },
+        "post": {
+          "error": "Hiba történt a hozzászólás posztolásakor",
+          "loading": "Hozzászólás posztolása...",
+          "success": "Hozzászólás sikeresen posztolva"
+        }
+      },
+      "errors": {
+        "commentRequired": "A hozzászólás mező kötelező",
+        "commentLength": "A hozzászólás nem lehet hosszabb 255 karakternél"
+      }
+    },
+    "continue": "Olvass tovább"
+  },
+  "notFound": {
+    "tabTile": "Nem található",
+    "title": "Talán el vagy veszlődve",
+    "desc": "Az oldal amit el akarsz érni nem létezik"
+  },
+  "user": {
+    "about": "Rólam",
+    "articles": "Cikkek",
+    "noArticles": "Nem található cikk"
+  },
+  "dashboard": {
+    "preferences": {
+      "language": {
+        "desc": "Tedd személyesebbé",
+        "select": "Válassz egy nyelvet",
+        "title": "Nyelv"
+      },
+      "theme": {
+        "desc": "Válassz egy témát, amely neked megfelel",
+        "select": "Válassz egy témát",
+        "themes": {
+          "dark": "Sötét",
+          "light": "Világos",
+          "system": "Rendszer"
+        },
+        "title": "Téma"
+      }
+    },
+    "tabs": {
+      "account": "Fiók",
+      "comments": "Hozzászólások",
+      "likes": "Likeok",
+      "preferences": "Preferenciák",
+      "posts": "Posztok"
+    },
+    "title": "Irányítópult"
+  }
+}

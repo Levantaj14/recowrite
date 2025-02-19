@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-type Social = {
+export type SocialType = {
   name: string;
   url: string;
 }
@@ -11,11 +11,11 @@ export type UserType = {
   name: string;
   avatar: string;
   bio: string;
-  socials: Social[];
+  socials: SocialType[];
 }
 
 const userApi = axios.create({
-  baseURL: 'http://localhost:8080/user',
+  baseURL: `${import.meta.env.VITE_BASE_URL}/user`,
   headers: {
     Accept: 'application/json',
   },
@@ -26,7 +26,7 @@ export async function fetchAllUsers(): Promise<UserType[]> {
   return res.data;
 }
 
-export async function fetchUser(userId: string | null | undefined): Promise<UserType> {
+export async function fetchUser(userId: number | null | undefined): Promise<UserType> {
   const res = await userApi.get<UserType>(`/${userId}`);
   return res.data;
 }

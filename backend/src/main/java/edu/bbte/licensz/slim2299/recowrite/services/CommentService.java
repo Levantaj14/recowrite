@@ -1,7 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.CommentDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.CommentDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.CommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.CommentNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
