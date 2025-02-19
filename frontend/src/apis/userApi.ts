@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-type Social = {
+export type SocialType = {
   name: string;
   url: string;
 }
@@ -11,11 +11,11 @@ export type UserType = {
   name: string;
   avatar: string;
   bio: string;
-  socials: Social[];
+  socials: SocialType[];
 }
 
 const userApi = axios.create({
-  baseURL: 'http://localhost:8080/user',
+  baseURL: `${import.meta.env.VITE_BASE_URL}/user`,
   headers: {
     Accept: 'application/json',
   },

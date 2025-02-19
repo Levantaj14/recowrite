@@ -72,6 +72,9 @@
       "title": "Hozzászólások",
       "new": "Új hozzászólás hozzáadása",
       "none": "Nincs hozzászólás",
+      "showMore": {
+        "base": "Mutassd a maradék {{count}} hozzászólást"
+      },
       "delete": {
         "desc": "Ez a művelet visszafordíthatatlan. Ez véglegesen törölni fogja ezt a hozzászólást.",
         "title": "Biztos vagy benne?"

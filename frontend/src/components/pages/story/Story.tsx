@@ -8,7 +8,6 @@ import {
   Box,
   Separator,
   Card,
-  LinkBox,
   VStack,
   Center,
   Spinner,
@@ -127,18 +126,16 @@ function Story() {
                     transition: { duration: 0.2, ease: 'easeInOut' },
                   }}
                 >
-                  <LinkBox flexShrink="0" as="article">
-                    <Link to={`/blog/${recommendation.id}`}>
-                      <Card.Root maxW="sm" overflow="hidden">
-                        <Image h="2xs" src={recommendation.banner} />
-                        <Card.Body gap="2">
-                          <Text>{recommendation.authorName}</Text>
-                          <Card.Title>{recommendation.title}</Card.Title>
-                          <Card.Description>{recommendation.description}</Card.Description>
-                        </Card.Body>
-                      </Card.Root>
-                    </Link>
-                  </LinkBox>
+                  <Link to={`/blog/${recommendation.id}`}>
+                    <Card.Root maxW="sm" overflow="hidden">
+                      <Image h="2xs" src={recommendation.banner} />
+                      <Card.Body gap="2">
+                        <Text>{recommendation.authorName}</Text>
+                        <Card.Title>{recommendation.title}</Card.Title>
+                        <Card.Description>{recommendation.description}</Card.Description>
+                      </Card.Body>
+                    </Card.Root>
+                  </Link>
                 </motion.div>
               ))}
             </Stack>

@@ -14,7 +14,7 @@ export type LoginType = {
 }
 
 const authApi = axios.create({
-  baseURL: 'http://localhost:8080/authentication',
+  baseURL: `${import.meta.env.VITE_BASE_URL}/authentication`,
   withCredentials: true,
   headers: {
     Accept: 'application/json',

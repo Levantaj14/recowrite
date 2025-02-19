@@ -1,11 +1,15 @@
+import { SocialType } from '@/apis/userApi';
 import { createContext } from 'react';
 
 export type UserDetailType = {
   id: number;
   name: string;
   username: string;
-  admin: boolean;
   avatar: string;
+  bio: string;
+  email: string;
+  language: string;
+  socials: SocialType[];
 };
 
 export type UserDetailContextType = {
@@ -18,8 +22,11 @@ export const UserDetailContext = createContext<UserDetailContextType>({
     id: 0,
     name: '',
     username: '',
-    admin: false,
     avatar: '',
+    bio: '',
+    email: '',
+    language: 'en',
+    socials: [],
   },
   setUserDetails: () => {},
 });

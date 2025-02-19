@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Container } from '@chakra-ui/react';
-import { StrictMode, useMemo, useState } from 'react';
+import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { Provider } from '@/components/ui/provider.tsx';
 import { UserDetailContext, UserDetailContextType, UserDetailType } from '@/contexts/userDetailContext.ts';
 import { BrowserRouter, Route, Routes } from 'react-router';
@@ -13,6 +13,7 @@ import { Toaster } from 'sonner';
 import Home from '@/components/pages/Home.tsx';
 import '../i18n.ts';
 import Dashboard from './pages/dashboard/Dashboard.tsx';
+import { useTranslation } from 'react-i18next';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,12 +25,23 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const { i18n } = useTranslation();
+
   const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
   const userDetailsMemo: UserDetailContextType = {
     userDetails,
     setUserDetails,
   };
   const userDetailContext = useMemo(() => userDetailsMemo, [userDetails]);
+
+  useEffect(() => {
+    if (userDetails) {
+      i18n.changeLanguage(userDetails.language);
+      localStorage.setItem('language', userDetails.language);
+    } else {
+      i18n.changeLanguage(localStorage.getItem('language') || 'en');
+    }
+  }, [i18n, userDetails]);
 
   return (
     <StrictMode>

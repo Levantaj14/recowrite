@@ -10,7 +10,7 @@ export type CommentType = {
 }
 
 const commmentApi = axios.create({
-  baseURL: 'http://localhost:8080/comments',
+  baseURL: `${import.meta.env.VITE_BASE_URL}/comments`,
   withCredentials: true,
   headers: {
     Accept: 'application/json',

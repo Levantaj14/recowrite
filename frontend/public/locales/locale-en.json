@@ -72,6 +72,11 @@
       "title": "Comments",
       "new": "Add a new comment",
       "none": "There are no comments",
+      "showMore": {
+        "base": "Show {{count}} more {{comment}}",
+        "comment_one": "comment",
+        "comment_other": "comments"
+      },
       "delete": {
         "title": "Are you sure?",
         "desc": "This action cannot be undone. This will permanently delete this comment."
