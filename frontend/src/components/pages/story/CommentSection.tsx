@@ -189,7 +189,7 @@ export default function CommentSection() {
             {t('story.comments.new')}
           </Heading>
           <Field.Root invalid={!!errors.comment}>
-            <Textarea {...register('comment')} />
+            <Textarea {...register('comment')} autoresize />
             <Field.ErrorText>{errors.comment?.message}</Field.ErrorText>
           </Field.Root>
           <Button type="submit" mt={3} mb={3} disabled={isSubmitting}>

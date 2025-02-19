@@ -75,7 +75,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
   };
 
   return (
-    <DialogRoot unmountOnExit={true} placement="top" open={open} onOpenChange={(e) => setOpen(e.open)}>
+    <DialogRoot size="lg" placement="top" open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('story.comments.edit.title')}</DialogTitle>
@@ -83,7 +83,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
         <form onSubmit={handleSubmit(clickedEdit)}>
           <DialogBody pb="4">
             <Field.Root invalid={!!errors.comment}>
-              <Textarea {...register('comment')} />
+              <Textarea {...register('comment')} autoresize />
               <Field.ErrorText>{errors.comment?.message}</Field.ErrorText>
             </Field.Root>
           </DialogBody>
