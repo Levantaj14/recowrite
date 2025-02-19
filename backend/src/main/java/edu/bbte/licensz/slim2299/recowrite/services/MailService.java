@@ -6,6 +6,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -24,10 +25,14 @@ public class MailService implements MailServiceInterface {
     private Handlebars handlebars;
 
     @Override
-    public void sendMessage(String to, String subject, String file, Map<String, String> data) {
+    public void sendMessage(String to, String subject, String file, Map<String, String> data, Map<String, String> images) {
+        if (data == null || images == null) {
+            log.error("data or images is null!");
+            return;
+        }
         try {
             MimeMessage message = emailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_RELATED, "UTF-8");
 
             helper.setFrom(System.getenv("EMAIL"));
             helper.setTo(to);
@@ -36,11 +41,21 @@ public class MailService implements MailServiceInterface {
             Template template = handlebars.compile(file);
             helper.setText(template.apply(data), true);
 
+            for (Map.Entry<String, String> entry : images.entrySet()) {
+                attachImage(helper, entry.getValue(), entry.getKey());
+            }
+
             emailSender.send(message);
         } catch (MessagingException e) {
             log.error("There was a problem sending the message", e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("There was a problem finding the message template", e);
         }
     }
+
+    private void attachImage(MimeMessageHelper helper, String imageName, String contentId) throws MessagingException {
+        ClassPathResource image = new ClassPathResource("pictures/" + imageName);
+        helper.addInline(contentId, image);
+    }
+
 }
