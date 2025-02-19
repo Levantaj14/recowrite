@@ -1,10 +1,13 @@
+import { updatePreferences } from '@/apis/accountApi';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '@/components/ui/select';
-import { createListCollection, Flex, Heading, Text } from '@chakra-ui/react';
+import { UserDetailContext } from '@/contexts/userDetailContext';
+import { createListCollection, Flex, Heading, SelectValueChangeDetails, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Preferences() {
+  const { userDetails } = useContext(UserDetailContext);
   const { i18n, t } = useTranslation();
 
   const languages = createListCollection({
@@ -17,8 +20,15 @@ export default function Preferences() {
 
   useEffect(() => {
     document.title = t('dashboard.tabs.preferences');
-    localStorage.setItem('language', i18n.language);
-  }, [i18n.language, t]);
+  }, [t]);
+
+  const languageChanged = (e: SelectValueChangeDetails) => {
+    i18n.changeLanguage(e.value[0]);
+    localStorage.setItem('language', e.value[0]);
+    if (userDetails) {
+      updatePreferences(i18n.language);
+    }
+  };
 
   return (
     <>
@@ -33,7 +43,7 @@ export default function Preferences() {
             collection={languages}
             width="200px"
             value={[i18n.language]}
-            onValueChange={(e) => i18n.changeLanguage(e.value[0])}
+            onValueChange={languageChanged}
           >
             <SelectTrigger>
               <SelectValueText placeholder={t('dashboard.preferences.language.select')} />

@@ -1,0 +1,144 @@
+{
+  "buttons": {
+    "cancel": "Anulare",
+    "comment": "Scrie un comentariu",
+    "delete": "Șterge",
+    "edit": "Editare",
+    "login": "Autentificare",
+    "save": "Salvează",
+    "signup": "Conectare"
+  },
+  "dashboard": {
+    "preferences": {
+      "language": {
+        "desc": "Personalizați aplicația",
+        "select": "Alege o limbă",
+        "title": "Limbă"
+      },
+      "theme": {
+        "desc": "Alege un aspect care-ți place cel mai mult",
+        "select": "Alege un aspect",
+        "themes": {
+          "dark": "Întunecat",
+          "light": "Luminos",
+          "system": "Sistem"
+        },
+        "title": "Aspect"
+      }
+    },
+    "tabs": {
+      "account": "Cont",
+      "comments": "Comentarii",
+      "likes": "Likeuri",
+      "posts": "Postări",
+      "preferences": "Preferințe"
+    },
+    "title": "Tablou de bord"
+  },
+  "loginPage": {
+    "errors": {
+      "password": {
+        "req": "Parola e necesară"
+      },
+      "username": "Numele de utilizator e necesar"
+    },
+    "fields": {
+      "confPassword": "Reintroduceți parola",
+      "email": "Email",
+      "name": "Nume",
+      "password": "Parolă",
+      "username": "Nume de utilizator"
+    },
+    "login": {
+      "desc": "Bine te-am regăsit! Încă un pas și ești gata",
+      "title": "Autentificare"
+    },
+    "signup": {
+      "desc": "Începe noua aventură",
+      "passwordMeter": {
+        "high": "Puternic",
+        "low": "Slab",
+        "medium": "Mediu"
+      },
+      "title": "Conectare"
+    },
+    "toast": {
+      "login": {
+        "error": "Numele de utilizator sau parolă incorectă",
+        "loading": "Autentificare...",
+        "success": "Autentificat cu succes"
+      },
+      "signup": {
+        "error": "Ceva sa întâmplat",
+        "loading": "Conectare...",
+        "success": "T-ai conectat cu succes"
+      }
+    }
+  },
+  "navbar": {
+    "buttons": {
+      "dashboard": "Tablou de bord",
+      "logout": "Deconectare",
+      "profile": "Profil"
+    },
+    "toast": {
+      "logout": {
+        "error": "Deconectarea a eșuat",
+        "loading": "Deconectare...",
+        "success": "Deconectarea s-a desfășurat cu succes"
+      }
+    }
+  },
+  "notFound": {
+    "desc": "Pagina pe care-l vrei să-l vizitezi nu există",
+    "tabTile": "Nu există",
+    "title": "T-ai pierdut?"
+  },
+  "story": {
+    "comments": {
+      "delete": {
+        "desc": "Această acțiune nu poate fi anulată. Comentariul va fi ștearsă în mod permanent!",
+        "title": "Ești sigur?"
+      },
+      "edit": {
+        "title": "Editare comentariu"
+      },
+      "new": "Adaugă un comentariu",
+      "none": "Nu există comentarii",
+      "showMore": {
+        "base": "Afișați {{count}} {{comment}}",
+        "comment_one": "comentariu",
+        "comment_other": "comentarii"
+      },
+      "title": "Comentarii",
+      "toasts": {
+        "delete": {
+          "error": "Ștergerea comentariului a eșuat",
+          "loading": "Ștergerea comentariului...",
+          "success": "Comentariu șters cu succes"
+        },
+        "edit": {
+          "error": "Ștergerea comentariului a eșuat",
+          "loading": "Salvarea modificărilor...",
+          "success": "Comentariu editat cu succes"
+        },
+        "post": {
+          "error": "Editarea comentariului a eșuat",
+          "loading": "Postarea comentariului...",
+          "success": "Comentariu postat cu succes"
+        }
+      }
+    },
+    "continue": "Citește mai departe",
+    "like": {
+      "noLogin": "Trebuie să fii autentificat"
+    },
+    "written": "Scris de"
+  },
+  "tabLoading": "Încărcare...",
+  "user": {
+    "about": "Despre mine",
+    "articles": "Articole",
+    "noArticles": "Nu s-au găsit articole"
+  }
+}

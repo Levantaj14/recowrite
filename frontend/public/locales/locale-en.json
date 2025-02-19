@@ -25,7 +25,7 @@
     },
     "login": {
       "title": "Login",
-      "desc": "Welcome back! Just a few more steps for a better experience"
+      "desc": "Welcome back! Just a few more steps and you're ready"
     },
     "signup": {
       "title": "Sign Up",
@@ -96,7 +96,7 @@
           "error": "There was an error while deleting the comment"
         },
         "edit": {
-          "loading": "Editing comment...",
+          "loading": "Saving edits...",
           "success": "Comment edited successfully",
           "error": "There was an error while editing the comment"
         }

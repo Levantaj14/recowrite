@@ -25,11 +25,11 @@
     },
     "login": {
       "title": "Bejelentkezés",
-      "desc": "Isten hozott! Még egy pár lépés egy személyre szabott élményig"
+      "desc": "Isten hozott! Még egy pár lépés és máris készen vagy"
     },
     "signup": {
       "title": "Feliratkozás",
-      "desc": "Valami leírás",
+      "desc": "Egy új kaland egy pár kattintás mögött van van",
       "passwordMeter": {
         "low": "Gyenge",
         "medium": "Közepes",
@@ -90,7 +90,7 @@
         },
         "edit": {
           "error": "Hiba történt a hozzászólás törlése közben",
-          "loading": "Hozzászólás szerkesztése...",
+          "loading": "Szerkesztések mentése...",
           "success": "Hozzászólás sikeresen szerkesztve"
         },
         "post": {
