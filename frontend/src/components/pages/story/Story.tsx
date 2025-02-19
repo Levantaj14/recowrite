@@ -5,7 +5,6 @@ import {
   Link as ChakraLink,
   Stack,
   Text,
-  Box,
   Separator,
   Card,
   VStack,
@@ -24,6 +23,8 @@ import LikeButton from '@/components/pages/story/LikeButton.tsx';
 import { getLikeCount, getLiked } from '@/apis/likesApi.ts';
 import CommentSection from '@/components/pages/story/CommentSection.tsx';
 import { useTranslation } from 'react-i18next';
+import { Prose } from '@/components/ui/prose.tsx';
+import Markdown from 'react-markdown';
 
 function Story() {
   const { t } = useTranslation();
@@ -101,9 +102,9 @@ function Story() {
           <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
         </Flex>
         <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
-        <Box mb={10}>
-          <Text mt={15}>{data?.blogData.content}</Text>
-        </Box>
+        <Prose size="lg" maxWidth="100%" mb="10">
+          <Markdown>{data?.blogData.content}</Markdown>
+        </Prose>
         <Separator />
         <CommentSection />
         <Separator />
