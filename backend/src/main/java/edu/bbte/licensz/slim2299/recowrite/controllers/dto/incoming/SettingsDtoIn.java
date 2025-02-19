@@ -4,6 +4,5 @@ import lombok.Data;
 
 @Data
 public class SettingsDtoIn {
-    private String theme;
     private String language;
 }
