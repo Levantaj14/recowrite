@@ -31,7 +31,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
   const { t } = useTranslation();
 
   const schema = z.object({
-    comment: z.string().nonempty().max(256, t('story.comments.errors.commentLength')),
+    comment: z.string().nonempty(t('story.comments.errors.commentRequired')).max(255, t('story.comments.errors.commentLength')),
   });
   
   type FormFields = z.infer<typeof schema>;

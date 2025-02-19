@@ -129,7 +129,8 @@
         }
       },
       "errors": {
-        "commentLength": "Comentariul nu poate fi mai lung de 256 de caractere"
+        "commentRequired": "Comentariul este necesar",
+        "commentLength": "Comentariul nu poate fi mai lung de 255 de caractere"
       }
     },
     "continue": "Citește mai departe",

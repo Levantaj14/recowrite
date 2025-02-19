@@ -100,7 +100,8 @@
         }
       },
       "errors": {
-        "commentLength": "A hozzászólás nem lehet hosszabb 256 karakternél"
+        "commentRequired": "A hozzászólás mező kötelező",
+        "commentLength": "A hozzászólás nem lehet hosszabb 255 karakternél"
       }
     },
     "continue": "Olvass tovább"
