@@ -102,7 +102,7 @@ function Story() {
           <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
         </Flex>
         <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
-        <Prose size="lg" maxWidth="100%" mb="10">
+        <Prose size="lg" maxWidth="100%" mb="6">
           <Markdown>{data?.blogData.content}</Markdown>
         </Prose>
         <Separator />

@@ -1,0 +1,145 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Welcome to recowrite!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet">
+    <style>
+        a {
+            color: black;
+        }
+
+        a:hover {
+            color: black;
+        }
+
+        a:visited {
+            color: black;
+        }
+
+        #main-screen {
+            margin: 70px;
+            font-family: 'Inter', 'Roboto', 'Helvetica', sans-serif;
+        }
+
+        .left-text {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: "text image";
+            align-items: center;
+            text-align: left;
+        }
+
+        .left-text .text {
+            grid-area: text;
+        }
+
+        .left-text .image {
+            grid-area: image;
+        }
+
+        .right-text {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: "image text";
+            align-items: center;
+            text-align: right;
+        }
+
+        .right-text .image {
+            grid-area: image;
+        }
+
+        .right-text .text {
+            grid-area: text;
+        }
+
+        @media (max-width: 768px) {
+            .left-text {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
+            }
+
+            .right-text {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
+                text-align: left;
+            }
+
+            #main-screen {
+                margin: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .left-text {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
+            }
+
+            .right-text {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+            "text"
+            "image";
+                text-align: left;
+            }
+
+            #main-screen {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="main-screen">
+    <h4>recowrite</h4>
+    <div style="text-align: center">
+        <h1>Welcome aboard, {{username}}!</h1>
+        <h2>Here’s what you can start exploring right away</h2>
+    </div>
+    <div class="left-text">
+        <div class="text">
+            <h3>Write Without Limits</h3>
+            <p>You can write and publish unlimited articles. Share your thoughts, ideas, and expertise with the world—no
+                restrictions, just pure creativity!</p>
+        </div>
+        <div class="image" style="max-width: 600px;">
+            <img src="" alt="Write unlimited aricles" style="width: 100%; height: auto; display: block;">
+        </div>
+    </div>
+    <div class="right-text">
+        <div class="text">
+            <h3>Discover & Connect</h3>
+            <p>Not only can you write, but you can also explore a world of articles from other writers. Engage with
+                their stories, leave comments, and be part of a growing community of passionate writers and readers.</p>
+        </div>
+        <div class="image" style="max-width: 600px">
+            <img src="cid:comments" alt="Comments" style="width: 100%; height: auto; display: block;">
+        </div>
+    </div>
+    <div class="left-text">
+        <div class="text">
+            <h3>Keep Exploring</h3>
+            <p>Finished an article? There’s always more to discover! Our AI curates a selection of articles to keep the
+                journey going—so you’ll never run out of great reads.</p>
+        </div>
+        <div class="image" style="max-width: 600px;">
+            <img src="cid:continue-reading" alt="Continue reading" style="width: 100%; height: auto; display: block;">
+        </div>
+    </div>
+    <p>Ready to dive in? Start writing, reading, and discovering <a href="http://localhost:5173">now</a>!</p>
+    <br />
+    <hr>
+    <div style="text-align: center; color: gray; font-size: smaller">
+        <p>©2025 recowrite</p>
+    </div>
+</div>
+</body>
+</html>

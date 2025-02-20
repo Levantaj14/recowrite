@@ -8,6 +8,7 @@ export type UserDetailType = {
   avatar: string;
   bio: string;
   email: string;
+  getEmail: boolean;
   language: string;
   socials: SocialType[];
 };
@@ -25,6 +26,7 @@ export const UserDetailContext = createContext<UserDetailContextType>({
     avatar: '',
     bio: '',
     email: '',
+    getEmail: false,
     language: 'en',
     socials: [],
   },

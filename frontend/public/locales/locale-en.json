@@ -142,6 +142,10 @@
           "dark": "Dark",
           "system": "System"
         }
+      },
+      "notifications": {
+        "title": "Notifications via email",
+        "desc": "Get an email when someone logs in to your account"
       }
     }
   }

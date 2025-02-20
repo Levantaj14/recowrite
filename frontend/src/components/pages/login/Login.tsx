@@ -45,6 +45,8 @@ export default function Login() {
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['blog'],
+            refetchType: 'all',
+            exact: false
           });
           navigate('/dashboard');
           return t('loginPage.toast.login.success');

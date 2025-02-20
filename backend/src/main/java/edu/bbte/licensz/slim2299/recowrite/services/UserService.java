@@ -70,11 +70,12 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public void updateUserPreferences(String username, SettingsDtoIn user) {
+    public void updateUserPreferences(String username, SettingsDtoIn settings) {
         Optional<UserModel> result = userManager.findByUsername(username);
         if (result.isPresent()) {
             UserModel userModel = result.get();
-            userModel.setLanguage(user.getLanguage());
+            userModel.setLanguage(settings.getLanguage());
+            userModel.setEmails(settings.isGetEmail());
             userManager.save(userModel);
         } else {
             throw new UserNotFoundException("User with username " + username + " not found");

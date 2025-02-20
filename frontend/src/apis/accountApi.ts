@@ -8,6 +8,6 @@ const accountApi = axios.create({
   },
 });
 
-export async function updatePreferences(language: string) {
-  await accountApi.put('/preferences', { language });
+export async function updatePreferences(language: string, receiveEmails: boolean) {
+  await accountApi.put('/preferences', { language, getEmail: receiveEmails });
 }
