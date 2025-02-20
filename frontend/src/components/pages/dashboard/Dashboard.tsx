@@ -3,6 +3,10 @@ import Preferences from './Preferences';
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext';
+import { Account } from './Account';
+import Likes from './Likes';
+import Posts from './Posts';
+import Comments from './Comments';
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -28,10 +32,10 @@ export default function Dashboard() {
         <Tabs.Content value="preferences">
           <Preferences />
         </Tabs.Content>
-        <Tabs.Content value="account">Account</Tabs.Content>
-        <Tabs.Content value="posts">Posts</Tabs.Content>
-        <Tabs.Content value="comments">Comments</Tabs.Content>
-        <Tabs.Content value="likes">Likes</Tabs.Content>
+        <Tabs.Content value="account"><Account /></Tabs.Content>
+        <Tabs.Content value="posts"><Posts /></Tabs.Content>
+        <Tabs.Content value="comments"><Comments /></Tabs.Content>
+        <Tabs.Content value="likes"><Likes /></Tabs.Content>
       </Tabs.Root>
     </>
   );
