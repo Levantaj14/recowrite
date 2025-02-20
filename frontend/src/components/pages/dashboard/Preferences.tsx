@@ -4,12 +4,14 @@ import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText }
 import { UserDetailContext } from '@/contexts/userDetailContext';
 import { createListCollection, Flex, Heading, SelectValueChangeDetails, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Preferences() {
   const { userDetails } = useContext(UserDetailContext);
   const { i18n, t } = useTranslation();
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.language);
+  const [receiveEmails, setReceiveEmails] = useState<boolean | undefined>(userDetails?.getEmail);
 
   const languages = createListCollection({
     items: [
@@ -20,16 +22,25 @@ export default function Preferences() {
   });
 
   useEffect(() => {
+    if (userDetails?.getEmail !== undefined) {
+      setReceiveEmails(userDetails.getEmail);
+    }
+  }, [userDetails]);
+
+  useEffect(() => {
     document.title = t('dashboard.tabs.preferences');
   }, [t]);
 
+  useEffect(() => {
+    if (userDetails && receiveEmails !== undefined) {
+      updatePreferences(selectedLanguage, receiveEmails);
+    }
+  }, [selectedLanguage, receiveEmails, userDetails]);
+
   const languageChanged = (e: SelectValueChangeDetails) => {
-    console.log(e.value[0]);
     i18n.changeLanguage(e.value[0]);
     localStorage.setItem('language', e.value[0]);
-    if (userDetails) {
-      updatePreferences(e.value[0]);
-    }
+    setSelectedLanguage(e.value[0]);
   };
 
   return (
@@ -41,7 +52,7 @@ export default function Preferences() {
             <Heading size="md">{t('dashboard.preferences.language.title')}</Heading>
             <Text>{t('dashboard.preferences.language.desc')}</Text>
           </Flex>
-          <SelectRoot collection={languages} width="200px" value={[i18n.language]} onValueChange={languageChanged}>
+          <SelectRoot collection={languages} width="200px" value={[selectedLanguage]} onValueChange={languageChanged}>
             <SelectTrigger>
               <SelectValueText placeholder={t('dashboard.preferences.language.select')} />
             </SelectTrigger>
@@ -66,7 +77,7 @@ export default function Preferences() {
               <Heading size="md">{t('dashboard.preferences.notifications.title')}</Heading>
               <Text>{t('dashboard.preferences.notifications.desc')}</Text>
             </Flex>
-            <Checkbox defaultChecked={userDetails.getEmail} disabled />
+            <Checkbox checked={receiveEmails} onCheckedChange={(e) => setReceiveEmails(!!e.checked)} />
           </Flex>
         </motion.div>
       )}

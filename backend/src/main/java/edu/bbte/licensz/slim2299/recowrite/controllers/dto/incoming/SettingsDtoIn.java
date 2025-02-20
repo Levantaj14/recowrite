@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class SettingsDtoIn {
     private String language;
+    private boolean getEmail;
 }
