@@ -50,6 +50,7 @@ public class UserMapper {
         dto.setUsername(userModel.getUsername());
         dto.setName(userModel.getName());
         dto.setEmail(userModel.getEmail());
+        dto.setGetEmail(userModel.isEmails());
         dto.setBio(userModel.getBio());
         dto.setAvatar(userModel.getAvatar());
         dto.setLanguage(userModel.getLanguage());

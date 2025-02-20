@@ -31,6 +31,13 @@ public class AuthService implements AuthServiceInterface {
     public String login(LoginDtoIn user) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        Map<String, String> model = new HashMap<>();
+        model.put("username", user.getUsername());
+        UserModel userModel = userService.getUserModelByUsername(user.getUsername());
+        if (userModel.isEmails()) {
+            mailService.sendMessage(userService.getUserModelByUsername(user.getUsername()).getEmail(),
+                    "New login to recowrite", "login", model, null);
+        }
         return jwtUtil.generateToken(user.getUsername());
     }
 

@@ -26,8 +26,8 @@ public class MailService implements MailServiceInterface {
 
     @Override
     public void sendMessage(String to, String subject, String file, Map<String, String> data, Map<String, String> images) {
-        if (data == null || images == null) {
-            log.error("data or images is null!");
+        if (data == null) {
+            log.error("data is null!");
             return;
         }
         try {
@@ -41,8 +41,10 @@ public class MailService implements MailServiceInterface {
             Template template = handlebars.compile(file);
             helper.setText(template.apply(data), true);
 
-            for (Map.Entry<String, String> entry : images.entrySet()) {
-                attachImage(helper, entry.getValue(), entry.getKey());
+            if (images != null) {
+                for (Map.Entry<String, String> entry : images.entrySet()) {
+                    attachImage(helper, entry.getValue(), entry.getKey());
+                }
             }
 
             emailSender.send(message);

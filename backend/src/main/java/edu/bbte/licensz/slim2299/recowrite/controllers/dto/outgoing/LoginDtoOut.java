@@ -16,6 +16,7 @@ public class LoginDtoOut {
     private String avatar;
     private String bio;
     private String email;
+    private boolean getEmail;
     private String language;
     private String theme;
     private List<SocialMediaDtoOut> socials;
