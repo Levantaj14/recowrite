@@ -14,12 +14,17 @@ export function Account() {
   const { t } = useTranslation();
   const { userDetails } = useContext(UserDetailContext);
 
+  const getSocialUrl = (socialName: string): string | undefined => {
+    const social = userDetails?.socials.find(s => s.name === socialName);
+    return social?.url;
+  };
+
   const items = [
-    { icon: <FaInstagram />, label: 'Instagram' },
-    { icon: <FaXTwitter />, label: 'X' },
-    { icon: <FaBluesky />, label: 'Bluesky' },
-    { icon: <FaMastodon />, label: 'Mastodon' },
-    { icon: <FaMedium />, label: 'Medium' },
+    { icon: <FaInstagram />, label: 'Instagram', checked: getSocialUrl('Instagram') },
+    { icon: <FaXTwitter />, label: 'X', checked: getSocialUrl('X') },
+    { icon: <FaBluesky />, label: 'Bluesky', checked: getSocialUrl('Bluesky') },
+    { icon: <FaMastodon />, label: 'Mastodon', checked: getSocialUrl('Mastodon') },
+    { icon: <FaMedium />, label: 'Medium', checked: getSocialUrl('Medium') },
   ];
 
   return (
@@ -66,10 +71,11 @@ export function Account() {
         <Heading size="md" mt={4} mb={4}>
           Socials
         </Heading>
-        <CheckboxGroup defaultValue={['Guest']}>
+        <CheckboxGroup>
           <SimpleGrid minChildWidth="200px" gap="2">
             {items.map((item) => (
               <CheckboxCard
+                checked={item.checked !== undefined}
                 align="center"
                 key={item.label}
                 icon={
@@ -80,10 +86,10 @@ export function Account() {
                 label={item.label}
                 indicator={
                   <Float placement="top-end" offset="6">
-                    <CheckboxCardIndicator />
+                    <CheckboxCardIndicator  />
                   </Float>
                 }
-                addon={<Input value="username" />}
+                addon={<Input value={item.checked} />}
               />
             ))}
           </SimpleGrid>
