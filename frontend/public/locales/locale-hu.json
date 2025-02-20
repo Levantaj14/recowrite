@@ -132,6 +132,10 @@
           "system": "Rendszer"
         },
         "title": "Téma"
+      },
+      "notifications": {
+        "desc": "Kapj egy email-t mikor valaki bejelentkezik a fiokódba",
+        "title": "Emailes értesítések"
       }
     },
     "tabs": {

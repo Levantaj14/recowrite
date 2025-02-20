@@ -1,4 +1,5 @@
 import { updatePreferences } from '@/apis/accountApi';
+import { Checkbox } from '@/components/ui/checkbox';
 import { SelectContent, SelectItem, SelectRoot, SelectTrigger, SelectValueText } from '@/components/ui/select';
 import { UserDetailContext } from '@/contexts/userDetailContext';
 import { createListCollection, Flex, Heading, SelectValueChangeDetails, Text } from '@chakra-ui/react';
@@ -35,17 +36,12 @@ export default function Preferences() {
     <>
       <Heading size="2xl">{t('dashboard.tabs.preferences')}</Heading>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
-        <Flex align="start" justifyContent="space-between" mt="4">
+        <Flex align="start" justifyContent="space-between" alignItems="center" mt="4">
           <Flex direction="column">
             <Heading size="md">{t('dashboard.preferences.language.title')}</Heading>
             <Text>{t('dashboard.preferences.language.desc')}</Text>
           </Flex>
-          <SelectRoot
-            collection={languages}
-            width="200px"
-            value={[i18n.language]}
-            onValueChange={languageChanged}
-          >
+          <SelectRoot collection={languages} width="200px" value={[i18n.language]} onValueChange={languageChanged}>
             <SelectTrigger>
               <SelectValueText placeholder={t('dashboard.preferences.language.select')} />
             </SelectTrigger>
@@ -59,6 +55,21 @@ export default function Preferences() {
           </SelectRoot>
         </Flex>
       </motion.div>
+      {userDetails && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.04 }}
+        >
+          <Flex align="start" justifyContent="space-between" alignItems="center" mt="4">
+            <Flex direction="column">
+              <Heading size="md">{t('dashboard.preferences.notifications.title')}</Heading>
+              <Text>{t('dashboard.preferences.notifications.desc')}</Text>
+            </Flex>
+            <Checkbox defaultChecked={userDetails.getEmail} disabled />
+          </Flex>
+        </motion.div>
+      )}
     </>
   );
 }

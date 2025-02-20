@@ -24,6 +24,10 @@
           "system": "Sistem"
         },
         "title": "Aspect"
+      },
+      "notifications": {
+        "desc": "Primește un email când cineva intră în contul tău",
+        "title": "Notificări prin email"
       }
     },
     "tabs": {
