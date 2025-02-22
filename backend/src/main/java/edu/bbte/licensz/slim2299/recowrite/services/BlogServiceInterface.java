@@ -1,5 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 
@@ -14,5 +15,5 @@ public interface BlogServiceInterface {
 
     BlogModel getBlogModelById(long id);
 
-    Long addBlog(BlogModel blog);
+    Long addBlog(BlogDtoIn blog, String username);
 }
