@@ -19,8 +19,10 @@ import Customize from './Customize';
 import Posting from './Posting';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 export default function NewStory() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { userDetails } = useContext(UserDetailContext);
   const [step, setStep] = useState(0);
@@ -34,16 +36,16 @@ export default function NewStory() {
     if (userDetails === null) {
       navigate('/');
     }
-    document.title = 'New Story';
-  }, [navigate, userDetails]);
+    document.title = t('newStory.title');
+  }, [navigate, t, userDetails]);
 
   return (
     <>
       <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} count={3}>
         <StepsList>
-          <StepsItem index={0} title="Write" icon={<LuPencil />} />
-          <StepsItem index={1} title="Preview" icon={<IoDocumentTextOutline />} />
-          <StepsItem index={2} title="Customize" icon={<BsStars />} />
+          <StepsItem index={0} title={t('newStory.tabs.write')} icon={<LuPencil />} />
+          <StepsItem index={1} title={t('newStory.tabs.preview')} icon={<IoDocumentTextOutline />} />
+          <StepsItem index={2} title={t('newStory.tabs.customize')} icon={<BsStars />} />
         </StepsList>
 
         <StepsContent index={0}>
@@ -72,12 +74,12 @@ export default function NewStory() {
           <Group>
             <StepsPrevTrigger asChild>
               <Button variant="outline" size="sm">
-                Prev
+                {t('newStory.buttons.prev')}
               </Button>
             </StepsPrevTrigger>
             <StepsNextTrigger asChild>
               <Button variant="outline" size="sm" disabled={!next}>
-                {step === 2 ? 'Post' : 'Next'}
+                {step === 2 ? t('newStory.buttons.post') : t('newStory.buttons.next')}
               </Button>
             </StepsNextTrigger>
           </Group>

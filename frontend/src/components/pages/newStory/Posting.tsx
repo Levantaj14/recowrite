@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { createBlog } from '@/apis/blogApi.ts';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   title: string;
@@ -14,16 +15,17 @@ type Props = {
 };
 
 export default function Posting({ title, content, description, banner, isVisible }: Props) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isVisible) {
-      createBlog({ title, description, banner, content }).then(r => {
-        toast.success('Post added successfully');
+      createBlog({ title, description, banner, content }).then((r) => {
+        toast.success(t('newStory.posting.success'));
         navigate(`/blog/${r}`);
       });
     }
-  }, [banner, content, description, isVisible, navigate, title]);
+  }, [t, banner, content, description, isVisible, navigate, title]);
 
   return (
     isVisible && (
@@ -34,7 +36,7 @@ export default function Posting({ title, content, description, banner, isVisible
       >
         <Flex flexDirection="row" justifyContent="flex-start" alignItems="center" gap="3" mt="2">
           <Spinner />
-          <Text>Uploading your post</Text>
+          <Text>{t('newStory.posting.loading')}</Text>
         </Flex>
       </motion.div>
     )

@@ -146,5 +146,49 @@
       "posts": "Posztok"
     },
     "title": "Irányítópult"
+  },
+  "newStory": {
+    "buttons": {
+      "next": "Következő",
+      "prev": "Elöző",
+      "post": "Posztolás"
+    },
+    "customize": {
+      "fields": {
+        "desc": "Leírás",
+        "picture": {
+          "name": "Kép",
+          "radio": {
+            "online": "Online Kép",
+            "upload": "Feltöltés"
+          },
+          "uploadButton": "Fájl feltöltése",
+          "urlHelper": "Győződj meg arról, hogy a kép szabadon használható és nem áll szerzői jogvédelem alatt"
+        },
+        "title": "Cím"
+      },
+      "title": "Tegyük ezt még egyedibbé"
+    },
+    "posting": {
+      "loading": "Poszt feltöltése",
+      "success": "Poszt sikeresen feltöltve"
+    },
+    "preview": {
+      "title": "Lássuk, hogyan néz ki"
+    },
+    "tabs": {
+      "customize": "Testreszabás",
+      "preview": "Előnézet",
+      "write": "Írj"
+    },
+    "title": "Új cikk",
+    "write": {
+      "desc": {
+        "pre": "Nyugodtan használd a",
+        "post": "formázást, hogy a cikked fejleszd"
+      },
+      "placeholder": "Ide írd a cikked...",
+      "title": "Írj egy új cikket"
+    }
   }
 }

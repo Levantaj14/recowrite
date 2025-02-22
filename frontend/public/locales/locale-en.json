@@ -148,5 +148,49 @@
         "desc": "Get an email when someone logs in to your account"
       }
     }
+  },
+  "newStory": {
+    "title": "New Story",
+    "tabs": {
+      "write": "Write",
+      "preview": "Preview",
+      "customize": "Customize"
+    },
+    "buttons": {
+      "prev": "Prev",
+      "post": "Post",
+      "next": "Next"
+    },
+    "write": {
+      "title": "Write a new story",
+      "desc": {
+        "pre": "Feel free to use",
+        "post": "formatting to enhance your story"
+      },
+      "placeholder": "Write your story here..."
+    },
+    "preview": {
+      "title": "Let's see how it looks"
+    },
+    "customize": {
+      "title": "Let's make this more unique",
+      "fields": {
+        "title": "Title",
+        "desc": "Description",
+        "picture": {
+          "name": "Picture",
+          "radio": {
+            "upload": "Upload",
+            "online": "Online Picture"
+          },
+          "uploadButton": "Upload file",
+          "urlHelper": "Make sure the picture is free to use and not copyrighted"
+        }
+      }
+    },
+    "posting": {
+      "success": "Post uploaded successfully",
+      "loading": "Uploading your post"
+    }
   }
 }

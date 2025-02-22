@@ -4,6 +4,7 @@ import { Radio, RadioGroup } from '@/components/ui/radio';
 import { Field, Heading, HStack, Input, Textarea } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { HiUpload } from 'react-icons/hi';
 
 type Props = {
@@ -27,6 +28,7 @@ export default function Customize({
   isVisible,
   setNext,
 }: Props) {
+  const { t } = useTranslation();
   const [value, setValue] = useState('2');
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function Customize({
 
   return (
     <>
-      <Heading size="2xl">Let's make this more unique</Heading>
+      <Heading size="2xl">{t('newStory.customize.title')}</Heading>
       {isVisible && (
         <>
           <motion.div
@@ -47,7 +49,7 @@ export default function Customize({
           >
             <Field.Root required mt="4">
               <Field.Label>
-                Title
+                {t('newStory.customize.fields.title')}
                 <Field.RequiredIndicator />
               </Field.Label>
               <Input
@@ -65,7 +67,7 @@ export default function Customize({
           >
             <Field.Root mt="4">
               <Field.Label>
-                Description
+                {t('newStory.customize.fields.desc')}
                 <Field.RequiredIndicator />
               </Field.Label>
               <Textarea value={description} onChange={(e) => setDescription(e.target.value)} autoresize />
@@ -77,20 +79,20 @@ export default function Customize({
             transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.08 }}
           >
             <Field.Root mt="4">
-              <Field.Label>Picture</Field.Label>
+              <Field.Label>{t('newStory.customize.fields.picture.name')}</Field.Label>
               <RadioGroup value={value} onValueChange={(e) => setValue(e.value)}>
                 <HStack gap="6">
                   <Radio value="1" disabled>
-                    Upload
+                    {t('newStory.customize.fields.picture.radio.upload')}
                   </Radio>
-                  <Radio value="2">Online Picture</Radio>
+                  <Radio value="2">{t('newStory.customize.fields.picture.radio.online')}</Radio>
                 </HStack>
               </RadioGroup>
               {value === '1' && (
                 <FileUploadRoot accept={['image/*']} mt="4">
                   <FileUploadTrigger>
                     <Button size="sm">
-                      <HiUpload /> Upload file
+                      <HiUpload /> {t('newStory.customize.fields.picture.uploadButton')}
                     </Button>
                   </FileUploadTrigger>
                   <FileUploadList />
@@ -103,7 +105,7 @@ export default function Customize({
                     <Field.RequiredIndicator />
                   </Field.Label>
                   <Input value={banner} onChange={(e) => setBanner(e.target.value)} />
-                  <Field.HelperText>Make sure the picture is free to use and not copyrighted</Field.HelperText>
+                  <Field.HelperText>{t('newStory.customize.fields.picture.urlHelper')}</Field.HelperText>
                 </Field.Root>
               )}
             </Field.Root>

@@ -2,6 +2,7 @@ import { Prose } from '@/components/ui/prose';
 import { Heading } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export default function Preview({ content, isVisible, setNext }: Props) {
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isVisible) {
@@ -20,7 +22,7 @@ export default function Preview({ content, isVisible, setNext }: Props) {
 
   return (
     <>
-      <Heading size="2xl">Let's see how it looks like</Heading>
+      <Heading size="2xl">{t('newStory.preview.title')}</Heading>
       {isVisible && (
         <motion.div
           initial={{ opacity: 0, x: 10 }}

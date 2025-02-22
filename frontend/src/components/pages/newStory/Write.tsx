@@ -1,6 +1,7 @@
 import { Heading, Textarea, Text, Link } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   content: string;
@@ -10,15 +11,16 @@ type Props = {
 };
 
 export default function Write({ content, setContent, isVisible, setNext }: Props) {
+  const { t } = useTranslation();
   useEffect(() => {
     setNext(content.length > 0);
   }, [setNext, content]);
 
   return (
     <>
-      <Heading size="2xl">Write a new story</Heading>
+      <Heading size="2xl">{t('newStory.write.title')}</Heading>
       <Text>
-        Feel free to use{' '}
+        {t('newStory.write.desc.pre')}{' '}
         <Link
           variant="underline"
           href="https://www.markdownguide.org/basic-syntax/"
@@ -27,7 +29,7 @@ export default function Write({ content, setContent, isVisible, setNext }: Props
         >
           Markdown
         </Link>{' '}
-        formatting to enhance your story
+        {t('newStory.write.desc.post')}
       </Text>
       {isVisible && (
         <motion.div
@@ -36,7 +38,7 @@ export default function Write({ content, setContent, isVisible, setNext }: Props
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           <Textarea
-            placeholder="Write your story here..."
+            placeholder={t('newStory.write.placeholder')}
             mt="4"
             height="calc(100vh - 400px)"
             value={content}
