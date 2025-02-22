@@ -3,14 +3,16 @@ import { Flex, Heading, HStack, Stat } from '@chakra-ui/react';
 import NumberFlow from '@number-flow/react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 export default function Posts() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   return (
     <>
       <Flex align="start" alignItems="center" justifyContent="space-between">
         <Heading size="2xl">{t('dashboard.tabs.posts')}</Heading>
-        <Button size="xs">Create post</Button>
+        <Button size="xs" onClick={() => navigate('/blog/create')}>Create post</Button>
       </Flex>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
         <Flex gap="2" align="start" alignItems="center" mt="4">

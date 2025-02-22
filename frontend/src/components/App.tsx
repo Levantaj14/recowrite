@@ -14,6 +14,7 @@ import Home from '@/components/pages/Home.tsx';
 import '../i18n.ts';
 import Dashboard from './pages/dashboard/Dashboard.tsx';
 import { useTranslation } from 'react-i18next';
+import NewStory from './pages/newStory/NewStory.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,6 +52,7 @@ function App() {
               <Container as="main" mt="4" mb="4" maxW="6xl">
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/blog/create" element={<NewStory />} />
                   <Route path="/blog/:blogId" element={<Story />} />
                   <Route path="/user/:userId" element={<User />} />
                   <Route path="/login" element={<LoginPage />} />

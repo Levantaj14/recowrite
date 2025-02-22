@@ -11,8 +11,20 @@ export type BlogType = {
   authorName?: string;
 }
 
+export type CreateBlogType = {
+  title: string;
+  content: string;
+  description: string;
+  banner: string;
+}
+
+type BlogIdType = {
+  id: number;
+}
+
 const blogApi = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/blogs`,
+  withCredentials: true,
   headers: {
     Accept: 'application/json',
   },
@@ -36,4 +48,9 @@ export async function fetchBlogsByAuthor(authorId: string | null | undefined): P
 export async function fetchBlogRecommendation(blogId: string | null | undefined): Promise<BlogType[]> {
   const res = await blogApi.get<BlogType[]>(`/recommendation?id=${blogId}`);
   return res.data;
+}
+
+export async function createBlog(blog: CreateBlogType): Promise<number> {
+  const res = await blogApi.post<BlogIdType>('', blog);
+  return res.data.id;
 }
