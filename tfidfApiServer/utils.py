@@ -1,12 +1,14 @@
 import mysql.connector
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="kerekecske",
-    database="recowrite"
-)
-
-
 def get_db_handle():
-    return mydb
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="kerekecske",
+            database="recowrite"
+        )
+        return connection
+    except Error as e:
+        print(f"Error connecting to MySQL Database: {e}")
+        raise

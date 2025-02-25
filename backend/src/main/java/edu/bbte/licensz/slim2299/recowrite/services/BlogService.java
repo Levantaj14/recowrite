@@ -1,5 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
@@ -70,7 +71,13 @@ public class BlogService implements BlogServiceInterface {
     }
 
     @Override
-    public Long addBlog(BlogModel blog) {
-        return blogManager.save(blog).getId();
+    public Long addBlog(BlogDtoIn blog, String username) {
+        Optional<UserModel> userResult = userManager.findByUsername(username);
+        if (userResult.isEmpty()) {
+            throw new UserNotFoundException("User with name " + username + " not found");
+        }
+        BlogModel model = blogMapper.dtoToModel(blog);
+        model.setUser(userResult.get());
+        return blogManager.save(model).getId();
     }
 }

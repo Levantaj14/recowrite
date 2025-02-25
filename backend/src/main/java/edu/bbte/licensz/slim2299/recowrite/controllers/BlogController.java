@@ -1,10 +1,13 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
+import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.IdDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.services.BlogServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.RecommendationServiceInterface;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,12 @@ public class BlogController {
 
     @Autowired
     private RecommendationServiceInterface recommendationService;
+
+    @Autowired
+    private AuthCookieFinder authCookieFinder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping()
     public List<BlogDtoOut> getBlogs() {
@@ -36,8 +45,9 @@ public class BlogController {
     }
 
     @PostMapping()
-    public IdDtoOut addBlog(@RequestBody BlogModel blog) {
-        return new IdDtoOut(blogService.addBlog(blog));
+    public IdDtoOut addBlog(HttpServletRequest request, @RequestBody BlogDtoIn blog) {
+        Cookie authCookie = authCookieFinder.serachAuthCookie(request.getCookies());
+        return new IdDtoOut(blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue())));
     }
 
     @GetMapping("/recommendation")

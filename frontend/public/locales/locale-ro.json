@@ -148,5 +148,49 @@
     "about": "Despre mine",
     "articles": "Articole",
     "noArticles": "Nu s-au găsit articole"
+  },
+  "newStory": {
+    "buttons": {
+      "next": "Următorul",
+      "prev": "Înapoi",
+      "post": "Postare"
+    },
+    "customize": {
+      "fields": {
+        "desc": "Descriere",
+        "picture": {
+          "name": "Imagine",
+          "radio": {
+            "online": "Imagine online",
+            "upload": "Încărcare"
+          },
+          "uploadButton": "Încărcare fișier",
+          "urlHelper": "Asigură-te că imaginea este liberă de utilizat și nu este protejată de drepturi de autor"
+        },
+        "title": "Titlu"
+      },
+      "title": "Hai să facem asta mai unic"
+    },
+    "posting": {
+      "loading": "Se încarcă postarea ta",
+      "success": "Postare încărcată cu succes"
+    },
+    "preview": {
+      "title": "Să vedem cum arată"
+    },
+    "tabs": {
+      "customize": "Personalizați",
+      "preview": "Previzualizare",
+      "write": "Scrie"
+    },
+    "title": "Nou articol",
+    "write": {
+      "placeholder": "Scriți articolul aici...",
+      "title": "Scrie un articol nou",
+      "desc": {
+        "post": "pentru ați îmbunătăți povestea",
+        "pre": "Poți utiliza formatarea"
+      }
+    }
   }
 }
