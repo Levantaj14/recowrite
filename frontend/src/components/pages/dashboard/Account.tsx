@@ -89,7 +89,7 @@ export function Account() {
                     <CheckboxCardIndicator  />
                   </Float>
                 }
-                addon={<Input value={item.checked} />}
+                addon={<Input value={item.checked} placeholder='URL'/>}
               />
             ))}
           </SimpleGrid>
