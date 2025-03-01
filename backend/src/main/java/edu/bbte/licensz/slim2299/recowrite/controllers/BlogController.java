@@ -9,6 +9,7 @@ import edu.bbte.licensz.slim2299.recowrite.services.RecommendationServiceInterfa
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class BlogController {
         return blogService.getBlogsByAuthor(authorId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public BlogDtoOut getBlogsById(@PathVariable("id") long id) {
         return blogService.getBlogById(id);
     }
