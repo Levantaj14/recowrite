@@ -1,5 +1,17 @@
-import { ReactNode, useEffect } from 'react';
-import { Box, Center, Flex, Heading, IconButton, LinkBox, LinkOverlay, Spacer, Spinner, Text } from '@chakra-ui/react';
+import { ReactNode, useContext, useEffect } from 'react';
+import {
+  Alert,
+  Box,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  LinkBox,
+  LinkOverlay,
+  Spacer,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { motion } from 'motion/react';
 import BlogCard from '@/components/elements/BlogCard';
@@ -9,10 +21,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from '@/apis/userApi.ts';
 import { fetchBlogsByAuthor } from '@/apis/blogApi.ts';
 import { useTranslation } from 'react-i18next';
+import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 
 function User() {
   const { t } = useTranslation();
   const { userId } = useParams();
+  const { userDetails } = useContext(UserDetailContext);
 
   const { data, isLoading } = useQuery({
     queryKey: ['user', userId],
@@ -47,6 +61,12 @@ function User() {
     return (
       // TODO: Make it look good on phones
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {(userDetails !== null && String(userDetails.id) === userId) && (
+          <Alert.Root status="info" mb={6}>
+            <Alert.Indicator />
+            <Alert.Title>{t('user.othersAlert')}</Alert.Title>
+          </Alert.Root>
+        )}
         <Flex direction="row" alignItems="center" justifyContent="space-between">
           <Box>
             <Flex gap={6} alignItems="center">

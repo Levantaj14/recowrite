@@ -86,7 +86,7 @@ export function Account() {
                 label={item.label}
                 indicator={
                   <Float placement="top-end" offset="6">
-                    <CheckboxCardIndicator  />
+                    <CheckboxCardIndicator />
                   </Float>
                 }
                 addon={<Input value={item.checked} placeholder='URL'/>}

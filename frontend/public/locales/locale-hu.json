@@ -114,12 +114,13 @@
   "user": {
     "about": "Rólam",
     "articles": "Cikkek",
-    "noArticles": "Nem található cikk"
+    "noArticles": "Nem található cikk",
+    "othersAlert": "Így látja a többi felhasználó az oldalad"
   },
   "dashboard": {
     "preferences": {
       "language": {
-        "desc": "Tedd személyesebbé",
+        "desc": "Ez a beállítás csak az alkalmazás nyelvére vonatkozik, nem a blog nyelvére",
         "select": "Válassz egy nyelvet",
         "title": "Nyelv"
       },
@@ -145,7 +146,11 @@
       "preferences": "Preferenciák",
       "posts": "Posztok"
     },
-    "title": "Irányítópult"
+    "title": "Irányítópult",
+    "posts": {
+      "create": "Poszt írása",
+      "postCount": "Posztok száma"
+    }
   },
   "newStory": {
     "buttons": {

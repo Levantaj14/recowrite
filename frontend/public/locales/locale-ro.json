@@ -11,7 +11,7 @@
   "dashboard": {
     "preferences": {
       "language": {
-        "desc": "Personalizați aplicația",
+        "desc": "Această setare se va aplica doar limbii aplicației, nu limbii blogului",
         "select": "Alege o limbă",
         "title": "Limbă"
       },
@@ -37,7 +37,11 @@
       "posts": "Postări",
       "preferences": "Preferințe"
     },
-    "title": "Panou de control"
+    "title": "Panou de control",
+    "posts": {
+      "create": "Scriu un articol",
+      "postCount": "Numărul de articole"
+    }
   },
   "loginPage": {
     "errors": {
@@ -147,7 +151,8 @@
   "user": {
     "about": "Despre mine",
     "articles": "Articole",
-    "noArticles": "Nu s-au găsit articole"
+    "noArticles": "Nu s-au găsit articole",
+    "othersAlert": "Așa vor vedea ceilalți utilizatori pagina ta"
   },
   "newStory": {
     "buttons": {
