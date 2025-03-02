@@ -150,6 +150,14 @@
     "posts": {
       "create": "Poszt írása",
       "postCount": "Posztok száma"
+    },
+    "likes": {
+      "liked": {
+        "author": "Író",
+        "title": "Cím"
+      },
+      "given": "Kedvelt cikkek",
+      "received": "Kapott kedvelések"
     }
   },
   "newStory": {

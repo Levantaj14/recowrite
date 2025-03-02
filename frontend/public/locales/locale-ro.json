@@ -41,6 +41,14 @@
     "posts": {
       "create": "Scriu un articol",
       "postCount": "Numărul de articole"
+    },
+    "likes": {
+      "liked": {
+        "author": "Autor",
+        "title": "Titlu"
+      },
+      "given": "Postări apreciate",
+      "received": "Aprecieri primite"
     }
   },
   "loginPage": {

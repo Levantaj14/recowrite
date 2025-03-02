@@ -152,6 +152,14 @@
     "posts": {
       "postCount": "Number of posts",
       "create": "Create post"
+    },
+    "likes": {
+      "received": "Received likes",
+      "given": "Liked posts",
+      "liked": {
+        "title": "Title",
+        "author": "Author"
+      }
     }
   },
   "newStory": {
