@@ -1,15 +1,19 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LikedBlogsDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.LikeManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.LikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LikeService implements LikeServiceInterface{
+public class LikeService implements LikeServiceInterface {
 
     @Autowired
     private LikeManager likeManager;
@@ -45,5 +49,29 @@ public class LikeService implements LikeServiceInterface{
         UserModel user = userService.getUserModelByUsername(username);
         Optional<LikeModel> likeModel = likeManager.findByBlog_IdAndUser(blogId, user);
         return likeModel.isPresent();
+    }
+
+    @Override
+    public List<LikedBlogsDtoOut> getLikedBlogs(String username) {
+        UserModel user = userService.getUserModelByUsername(username);
+        Optional<List<LikeModel>> likeModel = likeManager.findAllByUser(user);
+        if (likeModel.isPresent()) {
+            List<LikeModel> likeModelList = likeModel.get();
+            List<LikedBlogsDtoOut> likedBlogsDtoOut = new ArrayList<>();
+            for (LikeModel likeModelItem : likeModelList) {
+                BlogModel blog = likeModelItem.getBlog();
+                LikedBlogsDtoOut dtoOut = new LikedBlogsDtoOut(blog.getId(), blog.getUser().getName(), blog.getTitle());
+                likedBlogsDtoOut.add(dtoOut);
+            }
+            return likedBlogsDtoOut;
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public long receivedLikeCount(String username) {
+        UserModel user = userService.getUserModelByUsername(username);
+        Optional<List<LikeModel>> likeModel = likeManager.findAllByBlogUser(user);
+        return likeModel.map(List::size).orElse(0);
     }
 }
