@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Year;
 import java.util.Map;
 
 @Slf4j
@@ -39,6 +40,7 @@ public class MailService implements MailServiceInterface {
             helper.setSubject(subject);
 
             Template template = handlebars.compile(file);
+            data.put("year", Year.now().toString());
             helper.setText(template.apply(data), true);
 
             if (images != null) {
