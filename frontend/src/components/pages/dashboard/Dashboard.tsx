@@ -3,7 +3,7 @@ import Preferences from './Preferences';
 import { useTranslation } from 'react-i18next';
 import { useContext, useEffect, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext';
-import { Account } from './Account';
+import { Account } from './account/Account.tsx';
 import Likes from './Likes';
 import Posts from './Posts';
 import Comments from './Comments';

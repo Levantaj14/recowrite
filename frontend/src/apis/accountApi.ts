@@ -28,3 +28,23 @@ export async function getGivenLikes(): Promise<LikedPost[]> {
   const res = await accountApi.get('/likes/given');
   return res.data;
 }
+
+export async function updateName(name: string): Promise<boolean> {
+  const res = await accountApi.put('/name', { name });
+  return res.status === 200;
+}
+
+export async function updateEmail(email: string): Promise<boolean> {
+  const res = await accountApi.put('/email', { email });
+  return res.status === 200;
+}
+
+export async function updatePassword(oldPassword: string, newPassword: string): Promise<boolean> {
+  const res = await accountApi.put('/password', { oldPassword, newPassword });
+  return res.status === 200;
+}
+
+export async function uploadAvatar(picture: string, name: string): Promise<boolean> {
+  const res = await accountApi.post('/avatar', { name, picture });
+  return res.status === 200;
+}
