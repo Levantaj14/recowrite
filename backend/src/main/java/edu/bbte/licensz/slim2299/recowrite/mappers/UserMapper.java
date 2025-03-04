@@ -6,12 +6,19 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.SocialMediaD
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
+@Slf4j
 @Component
 public class UserMapper {
 
@@ -23,7 +30,17 @@ public class UserMapper {
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setName(user.getName());
-        dto.setAvatar(user.getAvatar());
+        if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
+            Path path = Paths.get(user.getAvatar());
+            try {
+                byte[] fileBytes = Files.readAllBytes(path);
+                String base64 = Base64.getEncoder().encodeToString(fileBytes);
+                dto.setAvatar(base64);
+            } catch (IOException e) {
+                log.error("There was an error reading the user avatar file");
+                dto.setAvatar("");
+            }
+        }
         dto.setBio(user.getBio());
         List<SocialMediaDtoOut> socials = new ArrayList<>();
         if (user.getSocials() != null) {
@@ -52,7 +69,17 @@ public class UserMapper {
         dto.setEmail(userModel.getEmail());
         dto.setGetEmail(userModel.isEmails());
         dto.setBio(userModel.getBio());
-        dto.setAvatar(userModel.getAvatar());
+        if (userModel.getAvatar() != null && !userModel.getAvatar().isEmpty()) {
+            Path path = Paths.get(userModel.getAvatar());
+            try {
+                byte[] fileBytes = Files.readAllBytes(path);
+                String base64 = Base64.getEncoder().encodeToString(fileBytes);
+                dto.setAvatar(base64);
+            } catch (IOException e) {
+                log.error("There was an error reading the user avatar file");
+                dto.setAvatar("");
+            }
+        }
         dto.setLanguage(userModel.getLanguage());
         List<SocialMediaDtoOut> socials = new ArrayList<>();
         if (userModel.getSocials() != null) {
