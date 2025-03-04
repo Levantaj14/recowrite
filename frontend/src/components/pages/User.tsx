@@ -70,7 +70,7 @@ function User() {
         <Flex direction="row" alignItems="center" justifyContent="space-between">
           <Box>
             <Flex gap={6} alignItems="center">
-              <Avatar size="2xl" name={data?.userData.name} src={data?.userData.avatar} />
+              <Avatar size="2xl" name={data?.userData.name} src={`data:image;base64,${data?.userData.avatar}`} />
               <Box>
                 <Heading size="4xl">{data?.userData.name}</Heading>
                 <Text color={'gray'}>@{data?.userData.username}</Text>

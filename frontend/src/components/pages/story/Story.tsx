@@ -84,7 +84,7 @@ function Story() {
               <HoverCardContent>
                 <HoverCardArrow />
                 <Stack gap="4" direction="row">
-                  <Avatar name={data?.userData.name} src={data?.userData.avatar} />
+                  <Avatar name={data?.userData.name} src={`data:image;base64,${data?.userData.avatar}`} />
                   <Stack gap={3}>
                     <Stack gap="1">
                       <Text textStyle="sm" fontWeight="semibold">

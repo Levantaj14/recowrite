@@ -38,7 +38,7 @@ export default function LoggedInAvatar() {
     <Box position="relative">
       <MenuRoot positioning={{ placement: 'bottom-end' }} onSelect={selectedItem}>
         <MenuTrigger asChild>
-          <Avatar size="xs" name={userDetails?.name} src={userDetails?.avatar} />
+          <Avatar size="xs" name={userDetails?.name} src={`data:image;base64,${userDetails?.avatar}`} />
         </MenuTrigger>
         <MenuContent zIndex="popover" position="absolute" right="0">
           <MenuItem value="profile">{t('navbar.buttons.profile')}</MenuItem>
