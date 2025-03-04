@@ -6,7 +6,8 @@
     "delete": "Delete",
     "comment": "Comment",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "change": "Change it"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -160,6 +161,44 @@
         "title": "Title",
         "author": "Author"
       }
+    },
+    "account": {
+      "toast": {
+        "avatar": {
+          "success": "Avatar uploaded successfully",
+          "error": "There was an error while uploading your avatar"
+        },
+        "email": {
+          "loading": "Changing email...",
+          "success": "Email changed successfully",
+          "error": "Email could not be changed"
+        },
+        "name": {
+          "loading": "Changing name...",
+          "success": "Name changed successfully",
+          "error": "Failed to update name"
+        },
+        "password": {
+          "loading": "Saving password...",
+          "success": "Password changed successfully",
+          "error": "Password change failed"
+        }
+      },
+      "uploadButton": "Upload picture",
+      "fields": {
+        "email": "Email",
+        "name": "Name",
+        "password": "Change Password"
+      },
+      "errors": {
+        "minPassword": "The password must be at least 8 characters",
+        "noPassword": "Old password is required"
+      },
+      "password": {
+        "old": "Old password",
+        "new": "New password"
+      },
+      "username": "Username"
     }
   },
   "newStory": {

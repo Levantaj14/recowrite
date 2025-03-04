@@ -6,7 +6,8 @@
     "delete": "Törlés",
     "comment": "Szólj hozzá",
     "cancel": "Mégse",
-    "save": "Mentés"
+    "save": "Mentés",
+    "change": "Változtasd meg"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -158,6 +159,44 @@
       },
       "given": "Kedvelt cikkek",
       "received": "Kapott kedvelések"
+    },
+    "account": {
+      "errors": {
+        "minPassword": "A jelszó legalább 8 karakterből kell álljon",
+        "noPassword": "A régi jelszó kötelező"
+      },
+      "fields": {
+        "email": "Email",
+        "name": "Név",
+        "password": "Jelszó változtatása"
+      },
+      "password": {
+        "new": "Új jelszó",
+        "old": "Régi jelszó"
+      },
+      "toast": {
+        "avatar": {
+          "error": "Hiba történt a kép feltöltése közbe",
+          "success": "A kép sikeresen fel lett töltve"
+        },
+        "email": {
+          "error": "Hiba történt az email megváltoztatása közben",
+          "loading": "Emial változtatása...",
+          "success": "Email sikeresen kicserélve"
+        },
+        "name": {
+          "error": "Hiba történt a név változtatása közben",
+          "loading": "Név mentése...",
+          "success": "Név sikeresen lementve"
+        },
+        "password": {
+          "error": "Jelszó cseréje sikertelen",
+          "loading": "Jelszó mentése...",
+          "success": "Jelszó sikeresen kicserélve"
+        }
+      },
+      "uploadButton": "Kép feltöltés",
+      "username": "Felhasználónév"
     }
   },
   "newStory": {

@@ -6,7 +6,8 @@
     "edit": "Editare",
     "login": "Autentificare",
     "save": "Salvează",
-    "signup": "Conectare"
+    "signup": "Conectare",
+    "change": "Schimabă"
   },
   "dashboard": {
     "preferences": {
@@ -49,6 +50,44 @@
       },
       "given": "Postări apreciate",
       "received": "Aprecieri primite"
+    },
+    "account": {
+      "errors": {
+        "minPassword": "Parola trebuie să conțină măcar 8 caractere",
+        "noPassword": "Parola veche este necesară"
+      },
+      "fields": {
+        "email": "Email",
+        "name": "Nume",
+        "password": "Schimbați parola"
+      },
+      "password": {
+        "new": "Parola nouă",
+        "old": "Parola veche"
+      },
+      "toast": {
+        "avatar": {
+          "error": "Încărcarea imaginii a eșuat",
+          "success": "Imagine încărcată cu succes"
+        },
+        "email": {
+          "error": "Schimabrea adresei de email a eșuat",
+          "loading": "Schimaberea adresei de email...",
+          "success": "Adresă de email schimbată cu succes"
+        },
+        "name": {
+          "error": "Schimbarea numelui a eșuat",
+          "loading": "Schimbarea numeleu...",
+          "success": "Nume salvat cu succes"
+        },
+        "password": {
+          "error": "Schimbarea parolei a eșuat",
+          "loading": "Schimbarea parolei...",
+          "success": "Parolă schimbată cu succes"
+        }
+      },
+      "uploadButton": "Încărcare imagine",
+      "username": "Nume de utilizator"
     }
   },
   "loginPage": {

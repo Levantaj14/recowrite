@@ -1,15 +1,17 @@
 import { CheckboxGroup, Float, Heading, Icon, Input, SimpleGrid } from '@chakra-ui/react';
 import { CheckboxCard, CheckboxCardIndicator } from '@/components/ui/checkbox-card.tsx';
 import { motion } from 'motion/react';
-import { FaBluesky, FaInstagram, FaMastodon, FaMedium, FaXTwitter } from 'react-icons/fa6';
+import { FaBluesky, FaInstagram, FaMedium, FaXTwitter } from 'react-icons/fa6';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export function SocialsBoxes() {
+  const { t } = useTranslation();
   const { userDetails } = useContext(UserDetailContext);
 
   const getSocialUrl = (socialName: string): string | undefined => {
-    const social = userDetails?.socials.find(s => s.name === socialName);
+    const social = userDetails?.socials.find((s) => s.name === socialName);
     return social?.url;
   };
 
@@ -17,7 +19,6 @@ export function SocialsBoxes() {
     { icon: <FaInstagram />, label: 'Instagram', checked: getSocialUrl('Instagram') },
     { icon: <FaXTwitter />, label: 'X', checked: getSocialUrl('X') },
     { icon: <FaBluesky />, label: 'Bluesky', checked: getSocialUrl('Bluesky') },
-    { icon: <FaMastodon />, label: 'Mastodon', checked: getSocialUrl('Mastodon') },
     { icon: <FaMedium />, label: 'Medium', checked: getSocialUrl('Medium') },
   ];
 
@@ -48,7 +49,7 @@ export function SocialsBoxes() {
                   <CheckboxCardIndicator />
                 </Float>
               }
-              addon={<Input value={item.checked} placeholder={item.label === 'Mastodon' ? 'URL' : 'Username'} />}
+              addon={<Input value={item.checked} placeholder={t('dashboard.account.username')} />}
             />
           ))}
         </SimpleGrid>
