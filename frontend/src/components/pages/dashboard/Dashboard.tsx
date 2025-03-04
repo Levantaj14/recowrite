@@ -14,10 +14,11 @@ export default function Dashboard() {
   const [tabs, setTabs] = useState('preferences');
 
   useEffect(() => {
+    document.title = t('dashboard.title');
     if (userDetails === null) {
       setTabs('preferences');
     }
-  }, [userDetails]);
+  }, [t, userDetails]);
 
   return (
     <>
