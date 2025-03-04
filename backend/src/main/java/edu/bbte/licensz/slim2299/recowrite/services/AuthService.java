@@ -49,6 +49,7 @@ public class AuthService implements AuthServiceInterface {
         Map<String, String> images = new HashMap<>();
         images.put("continue-reading", "continue-reading.png");
         images.put("comments", "comments.png");
+        images.put("write", "write.png");
         mailService.sendMessage(user.getEmail(), "Welcome to recowrite!", "signup", model, images);
         return jwtUtil.generateToken(user.getUsername());
     }
