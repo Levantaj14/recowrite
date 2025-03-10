@@ -33,7 +33,6 @@ export default function Preferences() {
 
   useEffect(() => {
     if (userDetails && receiveEmails !== undefined) {
-      setUserDetails({ ...userDetails, getEmail: receiveEmails });
       updatePreferences(selectedLanguage, receiveEmails);
     }
   }, [selectedLanguage, receiveEmails, userDetails, setUserDetails]);
@@ -81,7 +80,13 @@ export default function Preferences() {
               <Heading size="md">{t('dashboard.preferences.notifications.title')}</Heading>
               <Text>{t('dashboard.preferences.notifications.desc')}</Text>
             </Flex>
-            <Checkbox checked={receiveEmails} onCheckedChange={(e) => setReceiveEmails(!!e.checked)} />
+            <Checkbox
+              checked={receiveEmails}
+              onCheckedChange={(e) => {
+                setReceiveEmails(!!e.checked);
+                setUserDetails({ ...userDetails, getEmail: !!e.checked });
+              }}
+            />
           </Flex>
         </motion.div>
       )}
