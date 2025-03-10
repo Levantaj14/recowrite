@@ -5,6 +5,7 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.*;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LikeCountDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.AccountServiceInterface;
+import edu.bbte.licensz.slim2299.recowrite.services.CommentService;
 import edu.bbte.licensz.slim2299.recowrite.services.LikeService;
 import edu.bbte.licensz.slim2299.recowrite.services.UserServiceInterface;
 import jakarta.servlet.http.Cookie;
@@ -33,6 +34,9 @@ public class AccountController {
     private LikeService likeService;
 
     @Autowired
+    private CommentService commentService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @PutMapping("/preferences")
@@ -59,6 +63,15 @@ public class AccountController {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new LikeCountDtoOut(likeService.receivedLikeCount(jwtUtil.extractUsername(cookie.getValue()))));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity<?> getComments(HttpServletRequest request) {
+        Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
+        if (cookie != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(commentService.findAllByAccount(jwtUtil.extractUsername(cookie.getValue())));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
     }

@@ -1,5 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.mappers;
 
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.AccountCommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.CommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.CommentModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
@@ -35,5 +36,14 @@ public class CommentMapper {
         }
         commentDto.setAuthorUsername(userModel.getUsername());
         return commentDto;
+    }
+
+    public AccountCommentDtoOut modelToAccountDto(CommentModel comment) {
+        AccountCommentDtoOut accountCommentDto = new AccountCommentDtoOut();
+        accountCommentDto.setId(comment.getId());
+        accountCommentDto.setComment(comment.getComment());
+        accountCommentDto.setTitle(comment.getBlog().getTitle());
+        accountCommentDto.setBlogId(comment.getBlog().getId());
+        return accountCommentDto;
     }
 }
