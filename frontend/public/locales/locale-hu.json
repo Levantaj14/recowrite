@@ -197,6 +197,9 @@
       },
       "uploadButton": "Kép feltöltés",
       "username": "Felhasználónév"
+    },
+    "comments": {
+      "comment": "Komment"
     }
   },
   "newStory": {

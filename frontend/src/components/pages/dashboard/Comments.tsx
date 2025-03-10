@@ -35,8 +35,8 @@ export default function Comments() {
             <Table.Root size="sm" stickyHeader interactive>
               <Table.Header>
                 <Table.Row bg="bg.subtle">
-                  <Table.ColumnHeader>Comment</Table.ColumnHeader>
-                  <Table.ColumnHeader>Title</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('dashboard.comments.comment')}</Table.ColumnHeader>
+                  <Table.ColumnHeader>{t('dashboard.likes.liked.title')}</Table.ColumnHeader>
                 </Table.Row>
               </Table.Header>
 

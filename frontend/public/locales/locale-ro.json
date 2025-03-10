@@ -88,6 +88,9 @@
       },
       "uploadButton": "Încărcare imagine",
       "username": "Nume de utilizator"
+    },
+    "comments": {
+      "comment": "Comentariu"
     }
   },
   "loginPage": {

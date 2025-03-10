@@ -199,6 +199,9 @@
         "new": "New password"
       },
       "username": "Username"
+    },
+    "comments": {
+      "comment": "Comment"
     }
   },
   "newStory": {
