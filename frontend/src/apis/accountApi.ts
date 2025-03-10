@@ -7,6 +7,13 @@ type LikedPost = {
   author: string;
 }
 
+type AccountCommentType = {
+  id: number;
+  blogId: number;
+  title: string;
+  comment: string;
+}
+
 const accountApi = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/account`,
   withCredentials: true,
@@ -26,6 +33,11 @@ export async function getReceivedLikeCount(): Promise<LikeCountType> {
 
 export async function getGivenLikes(): Promise<LikedPost[]> {
   const res = await accountApi.get('/likes/given');
+  return res.data;
+}
+
+export async function getUserComments(): Promise<AccountCommentType[]> {
+  const res = await accountApi.get(`/comments`);
   return res.data;
 }
 
