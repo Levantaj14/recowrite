@@ -1,0 +1,43 @@
+class BlogsFormat {
+  final int id;
+  final String title;
+  final String content;
+  final String description;
+  final int author;
+  final String banner;
+  final String date;
+
+  const BlogsFormat({
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.description,
+    required this.author,
+    required this.banner,
+    required this.date,
+  });
+
+  factory BlogsFormat.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      {
+        'id': int id,
+        'title': String title,
+        'content': String content,
+        'description': String descripton,
+        'author': int author,
+        'banner': String banner,
+        'date': String date,
+      } =>
+        BlogsFormat(
+          id: id,
+          title: title,
+          content: content,
+          description: descripton,
+          author: author,
+          banner: banner,
+          date: date,
+        ),
+      _ => throw const FormatException('Failed to parse blogs.'),
+    };
+  }
+}
