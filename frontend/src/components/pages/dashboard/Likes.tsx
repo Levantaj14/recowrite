@@ -57,7 +57,7 @@ export default function Likes() {
           transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.04 }}
         >
           <Heading size="md" mt="4">{t('dashboard.likes.given')}</Heading>
-          <Table.ScrollArea borderWidth="1px" rounded="md" height="400px" mt="2">
+          <Table.ScrollArea borderWidth="1px" rounded="md" height="calc(100vh - 500px)" mt="2">
             <Table.Root size="sm" stickyHeader interactive>
               <Table.Header>
                 <Table.Row bg="bg.subtle">

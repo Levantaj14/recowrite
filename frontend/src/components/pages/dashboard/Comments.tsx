@@ -25,13 +25,12 @@ export default function Comments() {
   function content() {
     return (
       <>
-        <Heading size="2xl">{t('dashboard.tabs.comments')}</Heading>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-          <Table.ScrollArea borderWidth="1px" rounded="md" height="400px" mt="2">
+          <Table.ScrollArea borderWidth="1px" rounded="md" height="calc(100vh - 350px)" mt="4">
             <Table.Root size="sm" stickyHeader interactive>
               <Table.Header>
                 <Table.Row bg="bg.subtle">
@@ -55,5 +54,10 @@ export default function Comments() {
     );
   }
 
-  return isLoading ? loading() : content();
+  return (
+    <>
+      <Heading size="2xl">{t('dashboard.tabs.comments')}</Heading>
+      {isLoading ? loading() : content()}
+    </>
+  );
 }
