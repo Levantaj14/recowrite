@@ -3,23 +3,86 @@ import { CheckboxCard, CheckboxCardIndicator } from '@/components/ui/checkbox-ca
 import { motion } from 'motion/react';
 import { FaBluesky, FaInstagram, FaMedium, FaXTwitter } from 'react-icons/fa6';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { updateSocial } from '@/apis/accountApi.ts';
+import CustomLoading from '@/components/elements/CustomLoading.tsx';
+
+interface SocialInput {
+  [key: string]: string;
+}
+
+interface SocialItem {
+  icon: JSX.Element;
+  label: string;
+  name: string;
+}
 
 export function SocialsBoxes() {
   const { t } = useTranslation();
-  const { userDetails } = useContext(UserDetailContext);
+  const { userDetails, setUserDetails } = useContext(UserDetailContext);
+  const [socialInputs, setSocialInputs] = useState<SocialInput>({});
 
-  const getSocialUrl = (socialName: string): string | undefined => {
-    const social = userDetails?.socials.find((s) => s.name === socialName);
-    return social?.url;
+  useEffect(() => {
+    if (userDetails?.socials) {
+      const initialInputs = userDetails.socials.reduce<SocialInput>((acc, social) => ({
+        ...acc,
+        [social.name]: social.url || ''
+      }), {});
+
+      setSocialInputs(initialInputs);
+    }
+  }, [userDetails]);
+
+  const handleInputChange = (socialName: string, value: string) => {
+    setSocialInputs(prev => ({
+      ...prev,
+      [socialName]: value
+    }));
   };
 
-  const items = [
-    { icon: <FaInstagram />, label: 'Instagram', checked: getSocialUrl('Instagram') },
-    { icon: <FaXTwitter />, label: 'X', checked: getSocialUrl('X') },
-    { icon: <FaBluesky />, label: 'Bluesky', checked: getSocialUrl('Bluesky') },
-    { icon: <FaMedium />, label: 'Medium', checked: getSocialUrl('Medium') },
+  const handleInputBlur = (socialName: string, value: string) => {
+    if (!setUserDetails || !userDetails) return;
+
+    const socialExists = userDetails.socials.some(social => social.name === socialName);
+
+    let updatedSocials;
+    if (socialExists) {
+      updatedSocials = userDetails.socials.map(social => {
+        if (social.name === socialName) {
+          return { ...social, url: value };
+        }
+        return social;
+      });
+    } else {
+      updatedSocials = [
+        ...userDetails.socials,
+        { name: socialName, url: value }
+      ];
+    }
+
+    setUserDetails({ ...userDetails, socials: updatedSocials });
+    toast.promise(updateSocial(value, socialName), {
+      loading: CustomLoading(t('dashboard.account.toast.socials.loading')),
+      success: t('dashboard.account.toast.socials.success'),
+      error: t('dashboard.account.toast.socials.error')
+    })
+  };
+
+  const getSocialUrl = (socialName: string): string => {
+    return socialInputs[socialName] !== undefined ? socialInputs[socialName] : '';
+  };
+
+  const isSocialChecked = (socialName: string): boolean => {
+    return socialInputs[socialName] !== undefined && socialInputs[socialName] !== '';
+  };
+
+  const items: SocialItem[] = [
+    { icon: <FaInstagram />, label: 'Instagram', name: 'Instagram' },
+    { icon: <FaXTwitter />, label: 'X', name: 'X' },
+    { icon: <FaBluesky />, label: 'Bluesky', name: 'Bluesky' },
+    { icon: <FaMedium />, label: 'Medium', name: 'Medium' },
   ];
 
   return (
@@ -29,13 +92,13 @@ export function SocialsBoxes() {
       transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.16 }}
     >
       <Heading size="md" mt={4} mb={4}>
-        Socials
+        {t('dashboard.account.socials')}
       </Heading>
       <CheckboxGroup>
         <SimpleGrid minChildWidth="200px" gap="2">
           {items.map((item) => (
             <CheckboxCard
-              checked={item.checked !== undefined}
+              checked={isSocialChecked(item.name)}
               align="center"
               key={item.label}
               icon={
@@ -49,7 +112,14 @@ export function SocialsBoxes() {
                   <CheckboxCardIndicator />
                 </Float>
               }
-              addon={<Input value={item.checked} placeholder={t('dashboard.account.username')} />}
+              addon={
+                <Input
+                  value={getSocialUrl(item.name)}
+                  onChange={(e) => handleInputChange(item.name, e.target.value)}
+                  onBlur={(e) => handleInputBlur(item.name, e.target.value)}
+                  placeholder={t('dashboard.account.username')}
+                />
+              }
             />
           ))}
         </SimpleGrid>

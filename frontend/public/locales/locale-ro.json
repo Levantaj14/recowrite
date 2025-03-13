@@ -84,10 +84,16 @@
           "error": "Schimbarea parolei a eșuat",
           "loading": "Schimbarea parolei...",
           "success": "Parolă schimbată cu succes"
+        },
+        "socials": {
+          "error": "Salvarea numeleui de utilizator a unui social media a eșuat",
+          "loading": "Salvarea numelui de utilizator...",
+          "success": "Nume de utilizator salvat cu succes"
         }
       },
       "uploadButton": "Încărcare imagine",
-      "username": "Nume de utilizator"
+      "username": "Nume de utilizator",
+      "socials": "Social media"
     },
     "comments": {
       "comment": "Comentariu"

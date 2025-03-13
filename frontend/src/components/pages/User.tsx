@@ -15,7 +15,7 @@ import {
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { motion } from 'motion/react';
 import BlogCard from '@/components/elements/BlogCard';
-import { FaBluesky, FaInstagram, FaMastodon, FaMedium, FaXTwitter } from 'react-icons/fa6';
+import { FaBluesky, FaInstagram, FaMedium, FaXTwitter } from 'react-icons/fa6';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from '@/apis/userApi.ts';
@@ -45,9 +45,15 @@ function User() {
     Instagram: <FaInstagram />,
     X: <FaXTwitter />,
     Bluesky: <FaBluesky />,
-    Mastodon: <FaMastodon />,
     Medium: <FaMedium />,
   };
+
+  const urlMap: { [key: string]: string } = {
+    Instagram: 'https://www.instagram.com/',
+    X: 'https://x.com/',
+    Bluesky: 'https://bsky.app/profile/',
+    Medium: 'https://medium.com/@',
+  }
 
   function loading() {
     return (
@@ -84,7 +90,7 @@ function User() {
                 data.userData.socials.map((data) => (
                   <LinkBox>
                     <IconButton variant="ghost">
-                      <LinkOverlay href={data.url} target="_blank">
+                      <LinkOverlay href={`${urlMap[data.name]}${data.url}`} target="_blank">
                         {iconMap[data.name]}
                       </LinkOverlay>
                     </IconButton>

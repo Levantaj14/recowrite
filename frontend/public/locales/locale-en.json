@@ -182,6 +182,11 @@
           "loading": "Saving password...",
           "success": "Password changed successfully",
           "error": "Password change failed"
+        },
+        "socials": {
+          "success": "Social media username saved",
+          "error": "Failed to save your username for one of your socials",
+          "loading": "Saving social media username..."
         }
       },
       "uploadButton": "Upload picture",
@@ -198,7 +203,8 @@
         "old": "Old password",
         "new": "New password"
       },
-      "username": "Username"
+      "username": "Username",
+      "socials": "Socials"
     },
     "comments": {
       "comment": "Comment"

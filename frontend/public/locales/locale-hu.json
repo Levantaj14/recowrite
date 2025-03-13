@@ -193,10 +193,16 @@
           "error": "Jelszó cseréje sikertelen",
           "loading": "Jelszó mentése...",
           "success": "Jelszó sikeresen kicserélve"
+        },
+        "socials": {
+          "error": "Nem sikerült menteni a felhasználóneved egyik közösségi oldalahoz",
+          "loading": "Közösségi háló felhsználónév mentése...",
+          "success": "Közösségi háló felhasználónév lementve"
         }
       },
       "uploadButton": "Kép feltöltés",
-      "username": "Felhasználónév"
+      "username": "Felhasználónév",
+      "socials": "Közösségi média"
     },
     "comments": {
       "comment": "Komment"
