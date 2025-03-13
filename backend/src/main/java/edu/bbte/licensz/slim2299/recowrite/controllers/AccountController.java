@@ -115,4 +115,14 @@ public class AccountController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
     }
+
+    @PutMapping("/socials")
+    public ResponseEntity<?> chnageSocials(HttpServletRequest request, @RequestBody @Valid SocialDtoIn socialDtoIn) {
+        Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
+        if (cookie != null) {
+            accountService.updateSocial(jwtUtil.extractUsername(cookie.getValue()), socialDtoIn);
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Social updated successfully"));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+    }
 }

@@ -1,12 +1,14 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.UserAvatarDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.UserEmailDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.UserNameDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.UserPasswordChangeDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.*;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.IncorrectPasswordException;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.SocialMediaNotSupportedException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.SocialsManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.SocialsTypeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsModel;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsTypesModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +27,12 @@ public class AccountService implements AccountServiceInterface {
 
     @Autowired
     private UserManager userManager;
+
+    @Autowired
+    private SocialsTypeManager socialsTypeManager;
+
+    @Autowired
+    private SocialsManager socialsManager;
 
     private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/";
 
@@ -83,6 +92,37 @@ public class AccountService implements AccountServiceInterface {
                 userManager.save(userModel);
             }
             return;
+        }
+        throw new UserNotFoundException("User not found");
+    }
+
+    @Override
+    public void updateSocial(String username, SocialDtoIn socialDtoIn) {
+        Optional<UserModel> user = userManager.findByUsername(username);
+        if (user.isPresent()) {
+            UserModel userModel = user.get();
+            Optional<SocialsTypesModel> socialsTypes = socialsTypeManager.findByName(socialDtoIn.getName());
+            if (socialsTypes.isPresent()) {
+                SocialsTypesModel socialsTypesModel = socialsTypes.get();
+                Optional<SocialsModel> socialsModel = socialsManager.findBySocialsTypeAndUser(socialsTypesModel, userModel);
+                if (socialsModel.isPresent()) {
+                    SocialsModel socialsModelModel = socialsModel.get();
+                    if (Objects.equals(socialDtoIn.getUrl(), "")){
+                        socialsManager.delete(socialsModelModel);
+                    } else {
+                        socialsModelModel.setLink(socialDtoIn.getUrl());
+                        socialsManager.save(socialsModelModel);
+                    }
+                } else {
+                    SocialsModel newSocialsModel = new SocialsModel();
+                    newSocialsModel.setUser(userModel);
+                    newSocialsModel.setSocialsType(socialsTypesModel);
+                    newSocialsModel.setLink(socialDtoIn.getUrl());
+                    socialsManager.save(newSocialsModel);
+                }
+                return;
+            }
+            throw new SocialMediaNotSupportedException("Social media not supported");
         }
         throw new UserNotFoundException("User not found");
     }
