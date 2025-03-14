@@ -6,7 +6,8 @@
     "delete": "Delete",
     "comment": "Comment",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "change": "Change it"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -116,7 +117,8 @@
   "user": {
     "about": "About me",
     "articles": "Articles",
-    "noArticles": "No articles found"
+    "noArticles": "No articles found",
+    "othersAlert": "This is how others see your page"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -130,7 +132,7 @@
     "preferences": {
       "language": {
         "title": "Language",
-        "desc": "Make it more personal",
+        "desc": "This setting will apply only to the app's language, not the blog's language.",
         "select": "Select a language"
       },
       "theme": {
@@ -147,6 +149,65 @@
         "title": "Notifications via email",
         "desc": "Get an email when someone logs in to your account"
       }
+    },
+    "posts": {
+      "postCount": "Number of posts",
+      "create": "Create post"
+    },
+    "likes": {
+      "received": "Received likes",
+      "given": "Liked posts",
+      "liked": {
+        "title": "Title",
+        "author": "Author"
+      }
+    },
+    "account": {
+      "toast": {
+        "avatar": {
+          "success": "Avatar uploaded successfully",
+          "error": "There was an error while uploading your avatar"
+        },
+        "email": {
+          "loading": "Changing email...",
+          "success": "Email changed successfully",
+          "error": "Email could not be changed"
+        },
+        "name": {
+          "loading": "Changing name...",
+          "success": "Name changed successfully",
+          "error": "Failed to update name"
+        },
+        "password": {
+          "loading": "Saving password...",
+          "success": "Password changed successfully",
+          "error": "Password change failed"
+        },
+        "socials": {
+          "success": "Social media username saved",
+          "error": "Failed to save your username for one of your socials",
+          "loading": "Saving social media username..."
+        }
+      },
+      "uploadButton": "Upload picture",
+      "fields": {
+        "email": "Email",
+        "name": "Name",
+        "password": "Change Password"
+      },
+      "errors": {
+        "minPassword": "The password must be at least 8 characters",
+        "noPassword": "Old password is required"
+      },
+      "password": {
+        "old": "Old password",
+        "new": "New password"
+      },
+      "username": "Username",
+      "socials": "Socials"
+    },
+    "comments": {
+      "comment": "Comment"
     }
   },
   "newStory": {

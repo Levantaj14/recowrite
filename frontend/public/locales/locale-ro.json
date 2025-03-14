@@ -6,12 +6,13 @@
     "edit": "Editare",
     "login": "Autentificare",
     "save": "Salvează",
-    "signup": "Conectare"
+    "signup": "Conectare",
+    "change": "Schimabă"
   },
   "dashboard": {
     "preferences": {
       "language": {
-        "desc": "Personalizați aplicația",
+        "desc": "Această setare se va aplica doar limbii aplicației, nu limbii blogului",
         "select": "Alege o limbă",
         "title": "Limbă"
       },
@@ -37,7 +38,66 @@
       "posts": "Postări",
       "preferences": "Preferințe"
     },
-    "title": "Panou de control"
+    "title": "Panou de control",
+    "posts": {
+      "create": "Scriu un articol",
+      "postCount": "Numărul de articole"
+    },
+    "likes": {
+      "liked": {
+        "author": "Autor",
+        "title": "Titlu"
+      },
+      "given": "Postări apreciate",
+      "received": "Aprecieri primite"
+    },
+    "account": {
+      "errors": {
+        "minPassword": "Parola trebuie să conțină măcar 8 caractere",
+        "noPassword": "Parola veche este necesară"
+      },
+      "fields": {
+        "email": "Email",
+        "name": "Nume",
+        "password": "Schimbați parola"
+      },
+      "password": {
+        "new": "Parola nouă",
+        "old": "Parola veche"
+      },
+      "toast": {
+        "avatar": {
+          "error": "Încărcarea imaginii a eșuat",
+          "success": "Imagine încărcată cu succes"
+        },
+        "email": {
+          "error": "Schimabrea adresei de email a eșuat",
+          "loading": "Schimaberea adresei de email...",
+          "success": "Adresă de email schimbată cu succes"
+        },
+        "name": {
+          "error": "Schimbarea numelui a eșuat",
+          "loading": "Schimbarea numeleu...",
+          "success": "Nume salvat cu succes"
+        },
+        "password": {
+          "error": "Schimbarea parolei a eșuat",
+          "loading": "Schimbarea parolei...",
+          "success": "Parolă schimbată cu succes"
+        },
+        "socials": {
+          "error": "Salvarea numeleui de utilizator a unui social media a eșuat",
+          "loading": "Salvarea numelui de utilizator...",
+          "success": "Nume de utilizator salvat cu succes"
+        }
+      },
+      "uploadButton": "Încărcare imagine",
+      "username": "Nume de utilizator",
+      "socials": "Social media"
+    },
+    "comments": {
+      "comment": "Comentariu"
+    }
   },
   "loginPage": {
     "errors": {
@@ -147,7 +207,8 @@
   "user": {
     "about": "Despre mine",
     "articles": "Articole",
-    "noArticles": "Nu s-au găsit articole"
+    "noArticles": "Nu s-au găsit articole",
+    "othersAlert": "Așa vor vedea ceilalți utilizatori pagina ta"
   },
   "newStory": {
     "buttons": {

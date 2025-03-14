@@ -11,4 +11,6 @@ public interface CommentManager extends JpaRepository<CommentModel, Long> {
     Optional<List<CommentModel>> findAllByBlog_Id(long blogId);
 
     Optional<CommentModel> findByIdAndUser(long id, UserModel user);
+
+    List<CommentModel> findAllByUser(UserModel user);
 }

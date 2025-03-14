@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Preferences() {
-  const { userDetails } = useContext(UserDetailContext);
+  const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const { i18n, t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.language);
   const [receiveEmails, setReceiveEmails] = useState<boolean | undefined>(userDetails?.getEmail);
@@ -35,11 +35,14 @@ export default function Preferences() {
     if (userDetails && receiveEmails !== undefined) {
       updatePreferences(selectedLanguage, receiveEmails);
     }
-  }, [selectedLanguage, receiveEmails, userDetails]);
+  }, [selectedLanguage, receiveEmails, userDetails, setUserDetails]);
 
   const languageChanged = (e: SelectValueChangeDetails) => {
     i18n.changeLanguage(e.value[0]);
     localStorage.setItem('language', e.value[0]);
+    if (userDetails) {
+      setUserDetails({ ...userDetails, language: e.value[0] });
+    }
     setSelectedLanguage(e.value[0]);
   };
 
@@ -77,7 +80,13 @@ export default function Preferences() {
               <Heading size="md">{t('dashboard.preferences.notifications.title')}</Heading>
               <Text>{t('dashboard.preferences.notifications.desc')}</Text>
             </Flex>
-            <Checkbox checked={receiveEmails} onCheckedChange={(e) => setReceiveEmails(!!e.checked)} />
+            <Checkbox
+              checked={receiveEmails}
+              onCheckedChange={(e) => {
+                setReceiveEmails(!!e.checked);
+                setUserDetails({ ...userDetails, getEmail: !!e.checked });
+              }}
+            />
           </Flex>
         </motion.div>
       )}

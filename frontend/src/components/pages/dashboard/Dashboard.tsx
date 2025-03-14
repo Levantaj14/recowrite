@@ -1,9 +1,9 @@
 import { Heading, Tabs } from '@chakra-ui/react';
 import Preferences from './Preferences';
 import { useTranslation } from 'react-i18next';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext';
-import { Account } from './Account';
+import { Account } from './account/Account.tsx';
 import Likes from './Likes';
 import Posts from './Posts';
 import Comments from './Comments';
@@ -11,13 +11,22 @@ import Comments from './Comments';
 export default function Dashboard() {
   const { t } = useTranslation();
   const { userDetails } = useContext(UserDetailContext);
+  const [tabs, setTabs] = useState('preferences');
+
+  useEffect(() => {
+    document.title = t('dashboard.title');
+    if (userDetails === null) {
+      setTabs('preferences');
+    }
+  }, [t, userDetails]);
 
   return (
     <>
       <Heading size="4xl" mb="6">
         {t('dashboard.title')}
       </Heading>
-      <Tabs.Root lazyMount unmountOnExit defaultValue="preferences">
+      <Tabs.Root lazyMount unmountOnExit defaultValue="preferences" value={tabs}
+                 onValueChange={(e) => setTabs(e.value)}>
         <Tabs.List>
           <Tabs.Trigger value="preferences">{t('dashboard.tabs.preferences')}</Tabs.Trigger>
           {userDetails && (
@@ -38,5 +47,6 @@ export default function Dashboard() {
         <Tabs.Content value="likes"><Likes /></Tabs.Content>
       </Tabs.Root>
     </>
-  );
+  )
+    ;
 }

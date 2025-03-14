@@ -1,18 +1,32 @@
-import { ReactNode, useEffect } from 'react';
-import { Box, Center, Flex, Heading, IconButton, LinkBox, LinkOverlay, Spacer, Spinner, Text } from '@chakra-ui/react';
+import { ReactNode, useContext, useEffect } from 'react';
+import {
+  Alert,
+  Box,
+  Center,
+  Flex,
+  Heading,
+  IconButton,
+  LinkBox,
+  LinkOverlay,
+  Spacer,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { motion } from 'motion/react';
 import BlogCard from '@/components/elements/BlogCard';
-import { FaBluesky, FaInstagram, FaMastodon, FaMedium, FaXTwitter } from 'react-icons/fa6';
+import { FaBluesky, FaInstagram, FaMedium, FaXTwitter } from 'react-icons/fa6';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from '@/apis/userApi.ts';
 import { fetchBlogsByAuthor } from '@/apis/blogApi.ts';
 import { useTranslation } from 'react-i18next';
+import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 
 function User() {
   const { t } = useTranslation();
   const { userId } = useParams();
+  const { userDetails } = useContext(UserDetailContext);
 
   const { data, isLoading } = useQuery({
     queryKey: ['user', userId],
@@ -31,9 +45,15 @@ function User() {
     Instagram: <FaInstagram />,
     X: <FaXTwitter />,
     Bluesky: <FaBluesky />,
-    Mastodon: <FaMastodon />,
     Medium: <FaMedium />,
   };
+
+  const urlMap: { [key: string]: string } = {
+    Instagram: 'https://www.instagram.com/',
+    X: 'https://x.com/',
+    Bluesky: 'https://bsky.app/profile/',
+    Medium: 'https://medium.com/@',
+  }
 
   function loading() {
     return (
@@ -47,10 +67,16 @@ function User() {
     return (
       // TODO: Make it look good on phones
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {(userDetails !== null && String(userDetails.id) === userId) && (
+          <Alert.Root status="info" mb={6}>
+            <Alert.Indicator />
+            <Alert.Title>{t('user.othersAlert')}</Alert.Title>
+          </Alert.Root>
+        )}
         <Flex direction="row" alignItems="center" justifyContent="space-between">
           <Box>
             <Flex gap={6} alignItems="center">
-              <Avatar size="2xl" name={data?.userData.name} src={data?.userData.avatar} />
+              <Avatar size="2xl" name={data?.userData.name} src={`data:image;base64,${data?.userData.avatar}`} />
               <Box>
                 <Heading size="4xl">{data?.userData.name}</Heading>
                 <Text color={'gray'}>@{data?.userData.username}</Text>
@@ -64,7 +90,7 @@ function User() {
                 data.userData.socials.map((data) => (
                   <LinkBox>
                     <IconButton variant="ghost">
-                      <LinkOverlay href={data.url} target="_blank">
+                      <LinkOverlay href={`${urlMap[data.name]}${data.url}`} target="_blank">
                         {iconMap[data.name]}
                       </LinkOverlay>
                     </IconButton>

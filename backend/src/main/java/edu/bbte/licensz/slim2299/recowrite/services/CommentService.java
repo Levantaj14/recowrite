@@ -1,6 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.CommentDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.AccountCommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.CommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.CommentNotFoundException;
@@ -44,6 +45,20 @@ public class CommentService implements CommentServiceInterface{
             }
         }
         return commentDtos;
+    }
+
+    @Override
+    public List<AccountCommentDtoOut> findAllByAccount(String username) {
+        Optional<UserModel> user = userManager.findByUsername(username);
+        if (user.isPresent()) {
+            List<CommentModel> comments = commentManager.findAllByUser(user.get());
+            List<AccountCommentDtoOut> accountCommentDtos = new ArrayList<>();
+            for (CommentModel commentModel : comments) {
+                accountCommentDtos.add(commentMapper.modelToAccountDto(commentModel));
+            }
+            return accountCommentDtos;
+        }
+        throw new UserNotFoundException("User not found");
     }
 
     @Override

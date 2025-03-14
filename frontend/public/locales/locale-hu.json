@@ -6,7 +6,8 @@
     "delete": "Törlés",
     "comment": "Szólj hozzá",
     "cancel": "Mégse",
-    "save": "Mentés"
+    "save": "Mentés",
+    "change": "Változtasd meg"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -114,12 +115,13 @@
   "user": {
     "about": "Rólam",
     "articles": "Cikkek",
-    "noArticles": "Nem található cikk"
+    "noArticles": "Nem található cikk",
+    "othersAlert": "Így látja a többi felhasználó az oldalad"
   },
   "dashboard": {
     "preferences": {
       "language": {
-        "desc": "Tedd személyesebbé",
+        "desc": "Ez a beállítás csak az alkalmazás nyelvére vonatkozik, nem a blog nyelvére",
         "select": "Válassz egy nyelvet",
         "title": "Nyelv"
       },
@@ -145,7 +147,66 @@
       "preferences": "Preferenciák",
       "posts": "Posztok"
     },
-    "title": "Irányítópult"
+    "title": "Irányítópult",
+    "posts": {
+      "create": "Poszt írása",
+      "postCount": "Posztok száma"
+    },
+    "likes": {
+      "liked": {
+        "author": "Író",
+        "title": "Cím"
+      },
+      "given": "Kedvelt cikkek",
+      "received": "Kapott kedvelések"
+    },
+    "account": {
+      "errors": {
+        "minPassword": "A jelszó legalább 8 karakterből kell álljon",
+        "noPassword": "A régi jelszó kötelező"
+      },
+      "fields": {
+        "email": "Email",
+        "name": "Név",
+        "password": "Jelszó változtatása"
+      },
+      "password": {
+        "new": "Új jelszó",
+        "old": "Régi jelszó"
+      },
+      "toast": {
+        "avatar": {
+          "error": "Hiba történt a kép feltöltése közbe",
+          "success": "A kép sikeresen fel lett töltve"
+        },
+        "email": {
+          "error": "Hiba történt az email megváltoztatása közben",
+          "loading": "Emial változtatása...",
+          "success": "Email sikeresen kicserélve"
+        },
+        "name": {
+          "error": "Hiba történt a név változtatása közben",
+          "loading": "Név mentése...",
+          "success": "Név sikeresen lementve"
+        },
+        "password": {
+          "error": "Jelszó cseréje sikertelen",
+          "loading": "Jelszó mentése...",
+          "success": "Jelszó sikeresen kicserélve"
+        },
+        "socials": {
+          "error": "Nem sikerült menteni a felhasználóneved egyik közösségi oldalahoz",
+          "loading": "Közösségi háló felhsználónév mentése...",
+          "success": "Közösségi háló felhasználónév lementve"
+        }
+      },
+      "uploadButton": "Kép feltöltés",
+      "username": "Felhasználónév",
+      "socials": "Közösségi média"
+    },
+    "comments": {
+      "comment": "Komment"
+    }
   },
   "newStory": {
     "buttons": {

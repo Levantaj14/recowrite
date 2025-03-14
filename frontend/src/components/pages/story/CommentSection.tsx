@@ -39,7 +39,7 @@ export default function CommentSection() {
   const schema = z.object({
     comment: z.string().nonempty(t('story.comments.errors.commentRequired')).max(255, t('story.comments.errors.commentLength')),
   });
-  
+
   type FormFields = z.infer<typeof schema>;
 
   const { blogId } = useParams();
@@ -132,7 +132,7 @@ export default function CommentSection() {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
             <Flex mt={4} ml={2} flexDirection="row" justifyContent="start">
-              <Avatar size="xs" mr={4} name={comment.authorName} src={comment.authorAvatar} />
+              <Avatar size="xs" mr={4} name={comment.authorName} src={`data:image;base64,${comment.authorAvatar}`} />
               <Flex flexDirection="column">
                 <Link asChild>
                   <NavLink to={`/user/${comment.authorId}`}>
