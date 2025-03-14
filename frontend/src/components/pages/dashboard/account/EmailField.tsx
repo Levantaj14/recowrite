@@ -1,5 +1,4 @@
 import { Flex, Heading, Input } from '@chakra-ui/react';
-import { Button } from '@/components/ui/button.tsx';
 import { motion } from 'motion/react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useContext, useState } from 'react';
@@ -12,21 +11,17 @@ export function EmailField() {
   const { t } = useTranslation();
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const [email, setEmail] = useState(userDetails ? userDetails.email : '');
-  const [disabled, setDisabled] = useState(false);
 
   const onSave = () => {
-    setDisabled(true);
     toast.promise(updateEmail(email), {
       loading: CustomLoading(t('dashboard.account.toast.email.loading')),
       success: () => {
-        setDisabled(false);
         return t('dashboard.account.toast.email.success');
       },
       error: () => {
         if (userDetails) {
           setUserDetails({ ...userDetails, email });
         }
-        setDisabled(false);
         return t('dashboard.account.toast.email.error');
       },
     });
@@ -40,12 +35,7 @@ export function EmailField() {
     >
       <Flex align="start" justifyContent="space-between" alignItems="center" mt="4">
         <Heading size="md">{t('dashboard.account.fields.email')}</Heading>
-        <Flex align="start" alignItems="center" gap="2">
-          <Input width="350px" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Button size="sm" variant="outline" disabled={disabled} onClick={onSave}>
-          {t('buttons.save')}
-          </Button>
-        </Flex>
+        <Input width="350px" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={onSave} />
       </Flex>
     </motion.div>
   );
