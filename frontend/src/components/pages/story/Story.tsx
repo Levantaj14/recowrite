@@ -18,7 +18,7 @@ import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchBlog, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import LikeButton from '@/components/pages/story/LikeButton.tsx';
 import { getLikeCount, getLiked } from '@/apis/likesApi.ts';
 import CommentSection from '@/components/pages/story/CommentSection.tsx';
@@ -29,6 +29,7 @@ import Markdown from 'react-markdown';
 function Story() {
   const { t } = useTranslation();
   const { blogId } = useParams();
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['blog', blogId],
@@ -52,6 +53,13 @@ function Story() {
       return recommendationData;
     },
   });
+
+  useEffect(() => {
+    if (recData && !recIsLoading && !recIsError) {
+      setHasLoadedOnce(true);
+    }
+  }, [recData, recIsLoading, recIsError]);
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -150,7 +158,7 @@ function Story() {
         </Prose>
         <Separator />
         <CommentSection />
-        {!recIsError && (
+        {(!!recData || hasLoadedOnce) && (
           <>
             <Separator />
             <Heading size="3xl" mt="5" mb="5">
