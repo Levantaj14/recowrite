@@ -9,7 +9,7 @@ import {
   Card,
   VStack,
   Center,
-  Spinner,
+  Spinner, Box,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { HoverCardArrow, HoverCardContent, HoverCardRoot, HoverCardTrigger } from '../../ui/hover-card.tsx';
@@ -35,14 +35,21 @@ function Story() {
     queryFn: async () => {
       const blogData = await fetchBlog(blogId);
       const userData = await fetchUser(blogData.author);
+      const liked = await getLiked(blogId);
+      const likeCount = await getLikeCount(blogId);
+      return { blogData, userData, liked, likeCount };
+    },
+  });
+
+  const { data: recData, isLoading: recIsLoading, isError: recIsError } = useQuery({
+    queryKey: ['recommendation', blogId],
+    queryFn: async () => {
       const recommendationData = await fetchBlogRecommendation(blogId);
       for (const rec of recommendationData) {
         const author = await fetchUser(rec.author);
         rec.authorName = author.name;
       }
-      const liked = await getLiked(blogId);
-      const likeCount = await getLikeCount(blogId);
-      return { blogData, userData, recommendationData, liked, likeCount };
+      return recommendationData;
     },
   });
 
@@ -57,6 +64,42 @@ function Story() {
         <Spinner />
       </Center>
     );
+  }
+
+  function recommendations() {
+    return (
+      <motion.div
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        viewport={{ once: true }}
+      >
+        <VStack align="flex-start">
+          <Stack direction="row">
+            {recData?.map((recommendation) => (
+              <motion.div
+                key={recommendation.id}
+                whileHover={{
+                  scale: 1.02,
+                  transition: { duration: 0.2, ease: 'easeInOut' },
+                }}
+              >
+                <Link to={`/blog/${recommendation.id}`}>
+                  <Card.Root maxW="sm" overflow="hidden">
+                    <Image h="2xs" src={recommendation.banner} />
+                    <Card.Body gap="2">
+                      <Text>{recommendation.authorName}</Text>
+                      <Card.Title>{recommendation.title}</Card.Title>
+                      <Card.Description>{recommendation.description}</Card.Description>
+                    </Card.Body>
+                  </Card.Root>
+                </Link>
+              </motion.div>
+            ))}
+          </Stack>
+        </VStack>
+      </motion.div>
+    )
   }
 
   function blogPost() {
@@ -107,41 +150,16 @@ function Story() {
         </Prose>
         <Separator />
         <CommentSection />
-        <Separator />
-        <Heading size="3xl" mt="5" mb="5">
-          {t('story.continue')}
-        </Heading>
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-          viewport={{ once: true }}
-        >
-          <VStack align="flex-start">
-            <Stack direction="row" mb={10}>
-              {data?.recommendationData.map((recommendation) => (
-                <motion.div
-                  key={recommendation.id}
-                  whileHover={{
-                    scale: 1.02,
-                    transition: { duration: 0.2, ease: 'easeInOut' },
-                  }}
-                >
-                  <Link to={`/blog/${recommendation.id}`}>
-                    <Card.Root maxW="sm" overflow="hidden">
-                      <Image h="2xs" src={recommendation.banner} />
-                      <Card.Body gap="2">
-                        <Text>{recommendation.authorName}</Text>
-                        <Card.Title>{recommendation.title}</Card.Title>
-                        <Card.Description>{recommendation.description}</Card.Description>
-                      </Card.Body>
-                    </Card.Root>
-                  </Link>
-                </motion.div>
-              ))}
-            </Stack>
-          </VStack>
-        </motion.div>
+        {!recIsError && (
+          <>
+            <Separator />
+            <Heading size="3xl" mt="5" mb="5">
+              {t('story.continue')}
+            </Heading>
+            {recIsLoading ? loading() : recommendations()}
+          </>
+        )}
+        <Box mb={10} />
       </motion.div>
     );
   }
