@@ -3,6 +3,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.services.exceptions.RecommendationServiceNotRespondingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,8 @@ public class RecommendationService implements RecommendationServiceInterface {
             log.info("Response message: {}", data);
             return blogs;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Recommendation service not responding");
+            throw new RecommendationServiceNotRespondingException("Error getting recommendations");
         }
     }
 }
