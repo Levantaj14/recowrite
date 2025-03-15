@@ -50,8 +50,7 @@ public class TokenService implements TokenServiceInterface {
     @Override
     public void validateToken(String token) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
-        if (tokenModel.isPresent() &&
-                tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) && !tokenModel.get().isUsed()) {
+        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now())) {
             return;
         }
         throw new ExpiredTokenException("The token is expired");
@@ -60,16 +59,13 @@ public class TokenService implements TokenServiceInterface {
     @Override
     public void changePassword(TokenPasswordDtoIn tokenPasswordDtoIn) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(tokenPasswordDtoIn.getToken());
-        if (tokenModel.isPresent() &&
-                tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) && !tokenModel.get().isUsed()) {
+        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now())) {
             UserModel userModel = tokenModel.get().getUser();
             String salt = BCrypt.gensalt(12);
             userModel.setSalt(salt);
             userModel.setPassword(BCrypt.hashpw(tokenPasswordDtoIn.getPassword(), salt));
             userManager.save(userModel);
-            TokenModel tokenModel2 = tokenModel.get();
-            tokenModel2.setUsed(true);
-            tokenManager.save(tokenModel2);
+            tokenManager.delete(tokenModel.get());
             if (userModel.isEmails()) {
                 Map<String, String> model = new HashMap<>();
                 model.put("username", userModel.getUsername());
