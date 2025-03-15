@@ -1,11 +1,11 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.LoginDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.SignUpDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.*;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LoginDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.AuthServiceInterface;
+import edu.bbte.licensz.slim2299.recowrite.services.TokenServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -26,6 +26,8 @@ public class AuthenticationController {
     private JwtUtil jwtUtil;
     @Autowired
     private AuthCookieFinder authCookieFinder;
+    @Autowired
+    private TokenServiceInterface tokenService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginDtoOut> login(@RequestBody @Valid LoginDtoIn loginDtoIn) {
@@ -79,5 +81,23 @@ public class AuthenticationController {
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+    }
+
+    @PostMapping("/forgotPassword/reset")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid TokenPasswordDtoIn tokenPasswordDtoIn) {
+        tokenService.changePassword(tokenPasswordDtoIn);
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Password reset successfully"));
+    }
+
+    @PostMapping("/forgotPassword/validate")
+    public ResponseEntity<?> validateToken(@RequestBody @Valid TokenDtoIn tokenDtoIn) {
+        tokenService.validateToken(tokenDtoIn.getToken());
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Token validated successfully"));
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestBody @Valid EmailDtoIn emailDtoIn) {
+        tokenService.createToken(emailDtoIn);
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Forgot password request received"));
     }
 }

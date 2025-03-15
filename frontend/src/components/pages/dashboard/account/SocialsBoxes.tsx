@@ -85,6 +85,7 @@ export function SocialsBoxes() {
     { icon: <FaMedium />, label: 'Medium', name: 'Medium' },
   ];
 
+  //TODO: The input must not be allowed to be more than 255 characters
   return (
     <motion.div
       initial={{ opacity: 0 }}

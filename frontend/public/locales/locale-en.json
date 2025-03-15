@@ -7,7 +7,9 @@
     "comment": "Comment",
     "cancel": "Cancel",
     "save": "Save",
-    "change": "Change it"
+    "change": "Change it",
+    "reset": "Reset",
+    "submit": "Submit"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -26,7 +28,8 @@
     },
     "login": {
       "title": "Login",
-      "desc": "Welcome back! Just a few more steps and you're ready"
+      "desc": "Welcome back! Just a few more steps and you're ready",
+      "forgot": "Did you <1>forget your password</1>?"
     },
     "signup": {
       "title": "Sign Up",
@@ -252,6 +255,32 @@
     "posting": {
       "success": "Post uploaded successfully",
       "loading": "Uploading your post"
+    }
+  },
+  "forgotPassword": {
+    "toast": {
+      "loading": "Resetting your password",
+      "success": "Your password has been reset",
+      "error": "The password could not be reset."
+    },
+    "title": "Forgot Password",
+    "invalid": "The link is invalid or expired",
+    "password": "Password",
+    "confirm": "Confirm your password"
+  },
+  "forgotPasswordDialog": {
+    "error": {
+      "email": {
+        "incorrect": "Email must be a valid email address",
+        "mandatory": "This is mandatory"
+      }
+    },
+    "desc": "If we find an account linked to your email, we’ll send you an email with the next steps.",
+    "email": "Email address",
+    "toast": {
+      "loading": "Sending request...",
+      "success": "Request sent successfully",
+      "error": "Failed to send request"
     }
   }
 }
