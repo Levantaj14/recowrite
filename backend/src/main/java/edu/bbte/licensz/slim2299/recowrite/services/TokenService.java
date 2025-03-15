@@ -50,7 +50,8 @@ public class TokenService implements TokenServiceInterface {
     @Override
     public void validateToken(String token) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
-        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now())) {
+        if (tokenModel.isPresent() &&
+                tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) && !tokenModel.get().isUsed()) {
             return;
         }
         throw new ExpiredTokenException("The token is expired");
@@ -59,12 +60,16 @@ public class TokenService implements TokenServiceInterface {
     @Override
     public void changePassword(TokenPasswordDtoIn tokenPasswordDtoIn) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(tokenPasswordDtoIn.getToken());
-        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now())) {
+        if (tokenModel.isPresent() &&
+                tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) && !tokenModel.get().isUsed()) {
             UserModel model = tokenModel.get().getUser();
             String salt = BCrypt.gensalt(12);
             model.setSalt(salt);
-            model.setPassword(BCrypt.hashpw(model.getPassword(), salt));
+            model.setPassword(BCrypt.hashpw(tokenPasswordDtoIn.getPassword(), salt));
             userManager.save(model);
+            TokenModel tokenModel2 = tokenModel.get();
+            tokenModel2.setUsed(true);
+            tokenManager.save(tokenModel2);
             return;
         }
         throw new ExpiredTokenException("The token is expired");
