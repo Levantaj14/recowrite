@@ -8,7 +8,8 @@
     "cancel": "Cancel",
     "save": "Save",
     "change": "Change it",
-    "reset": "Reset"
+    "reset": "Reset",
+    "submit": "Submit"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -266,5 +267,20 @@
     "invalid": "The link is invalid or expired",
     "password": "Password",
     "confirm": "Confirm your password"
+  },
+  "forgotPasswordDialog": {
+    "error": {
+      "email": {
+        "incorrect": "Email must be a valid email address",
+        "mandatory": "This is mandatory"
+      }
+    },
+    "desc": "If we find an account linked to your email, we’ll send you an email with the next steps.",
+    "email": "Email address",
+    "toast": {
+      "loading": "Sending request...",
+      "success": "Request sent successfully",
+      "error": "Failed to send request"
+    }
   }
 }

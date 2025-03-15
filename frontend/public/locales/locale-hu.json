@@ -8,7 +8,8 @@
     "cancel": "Mégse",
     "save": "Mentés",
     "change": "Változtasd meg",
-    "reset": "Visszaállítás"
+    "reset": "Visszaállítás",
+    "submit": "Beküldés"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -263,6 +264,21 @@
       "error": "A jelszó kicserélése sikertelen volt",
       "loading": "Jelszó kicserélése",
       "success": "A jelszó sikeresen kicserélve"
+    }
+  },
+  "forgotPasswordDialog": {
+    "desc": "Ha találunk egy fiókot, amely az e-mail címedhez van kapcsolva, küldünk egy e-mailt a következő lépésekkel.",
+    "email": "Email cím",
+    "error": {
+      "email": {
+        "incorrect": "Az e-mail címnek érvényesnek kell lennie.",
+        "mandatory": "Ez kötelező"
+      }
+    },
+    "toast": {
+      "error": "A kérés elküldése sikertelen volt",
+      "loading": "Kérés küldése...",
+      "success": "A kérés sikeresen elküldve"
     }
   }
 }

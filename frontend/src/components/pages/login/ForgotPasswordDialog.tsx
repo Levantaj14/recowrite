@@ -26,7 +26,7 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
   const { t } = useTranslation();
 
   const schema = z.object({
-    email: z.string().email('Email must be a valid email address').nonempty('This is mandatory'),
+    email: z.string().email(t('forgotPasswordDialog.error.email.incorrect')).nonempty(t('forgotPasswordDialog.error.email.mandatory')),
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -45,15 +45,15 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(forgotPassword(data.email), {
-      loading: CustomLoading('Sending request'),
+      loading: CustomLoading(t('forgotPasswordDialog.toast.loading')),
       success: () => {
         setIsSubmitting(false);
         setOpen(false);
-        return "Request sent successfully";
+        return t('forgotPasswordDialog.toast.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return "Failed to send request";
+        return t('forgotPasswordDialog.toast.error');
       }
     })
   };
@@ -70,14 +70,13 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Forgot your password</DialogTitle>
-              <DialogDescription>If we find an account linked to your email, we’ll send you an email with the next
-                steps.</DialogDescription>
+              <DialogTitle>{t('forgotPassword.title')}</DialogTitle>
+              <DialogDescription>{t('forgotPasswordDialog.desc')}</DialogDescription>
             </DialogHeader>
             <DialogBody>
               <Fieldset.Root>
                 <Field.Root invalid={!!errors.email}>
-                  <Field.Label>Email address</Field.Label>
+                  <Field.Label>{t('forgotPasswordDialog.email')}</Field.Label>
                   <Input {...register('email')} />
                   <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
                 </Field.Root>
@@ -90,7 +89,7 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
                 </Button>
               </DialogActionTrigger>
               <Button type="submit" disabled={isSubmitting}>
-                Submit
+                {t('buttons.submit')}
               </Button>
             </DialogFooter>
             <DialogCloseTrigger />

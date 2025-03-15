@@ -8,7 +8,8 @@
     "save": "Salvează",
     "signup": "Conectare",
     "change": "Schimabă",
-    "reset": "Resetare"
+    "reset": "Resetare",
+    "submit": "Trimite"
   },
   "dashboard": {
     "preferences": {
@@ -265,6 +266,21 @@
       "error": "Resetarea parolei a eșuat",
       "loading": "Resetarea parolei",
       "success": "Parola a fost resetată cu succes"
+    }
+  },
+  "forgotPasswordDialog": {
+    "desc": "Dacă găsim un cont asociat cu adresa ta de email, îți vom trimite un email cu pașii următori.",
+    "email": "Adresă de email",
+    "error": {
+      "email": {
+        "incorrect": "Adresa de email trebuie să fie validă.",
+        "mandatory": "Acest câmp este obligatoriu"
+      }
+    },
+    "toast": {
+      "error": "Trimiterea cererii a eșuat",
+      "loading": "Se trimite cererea...",
+      "success": "Cerererea a fost trimisă cu succes"
     }
   }
 }
