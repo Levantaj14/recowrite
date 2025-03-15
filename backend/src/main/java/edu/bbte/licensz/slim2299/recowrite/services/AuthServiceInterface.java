@@ -7,7 +7,9 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LoginDtoOut;
 public interface AuthServiceInterface {
     String login(LoginDtoIn user);
 
-    String signup(SignUpDtoIn user);
+    void signup(SignUpDtoIn user);
 
     LoginDtoOut getNecessaryUserData(String username);
+
+    String validateEmail(String email);
 }

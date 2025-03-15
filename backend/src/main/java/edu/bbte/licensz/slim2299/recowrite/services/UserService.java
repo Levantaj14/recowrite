@@ -61,12 +61,12 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public void createUser(SignUpDtoIn signUpDtoIn) throws UserAlreadyExistsException {
+    public UserModel createUser(SignUpDtoIn signUpDtoIn) throws UserAlreadyExistsException {
         UserModel user = userMapper.signupDtoToModel(signUpDtoIn);
         String salt = BCrypt.gensalt(12);
         user.setSalt(salt);
         user.setPassword(BCrypt.hashpw(user.getPassword(), salt));
-        userManager.save(user);
+        return userManager.save(user);
     }
 
     @Override

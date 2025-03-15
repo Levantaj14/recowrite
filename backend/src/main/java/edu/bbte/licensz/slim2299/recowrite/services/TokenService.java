@@ -30,12 +30,13 @@ public class TokenService implements TokenServiceInterface {
     private MailServiceInterface mailService;
 
     @Override
-    public void createToken(EmailDtoIn emailDtoIn) {
+    public void createPasswordToken(EmailDtoIn emailDtoIn) {
         Optional<UserModel> user = userManager.findByEmail(emailDtoIn.getEmail());
         if (user.isPresent()) {
             TokenModel tokenModel = new TokenModel();
             tokenModel.setUser(user.get());
             tokenModel.setToken(UUID.randomUUID().toString());
+            tokenModel.setType("PASSWORD");
             LocalDateTime expiry = LocalDateTime.now().plusMinutes(30);
             tokenModel.setExpiryDate(expiry);
             tokenManager.save(tokenModel);
@@ -48,9 +49,10 @@ public class TokenService implements TokenServiceInterface {
     }
 
     @Override
-    public void validateToken(String token) {
+    public void validatePasswordToken(String token) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
-        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now())) {
+        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) &&
+                "PASSWORD".equals(tokenModel.get().getType())) {
             return;
         }
         throw new ExpiredTokenException("The token is expired");
@@ -59,7 +61,8 @@ public class TokenService implements TokenServiceInterface {
     @Override
     public void changePassword(TokenPasswordDtoIn tokenPasswordDtoIn) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(tokenPasswordDtoIn.getToken());
-        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now())) {
+        if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) &&
+                "PASSWORD".equals(tokenModel.get().getType())) {
             UserModel userModel = tokenModel.get().getUser();
             String salt = BCrypt.gensalt(12);
             userModel.setSalt(salt);

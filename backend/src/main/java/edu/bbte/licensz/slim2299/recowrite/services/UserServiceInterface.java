@@ -17,7 +17,7 @@ public interface UserServiceInterface {
 
     UserDtoOut returnUserByUsername(String username);
 
-    void createUser(SignUpDtoIn signUpDtoIn) throws UserAlreadyExistsException;
+    UserModel createUser(SignUpDtoIn signUpDtoIn) throws UserAlreadyExistsException;
 
     void updateUserPreferences(String username, SettingsDtoIn user);
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet">
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chakra-button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .chakra-button:hover {
+            background-color: #333;
+        }
+
+        .chakra-button:active {
+            transform: scale(0.98);
+        }
+
+        .chakra-button:focus {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+
+        #main-screen {
+            margin: 70px;
+            font-family: 'Inter', 'Roboto', 'Helvetica', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            #main-screen {
+                margin: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #main-screen {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="main-screen">
+    <h4>recowrite</h4>
+    <div style="text-align: center">
+        <h1>Verify your email</h1>
+    </div>
+    <p>Hi there, {{username}}! We would like to verify if the email address provided is correct and valid.</p>
+    <p>Please verify your email by clicking the button below</p>
+    <div class="center">
+        <a class="chakra-button" href="http://localhost:5173/verify/email?token={{token}}">Click Me</a>
+    </div>
+    <p>You will have 1 year from the time of the request to verify your email address.</p>
+    <br/>
+    <hr/>
+    <div style="text-align: center; color: gray; font-size: smaller">
+        <p>©{{year}} recowrite</p>
+    </div>
+</div>
+</body>
+</html>

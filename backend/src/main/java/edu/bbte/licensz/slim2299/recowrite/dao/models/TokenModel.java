@@ -19,6 +19,9 @@ public class TokenModel extends BaseEntity {
 
     private LocalDateTime expiryDate;
 
+    @Column(nullable = false)
+    private String type;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel user;
 }
