@@ -48,22 +48,22 @@ export default function ForgotPassword() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(resetPasswordwithToken(searchParams.get('token'), data.password), {
-      loading: CustomLoading("Resetting your password"),
+      loading: CustomLoading(t('forgotPassword.toast.loading')),
       success: async () => {
         navigate('/');
         setIsSubmitting(false);
-        return "Your password has been reset!";
+        return t('forgotPassword.toast.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return "The password could not be reset.";
+        return t('forgotPassword.toast.error');
       },
     })
   }
 
   useEffect(() => {
-    document.title = 'Forgot Password';
-  }, []);
+    document.title = t('forgotPassword.title');
+  }, [t]);
 
   useEffect(() => {
     if (userDetails !== null) {
@@ -75,37 +75,37 @@ export default function ForgotPassword() {
     if (searchParams.get('token') != null) {
       validateToken(searchParams.get('token')).then(r => {
         if (!r) {
-          toast.info('The link is invalid or expired');
+          toast.info(t('forgotPassword.invalid'));
           navigate('/');
         }
       });
     }
-  }, [navigate, searchParams]);
+  }, [t, navigate, searchParams]);
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset.Root size="lg" maxW="md">
           <Stack>
-            <Heading>Forgot your password</Heading>
+            <Heading>{t('forgotPassword.title')}</Heading>
           </Stack>
           <Fieldset.Content>
             <Field.Root invalid={!!errors.password}>
-              <Field.Label>{t('loginPage.fields.password')}</Field.Label>
+              <Field.Label>{t('forgotPassword.password')}</Field.Label>
               <PasswordInput {...register('password')} />
               <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
               <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('password'))} />
             </Field.Root>
 
             <Field.Root invalid={!!errors.passwordConfirm}>
-              <Field.Label>{t('loginPage.fields.confPassword')}</Field.Label>
+              <Field.Label>{t('forgotPassword.confirm')}</Field.Label>
               <PasswordInput {...register('passwordConfirm')} />
               <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
             </Field.Root>
           </Fieldset.Content>
 
           <Button type="submit" alignSelf="flex-start" disabled={isSubmitting}>
-            Reset password
+            {t('buttons.reset')}
           </Button>
         </Fieldset.Root>
       </form>

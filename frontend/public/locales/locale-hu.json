@@ -7,7 +7,8 @@
     "comment": "Szólj hozzá",
     "cancel": "Mégse",
     "save": "Mentés",
-    "change": "Változtasd meg"
+    "change": "Változtasd meg",
+    "reset": "Visszaállítás"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -251,6 +252,17 @@
       },
       "placeholder": "Ide írd a cikked...",
       "title": "Írj egy új cikket"
+    }
+  },
+  "forgotPassword": {
+    "confirm": "Írd be újra a jelszót",
+    "invalid": "A link hibás vagy lejárt",
+    "password": "Jelszó",
+    "title": "Elfelejtettem a jelszót",
+    "toast": {
+      "error": "A jelszó kicserélése sikertelen volt",
+      "loading": "Jelszó kicserélése",
+      "success": "A jelszó sikeresen kicserélve"
     }
   }
 }

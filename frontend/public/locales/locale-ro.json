@@ -7,7 +7,8 @@
     "login": "Autentificare",
     "save": "Salvează",
     "signup": "Conectare",
-    "change": "Schimabă"
+    "change": "Schimabă",
+    "reset": "Resetare"
   },
   "dashboard": {
     "preferences": {
@@ -253,6 +254,17 @@
         "post": "pentru ați îmbunătăți povestea",
         "pre": "Poți utiliza formatarea"
       }
+    }
+  },
+  "forgotPassword": {
+    "confirm": "Reintrodu parola",
+    "invalid": "Linkul este incorrect sau a expirat",
+    "password": "Parolă",
+    "title": "Ți-ai uitat parola",
+    "toast": {
+      "error": "Resetarea parolei a eșuat",
+      "loading": "Resetarea parolei",
+      "success": "Parola a fost resetată cu succes"
     }
   }
 }

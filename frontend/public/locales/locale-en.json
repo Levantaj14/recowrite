@@ -7,7 +7,8 @@
     "comment": "Comment",
     "cancel": "Cancel",
     "save": "Save",
-    "change": "Change it"
+    "change": "Change it",
+    "reset": "Reset"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -254,5 +255,16 @@
       "success": "Post uploaded successfully",
       "loading": "Uploading your post"
     }
+  },
+  "forgotPassword": {
+    "toast": {
+      "loading": "Resetting your password",
+      "success": "Your password has been reset",
+      "error": "The password could not be reset."
+    },
+    "title": "Forgot Password",
+    "invalid": "The link is invalid or expired",
+    "password": "Password",
+    "confirm": "Confirm your password"
   }
 }
