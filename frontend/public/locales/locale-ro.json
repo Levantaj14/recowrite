@@ -115,7 +115,8 @@
     },
     "login": {
       "desc": "Bine te-am regăsit! Încă un pas și ești gata",
-      "title": "Autentificare"
+      "title": "Autentificare",
+      "forgot": "Ți-ai <1>uitat parola</1>?"
     },
     "signup": {
       "desc": "Începe noua aventură",

@@ -26,7 +26,8 @@
     },
     "login": {
       "title": "Login",
-      "desc": "Welcome back! Just a few more steps and you're ready"
+      "desc": "Welcome back! Just a few more steps and you're ready",
+      "forgot": "Did you <1>forget your password</1>?"
     },
     "signup": {
       "title": "Sign Up",

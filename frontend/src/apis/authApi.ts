@@ -18,8 +18,8 @@ const authApi = axios.create({
   withCredentials: true,
   headers: {
     Accept: 'application/json',
-  }
-})
+  },
+});
 
 export async function login(user: LoginType): Promise<UserDetailType | null> {
   const res = await authApi.post('/login', user);
@@ -30,7 +30,7 @@ export async function login(user: LoginType): Promise<UserDetailType | null> {
 }
 
 export async function signup(user: SignUpType): Promise<UserDetailType | null> {
-  const res = await authApi.post('/signup', user)
+  const res = await authApi.post('/signup', user);
   if (res.status === 201) {
     return res.data;
   }
@@ -48,4 +48,23 @@ export async function checkCookie(): Promise<UserDetailType | null> {
     return res.data;
   }
   return null;
+}
+
+export async function forgotPassword(email: string): Promise<boolean> {
+  const res = await authApi.post('/forgotPassword', { email });
+  return res.status === 200;
+}
+
+export async function validateToken(token: string | null): Promise<boolean> {
+  const res = await authApi.post('/forgotPassword/validate', { token }, {
+    validateStatus: () => {
+      return true;
+    },
+  });
+  return res.status === 200;
+}
+
+export async function resetPasswordwithToken(token: string | null, password: string): Promise<boolean> {
+  const res = await authApi.post('/forgotPassword/reset', { token, password });
+  return res.status === 200;
 }

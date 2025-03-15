@@ -26,7 +26,8 @@
     },
     "login": {
       "title": "Bejelentkezés",
-      "desc": "Isten hozott! Még egy pár lépés és máris készen vagy"
+      "desc": "Isten hozott! Még egy pár lépés és máris készen vagy",
+      "forgot": "<1>Elfelejtetted a jelszavad</1>?"
     },
     "signup": {
       "title": "Feliratkozás",
