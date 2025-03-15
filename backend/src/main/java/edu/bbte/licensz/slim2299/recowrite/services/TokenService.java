@@ -62,14 +62,19 @@ public class TokenService implements TokenServiceInterface {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(tokenPasswordDtoIn.getToken());
         if (tokenModel.isPresent() &&
                 tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) && !tokenModel.get().isUsed()) {
-            UserModel model = tokenModel.get().getUser();
+            UserModel userModel = tokenModel.get().getUser();
             String salt = BCrypt.gensalt(12);
-            model.setSalt(salt);
-            model.setPassword(BCrypt.hashpw(tokenPasswordDtoIn.getPassword(), salt));
-            userManager.save(model);
+            userModel.setSalt(salt);
+            userModel.setPassword(BCrypt.hashpw(tokenPasswordDtoIn.getPassword(), salt));
+            userManager.save(userModel);
             TokenModel tokenModel2 = tokenModel.get();
             tokenModel2.setUsed(true);
             tokenManager.save(tokenModel2);
+            if (userModel.isEmails()) {
+                Map<String, String> model = new HashMap<>();
+                model.put("username", userModel.getUsername());
+                mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);
+            }
             return;
         }
         throw new ExpiredTokenException("The token is expired");
