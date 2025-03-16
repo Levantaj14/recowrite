@@ -86,6 +86,7 @@ public class AuthService implements AuthServiceInterface {
             UserModel user = tokenModel.get().getUser();
             user.setValid(true);
             userManager.save(user);
+            tokenManager.delete(tokenModel.get());
             Map<String, String> model = new HashMap<>();
             model.put("username", user.getUsername());
             Map<String, String> images = new HashMap<>();
