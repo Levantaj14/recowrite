@@ -7,11 +7,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { signup } from '@/apis/authApi.ts';
 import CustomLoading from '@/components/elements/CustomLoading';
-import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-export default function SignUp() {
+type Props = {
+  setVerify: (v: boolean) => void;
+}
+
+export default function SignUp({setVerify}: Props) {
   const { t } = useTranslation();
 
   const schema = z.object({
@@ -24,7 +27,6 @@ export default function SignUp() {
 
   type FormFields = z.infer<typeof schema>;
 
-  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
@@ -62,7 +64,7 @@ export default function SignUp() {
           refetchType: 'all',
           exact: false
         });
-        navigate('/');
+        setVerify(true);
         return t('loginPage.toast.signup.success');
       },
       error: () => {

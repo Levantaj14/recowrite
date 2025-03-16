@@ -49,7 +49,7 @@
       "signup": {
         "error": "Hiba történt",
         "loading": "Feliratkozás...",
-        "success": "Sikeresen feliratkozott"
+        "success": "A megerősítő e-mail sikeresen elküldve"
       }
     }
   },
@@ -247,12 +247,9 @@
     },
     "title": "Új cikk",
     "write": {
-      "desc": {
-        "pre": "Nyugodtan használd a",
-        "post": "formázást, hogy a cikked fejleszd"
-      },
       "placeholder": "Ide írd a cikked...",
-      "title": "Írj egy új cikket"
+      "title": "Írj egy új cikket",
+      "desc": "Nyugodtan használd a <1>Markdown</1> formázást, hogy a cikked fejleszd"
     }
   },
   "forgotPassword": {
@@ -280,5 +277,14 @@
       "loading": "Kérés küldése...",
       "success": "A kérés sikeresen elküldve"
     }
+  },
+  "emailVerification": {
+    "toast": {
+      "loading": "Email cím ellenőrzése...",
+      "success": "Email cím sikeresen ellenőrizve",
+      "error": "Sikertelen email ellenőrzés"
+    },
+    "title": "Ellenőrző email elküldve",
+    "desc": "Ellenőrizd az email címed, mielőtt bejelentkezel. Nézz be a bejövő üzenetek közé a következő lépésekért. Ha nem látod, ne aggódj, ellenőrizd a spam mappát is!"
   }
 }
