@@ -29,12 +29,9 @@ export async function login(user: LoginType): Promise<UserDetailType | null> {
   return null;
 }
 
-export async function signup(user: SignUpType): Promise<UserDetailType | null> {
+export async function signup(user: SignUpType): Promise<boolean> {
   const res = await authApi.post('/signup', user);
-  if (res.status === 201) {
-    return res.data;
-  }
-  return null;
+  return res.status === 200;
 }
 
 export async function logout(): Promise<boolean> {
@@ -67,4 +64,16 @@ export async function validateToken(token: string | null): Promise<boolean> {
 export async function resetPasswordwithToken(token: string | null, password: string): Promise<boolean> {
   const res = await authApi.post('/forgotPassword/reset', { token, password });
   return res.status === 200;
+}
+
+export async function verifyEmail(token: string | null): Promise<UserDetailType | null> {
+  const res = await authApi.post('/verify/email', null, {
+    params: {
+      token,
+    },
+  });
+  if (res.status === 201) {
+    return res.data;
+  }
+  return null;
 }

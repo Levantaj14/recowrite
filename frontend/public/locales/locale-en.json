@@ -49,7 +49,7 @@
       "signup": {
         "error": "Something went wrong",
         "loading": "Signing up...",
-        "success": "Signed up successfully"
+        "success": "Verification email sent successfully"
       }
     }
   },
@@ -227,10 +227,7 @@
     },
     "write": {
       "title": "Write a new story",
-      "desc": {
-        "pre": "Feel free to use",
-        "post": "formatting to enhance your story"
-      },
+      "desc": "Feel free to use <1>Markdown</1> formatting to enhance your story",
       "placeholder": "Write your story here..."
     },
     "preview": {
@@ -261,7 +258,7 @@
     "toast": {
       "loading": "Resetting your password",
       "success": "Your password has been reset",
-      "error": "The password could not be reset."
+      "error": "The password could not be reset"
     },
     "title": "Forgot Password",
     "invalid": "The link is invalid or expired",
@@ -282,5 +279,14 @@
       "success": "Request sent successfully",
       "error": "Failed to send request"
     }
+  },
+  "emailVerification": {
+    "toast": {
+      "loading": "Verifying your email...",
+      "success": "Email verified successfully",
+      "error": "Email verification failed"
+    },
+    "desc": "Verify your email before logging in. Take a peek in your inbox for the next steps. If you don’t see it, don’t worry, check your spam folder too!",
+    "title": "Verification email sent"
   }
 }

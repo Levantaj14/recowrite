@@ -4,9 +4,9 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.EmailDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.TokenPasswordDtoIn;
 
 public interface TokenServiceInterface {
-    void createToken(EmailDtoIn emailDtoIn);
+    void createPasswordToken(EmailDtoIn emailDtoIn);
 
-    void validateToken(String token);
+    void validatePasswordToken(String token);
 
     void changePassword(TokenPasswordDtoIn tokenPasswordDtoIn);
 }

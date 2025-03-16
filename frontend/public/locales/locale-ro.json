@@ -136,9 +136,9 @@
         "success": "Autentificat cu succes"
       },
       "signup": {
-        "error": "Ceva sa întâmplat",
+        "error": "Ceva nu a mers bine",
         "loading": "Conectare...",
-        "success": "T-ai conectat cu succes"
+        "success": "Emailul de verificare a fost trimis cu succes"
       }
     }
   },
@@ -251,10 +251,7 @@
     "write": {
       "placeholder": "Scriți articolul aici...",
       "title": "Scrie un articol nou",
-      "desc": {
-        "post": "pentru ați îmbunătăți povestea",
-        "pre": "Poți utiliza formatarea"
-      }
+      "desc": "Poți utiliza formatarea <1>Markdown</1> pentru ați îmbunătăți povestea"
     }
   },
   "forgotPassword": {
@@ -282,5 +279,14 @@
       "loading": "Se trimite cererea...",
       "success": "Cerererea a fost trimisă cu succes"
     }
+  },
+  "emailVerification": {
+    "toast": {
+      "loading": "Verificarea adresei de email...",
+      "success": "Adresă de email verificată cu succes",
+      "error": "Verificarea adresei de email a eșuat"
+    },
+    "title": "Emailul de verificare a fost trimis",
+    "desc": "Verifică-ți adresa de email înainte de a te autentifica. Aruncă o privire în inbox pentru pașii următori. Dacă nu îl vezi, nu-ți face griji, verifică și folderul de spam!"
   }
 }

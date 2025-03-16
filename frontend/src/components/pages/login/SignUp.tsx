@@ -1,18 +1,20 @@
 import { Button, Field, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { signup } from '@/apis/authApi.ts';
 import CustomLoading from '@/components/elements/CustomLoading';
-import { UserDetailContext } from '@/contexts/userDetailContext.ts';
-import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-export default function SignUp() {
+type Props = {
+  setVerify: (v: boolean) => void;
+}
+
+export default function SignUp({setVerify}: Props) {
   const { t } = useTranslation();
 
   const schema = z.object({
@@ -22,11 +24,9 @@ export default function SignUp() {
     password: z.string().min(8, t('loginPage.errors.password')),
     passwordConfirm: z.string().min(8, t('loginPage.errors.password'))
   });
-  
+
   type FormFields = z.infer<typeof schema>;
 
-  const { setUserDetails } = useContext(UserDetailContext);
-  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
 
@@ -64,16 +64,15 @@ export default function SignUp() {
           refetchType: 'all',
           exact: false
         });
-        navigate('/');
+        setVerify(true);
         return t('loginPage.toast.signup.success');
       },
       error: () => {
         setIsSubmitting(false);
         return t('loginPage.toast.signup.error')
       },
-    }).unwrap().then(r => {
+    }).unwrap().then(() => {
       setIsSubmitting(false);
-      setUserDetails(r);
     });
   };
 

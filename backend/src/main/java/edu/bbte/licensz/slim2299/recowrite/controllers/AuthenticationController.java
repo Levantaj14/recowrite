@@ -42,15 +42,22 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<LoginDtoOut> signUp(@RequestBody @Valid SignUpDtoIn signUpDtoIn) {
-        ResponseCookie cookie = ResponseCookie.from("auth", authenticationService.signup(signUpDtoIn))
+    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDtoIn signUpDtoIn) {
+        authenticationService.signup(signUpDtoIn);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageDtoOut("A verification email has been sent."));
+    }
+
+    @PostMapping("/verify/email")
+    public ResponseEntity<?> verifyEmail(@RequestParam String token) {
+        String jwt = authenticationService.validateEmail(token);
+        ResponseCookie cookie = ResponseCookie.from("auth", jwt)
                 .httpOnly(true)
                 .maxAge(7 * 24 * 60 * 60)
                 .path("/")
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(authenticationService.getNecessaryUserData(signUpDtoIn.getUsername()));
+                .body(authenticationService.getNecessaryUserData(jwtUtil.extractUsername(jwt)));
     }
 
     @PostMapping("/logout")
@@ -91,13 +98,13 @@ public class AuthenticationController {
 
     @PostMapping("/forgotPassword/validate")
     public ResponseEntity<?> validateToken(@RequestBody @Valid TokenDtoIn tokenDtoIn) {
-        tokenService.validateToken(tokenDtoIn.getToken());
+        tokenService.validatePasswordToken(tokenDtoIn.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Token validated successfully"));
     }
 
     @PostMapping("/forgotPassword")
     public ResponseEntity<?> forgotPassword(@RequestBody @Valid EmailDtoIn emailDtoIn) {
-        tokenService.createToken(emailDtoIn);
+        tokenService.createPasswordToken(emailDtoIn);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Forgot password request received"));
     }
 }

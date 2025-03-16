@@ -1,7 +1,7 @@
-import { Heading, Textarea, Text, Link } from '@chakra-ui/react';
+import { Heading, Textarea, Link, HStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 type Props = {
   content: string;
@@ -19,18 +19,20 @@ export default function Write({ content, setContent, isVisible, setNext }: Props
   return (
     <>
       <Heading size="2xl">{t('newStory.write.title')}</Heading>
-      <Text>
-        {t('newStory.write.desc.pre')}{' '}
-        <Link
-          variant="underline"
-          href="https://www.markdownguide.org/basic-syntax/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Markdown
-        </Link>{' '}
-        {t('newStory.write.desc.post')}
-      </Text>
+      <HStack gap={1}>
+        <Trans i18nKey="newStory.write.desc">
+          Feel free to use
+          <Link
+            variant="underline"
+            href="https://www.markdownguide.org/basic-syntax/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Markdown
+          </Link>
+          formatting to enhance your story
+        </Trans>
+      </HStack>
       {isVisible && (
         <motion.div
           initial={{ opacity: 0, x: 10 }}
