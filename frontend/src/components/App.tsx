@@ -16,6 +16,7 @@ import Dashboard from './pages/dashboard/Dashboard.tsx';
 import { useTranslation } from 'react-i18next';
 import NewStory from './pages/newStory/NewStory.tsx';
 import ForgotPassword from '@/components/pages/ForgotPassword.tsx';
+import { VerifyEmail } from '@/components/pages/VerifyEmail.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -59,6 +60,7 @@ function App() {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/forgotPassword" element={<ForgotPassword />} />
+                  <Route path="/verify/email" element={<VerifyEmail />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Container>
