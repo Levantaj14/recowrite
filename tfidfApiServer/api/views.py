@@ -1,8 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+
+from base.models import Blog
 from tfidf import tf_idf
-from utils import get_db_handle
 from .serializers import ListSerializer, BlogTitleSerializer
 
 
@@ -12,13 +13,10 @@ def blog_list(request):
     k = int(request.GET.get('k', 3))
 
     if blog_id.isnumeric():
-        with get_db_handle() as connection:
-            with connection.cursor() as mycursor:
-                mycursor.execute("SELECT * FROM blogs WHERE id = %s", [blog_id])
-                result = mycursor.fetchone()
-        
+        result = Blog.objects.get(id=int(blog_id))
+
         if result:
-            data = tf_idf.search(result[2], k)
+            data = tf_idf.search(result.content, k)
             serializer = ListSerializer(data={'data': data})
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
