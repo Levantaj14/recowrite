@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class BlogModel extends BaseEntity {
     private String content;
     private String description;
     private String banner;
-    private String date;
+    private Date date;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel user;

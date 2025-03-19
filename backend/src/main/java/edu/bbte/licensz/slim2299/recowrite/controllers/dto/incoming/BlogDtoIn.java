@@ -13,5 +13,6 @@ public class BlogDtoIn {
     private String title;
     private String description;
     private String content;
+    private String date;
     private String banner;
 }
