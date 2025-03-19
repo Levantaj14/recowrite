@@ -15,11 +15,18 @@ public class BlogMapper {
         BlogDtoOut blogDtoOut = new BlogDtoOut();
         blogDtoOut.setId(blog.getId());
         blogDtoOut.setTitle(blog.getTitle());
-        blogDtoOut.setDescription(blog.getDescription());
-        blogDtoOut.setAuthor(blog.getUser().getId());
-        blogDtoOut.setContent(blog.getContent());
         blogDtoOut.setBanner(blog.getBanner());
-        blogDtoOut.setDate(blog.getDate().toString());
+        blogDtoOut.setAuthor(blog.getUser().getId());
+        Instant now = Instant.now();
+        Instant blogDate = blog.getDate().toInstant();
+        blogDtoOut.setDate(blogDate.toString());
+        if (blogDate.isAfter(now)) {
+            blogDtoOut.setDescription("");
+            blogDtoOut.setContent(""); // Hide content
+        } else {
+            blogDtoOut.setDescription(blog.getDescription());
+            blogDtoOut.setContent(blog.getContent());
+        }
         return blogDtoOut;
     }
 
