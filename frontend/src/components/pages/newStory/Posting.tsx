@@ -11,21 +11,22 @@ type Props = {
   description: string;
   banner: string;
   content: string;
+  date: string;
   isVisible: boolean;
 };
 
-export default function Posting({ title, content, description, banner, isVisible }: Props) {
+export default function Posting({ title, content, description, banner, date, isVisible }: Props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isVisible) {
-      createBlog({ title, description, banner, content }).then((r) => {
+      createBlog({ title, description, banner, date, content }).then((r) => {
         toast.success(t('newStory.posting.success'));
         navigate(`/blog/${r}`);
       });
     }
-  }, [t, banner, content, description, isVisible, navigate, title]);
+  }, [t, banner, content, description, isVisible, navigate, title, date]);
 
   return (
     isVisible && (

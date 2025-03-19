@@ -9,7 +9,8 @@
     "signup": "Conectare",
     "change": "Schimabă",
     "reset": "Resetare",
-    "submit": "Trimite"
+    "submit": "Trimite",
+    "choose": "Alege"
   },
   "dashboard": {
     "preferences": {
@@ -231,7 +232,14 @@
           "uploadButton": "Încărcare fișier",
           "urlHelper": "Asigură-te că imaginea este liberă de utilizat și nu este protejată de drepturi de autor"
         },
-        "title": "Titlu"
+        "title": "Titlu",
+        "date": {
+          "options": {
+            "now": "Acum",
+            "schedule": "Programează"
+          },
+          "title": "Data postări"
+        }
       },
       "title": "Hai să facem asta mai unic"
     },

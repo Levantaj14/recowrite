@@ -9,7 +9,8 @@
     "save": "Save",
     "change": "Change it",
     "reset": "Reset",
-    "submit": "Submit"
+    "submit": "Submit",
+    "choose": "Choose"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -246,6 +247,13 @@
           },
           "uploadButton": "Upload file",
           "urlHelper": "Make sure the picture is free to use and not copyrighted"
+        },
+        "date": {
+          "title": "Posting date",
+          "options": {
+            "now": "Now",
+            "schedule": "Schedule"
+          }
         }
       }
     },

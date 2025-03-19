@@ -9,7 +9,8 @@
     "save": "Mentés",
     "change": "Változtasd meg",
     "reset": "Visszaállítás",
-    "submit": "Beküldés"
+    "submit": "Beküldés",
+    "choose": "Vállaszd ki"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -229,7 +230,14 @@
           "uploadButton": "Fájl feltöltése",
           "urlHelper": "Győződj meg arról, hogy a kép szabadon használható és nem áll szerzői jogvédelem alatt"
         },
-        "title": "Cím"
+        "title": "Cím",
+        "date": {
+          "options": {
+            "now": "Most",
+            "schedule": "Időzített"
+          },
+          "title": "Posztolás dátuma"
+        }
       },
       "title": "Tegyük ezt még egyedibbé"
     },
