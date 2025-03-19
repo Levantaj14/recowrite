@@ -72,7 +72,7 @@
     "written": "Written by",
     "like": {
       "noLogin": "You must be logged in",
-      "unavailable": "This blog is not available, yet"
+      "unavailable": "This blog is not yet published"
     },
     "comments": {
       "title": "Comments",
