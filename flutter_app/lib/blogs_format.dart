@@ -21,12 +21,12 @@ class BlogsFormat {
     return switch (json) {
       {
         'id': int id,
-        'title': String title,
-        'content': String content,
-        'description': String descripton,
-        'author': int author,
         'banner': String banner,
+        'content': String content,
         'date': String date,
+        'description': String descripton,
+        'title': String title,
+        'author': int author,
       } =>
         BlogsFormat(
           id: id,

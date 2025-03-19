@@ -61,31 +61,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: <Widget>[HomePage(), DashboardPage()][currentPage],
-      // bottomNavigationBar: NavigationBar(
-      //   selectedIndex: currentPage,
-      //   onDestinationSelected: (int index) {
-      //     setState(() {
-      //       currentPage = index;
-      //     });
-      //   },
-      //   destinations: [
-      //     NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-      //     NavigationDestination(icon: Icon(Icons.dashboard), label: 'Dashboard')
-      //   ],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: currentPage,
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPage = index;
+          });
+        },
+        destinations: [
+          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+          NavigationDestination(icon: Icon(Icons.dashboard), label: 'Dashboard')
+        ],
+      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   child: Row(
+      //     children: [
+      //       IconButton(onPressed: () {}, icon: Icon(Icons.home), isSelected: true,),
+      //       IconButton(onPressed: () {}, icon: Icon(Icons.dashboard)),
+      //     ],
+      //   ),
       // ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.home), isSelected: true,),
-            IconButton(onPressed: () {}, icon: Icon(Icons.dashboard)),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   child: Icon(Icons.add),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
     );
   }
 }

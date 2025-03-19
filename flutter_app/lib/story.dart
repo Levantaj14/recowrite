@@ -101,6 +101,17 @@ class _StoryPageState extends State<StoryPage> {
           return const CircularProgressIndicator();
         },
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            Text('513'),
+            SizedBox(width: 8),
+            IconButton(onPressed: () {}, icon: Icon(Icons.comment)),
+            Text('3')
+          ],
+        ),
+      ),
     );
   }
 }
