@@ -11,7 +11,7 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import './calendar-style.css';
 import { useColorMode } from '@/components/ui/color-mode';
-import { hu, ro, enUS } from "react-day-picker/locale";
+import { hu, ro, enUS } from 'react-day-picker/locale';
 
 type Props = {
   title: string;
@@ -46,13 +46,19 @@ export default function Customize({
   const [imageType, setImageType] = useState('2');
   const { colorMode } = useColorMode();
 
-  const localizeCalendarFormat = () => ({ hu, ro })[i18n.language] || enUS;
+  const localizeCalendarFormat = () => ({ hu, ro }[i18n.language] || enUS);
 
   useEffect(() => {
     if (isVisible) {
       setNext(title.length > 0 && banner.length > 0);
     }
   }, [setNext, title, banner, isVisible]);
+
+  useEffect(() => {
+    if (postingTime === 'now') {
+      setSelected(new Date());
+    }
+  }, [postingTime, setSelected]);
 
   return (
     <>
@@ -118,7 +124,15 @@ export default function Customize({
                             <Popover.Arrow />
                             <Popover.Body>
                               <div className={colorMode === 'dark' ? 'dark-date-picker' : 'light-date-picker'}>
-                                <DayPicker animate required ISOWeek mode="single" selected={selected} onSelect={setSelected} locale={localizeCalendarFormat()} />
+                                <DayPicker
+                                  animate
+                                  required
+                                  ISOWeek
+                                  mode="single"
+                                  selected={selected}
+                                  onSelect={setSelected}
+                                  locale={localizeCalendarFormat()}
+                                />
                               </div>
                             </Popover.Body>
                           </Popover.Content>
