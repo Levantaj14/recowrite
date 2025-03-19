@@ -9,7 +9,8 @@ import {
   Card,
   VStack,
   Center,
-  Spinner, Box,
+  Spinner,
+  Box,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { HoverCardArrow, HoverCardContent, HoverCardRoot, HoverCardTrigger } from '../../ui/hover-card.tsx';
@@ -25,11 +26,14 @@ import CommentSection from '@/components/pages/story/CommentSection.tsx';
 import { useTranslation } from 'react-i18next';
 import { Prose } from '@/components/ui/prose.tsx';
 import Markdown from 'react-markdown';
+import NumberFlow, { NumberFlowGroup } from '@number-flow/react';
 
 function Story() {
   const { t } = useTranslation();
   const { blogId } = useParams();
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [date, setDate] = useState<Date>();
 
   const { data, isLoading } = useQuery({
     queryKey: ['blog', blogId],
@@ -42,7 +46,11 @@ function Story() {
     },
   });
 
-  const { data: recData, isLoading: recIsLoading, isError: recIsError } = useQuery({
+  const {
+    data: recData,
+    isLoading: recIsLoading,
+    isError: recIsError,
+  } = useQuery({
     queryKey: ['recommendation', blogId],
     queryFn: async () => {
       const recommendationData = await fetchBlogRecommendation(blogId);
@@ -55,11 +63,31 @@ function Story() {
   });
 
   useEffect(() => {
+    if (data?.blogData.date) {
+      const timer = setInterval(() => {
+        const diff = new Date(data.blogData.date).getTime() - Date.now();
+        if (diff <= 0) {
+          clearInterval(timer);
+          setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          return;
+        }
+        const totalSecs = Math.floor(diff / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const minutes = Math.floor((totalSecs % 3600) / 60);
+        const seconds = totalSecs % 60;
+        setCountdown({ days, hours, minutes, seconds });
+      }, 1000);
+      setDate(new Date(data.blogData.date));
+      return () => clearInterval(timer);
+    }
+  }, [data?.blogData.date]);
+
+  useEffect(() => {
     if (recData && !recIsLoading && !recIsError) {
       setHasLoadedOnce(true);
     }
   }, [recData, recIsLoading, recIsError]);
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -107,7 +135,7 @@ function Story() {
           </Stack>
         </VStack>
       </motion.div>
-    )
+    );
   }
 
   function blogPost() {
@@ -153,22 +181,52 @@ function Story() {
           <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
         </Flex>
         <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
-        <Prose size="lg" maxWidth="100%" mb="6">
-          <Markdown>{data?.blogData.content}</Markdown>
-        </Prose>
-        <Separator />
-        <CommentSection />
-        {(!!recData || hasLoadedOnce) && (
+        {date && date > new Date() ? (
+          animatedCountdown()
+        ) : (
           <>
+            <Prose size="lg" maxWidth="100%" mb="6">
+              <Markdown>{data?.blogData.content}</Markdown>
+            </Prose>
             <Separator />
-            <Heading size="3xl" mt="5" mb="5">
-              {t('story.continue')}
-            </Heading>
-            {recIsLoading ? loading() : recommendations()}
+            <CommentSection />
+            {(!!recData || hasLoadedOnce) && (
+              <>
+                <Separator />
+                <Heading size="3xl" mt="5" mb="5">
+                  {t('story.continue')}
+                </Heading>
+                {recIsLoading ? loading() : recommendations()}
+              </>
+            )}
           </>
         )}
         <Box mb={10} />
       </motion.div>
+    );
+  }
+
+  function animatedCountdown() {
+    return (
+      <Flex mt={5} flexDirection="column" alignItems="center">
+        <Text fontSize="2xl">{t('story.unavailable')}</Text>
+        <Flex flexDirection="row" alignItems="center">
+          <NumberFlowGroup>
+            <Text fontSize="2xl" fontWeight="semibold">
+              <NumberFlow trend={-1} value={countdown.days} format={{ minimumIntegerDigits: 2 }} />
+            </Text>
+            <Text fontSize="2xl" fontWeight="semibold">
+              <NumberFlow prefix=":" trend={-1} value={countdown.hours} format={{ minimumIntegerDigits: 2 }} />
+            </Text>
+            <Text fontSize="2xl" fontWeight="semibold">
+              <NumberFlow prefix=":" trend={-1} value={countdown.minutes} format={{ minimumIntegerDigits: 2 }} />
+            </Text>
+            <Text fontSize="2xl" fontWeight="semibold">
+              <NumberFlow prefix=":" trend={-1} value={countdown.seconds} format={{ minimumIntegerDigits: 2 }} />
+            </Text>
+          </NumberFlowGroup>
+        </Flex>
+      </Flex>
     );
   }
 

@@ -19,6 +19,7 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
   const { userDetails } = useContext(UserDetailContext);
   const [localLiked, setLocalLiked] = useState(liked?.liked);
   const [localLikeCount, setLocalLikeCount] = useState(likeCount?.count);
+  const [available, setAvailable] = useState<boolean>(false);
 
   const clickedLike = async () => {
     setLocalLiked(!localLiked);
@@ -38,15 +39,22 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
     }
   }, [userDetails]);
 
+  useEffect(() => {
+    if (blogData?.date) {
+      const date = new Date(blogData.date);
+      setAvailable(date <= new Date());
+    }
+  }, [blogData]);
+
   return (
     <Tooltip
-      content={t('story.like.noLogin')}
-      disabled={userDetails !== null}
+      content={available ? t('story.like.noLogin') : t('story.like.unavailable')}
+      disabled={userDetails !== null && available}
       openDelay={100}
       closeDelay={100}
       positioning={{ placement: 'top' }}
     >
-      <Button variant="ghost" disabled={userDetails === null} onClick={clickedLike}>
+      <Button variant="ghost" disabled={userDetails === null || !available} onClick={clickedLike}>
         {localLikeCount !== undefined && <NumberFlow value={localLikeCount} />}
         {localLiked ? <FaHeart /> : <FaRegHeart />}
       </Button>

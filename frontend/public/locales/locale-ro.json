@@ -203,9 +203,11 @@
     },
     "continue": "Citește mai departe",
     "like": {
-      "noLogin": "Trebuie să fii autentificat"
+      "noLogin": "Trebuie să fii autentificat",
+      "unavailable": "Acest blog nu este disponibil încă"
     },
-    "written": "Scris de"
+    "written": "Scris de",
+    "unavailable": "Acest blog va fi disponibil în:"
   },
   "tabLoading": "Încărcare...",
   "user": {

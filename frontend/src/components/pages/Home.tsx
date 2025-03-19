@@ -35,7 +35,7 @@ function Home() {
             key={blog.id}
             imageUrl={blog.banner}
             title={blog.title}
-            description={blog.description}
+            description={new Date(blog.date) > new Date() ? "This blog is not yet published" : blog.description}
             author={data?.userData.find((u) => u.id === blog.author)?.name ?? 'unknown'}
             href={`/blog/${blog.id}`}
             index={index}

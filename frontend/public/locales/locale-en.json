@@ -71,7 +71,8 @@
   "story": {
     "written": "Written by",
     "like": {
-      "noLogin": "You must be logged in"
+      "noLogin": "You must be logged in",
+      "unavailable": "This blog is not available, yet"
     },
     "comments": {
       "title": "Comments",
@@ -111,7 +112,8 @@
         "commentLength": "Comments can't be longer than 255 characters"
       }
     },
-    "continue": "Continue reading"
+    "continue": "Continue reading",
+    "unavailable": "This blog will be available in:"
   },
   "notFound": {
     "tabTile": "Not Found",
