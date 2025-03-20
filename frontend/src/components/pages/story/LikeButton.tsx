@@ -46,15 +46,15 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
     }
   }, [blogData]);
 
-  return (
+  return available && (
     <Tooltip
-      content={userDetails === null ? t('story.like.noLogin') : available ? "" : t('story.like.unavailable')}
-      disabled={userDetails !== null && available}
+      content={userDetails === null && t('story.like.noLogin')}
+      disabled={userDetails !== null}
       openDelay={100}
       closeDelay={100}
       positioning={{ placement: 'top' }}
     >
-      <Button variant="ghost" disabled={userDetails === null || !available} onClick={clickedLike}>
+      <Button variant="ghost" disabled={userDetails === null} onClick={clickedLike}>
         {localLikeCount !== undefined && <NumberFlow value={localLikeCount} />}
         {localLiked ? <FaHeart /> : <FaRegHeart />}
       </Button>

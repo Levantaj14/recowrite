@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Center, Flex, Heading, HStack, Spinner, Stat, Text } from '@chakra-ui/react';
+import { Flex, Heading, HStack, Stat, Text } from '@chakra-ui/react';
 import NumberFlow from '@number-flow/react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import { fetchBlogsByAuthor } from '@/apis/blogApi.ts';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useContext } from 'react';
 import BlogCard from '@/components/elements/BlogCard.tsx';
+import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 export default function Posts() {
   const navigate = useNavigate();
@@ -19,14 +20,6 @@ export default function Posts() {
     queryKey: ['posts'],
     queryFn: () => fetchBlogsByAuthor(String(userDetails?.id)),
   });
-
-  function loading() {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
 
   function content() {
     return data && (
@@ -47,7 +40,7 @@ export default function Posts() {
               imageUrl={blog.banner}
               title={blog.title}
               description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
-              author={""}
+              author={''}
               href={`/blog/${blog.id}`}
               index={index}
             />
@@ -65,7 +58,7 @@ export default function Posts() {
         <Heading size="2xl">{t('dashboard.tabs.posts')}</Heading>
         <Button size="xs" onClick={() => navigate('/blog/create')}>{t('dashboard.posts.create')}</Button>
       </Flex>
-      {isLoading ? loading() : content()}
+      {isLoading ? <LoadingAnimation /> : content()}
     </>
   );
 }

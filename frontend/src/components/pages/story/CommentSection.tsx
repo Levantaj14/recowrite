@@ -5,8 +5,6 @@ import {
   Heading,
   Text,
   Textarea,
-  Center,
-  Spinner,
   Link,
   Field,
   MenuTrigger,
@@ -32,6 +30,7 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import DeleteDialog from '@/components/pages/story/DeleteDialog.tsx';
 import EditDialog from '@/components/pages/story/EditDialog.tsx';
 import { useTranslation } from 'react-i18next';
+import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 export default function CommentSection() {
   const { t } = useTranslation();
@@ -85,14 +84,6 @@ export default function CommentSection() {
       },
     });
   };
-
-  function loadingScreen() {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
 
   const selectedItem = (menuSelectionDetails: MenuSelectionDetails, selectedId: number, selectedContent: string) => {
     setSelectedCommentId(selectedId);
@@ -197,7 +188,7 @@ export default function CommentSection() {
           </Button>
         </form>
       )}
-      {isLoading ? loadingScreen() : Comments()}
+      {isLoading ? <LoadingAnimation /> : Comments()}
     </Box>
   );
 }

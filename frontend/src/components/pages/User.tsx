@@ -2,14 +2,12 @@ import { ReactNode, useContext, useEffect } from 'react';
 import {
   Alert,
   Box,
-  Center,
   Flex,
   Heading,
   IconButton,
   LinkBox,
   LinkOverlay,
   Spacer,
-  Spinner,
   Text,
 } from '@chakra-ui/react';
 import { Avatar } from '@/components/ui/avatar.tsx';
@@ -22,6 +20,7 @@ import { fetchUser } from '@/apis/userApi.ts';
 import { fetchBlogsByAuthor } from '@/apis/blogApi.ts';
 import { useTranslation } from 'react-i18next';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
+import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 function User() {
   const { t } = useTranslation();
@@ -53,15 +52,7 @@ function User() {
     X: 'https://x.com/',
     Bluesky: 'https://bsky.app/profile/',
     Medium: 'https://medium.com/@',
-  }
-
-  function loading() {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
+  };
 
   function userPage() {
     return (
@@ -128,7 +119,7 @@ function User() {
     );
   }
 
-  return isLoading ? loading() : userPage();
+  return isLoading ? <LoadingAnimation /> : userPage();
 }
 
 export default User;

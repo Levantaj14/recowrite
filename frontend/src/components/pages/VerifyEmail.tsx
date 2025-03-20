@@ -3,9 +3,9 @@ import { toast } from 'sonner';
 import { verifyEmail } from '@/apis/authApi.ts';
 import { useNavigate, useSearchParams } from 'react-router';
 import CustomLoading from '@/components/elements/CustomLoading.tsx';
-import { Center, Spinner } from '@chakra-ui/react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useTranslation } from 'react-i18next';
+import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 export function VerifyEmail() {
   const { t } = useTranslation();
@@ -33,8 +33,6 @@ export function VerifyEmail() {
   }, [t, navigate, searchParams, setUserDetails]);
 
   return (
-    <Center>
-      <Spinner />
-    </Center>
+    <LoadingAnimation />
   );
 }

@@ -114,7 +114,7 @@ export default function Customize({
                   {postingTime === 'schedule' && (
                     <Popover.Root>
                       <Popover.Trigger asChild>
-                        <Button size="sm" variant="outline">
+                        <Button size="xs" variant="outline">
                           {t('buttons.choose')}
                         </Button>
                       </Popover.Trigger>
