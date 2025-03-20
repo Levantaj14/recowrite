@@ -31,6 +31,8 @@ export default function NewStory() {
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState('');
   const [next, setNext] = useState(false);
+  const [postingTime, setPostingTime] = useState('now');
+  const [selected, setSelected] = useState<Date>(new Date());
 
   useEffect(() => {
     if (userDetails === null) {
@@ -64,10 +66,21 @@ export default function NewStory() {
             setBanner={setBanner}
             setNext={setNext}
             isVisible={step === 2}
+            postingTime={postingTime}
+            setPostingTime={setPostingTime}
+            selected={selected}
+            setSelected={setSelected}
           />
         </StepsContent>
         <StepsCompletedContent>
-          <Posting title={title} content={content} description={description} banner={banner} isVisible={step === 3} />
+          <Posting
+            title={title}
+            content={content}
+            description={description}
+            banner={banner}
+            date={selected.toISOString()}
+            isVisible={step === 3}
+          />
         </StepsCompletedContent>
 
         {step < 3 && (

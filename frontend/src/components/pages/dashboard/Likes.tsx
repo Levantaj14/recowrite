@@ -1,10 +1,11 @@
-import { Center, Flex, Heading, HStack, Spinner, Stat, Table } from '@chakra-ui/react';
+import { Flex, Heading, HStack, Stat, Table } from '@chakra-ui/react';
 import NumberFlow from '@number-flow/react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { getGivenLikes, getReceivedLikeCount } from '@/apis/accountApi.ts';
 import { useNavigate } from 'react-router';
+import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 export default function Likes() {
   const navigate = useNavigate();
@@ -18,14 +19,6 @@ export default function Likes() {
       return { givenLikes, receivedLikes };
     },
   });
-
-  function loading() {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
 
   function content() {
     return data && (
@@ -84,7 +77,7 @@ export default function Likes() {
   return (
     <>
       <Heading size="2xl">{t('dashboard.tabs.likes')}</Heading>
-      {isLoading ? loading() : content()}
+      {isLoading ? <LoadingAnimation /> : content()}
     </>
   );
 }

@@ -1,9 +1,10 @@
-import { Center, Heading, Spinner, Table } from '@chakra-ui/react';
+import { Heading, Table } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { getUserComments } from '@/apis/accountApi.ts';
 import { motion } from 'motion/react';
+import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 export default function Comments() {
   const { t } = useTranslation();
@@ -13,14 +14,6 @@ export default function Comments() {
     queryKey: ['account', 'comments'],
     queryFn: () => getUserComments(),
   });
-
-  function loading() {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
 
   function content() {
     return (
@@ -57,7 +50,7 @@ export default function Comments() {
   return (
     <>
       <Heading size="2xl">{t('dashboard.tabs.comments')}</Heading>
-      {isLoading ? loading() : content()}
+      {isLoading ? <LoadingAnimation /> : content()}
     </>
   );
 }

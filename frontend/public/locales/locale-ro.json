@@ -9,7 +9,8 @@
     "signup": "Conectare",
     "change": "Schimabă",
     "reset": "Resetare",
-    "submit": "Trimite"
+    "submit": "Trimite",
+    "choose": "Alege"
   },
   "dashboard": {
     "preferences": {
@@ -202,9 +203,11 @@
     },
     "continue": "Citește mai departe",
     "like": {
-      "noLogin": "Trebuie să fii autentificat"
+      "noLogin": "Trebuie să fii autentificat",
+      "unavailable": "Acest blog nu este încă publicat"
     },
-    "written": "Scris de"
+    "written": "Scris de",
+    "unavailable": "Acest blog va fi disponibil în:"
   },
   "tabLoading": "Încărcare...",
   "user": {
@@ -231,7 +234,14 @@
           "uploadButton": "Încărcare fișier",
           "urlHelper": "Asigură-te că imaginea este liberă de utilizat și nu este protejată de drepturi de autor"
         },
-        "title": "Titlu"
+        "title": "Titlu",
+        "date": {
+          "options": {
+            "now": "Acum",
+            "schedule": "Programează"
+          },
+          "title": "Data postări"
+        }
       },
       "title": "Hai să facem asta mai unic"
     },

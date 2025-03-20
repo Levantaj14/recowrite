@@ -3,6 +3,10 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotAvailableException;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.RecommendationServiceNotRespondingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +20,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RecommendationService implements RecommendationServiceInterface {
@@ -26,8 +32,20 @@ public class RecommendationService implements RecommendationServiceInterface {
     @Autowired
     private BlogServiceInterface blogService;
 
+    @Autowired
+    private BlogManager blogManager;
+
     @Override
     public List<BlogDtoOut> getRecommendations(String blogId) {
+        Optional<BlogModel> blogModel = blogManager.findById(Long.valueOf(blogId));
+        if (blogModel.isEmpty()) {
+            throw new BlogNotFoundException("Blog not found");
+        }
+        Instant now = Instant.now();
+        Instant blogDate = blogModel.get().getDate().toInstant();
+        if (blogDate.isAfter(now)) {
+            throw new BlogNotAvailableException("Blog not available");
+        }
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String apiHost = "http://localhost:8000/recommendation";

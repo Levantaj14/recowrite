@@ -1,6 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LikedBlogsDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotAvailableException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.LikeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.LikeModel;
@@ -8,6 +9,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,12 @@ public class LikeService implements LikeServiceInterface {
 
     @Override
     public void changeLike(long blogId, String username) {
+        BlogModel blogModel = blogService.getBlogModelById(blogId);
+        Instant now = Instant.now();
+        Instant blogDate = blogModel.getDate().toInstant();
+        if (blogDate.isAfter(now)) {
+            throw new BlogNotAvailableException("Blog not available");
+        }
         UserModel user = userService.getUserModelByUsername(username);
         Optional<LikeModel> likeModel = likeManager.findByBlog_IdAndUser(blogId, user);
         if (likeModel.isPresent()) {
@@ -38,7 +46,7 @@ public class LikeService implements LikeServiceInterface {
             likeManager.delete(like);
         } else {
             LikeModel like = new LikeModel();
-            like.setBlog(blogService.getBlogModelById(blogId));
+            like.setBlog(blogModel);
             like.setUser(user);
             likeManager.save(like);
         }

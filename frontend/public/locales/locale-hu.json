@@ -9,7 +9,8 @@
     "save": "Mentés",
     "change": "Változtasd meg",
     "reset": "Visszaállítás",
-    "submit": "Beküldés"
+    "submit": "Beküldés",
+    "choose": "Vállaszd ki"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -70,7 +71,8 @@
   "story": {
     "written": "Írta",
     "like": {
-      "noLogin": "Be kell légy jelentkezve"
+      "noLogin": "Be kell légy jelentkezve",
+      "unavailable": "Ez a blog még elérhetetlen"
     },
     "comments": {
       "title": "Hozzászólások",
@@ -108,7 +110,8 @@
         "commentLength": "A hozzászólás nem lehet hosszabb 255 karakternél"
       }
     },
-    "continue": "Olvass tovább"
+    "continue": "Olvass tovább",
+    "unavailable": "Ez a blog elérhető lesz:"
   },
   "notFound": {
     "tabTile": "Nem található",
@@ -229,7 +232,14 @@
           "uploadButton": "Fájl feltöltése",
           "urlHelper": "Győződj meg arról, hogy a kép szabadon használható és nem áll szerzői jogvédelem alatt"
         },
-        "title": "Cím"
+        "title": "Cím",
+        "date": {
+          "options": {
+            "now": "Most",
+            "schedule": "Időzített"
+          },
+          "title": "Posztolás dátuma"
+        }
       },
       "title": "Tegyük ezt még egyedibbé"
     },

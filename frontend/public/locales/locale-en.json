@@ -9,7 +9,8 @@
     "save": "Save",
     "change": "Change it",
     "reset": "Reset",
-    "submit": "Submit"
+    "submit": "Submit",
+    "choose": "Choose"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -70,7 +71,8 @@
   "story": {
     "written": "Written by",
     "like": {
-      "noLogin": "You must be logged in"
+      "noLogin": "You must be logged in",
+      "unavailable": "This blog is not yet published"
     },
     "comments": {
       "title": "Comments",
@@ -110,7 +112,8 @@
         "commentLength": "Comments can't be longer than 255 characters"
       }
     },
-    "continue": "Continue reading"
+    "continue": "Continue reading",
+    "unavailable": "This blog will be available in:"
   },
   "notFound": {
     "tabTile": "Not Found",
@@ -246,6 +249,13 @@
           },
           "uploadButton": "Upload file",
           "urlHelper": "Make sure the picture is free to use and not copyrighted"
+        },
+        "date": {
+          "title": "Posting date",
+          "options": {
+            "now": "Now",
+            "schedule": "Schedule"
+          }
         }
       }
     },

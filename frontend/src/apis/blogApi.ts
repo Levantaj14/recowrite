@@ -15,6 +15,7 @@ export type CreateBlogType = {
   title: string;
   content: string;
   description: string;
+  date: string;
   banner: string;
 }
 

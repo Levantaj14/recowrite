@@ -1,11 +1,13 @@
 import BlogCard from '@/components/elements/BlogCard';
 import { useQuery } from '@tanstack/react-query';
 import { BlogType, fetchAllBlogs } from '@/apis/blogApi.ts';
-import { Center, Spinner } from '@chakra-ui/react';
 import { fetchAllUsers } from '@/apis/userApi.ts';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 function Home() {
+  const { t } = useTranslation();
   const { data, isLoading } = useQuery({
     queryKey: ['blogs'],
     queryFn: async () => {
@@ -19,14 +21,6 @@ function Home() {
     document.title = 'recowrite';
   }, [data]);
 
-  function loadingScreen() {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
-  }
-
   function blogList() {
     return (
       <>
@@ -35,7 +29,7 @@ function Home() {
             key={blog.id}
             imageUrl={blog.banner}
             title={blog.title}
-            description={blog.description}
+            description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
             author={data?.userData.find((u) => u.id === blog.author)?.name ?? 'unknown'}
             href={`/blog/${blog.id}`}
             index={index}
@@ -45,7 +39,7 @@ function Home() {
     );
   }
 
-  return isLoading ? loadingScreen() : blogList();
+  return isLoading ? <LoadingAnimation /> : blogList();
 }
 
 export default Home;
