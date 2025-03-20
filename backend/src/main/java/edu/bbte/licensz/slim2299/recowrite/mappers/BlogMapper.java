@@ -22,7 +22,7 @@ public class BlogMapper {
         blogDtoOut.setDate(blogDate.toString());
         if (blogDate.isAfter(now)) {
             blogDtoOut.setDescription("");
-            blogDtoOut.setContent(""); // Hide content
+            blogDtoOut.setContent("");
         } else {
             blogDtoOut.setDescription(blog.getDescription());
             blogDtoOut.setContent(blog.getContent());

@@ -3,6 +3,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.CommentDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.AccountCommentDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.CommentDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotAvailableException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.CommentNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
@@ -16,6 +17,7 @@ import edu.bbte.licensz.slim2299.recowrite.mappers.CommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +65,16 @@ public class CommentService implements CommentServiceInterface{
 
     @Override
     public long addComment(CommentDtoIn commentDtoIn, long blogId, String username) {
+        Optional<BlogModel> blog = blogManager.findById(blogId);
+        if (blog.isEmpty()) {
+            throw new BlogNotFoundException("Blog not found");
+        }
+        BlogModel blogModel = blog.get();
+        Instant now = Instant.now();
+        Instant blogDate = blogModel.getDate().toInstant();
+        if (blogDate.isAfter(now)) {
+            throw new BlogNotAvailableException("Blog not available");
+        }
         CommentModel commentModel = new CommentModel();
         commentModel.setComment(commentDtoIn.getComment());
         Optional<UserModel> user = userManager.findByUsername(username);
@@ -70,10 +82,6 @@ public class CommentService implements CommentServiceInterface{
             throw new UserNotFoundException("User not found");
         }
         commentModel.setUser(user.get());
-        Optional<BlogModel> blog = blogManager.findById(blogId);
-        if (blog.isEmpty()) {
-            throw new BlogNotFoundException("Blog not found");
-        }
         commentModel.setBlog(blog.get());
         return commentManager.save(commentModel).getId();
     }
