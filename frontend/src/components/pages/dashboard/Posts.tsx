@@ -46,7 +46,7 @@ export default function Posts() {
             <BlogCard
               imageUrl={blog.banner}
               title={blog.title}
-              description={blog.description}
+              description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
               author={""}
               href={`/blog/${blog.id}`}
               index={index}

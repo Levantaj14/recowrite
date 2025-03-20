@@ -16,7 +16,7 @@ import { motion } from 'framer-motion';
 import { HoverCardArrow, HoverCardContent, HoverCardRoot, HoverCardTrigger } from '../../ui/hover-card.tsx';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { Link, useParams } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchBlog, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
 import { useEffect, useState } from 'react';
@@ -34,6 +34,7 @@ function Story() {
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [date, setDate] = useState<Date>();
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ['blog', blogId],
@@ -79,9 +80,12 @@ function Story() {
         setCountdown({ days, hours, minutes, seconds });
       }, 1000);
       setDate(new Date(data.blogData.date));
+      queryClient.invalidateQueries({
+        queryKey: ['blog', blogId],
+      });
       return () => clearInterval(timer);
     }
-  }, [data?.blogData.date]);
+  }, [blogId, data?.blogData.date, queryClient]);
 
   useEffect(() => {
     if (recData && !recIsLoading && !recIsError) {
@@ -181,7 +185,7 @@ function Story() {
           <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
         </Flex>
         <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
-        {date && date > new Date() ? (
+        {(date && date > new Date()) || data?.blogData.content === "" ? (
           animatedCountdown()
         ) : (
           <>
