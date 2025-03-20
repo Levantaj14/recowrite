@@ -70,6 +70,9 @@ function Story() {
         if (diff <= 0) {
           clearInterval(timer);
           setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          queryClient.invalidateQueries({
+            queryKey: ['blog', blogId],
+          });
           return;
         }
         const totalSecs = Math.floor(diff / 1000);
@@ -80,9 +83,6 @@ function Story() {
         setCountdown({ days, hours, minutes, seconds });
       }, 1000);
       setDate(new Date(data.blogData.date));
-      queryClient.invalidateQueries({
-        queryKey: ['blog', blogId],
-      });
       return () => clearInterval(timer);
     }
   }, [blogId, data?.blogData.date, queryClient]);
@@ -185,7 +185,7 @@ function Story() {
           <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
         </Flex>
         <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
-        {(date && date > new Date()) || data?.blogData.content === "" ? (
+        {(date && date > new Date()) || data?.blogData.content === '' ? (
           animatedCountdown()
         ) : (
           <>
