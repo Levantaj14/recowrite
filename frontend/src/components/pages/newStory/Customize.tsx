@@ -118,6 +118,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
                                     selected={selected}
                                     onSelect={setSelected}
                                     locale={localizeCalendarFormat()}
+                                    disabled={{ before: new Date() }}
                                   />
                                 </div>
                               </Popover.Body>
