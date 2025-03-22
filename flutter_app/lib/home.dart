@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   Future<List<BlogsFormat>> fetchData() async {
     final response = await http.get(Uri.parse('http://localhost:8080/blogs'));
     if (response.statusCode == 200) {
-      List<dynamic> jsonData = jsonDecode(response.body);
+      List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       return jsonData.map((blog) => BlogsFormat.fromJson(blog)).toList();
     } else {
       throw Exception('Failed to load blogs');
