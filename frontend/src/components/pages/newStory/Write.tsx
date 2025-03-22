@@ -1,20 +1,25 @@
-import { Heading, Textarea, Link, HStack } from '@chakra-ui/react';
+import { Heading, Textarea, Link, HStack, Fieldset, Field } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { NewStoryFormFields } from '@/components/pages/newStory/NewStory.tsx';
+import { useEffect } from 'react';
 
 type Props = {
-  content: string;
-  setContent: (text: string) => void;
+  register: UseFormRegister<NewStoryFormFields>;
+  errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
-  setNext: (next: boolean) => void;
+  setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
 };
 
-export default function Write({ content, setContent, isVisible, setNext }: Props) {
+export default function Write({ register, errors, isVisible, setValidateFields }: Props) {
   const { t } = useTranslation();
+
   useEffect(() => {
-    setNext(content.length > 0);
-  }, [setNext, content]);
+    if (isVisible) {
+      setValidateFields(['content']);
+    }
+  }, [isVisible, setValidateFields]);
 
   return (
     <>
@@ -39,14 +44,20 @@ export default function Write({ content, setContent, isVisible, setNext }: Props
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-          <Textarea
-            placeholder={t('newStory.write.placeholder')}
-            mt="4"
-            height="calc(100vh - 400px)"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            resize="none"
-          />
+          <Fieldset.Root>
+            <Fieldset.Content>
+              <Field.Root invalid={!!errors.content}>
+                <Textarea
+                  placeholder={t('newStory.write.placeholder')}
+                  mt="4"
+                  height="calc(100vh - 400px)"
+                  resize="none"
+                  {...register('content')}
+                />
+                <Field.ErrorText>{errors.content?.message}</Field.ErrorText>
+              </Field.Root>
+            </Fieldset.Content>
+          </Fieldset.Root>
         </motion.div>
       )}
     </>

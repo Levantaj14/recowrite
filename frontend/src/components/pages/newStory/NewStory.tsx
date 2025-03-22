@@ -1,13 +1,5 @@
 import { Group } from '@chakra-ui/react';
-import {
-  StepsCompletedContent,
-  StepsContent,
-  StepsItem,
-  StepsList,
-  StepsNextTrigger,
-  StepsPrevTrigger,
-  StepsRoot,
-} from '../../ui/steps';
+import { StepsCompletedContent, StepsContent, StepsItem, StepsList, StepsRoot } from '../../ui/steps';
 import { Button } from '../../ui/button';
 import { LuPencil } from 'react-icons/lu';
 import { IoDocumentTextOutline } from 'react-icons/io5';
@@ -20,19 +12,44 @@ import Posting from './Posting';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createBlog } from '@/apis/blogApi.ts';
+import { toast } from 'sonner';
+
+const schema = z.object({
+  content: z.string().nonempty('This field can\'t be empty'),
+  title: z.string().nonempty('This field can\'t be empty').max(255, 'The maximum number of characters is 255'),
+  description: z.string().max(255, 'The maximum number of characters is 255'),
+  date: z.string().nonempty().refine(
+    (val) => !isNaN(Date.parse(val)) && val === new Date(val).toISOString(),
+    {
+      message: "Invalid ISO date format",
+    }
+  ),
+  banner: z.string().nonempty('This field can\'t be empty').url('This must be a valid URL'),
+});
+
+export type NewStoryFormFields = z.infer<typeof schema>;
 
 export default function NewStory() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { userDetails } = useContext(UserDetailContext);
   const [step, setStep] = useState(0);
-  const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [banner, setBanner] = useState('');
-  const [next, setNext] = useState(false);
-  const [postingTime, setPostingTime] = useState('now');
-  const [selected, setSelected] = useState<Date>(new Date());
+  const [validateFields, setValidateFields] = useState<('content' | 'title' | 'description' | 'date' | 'banner')[]>([]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    trigger,
+    setValue,
+  } = useForm<NewStoryFormFields>({
+    resolver: zodResolver(schema),
+  });
 
   useEffect(() => {
     if (userDetails === null) {
@@ -40,6 +57,20 @@ export default function NewStory() {
     }
     document.title = t('newStory.title');
   }, [navigate, t, userDetails]);
+
+  async function onSubmit(data: NewStoryFormFields) {
+    setStep(step + 1);
+    const id = await createBlog(data);
+    toast.success(t('newStory.posting.success'));
+    navigate(`/blog/${id}`);
+  }
+
+  async function checkPageCorrectness() {
+    const isValid = await trigger(validateFields);
+    if (isValid) {
+      setStep(step + 1);
+    }
+  }
 
   return (
     <>
@@ -51,50 +82,38 @@ export default function NewStory() {
         </StepsList>
 
         <StepsContent index={0}>
-          <Write content={content} setContent={setContent} setNext={setNext} isVisible={step === 0} />
+          <Write isVisible={step === 0} register={register} errors={errors} setValidateFields={setValidateFields} />
         </StepsContent>
         <StepsContent index={1}>
-          <Preview content={content} isVisible={step === 1} setNext={setNext} />
+          <Preview content={getValues('content')} isVisible={step === 1} />
         </StepsContent>
         <StepsContent index={2}>
           <Customize
-            title={title}
-            setTitle={setTitle}
-            description={description}
-            setDescription={setDescription}
-            banner={banner}
-            setBanner={setBanner}
-            setNext={setNext}
             isVisible={step === 2}
-            postingTime={postingTime}
-            setPostingTime={setPostingTime}
-            selected={selected}
-            setSelected={setSelected}
+            register={register}
+            errors={errors}
+            setValidateFields={setValidateFields}
+            setValue={setValue}
           />
         </StepsContent>
         <StepsCompletedContent>
-          <Posting
-            title={title}
-            content={content}
-            description={description}
-            banner={banner}
-            date={selected.toISOString()}
-            isVisible={step === 3}
-          />
+          <Posting isVisible={step === 3} />
         </StepsCompletedContent>
 
         {step < 3 && (
           <Group>
-            <StepsPrevTrigger asChild>
-              <Button variant="outline" size="sm">
-                {t('newStory.buttons.prev')}
+            <Button variant="outline" size="sm" onClick={() => setStep(step - 1)} disabled={step === 0}>
+              {t('newStory.buttons.prev')}
+            </Button>
+            {step === 2 ? (
+              <Button type="submit" variant="outline" size="sm" onClick={handleSubmit(onSubmit)}>
+                {t('newStory.buttons.post')}
               </Button>
-            </StepsPrevTrigger>
-            <StepsNextTrigger asChild>
-              <Button variant="outline" size="sm" disabled={!next}>
-                {step === 2 ? t('newStory.buttons.post') : t('newStory.buttons.next')}
+            ) : (
+              <Button variant="outline" size="sm" onClick={checkPageCorrectness}>
+                {t('newStory.buttons.next')}
               </Button>
-            </StepsNextTrigger>
+            )}
           </Group>
         )}
       </StepsRoot>
