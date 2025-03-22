@@ -3,11 +3,13 @@ package edu.bbte.licensz.slim2299.recowrite.mappers;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class BlogMapper {
 
@@ -41,7 +43,7 @@ public class BlogMapper {
             Date date = Date.from(instant);
             blogModel.setDate(date);
         } catch (Exception e) {
-            System.out.println("Error parsing with Instant: " + e.getMessage());
+            log.error("Error parsing with Instant: {}", e.getMessage());
         }
         return blogModel;
     }

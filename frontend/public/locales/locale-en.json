@@ -262,6 +262,12 @@
     "posting": {
       "success": "Post uploaded successfully",
       "loading": "Uploading your post"
+    },
+    "erros": {
+      "notEmpty": "This field is mandatory",
+      "max": "The maximum number of characters is 255",
+      "date": "Invalid ISO date format",
+      "url": "This must be a valid URL"
     }
   },
   "forgotPassword": {

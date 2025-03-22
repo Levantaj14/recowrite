@@ -1,24 +1,16 @@
 import { Prose } from '@/components/ui/prose';
 import { Heading } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 
 type Props = {
   content: string;
   isVisible: boolean;
-  setNext: (next: boolean) => void;
 };
 
-export default function Preview({ content, isVisible, setNext }: Props) {
+export default function Preview({ content, isVisible }: Props) {
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (isVisible) {
-      setNext(true);
-    }
-  }, [setNext, isVisible]);
 
   return (
     <>

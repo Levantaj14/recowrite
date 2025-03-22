@@ -1,32 +1,13 @@
 import { Flex, Spinner, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
-import { createBlog } from '@/apis/blogApi.ts';
-import { toast } from 'sonner';
-import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  title: string;
-  description: string;
-  banner: string;
-  content: string;
-  date: string;
   isVisible: boolean;
 };
 
-export default function Posting({ title, content, description, banner, date, isVisible }: Props) {
+export default function Posting({ isVisible }: Props) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isVisible) {
-      createBlog({ title, description, banner, date, content }).then((r) => {
-        toast.success(t('newStory.posting.success'));
-        navigate(`/blog/${r}`);
-      });
-    }
-  }, [t, banner, content, description, isVisible, navigate, title, date]);
 
   return (
     isVisible && (
