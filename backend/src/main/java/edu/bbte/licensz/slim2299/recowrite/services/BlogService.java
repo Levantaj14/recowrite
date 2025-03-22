@@ -2,6 +2,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogDateIsInThePastException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
@@ -12,6 +13,7 @@ import edu.bbte.licensz.slim2299.recowrite.mappers.BlogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +77,11 @@ public class BlogService implements BlogServiceInterface {
         Optional<UserModel> userResult = userManager.findByUsername(username);
         if (userResult.isEmpty()) {
             throw new UserNotFoundException("User with name " + username + " not found");
+        }
+        Instant now = Instant.now();
+        Instant blogDate = Instant.parse(blog.getDate());
+        if (blogDate.isBefore(now)) {
+            throw new BlogDateIsInThePastException("Blog date " + blog.getDate() + " is before " + now);
         }
         BlogModel model = blogMapper.dtoToModel(blog);
         model.setUser(userResult.get());
