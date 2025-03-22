@@ -260,6 +260,12 @@
       "placeholder": "Ide írd a cikked...",
       "title": "Írj egy új cikket",
       "desc": "Nyugodtan használd a <1>Markdown</1> formázást, hogy a cikked fejleszd"
+    },
+    "erros": {
+      "date": "Érvénytelen ISO dátumformátum",
+      "max": "A maximális karakterszám 255",
+      "notEmpty": "Ez a mező kötelező",
+      "url": "Ennek érvényes URL-nek kell lennie"
     }
   },
   "forgotPassword": {

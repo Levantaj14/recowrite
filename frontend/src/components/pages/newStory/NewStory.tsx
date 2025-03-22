@@ -18,20 +18,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createBlog } from '@/apis/blogApi.ts';
 import { toast } from 'sonner';
 
-const schema = z.object({
-  content: z.string().nonempty('This field can\'t be empty'),
-  title: z.string().nonempty('This field can\'t be empty').max(255, 'The maximum number of characters is 255'),
-  description: z.string().max(255, 'The maximum number of characters is 255'),
-  date: z.string().nonempty().refine(
-    (val) => !isNaN(Date.parse(val)) && val === new Date(val).toISOString(),
-    {
-      message: "Invalid ISO date format",
-    }
-  ),
-  banner: z.string().nonempty('This field can\'t be empty').url('This must be a valid URL'),
-});
-
-export type NewStoryFormFields = z.infer<typeof schema>;
+export interface NewStoryFormFields {
+  content: string;
+  title: string;
+  description: string;
+  date: string;
+  banner: string;
+}
 
 export default function NewStory() {
   const { t } = useTranslation();
@@ -40,6 +33,19 @@ export default function NewStory() {
   const [step, setStep] = useState(0);
   const [validateFields, setValidateFields] = useState<('content' | 'title' | 'description' | 'date' | 'banner')[]>([]);
 
+  const schema = z.object({
+    content: z.string().nonempty(t('newStory.erros.notEmpty')),
+    title: z.string().nonempty(t('newStory.erros.notEmpty')).max(255, t('newStory.erros.max')),
+    description: z.string().max(255, t('newStory.erros.max')),
+    date: z.string().nonempty().refine(
+      (val) => !isNaN(Date.parse(val)) && val === new Date(val).toISOString(),
+      {
+        message: t('newStory.erros.date'),
+      },
+    ),
+    banner: z.string().nonempty(t('newStory.erros.notEmpty')).url(t('newStory.erros.url')),
+  });
+
   const {
     register,
     handleSubmit,
@@ -47,6 +53,7 @@ export default function NewStory() {
     getValues,
     trigger,
     setValue,
+    clearErrors,
   } = useForm<NewStoryFormFields>({
     resolver: zodResolver(schema),
   });
@@ -82,7 +89,14 @@ export default function NewStory() {
         </StepsList>
 
         <StepsContent index={0}>
-          <Write isVisible={step === 0} register={register} errors={errors} setValidateFields={setValidateFields} />
+          <Write
+            isVisible={step === 0}
+            register={register}
+            errors={errors}
+            setValidateFields={setValidateFields}
+            trigger={trigger}
+            clearErrors={clearErrors}
+          />
         </StepsContent>
         <StepsContent index={1}>
           <Preview content={getValues('content')} isVisible={step === 1} />

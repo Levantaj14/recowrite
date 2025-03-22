@@ -262,6 +262,12 @@
       "placeholder": "Scriți articolul aici...",
       "title": "Scrie un articol nou",
       "desc": "Poți utiliza formatarea <1>Markdown</1> pentru ați îmbunătăți povestea"
+    },
+    "erros": {
+      "date": "Format de dată ISO invalid",
+      "max": "Numărul maxim de caractere este 255",
+      "notEmpty": "Acest câmp este obligatoriu",
+      "url": "Acesta trebuie să fie un URL valid"
     }
   },
   "forgotPassword": {

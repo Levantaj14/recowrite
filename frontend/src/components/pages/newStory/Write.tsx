@@ -1,18 +1,20 @@
 import { Heading, Textarea, Link, HStack, Fieldset, Field } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Trans, useTranslation } from 'react-i18next';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { NewStoryFormFields } from '@/components/pages/newStory/NewStory.tsx';
+import { FieldErrors, UseFormClearErrors, UseFormRegister } from 'react-hook-form';
 import { useEffect } from 'react';
+import { NewStoryFormFields } from './NewStory';
 
 type Props = {
   register: UseFormRegister<NewStoryFormFields>;
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
   setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
+  trigger: (field: ('content' | 'title' | 'description' | 'date' | 'banner')) => Promise<boolean>;
+  clearErrors: UseFormClearErrors<NewStoryFormFields>;
 };
 
-export default function Write({ register, errors, isVisible, setValidateFields }: Props) {
+export default function Write({ register, errors, isVisible, setValidateFields, trigger, clearErrors }: Props) {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -20,6 +22,13 @@ export default function Write({ register, errors, isVisible, setValidateFields }
       setValidateFields(['content']);
     }
   }, [isVisible, setValidateFields]);
+
+  async function clearContentError() {
+    const correct = await trigger('content');
+    if (correct) {
+      clearErrors('content');
+    }
+  }
 
   return (
     <>
@@ -52,7 +61,9 @@ export default function Write({ register, errors, isVisible, setValidateFields }
                   mt="4"
                   height="calc(100vh - 400px)"
                   resize="none"
-                  {...register('content')}
+                  {...register('content', {
+                    onChange: clearContentError,
+                  })}
                 />
                 <Field.ErrorText>{errors.content?.message}</Field.ErrorText>
               </Field.Root>
