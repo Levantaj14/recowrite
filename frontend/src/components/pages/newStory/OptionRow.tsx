@@ -4,7 +4,7 @@ import {
   MdFormatBold,
   MdFormatListBulleted,
   MdFormatListNumbered,
-  MdFormatQuote, MdOutlineImage,
+  MdFormatQuote, MdOutlineImage, MdOutlineInfo,
   MdOutlineInsertLink,
   MdTitle,
 } from 'react-icons/md';
@@ -13,7 +13,6 @@ import { TfiLayoutLineSolid } from 'react-icons/tfi';
 import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { NewStoryFormFields } from '@/components/pages/newStory/NewStory.tsx';
 import { useTranslation } from 'react-i18next';
-import { HiOutlineInformationCircle } from 'react-icons/hi';
 
 type Props = {
   setValue: UseFormSetValue<NewStoryFormFields>;
@@ -208,7 +207,7 @@ export function OptionRow({ setValue, getValues }: Props) {
           onClick={() => window.open("https://www.markdownguide.org/basic-syntax", "_blank")}
           aria-label={'info'}
         >
-          <HiOutlineInformationCircle />
+          <MdOutlineInfo />
         </IconButton>
       </Tooltip>
     </HStack>

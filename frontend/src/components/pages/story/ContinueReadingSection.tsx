@@ -1,4 +1,4 @@
-import { Card, Heading, Image, Separator, Stack, Text, VStack } from '@chakra-ui/react';
+import { Card, Heading, Image, Separator, Stack, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
@@ -50,30 +50,28 @@ export default function ContinueReadingSection() {
               transition={{ duration: 0.5, ease: 'easeInOut' }}
               viewport={{ once: true }}
             >
-              <VStack align="flex-start">
-                <Stack direction="row">
-                  {recData?.map((recommendation) => (
-                    <motion.div
-                      key={recommendation.id}
-                      whileHover={{
-                        scale: 1.02,
-                        transition: { duration: 0.2, ease: 'easeInOut' },
-                      }}
-                    >
-                      <Link to={`/blog/${recommendation.id}`}>
-                        <Card.Root maxW="sm" overflow="hidden">
-                          <Image h="2xs" src={recommendation.banner} />
-                          <Card.Body gap="2">
-                            <Text>{recommendation.authorName}</Text>
-                            <Card.Title>{recommendation.title}</Card.Title>
-                            <Card.Description>{recommendation.description}</Card.Description>
-                          </Card.Body>
-                        </Card.Root>
-                      </Link>
-                    </motion.div>
-                  ))}
-                </Stack>
-              </VStack>
+              <Stack direction={{ base: "column", md: "row" }} >
+                {recData?.map((recommendation) => (
+                  <motion.div
+                    key={recommendation.id}
+                    whileHover={{
+                      scale: 1.02,
+                      transition: { duration: 0.2, ease: 'easeInOut' },
+                    }}
+                  >
+                    <Link to={`/blog/${recommendation.id}`}>
+                      <Card.Root maxW="sm" overflow="hidden">
+                        <Image h="2xs" src={recommendation.banner} />
+                        <Card.Body gap="2">
+                          <Text>{recommendation.authorName}</Text>
+                          <Card.Title>{recommendation.title}</Card.Title>
+                          <Card.Description>{recommendation.description}</Card.Description>
+                        </Card.Body>
+                      </Card.Root>
+                    </Link>
+                  </motion.div>
+                ))}
+              </Stack>
             </motion.div>
           )}
         </>
