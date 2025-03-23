@@ -1,12 +1,4 @@
-import {
-  DialogActionTrigger,
-  DialogBody, DialogCloseTrigger,
-  DialogContent, DialogDescription,
-  DialogFooter,
-  DialogHeader, DialogRoot,
-  DialogTitle,
-} from '@/components/ui/dialog.tsx';
-import { Field, Fieldset, Input } from '@chakra-ui/react';
+import { Dialog, Field, Fieldset, Input, Portal, Stack } from '@chakra-ui/react';
 import { Button } from '@/components/ui/button.tsx';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
@@ -54,8 +46,8 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
       error: () => {
         setIsSubmitting(false);
         return t('forgotPasswordDialog.toast.error');
-      }
-    })
+      },
+    });
   };
 
   useEffect(() => {
@@ -66,36 +58,43 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
 
   return (
     <>
-      <DialogRoot placement="center" open={open} onOpenChange={(e) => setOpen(e.open)}>
-        <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogHeader>
-              <DialogTitle>{t('forgotPassword.title')}</DialogTitle>
-              <DialogDescription>{t('forgotPasswordDialog.desc')}</DialogDescription>
-            </DialogHeader>
-            <DialogBody>
-              <Fieldset.Root>
-                <Field.Root invalid={!!errors.email}>
-                  <Field.Label>{t('forgotPasswordDialog.email')}</Field.Label>
-                  <Input {...register('email')} />
-                  <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
-                </Field.Root>
-              </Fieldset.Root>
-            </DialogBody>
-            <DialogFooter>
-              <DialogActionTrigger asChild>
-                <Button variant="outline" disabled={isSubmitting}>
-                  {t('buttons.cancel')}
-                </Button>
-              </DialogActionTrigger>
-              <Button type="submit" disabled={isSubmitting}>
-                {t('buttons.submit')}
-              </Button>
-            </DialogFooter>
-            <DialogCloseTrigger />
-          </form>
-        </DialogContent>
-      </DialogRoot>
+      <Dialog.Root placement="center" open={open} onOpenChange={(e) => setOpen(e.open)}>
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Dialog.Header>
+                  <Stack gap={2}>
+                    <Dialog.Title>{t('forgotPassword.title')}</Dialog.Title>
+                    <Dialog.Description>{t('forgotPasswordDialog.desc')}</Dialog.Description>
+                  </Stack>
+                </Dialog.Header>
+                <Dialog.Body>
+                  <Fieldset.Root>
+                    <Field.Root invalid={!!errors.email}>
+                      <Field.Label>{t('forgotPasswordDialog.email')}</Field.Label>
+                      <Input {...register('email')} />
+                      <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
+                    </Field.Root>
+                  </Fieldset.Root>
+                </Dialog.Body>
+                <Dialog.Footer>
+                  <Dialog.ActionTrigger asChild>
+                    <Button variant="outline" disabled={isSubmitting}>
+                      {t('buttons.cancel')}
+                    </Button>
+                  </Dialog.ActionTrigger>
+                  <Button type="submit" disabled={isSubmitting}>
+                    {t('buttons.submit')}
+                  </Button>
+                </Dialog.Footer>
+                <Dialog.CloseTrigger />
+              </form>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
     </>
   );
 }
