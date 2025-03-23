@@ -1,9 +1,10 @@
-import { Heading, Textarea, Link, HStack, Fieldset, Field } from '@chakra-ui/react';
+import { Heading, Textarea, Fieldset, Field } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { Trans, useTranslation } from 'react-i18next';
-import { FieldErrors, UseFormClearErrors, UseFormRegister } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { FieldErrors, UseFormClearErrors, UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { useEffect } from 'react';
 import { NewStoryFormFields } from './NewStory';
+import { OptionRow } from '@/components/pages/newStory/OptionRow.tsx';
 
 type Props = {
   register: UseFormRegister<NewStoryFormFields>;
@@ -12,9 +13,20 @@ type Props = {
   setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
   trigger: (field: ('content' | 'title' | 'description' | 'date' | 'banner')) => Promise<boolean>;
   clearErrors: UseFormClearErrors<NewStoryFormFields>;
+  setValue: UseFormSetValue<NewStoryFormFields>;
+  getValue: UseFormGetValues<NewStoryFormFields>;
 };
 
-export default function Write({ register, errors, isVisible, setValidateFields, trigger, clearErrors }: Props) {
+export default function Write({
+                                register,
+                                errors,
+                                isVisible,
+                                setValidateFields,
+                                trigger,
+                                clearErrors,
+                                setValue,
+                                getValue,
+                              }: Props) {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -33,20 +45,7 @@ export default function Write({ register, errors, isVisible, setValidateFields, 
   return (
     <>
       <Heading size="2xl">{t('newStory.write.title')}</Heading>
-      <HStack gap={1}>
-        <Trans i18nKey="newStory.write.desc">
-          Feel free to use
-          <Link
-            variant="underline"
-            href="https://www.markdownguide.org/basic-syntax/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Markdown
-          </Link>
-          formatting to enhance your story
-        </Trans>
-      </HStack>
+      <OptionRow setValue={setValue} getValues={getValue} />
       {isVisible && (
         <motion.div
           initial={{ opacity: 0, x: 10 }}
@@ -57,8 +56,9 @@ export default function Write({ register, errors, isVisible, setValidateFields, 
             <Fieldset.Content>
               <Field.Root invalid={!!errors.content}>
                 <Textarea
+                  id="content"
                   placeholder={t('newStory.write.placeholder')}
-                  mt="4"
+                  mt="2"
                   height="calc(100vh - 400px)"
                   resize="none"
                   {...register('content', {

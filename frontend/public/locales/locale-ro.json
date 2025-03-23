@@ -122,7 +122,7 @@
       "forgot": "Ți-ai <1>uitat parola</1>?"
     },
     "signup": {
-      "desc": "Începe noua aventură",
+      "desc": "Începe o nouă aventură",
       "passwordMeter": {
         "high": "Puternic",
         "low": "Slab",
@@ -260,8 +260,30 @@
     "title": "Nou articol",
     "write": {
       "placeholder": "Scriți articolul aici...",
-      "title": "Scrie un articol nou",
-      "desc": "Poți utiliza formatarea <1>Markdown</1> pentru ați îmbunătăți povestea"
+      "title": "Împărtășește-ți povestea cu lumea",
+      "desc": "Poți utiliza formatarea <1>Markdown</1> pentru ați îmbunătăți povestea",
+      "markdown": {
+        "heading": "Titlu",
+        "bold": "Îngroșat",
+        "quote": "Citat",
+        "unorderedList": "Listă neordonată",
+        "orderedList": "Listă ordonată",
+        "hr": "Linie orizontală",
+        "link": {
+          "tooltip": "Link",
+          "title": "Titlul linkului"
+        },
+        "image": {
+          "tooltip": "Imagine",
+          "alt": "Text alternativ",
+          "url": "URL-ul imaginii"
+        },
+        "code": {
+          "tooltip": "Cod",
+          "text": "Introduceți codul aici"
+        },
+        "info": "Suportăm sintaxa Markdown pentru formatarea poveștii tale. Apasă aici pentru a afla mai mult."
+      }
     },
     "erros": {
       "date": "Format de dată ISO invalid",

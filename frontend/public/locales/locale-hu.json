@@ -34,7 +34,7 @@
     },
     "signup": {
       "title": "Feliratkozás",
-      "desc": "Egy új kaland egy pár kattintás mögött van van",
+      "desc": "Kezdj el egy új kalandot",
       "passwordMeter": {
         "low": "Gyenge",
         "medium": "Közepes",
@@ -257,9 +257,31 @@
     },
     "title": "Új cikk",
     "write": {
-      "placeholder": "Ide írd a cikked...",
-      "title": "Írj egy új cikket",
-      "desc": "Nyugodtan használd a <1>Markdown</1> formázást, hogy a cikked fejleszd"
+      "placeholder": "Írd ide a cikked...",
+      "title": "Oszd meg a történeted a világgal",
+      "desc": "Nyugodtan használd a <1>Markdown</1> formázást, hogy a cikked fejleszd",
+      "markdown": {
+        "heading": "Fejléc",
+        "bold": "Félkövér",
+        "quote": "Idézet",
+        "unorderedList": "Rendezetlen lista",
+        "orderedList": "Rendezett lista",
+        "hr": "Vízszintes vonal",
+        "link": {
+          "tooltip": "Link",
+          "title": "Link címe"
+        },
+        "image": {
+          "tooltip": "Kép",
+          "alt": "Alternatív szöveg",
+          "url": "Kép URL"
+        },
+        "code": {
+          "tooltip": "Kód",
+          "text": "Illeszd be a kódod ide"
+        },
+        "info": "Támogatjuk a Markdown szintaxist a cikk formázásához. Kattints ide további információért."
+      }
     },
     "erros": {
       "date": "Érvénytelen ISO dátumformátum",
