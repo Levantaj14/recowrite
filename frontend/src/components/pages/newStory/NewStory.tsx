@@ -50,8 +50,8 @@ export default function NewStory() {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
     trigger,
+    getValues,
     setValue,
     clearErrors,
   } = useForm<NewStoryFormFields>({
@@ -95,11 +95,13 @@ export default function NewStory() {
             errors={errors}
             setValidateFields={setValidateFields}
             trigger={trigger}
+            getValue={getValues}
+            setValue={setValue}
             clearErrors={clearErrors}
           />
         </StepsContent>
         <StepsContent index={1}>
-          <Preview content={getValues('content')} isVisible={step === 1} />
+          <Preview content={getValues('content')} setValidateFields={setValidateFields} isVisible={step === 1} />
         </StepsContent>
         <StepsContent index={2}>
           <Customize
@@ -115,7 +117,7 @@ export default function NewStory() {
         </StepsCompletedContent>
 
         {step < 3 && (
-          <Group>
+          <Group mb={10}>
             <Button variant="outline" size="sm" onClick={() => setStep(step - 1)} disabled={step === 0}>
               {t('newStory.buttons.prev')}
             </Button>

@@ -34,7 +34,7 @@
     },
     "signup": {
       "title": "Sign Up",
-      "desc": "Invest time and to read and improve",
+      "desc": "Start a new adventure",
       "passwordMeter": {
         "low": "Low",
         "medium": "Medium",
@@ -229,9 +229,31 @@
       "next": "Next"
     },
     "write": {
-      "title": "Write a new story",
+      "title": "Share your story with the world",
       "desc": "Feel free to use <1>Markdown</1> formatting to enhance your story",
-      "placeholder": "Write your story here..."
+      "placeholder": "Write your story here...",
+      "markdown": {
+        "heading": "Heading",
+        "bold": "Bold",
+        "quote": "Quote",
+        "unorderedList": "Unordered list",
+        "orderedList": "Ordered list",
+        "hr": "Horizontal line",
+        "link": {
+          "tooltip": "Link",
+          "title": "Link title"
+        },
+        "image": {
+          "tooltip": "Image",
+          "alt": "Alternative text",
+          "url": "Image URL"
+        },
+        "code": {
+          "tooltip": "Code",
+          "text": "Insert your code here"
+        },
+        "info": "We support Markdown syntax for formatting your story. Click here to learn more."
+      }
     },
     "preview": {
       "title": "Let's see how it looks"

@@ -3,14 +3,22 @@ import { Heading } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
+import { useEffect } from 'react';
 
 type Props = {
   content: string;
+  setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
   isVisible: boolean;
 };
 
-export default function Preview({ content, isVisible }: Props) {
+export default function Preview({ content, setValidateFields, isVisible }: Props) {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (isVisible) {
+      setValidateFields([]);
+    }
+  }, [isVisible, setValidateFields]);
 
   return (
     <>

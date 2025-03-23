@@ -15,9 +15,6 @@ export default function LoggedInAvatar() {
 
   const selectedItem = (menuSelectionDetails: MenuSelectionDetails) => {
     switch (menuSelectionDetails.value) {
-      case 'dashboard':
-        navigate('/dashboard');
-        break;
       case 'profile':
         navigate(`/user/${userDetails?.id}`);
         break;
