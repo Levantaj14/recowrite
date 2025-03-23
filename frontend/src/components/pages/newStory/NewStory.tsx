@@ -50,8 +50,8 @@ export default function NewStory() {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
     trigger,
+    getValues,
     setValue,
     clearErrors,
   } = useForm<NewStoryFormFields>({
@@ -95,6 +95,8 @@ export default function NewStory() {
             errors={errors}
             setValidateFields={setValidateFields}
             trigger={trigger}
+            getValue={getValues}
+            setValue={setValue}
             clearErrors={clearErrors}
           />
         </StepsContent>

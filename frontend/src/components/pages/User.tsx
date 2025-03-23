@@ -106,7 +106,7 @@ function User() {
             <BlogCard
               imageUrl={blog.banner}
               title={blog.title}
-              description={blog.description}
+              description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
               author={data?.userData.name}
               href={`/blog/${blog.id}`}
               index={index}
