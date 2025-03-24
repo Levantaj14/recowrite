@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,11 +80,16 @@ public class BlogService implements BlogServiceInterface {
         if (userResult.isEmpty()) {
             throw new UserNotFoundException("User with name " + username + " not found");
         }
+
         Instant now = Instant.now();
         Instant blogDate = Instant.parse(blog.getDate());
-        if (blogDate.isBefore(now)) {
-            throw new BlogDateIsInThePastException("Blog date " + blog.getDate() + " is before " + now);
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDate nowDate = now.atZone(zone).toLocalDate();
+        LocalDate blogLocalDate = blogDate.atZone(zone).toLocalDate();
+        if (blogLocalDate.isBefore(nowDate)) {
+            throw new BlogDateIsInThePastException("Blog date " + blog.getDate() + " is before " + nowDate);
         }
+
         BlogModel model = blogMapper.dtoToModel(blog);
         model.setUser(userResult.get());
         return blogManager.save(model).getId();
