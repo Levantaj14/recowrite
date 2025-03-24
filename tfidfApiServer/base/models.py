@@ -4,7 +4,7 @@ class Blog(models.Model):
     id = models.BigAutoField(primary_key=True)
     banner = models.CharField(max_length=255, null=True, blank=True)
     content = models.TextField(null=True, blank=True)
-    date = models.CharField(max_length=255, null=True, blank=True)
+    date = models.DateTimeField()
     description = models.CharField(max_length=255, null=True, blank=True)
     title = models.CharField(max_length=255, null=True, blank=True)
     user_id = models.BigIntegerField()
