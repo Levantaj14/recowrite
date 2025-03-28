@@ -104,6 +104,7 @@ function User() {
         {data !== undefined && data.userBlogs.length > 0 ? (
           data.userBlogs.map((blog, index) => (
             <BlogCard
+              key={blog.id}
               imageUrl={blog.banner}
               title={blog.title}
               description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
