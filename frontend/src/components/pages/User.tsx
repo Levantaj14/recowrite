@@ -107,7 +107,6 @@ function User() {
               imageUrl={blog.banner}
               title={blog.title}
               description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
-              author={data?.userData.name}
               href={`/blog/${blog.id}`}
               index={index}
             />

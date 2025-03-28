@@ -41,7 +41,6 @@ export default function Posts() {
               imageUrl={blog.banner}
               title={blog.title}
               description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
-              author={''}
               href={`/blog/${blog.id}`}
               index={index}
             />
