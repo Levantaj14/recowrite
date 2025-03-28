@@ -26,6 +26,24 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  String decideDescription(BlogsFormat blog) {
+    DateTime now = DateTime.now();
+    DateTime posting = DateTime.parse(blog.date);
+    if (posting.isAfter(now)) {
+      return "This blog is not yet published";
+    }
+    if (blog.description.isEmpty) {
+      String cont = "";
+      if (blog.content.length > 100) {
+        cont = "${blog.content.substring(0, 100)}...";
+      } else {
+        cont = blog.content;
+      }
+      return cont;
+    }
+    return blog.description;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                           child: Image.network(blog.banner, fit: BoxFit.cover),
                         ),
                         title: Text(blog.title),
-                        subtitle: Text(blog.description),
+                        subtitle: Text(decideDescription(blog)),
                       ),
                       onTap: () {
                         Navigator.push(
