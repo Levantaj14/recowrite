@@ -15,6 +15,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool fetch = false;
   late Future<List<BlogsFormat>> futureBlogs;
+  List<String> patternsToRemove = [
+    '\\*\\*',
+    '\\[',
+    '\\]',
+    '\\(.*?\\)',
+    '#',
+    '```',
+  ];
 
   Future<List<BlogsFormat>> fetchData() async {
     final response = await http.get(Uri.parse('http://localhost:8080/blogs'));
@@ -24,6 +32,27 @@ class _HomePageState extends State<HomePage> {
     } else {
       throw Exception('Failed to load blogs');
     }
+  }
+
+  String decideDescription(BlogsFormat blog) {
+    DateTime now = DateTime.now();
+    DateTime posting = DateTime.parse(blog.date);
+    if (posting.isAfter(now)) {
+      return "This blog is not yet published";
+    }
+    if (blog.description.isEmpty) {
+      String cont = "";
+      if (blog.content.length > 100) {
+        cont = "${blog.content.substring(0, 100)}...";
+        patternsToRemove.forEach((pattern) {
+          cont = cont.replaceAll(RegExp(pattern), '');
+        });
+      } else {
+        cont = blog.content;
+      }
+      return cont;
+    }
+    return blog.description;
   }
 
   @override
@@ -54,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                           child: Image.network(blog.banner, fit: BoxFit.cover),
                         ),
                         title: Text(blog.title),
-                        subtitle: Text(blog.description),
+                        subtitle: Text(decideDescription(blog)),
                       ),
                       onTap: () {
                         Navigator.push(
@@ -75,7 +104,10 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){}, child: Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
     );
   }
 }

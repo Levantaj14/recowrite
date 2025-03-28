@@ -110,6 +110,8 @@ function User() {
               description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
               href={`/blog/${blog.id}`}
               index={index}
+              date={blog.date}
+              content={blog.content}
             />
           ))
         ) : (
