@@ -23,7 +23,7 @@ function Home() {
     document.title = 'recowrite';
   }, [data]);
 
-  const patternsToRemove = ['\\*\\*', '_', '\\[', '\\]', '\\(.*?\\)', '#'];
+  const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
 
   function decideDescription(blog: BlogType) {
     if (new Date(blog.date) > new Date()) {

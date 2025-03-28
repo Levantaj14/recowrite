@@ -15,7 +15,7 @@ type Props = {
 
 function BlogCard({ imageUrl, title, description, content, date, href, index }: Props) {
   const { t } = useTranslation();
-  const patternsToRemove = ['\\*\\*', '_', '\\[', '\\]', '\\(.*?\\)', '#'];
+  const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
 
   function decideDescription() {
     if (new Date(date) > new Date()) {
