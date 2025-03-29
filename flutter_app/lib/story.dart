@@ -4,7 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:http/http.dart' as http;
+import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
+import 'package:skeletonizer/skeletonizer.dart';
 
 import 'blogs_format.dart';
 
@@ -20,15 +22,25 @@ class StoryPage extends StatefulWidget {
 class _StoryPageState extends State<StoryPage> {
   bool fetch = false;
   late Future<BlogsFormat> futureBlogs;
+  BlogsFormat blog = BlogsFormat(
+    id: 0,
+    title: loremIpsum(),
+    description: '',
+    content: loremIpsum(paragraphs: 5),
+    banner: '',
+    date: DateTime.now().toString(),
+    author: 1,
+  );
 
   Future<BlogsFormat> fetchData() async {
     final response = await http.get(
       Uri.parse('http://localhost:8080/blogs/${widget.id}'),
     );
     if (response.statusCode == 200) {
-      return BlogsFormat.fromJson(
+      blog = BlogsFormat.fromJson(
         jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
       );
+      return blog;
     } else {
       throw Exception('Failed to load blog with id ${widget.id}');
     }
@@ -43,16 +55,21 @@ class _StoryPageState extends State<StoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
+      body: FutureBuilder<BlogsFormat>(
         future: futureBlogs,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return CustomScrollView(
+          if (snapshot.hasError) {
+            print('${snapshot.error}');
+          }
+          return Skeletonizer(
+            enableSwitchAnimation: true,
+            enabled: !snapshot.hasData,
+            child: CustomScrollView(
               slivers: [
                 SliverAppBar.large(
                   stretch: true,
                   expandedHeight: 300.0,
-                  title: Text(snapshot.data!.title),
+                  title: Text(blog.title),
                   flexibleSpace: FlexibleSpaceBar(
                     stretchModes: const <StretchMode>[
                       StretchMode.zoomBackground,
@@ -62,12 +79,12 @@ class _StoryPageState extends State<StoryPage> {
                     background: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
-                        Image(
-                          image: CachedNetworkImageProvider(
-                            snapshot.data!.banner,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                        blog.banner == ''
+                            ? SizedBox()
+                            : Image(
+                              image: CachedNetworkImageProvider(blog.banner),
+                              fit: BoxFit.cover,
+                            ),
                         const DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -93,18 +110,13 @@ class _StoryPageState extends State<StoryPage> {
                         bottom: 20,
                         top: 10,
                       ),
-                      child: HtmlWidget(
-                        markdown.markdownToHtml(snapshot.data!.content),
-                      ),
+                      child: HtmlWidget(markdown.markdownToHtml(blog.content)),
                     ),
                   ]),
                 ),
               ],
-            );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-          return const CircularProgressIndicator();
+            ),
+          );
         },
       ),
       bottomNavigationBar: BottomAppBar(
