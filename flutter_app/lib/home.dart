@@ -44,9 +44,9 @@ class _HomePageState extends State<HomePage> {
       String cont = "";
       if (blog.content.length > 100) {
         cont = "${blog.content.substring(0, 100)}...";
-        patternsToRemove.forEach((pattern) {
+        for (var pattern in patternsToRemove) {
           cont = cont.replaceAll(RegExp(pattern), '');
-        });
+        }
       } else {
         cont = blog.content;
       }
@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   final blog = snapshot.data![index];
                   return Card(
+                    clipBehavior: Clip.hardEdge,
                     child: InkWell(
                       child: ListTile(
                         leading: AspectRatio(
