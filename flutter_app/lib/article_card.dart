@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:recowrite/blogs_format.dart';
 import 'package:recowrite/story.dart';
@@ -57,12 +58,16 @@ class ArticleCard extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(12),
               ),
-              child: Image.network(
-                blog.banner,
-                height: 150,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child:
+                  blog.banner == ''
+                      ? SizedBox(height: 150)
+                      : CachedNetworkImage(
+                        imageUrl: blog.banner,
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        height: 150,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
             ),
             Padding(
               padding: const EdgeInsets.all(12),

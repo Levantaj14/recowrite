@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:http/http.dart' as http;
@@ -61,7 +62,12 @@ class _StoryPageState extends State<StoryPage> {
                     background: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
-                        Image.network(snapshot.data!.banner, fit: BoxFit.cover),
+                        Image(
+                          image: CachedNetworkImageProvider(
+                            snapshot.data!.banner,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                         const DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -108,7 +114,7 @@ class _StoryPageState extends State<StoryPage> {
             Text('513'),
             SizedBox(width: 8),
             IconButton(onPressed: () {}, icon: Icon(Icons.comment)),
-            Text('3')
+            Text('3'),
           ],
         ),
       ),

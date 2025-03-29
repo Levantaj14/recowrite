@@ -57,20 +57,43 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentPage = 0;
+  final controller = PageController(
+    initialPage: 0,
+  );
+
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (controller.hasClients) {
+        controller.jumpToPage(currentPage);
+      }
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final pageView = PageView(
+      controller: controller,
+      physics: const NeverScrollableScrollPhysics(),
+      onPageChanged: (index) {
+        setState(() {
+          currentPage = index;
+        });
+      },
+      children: [
+        HomePage(),
+        global.auth ? DashboardPage() : Authentication(),
+      ],
+    );
+
     return Scaffold(
-      body:
-          <Widget>[
-            HomePage(),
-            global.auth ? DashboardPage() : Authentication(),
-          ][currentPage],
+      body: pageView,
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentPage,
         onDestinationSelected: (int index) {
           setState(() {
-            currentPage = index;
+            controller.jumpToPage(index);
           });
         },
         destinations: [
