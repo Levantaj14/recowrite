@@ -82,8 +82,8 @@ class _StoryPageState extends State<StoryPage> {
                   delegate: SliverChildListDelegate([
                     Padding(
                       padding: EdgeInsets.only(
-                        left: 10,
-                        right: 10,
+                        left: 13,
+                        right: 13,
                         bottom: 20,
                         top: 10,
                       ),
@@ -104,7 +104,7 @@ class _StoryPageState extends State<StoryPage> {
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.favorite_outline)),
             Text('513'),
             SizedBox(width: 8),
             IconButton(onPressed: () {}, icon: Icon(Icons.comment)),

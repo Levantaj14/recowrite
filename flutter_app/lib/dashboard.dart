@@ -10,12 +10,21 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-      ),
-      body: Center(
-        child: Text('Dashboard page'),
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Dashboard'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.settings)),
+              Tab(icon: Icon(Icons.person)),
+              Tab(icon: Icon(Icons.article)),
+              Tab(icon: Icon(Icons.favorite)),
+              Tab(icon: Icon(Icons.comment)),
+            ],
+          ),
+        ),
       ),
     );
   }
