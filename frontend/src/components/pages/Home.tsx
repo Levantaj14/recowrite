@@ -52,12 +52,12 @@ function Home() {
           maxW="100%"
           px="4"
         >
-          {data?.blogData.map((blog: BlogType, index) => (
+          {data?.blogData.map((blog: BlogType) => (
             <motion.div
               key={blog.id}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, ease: 'easeInOut', delay: index / 25 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
               whileHover={{
                 scale: 1.02,
                 transition: { duration: 0.2, ease: 'easeInOut' },
