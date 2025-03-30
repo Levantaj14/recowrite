@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface RecommendationServiceInterface {
     List<BlogDtoOut> getRecommendations(String blogId);
+
+    void addRecommendation(long blogId);
 }

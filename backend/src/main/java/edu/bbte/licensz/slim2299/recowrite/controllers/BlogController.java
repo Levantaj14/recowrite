@@ -48,7 +48,9 @@ public class BlogController {
     @PostMapping()
     public IdDtoOut addBlog(HttpServletRequest request, @RequestBody BlogDtoIn blog) {
         Cookie authCookie = authCookieFinder.serachAuthCookie(request.getCookies());
-        return new IdDtoOut(blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue())));
+        long blogId = blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue()));
+        recommendationService.addRecommendation(blogId);
+        return new IdDtoOut(blogId);
     }
 
     @GetMapping("/recommendation")

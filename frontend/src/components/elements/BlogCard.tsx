@@ -36,7 +36,6 @@ function BlogCard({ imageUrl, title, description, content, date, href, index }: 
   }
 
   return (
-    // TODO: Limit character limit for description based on device
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

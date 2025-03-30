@@ -41,8 +41,10 @@ def setup():
     if not os.path.exists(index_path) or not os.path.exists(vectorizer_path):
         corpora = Blog.objects.all()
         filtered_corpus = []
+        my_sql_ids = []
         for corpus in corpora:
             filtered_corpus.append(filtering(corpus.content))
+            my_sql_ids.append(corpus.id)
 
         vectorizer = ft.TfidfVectorizer()
         fit = vectorizer.fit_transform(filtered_corpus)
@@ -62,9 +64,14 @@ def setup():
 
         # setting up faiss
         dimension = dense_matrix.shape[1]
+
+        # setting up indexes
+        base_index = faiss.IndexFlatL2(dimension)
+        index = faiss.IndexIDMap(base_index)
+        my_sql_ids = np.array(my_sql_ids, dtype=np.int64)
+
         # print("Dimension: ", dimension)
-        index = faiss.IndexFlatL2(dimension)
-        index.add(dense_matrix)
+        index.add_with_ids(dense_matrix, my_sql_ids)
 
         # saving faiss index
         faiss.write_index(index, "tfidf/index.bin")
@@ -81,14 +88,15 @@ def search(blog_content, k=1):
     print("FAISS search result:")
     print(distances, indices)
     ids = []
+    # TODO: DO NOT include the unrealised posts
     for faiss_index in indices[0]:
-        ids.append(faiss_index + 1)
+        ids.append(faiss_index)
     return ids
 
 
-def add(blog_content):
-    blog = filtering(blog_content)
+def add(blog_id):
+    blog = filtering(Blog.objects.get(id=blog_id).content)
     transformed_data = vectorizer.transform([blog])
-    index.add(transformed_data.toarray().astype(np.float32))
+    index.add_with_ids(transformed_data.toarray().astype(np.float32), np.array([blog_id]))
     faiss.write_index(index, "tfidf/index.bin")
     print("New blog added successfully")

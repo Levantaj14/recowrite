@@ -15,15 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RecommendationService implements RecommendationServiceInterface {
@@ -37,7 +37,9 @@ public class RecommendationService implements RecommendationServiceInterface {
 
     @Override
     public List<BlogDtoOut> getRecommendations(String blogId) {
+        //TODO: Move these checks to the django server
         Optional<BlogModel> blogModel = blogManager.findById(Long.valueOf(blogId));
+        String apiHost = "http://localhost:8000/list";
         if (blogModel.isEmpty()) {
             throw new BlogNotFoundException("Blog not found");
         }
@@ -48,7 +50,6 @@ public class RecommendationService implements RecommendationServiceInterface {
         }
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String apiHost = "http://localhost:8000/recommendation";
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
                     .queryParam("id", blogId)
                     .queryParam("k", 4)
@@ -69,7 +70,8 @@ public class RecommendationService implements RecommendationServiceInterface {
             // Converting response body from JSON to Java Object with Jackson
             List<String> data = objectMapper.readValue(
                     objectMapper.readTree(sb.toString()).get("data").toString(),
-                    new TypeReference<>() {}
+                    new TypeReference<>() {
+                    }
             );
 
             List<BlogDtoOut> blogs = new ArrayList<>();
@@ -83,6 +85,34 @@ public class RecommendationService implements RecommendationServiceInterface {
         } catch (IOException e) {
             log.error("Recommendation service not responding");
             throw new RecommendationServiceNotRespondingException("Error getting recommendations");
+        }
+    }
+
+    @Override
+    public void addRecommendation(long blogId) {
+        try {
+            String apiHost = "http://localhost:8000/add";
+            Map<String, Long> data = new HashMap<>();
+            data.put("id", blogId);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String dataToSend = objectMapper.writeValueAsString(data);
+
+            URL url = new URI(apiHost).toURL();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+            try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
+                os.writeBytes(dataToSend);
+                os.flush();
+            }
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                log.error("Couldn't add the blog with id {} to the recommendation system", blogId);
+            }
+            connection.disconnect();
+        } catch (URISyntaxException | IOException e) {
+            log.error("Error processing data");
         }
     }
 }
