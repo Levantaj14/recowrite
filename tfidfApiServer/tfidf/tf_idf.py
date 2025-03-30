@@ -88,13 +88,14 @@ def search(blog_content, k=1):
     print("FAISS search result:")
     print(distances, indices)
     ids = []
+    # TODO: DO NOT include the unrealised posts
     for faiss_index in indices[0]:
         ids.append(faiss_index)
     return ids
 
 
 def add(blog_id):
-    blog = filtering(Blog.objects.get(id=blog_id))
+    blog = filtering(Blog.objects.get(id=blog_id).content)
     transformed_data = vectorizer.transform([blog])
     index.add_with_ids(transformed_data.toarray().astype(np.float32), np.array([blog_id]))
     faiss.write_index(index, "tfidf/index.bin")
