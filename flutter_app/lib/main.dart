@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grayscale/grayscale.dart';
+import 'package:recowrite/authentication.dart';
 
 import 'dashboard.dart';
+import 'globals.dart' as global;
 import 'home.dart';
 
 void main() {
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
             value: (_) => const FadeForwardsPageTransitionsBuilder(),
           ),
         ),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: GrayColorScheme.highContrastGray(Brightness.light),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
@@ -35,10 +38,8 @@ class MyApp extends StatelessWidget {
             value: (_) => const FadeForwardsPageTransitionsBuilder(),
           ),
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.teal,
-          brightness: Brightness.dark,
-        ),
+        colorScheme: GrayColorScheme.highContrastGray(Brightness.dark),
+        fontFamily: 'Inter',
       ),
       home: const MyHomePage(title: 'recowrite'),
     );
@@ -56,36 +57,58 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentPage = 0;
+  final controller = PageController(
+    initialPage: 0,
+  );
+
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (controller.hasClients) {
+        controller.jumpToPage(currentPage);
+      }
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final pageView = PageView(
+      controller: controller,
+      physics: const NeverScrollableScrollPhysics(),
+      onPageChanged: (index) {
+        setState(() {
+          currentPage = index;
+        });
+      },
+      children: [
+        HomePage(),
+        global.auth ? DashboardPage() : Authentication(),
+      ],
+    );
+
     return Scaffold(
-      body: <Widget>[HomePage(), DashboardPage()][currentPage],
+      body: pageView,
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentPage,
         onDestinationSelected: (int index) {
           setState(() {
-            currentPage = index;
+            controller.jumpToPage(index);
           });
         },
         destinations: [
           NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.dashboard), label: 'Dashboard')
+          global.auth
+              ? NavigationDestination(
+                icon: Icon(Icons.dashboard),
+                label: 'Dashboard',
+              )
+              : NavigationDestination(
+                icon: Icon(Icons.person),
+                label: 'Login',
+              ),
         ],
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   child: Row(
-      //     children: [
-      //       IconButton(onPressed: () {}, icon: Icon(Icons.home), isSelected: true,),
-      //       IconButton(onPressed: () {}, icon: Icon(Icons.dashboard)),
-      //     ],
-      //   ),
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   child: Icon(Icons.add),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
     );
   }
 }
