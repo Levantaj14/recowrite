@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class MailService implements MailServiceInterface {
     @Autowired
     private Handlebars handlebars;
 
+    @Async
     @Override
     public void sendMessage(String to, String subject, String file, Map<String, String> data, Map<String, String> images) {
         if (data == null) {
