@@ -8,7 +8,7 @@ import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
 import 'package:skeletonizer/skeletonizer.dart';
 
-import 'blogs_format.dart';
+import 'formats/blogs_format.dart';
 
 class StoryPage extends StatefulWidget {
   final int id;
@@ -111,6 +111,38 @@ class _StoryPageState extends State<StoryPage> {
                         top: 10,
                       ),
                       child: HtmlWidget(markdown.markdownToHtml(blog.content)),
+                    ),
+                    Divider(color: Colors.grey, indent: 13, endIndent: 13),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 13,
+                        right: 13,
+                        bottom: 20,
+                        top: 10,
+                      ),
+                      child: Text(
+                        'Continue reading',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: 250),
+                      child: CarouselView.weighted(
+                        itemSnapping: true,
+                        flexWeights: const <int>[1, 7, 1],
+                        children: [
+                          for (int i = 0; i < 3; i++)
+                            Image(
+                              image: CachedNetworkImageProvider(
+                                'https://picsum.photos/seed/${i + 1}/600/400',
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                        ],
+                      ),
                     ),
                   ]),
                 ),

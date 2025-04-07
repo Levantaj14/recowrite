@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:recowrite/blogs_format.dart';
+import 'package:recowrite/formats/author_format.dart';
+import 'package:recowrite/formats/blogs_format.dart';
 import 'package:recowrite/story.dart';
 
 class ArticleCard extends StatelessWidget {
   final BlogsFormat blog;
+  final AuthorFormat author;
 
-  const ArticleCard({super.key, required this.blog});
+  const ArticleCard({super.key, required this.blog, required this.author});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class ArticleCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(blog.author.toString(), style: TextStyle(fontSize: 12)),
+                  Text(author.name, style: TextStyle(fontSize: 12)),
                   const SizedBox(height: 4),
                   Text(
                     blog.title,
