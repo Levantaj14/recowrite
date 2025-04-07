@@ -66,9 +66,10 @@ class _RecommendationCarouselState extends State<RecommendationCarousel> {
         itemSnapping: true,
         flexWeights: const <int>[1, 7, 1],
         onTap: (i){
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => StoryPage(id: blogs[i].id)),
+            ModalRoute.withName('/'),
           );
         },
         children: [
