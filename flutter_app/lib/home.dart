@@ -39,16 +39,6 @@ class _HomePageState extends State<HomePage>
     ),
   );
 
-  late Map<int, AuthorFormat> authors = {
-    1: const AuthorFormat(
-      id: 1,
-      name: 'John Doe',
-      bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      avatar: 'https://example.com/avatar.jpg',
-      username: 'johndoe',
-    ),
-  };
-
   Future<List<BlogsFormat>> fetchBlogs() async {
     final response = await http.get(Uri.parse('http://localhost:8080/blogs'));
     if (response.statusCode == 200) {
@@ -65,12 +55,12 @@ class _HomePageState extends State<HomePage>
     if (response.statusCode == 200) {
       List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       setState(() {
-        authors = {
+        global.authors = {
           for (var author in jsonData)
             AuthorFormat.fromJson(author).id: AuthorFormat.fromJson(author),
         };
       });
-      return authors;
+      return global.authors;
     } else {
       throw Exception('Failed to load blogs');
     }
@@ -148,7 +138,7 @@ class _HomePageState extends State<HomePage>
                   padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                   itemCount: blogs.length,
                   itemBuilder: (context, index) {
-                    return ArticleCard(blog: blogs[index], author: authors[blogs[index].author] ?? AuthorFormat(
+                    return ArticleCard(blog: blogs[index], author: global.authors[blogs[index].author] ?? AuthorFormat(
                       id: 0,
                       name: 'Unknown',
                       bio: 'Unknown',

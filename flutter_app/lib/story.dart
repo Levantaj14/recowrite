@@ -6,6 +6,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:http/http.dart' as http;
 import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
+import 'package:recowrite/recommendation_carousel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import 'formats/blogs_format.dart';
@@ -117,7 +118,7 @@ class _StoryPageState extends State<StoryPage> {
                       padding: const EdgeInsets.only(
                         left: 13,
                         right: 13,
-                        bottom: 20,
+                        bottom: 15,
                         top: 10,
                       ),
                       child: Text(
@@ -128,22 +129,7 @@ class _StoryPageState extends State<StoryPage> {
                         ),
                       ),
                     ),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 250),
-                      child: CarouselView.weighted(
-                        itemSnapping: true,
-                        flexWeights: const <int>[1, 7, 1],
-                        children: [
-                          for (int i = 0; i < 3; i++)
-                            Image(
-                              image: CachedNetworkImageProvider(
-                                'https://picsum.photos/seed/${i + 1}/600/400',
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                        ],
-                      ),
-                    ),
+                    RecommendationCarousel(id: widget.id),
                   ]),
                 ),
               ],
