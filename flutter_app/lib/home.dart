@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage>
   );
 
   Future<List<BlogsFormat>> fetchBlogs() async {
-    final response = await http.get(Uri.parse('http://localhost:8080/blogs'));
+    final response = await http.get(Uri.parse('${global.url}/blogs'));
     if (response.statusCode == 200) {
       List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       blogs = jsonData.map((blog) => BlogsFormat.fromJson(blog)).toList();
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage>
   }
 
   Future<Map<int, AuthorFormat>> fetchAuthors() async {
-    final response = await http.get(Uri.parse('http://localhost:8080/user'));
+    final response = await http.get(Uri.parse('${global.url}/user'));
     if (response.statusCode == 200) {
       List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       setState(() {

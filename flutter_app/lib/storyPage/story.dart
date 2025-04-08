@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,10 +7,12 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:http/http.dart' as http;
 import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
-import 'package:recowrite/recommendation_carousel.dart';
+import 'package:recowrite/storyPage/not_published.dart';
+import 'package:recowrite/storyPage/recommendation_carousel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import 'formats/blogs_format.dart';
+import '../formats/blogs_format.dart';
+import '../globals.dart' as global;
 
 class StoryPage extends StatefulWidget {
   final int id;
@@ -23,19 +26,20 @@ class StoryPage extends StatefulWidget {
 class _StoryPageState extends State<StoryPage> {
   bool fetch = false;
   late Future<BlogsFormat> futureBlogs;
+  bool showBlog = true;
   BlogsFormat blog = BlogsFormat(
     id: 0,
     title: loremIpsum(),
     description: '',
     content: loremIpsum(paragraphs: 5),
     banner: '',
-    date: DateTime.now().toString(),
+    date: '2025-04-08T11:05:25Z',
     author: 1,
   );
 
   Future<BlogsFormat> fetchData() async {
     final response = await http.get(
-      Uri.parse('http://localhost:8080/blogs/${widget.id}'),
+      Uri.parse('${global.url}/blogs/${widget.id}'),
     );
     if (response.statusCode == 200) {
       blog = BlogsFormat.fromJson(
@@ -45,6 +49,12 @@ class _StoryPageState extends State<StoryPage> {
     } else {
       throw Exception('Failed to load blog with id ${widget.id}');
     }
+  }
+
+  bool isPublished() {
+    DateTime now = DateTime.now();
+    DateTime posting = DateTime.parse(blog.date);
+    return posting.isBefore(now);
   }
 
   @override
@@ -59,9 +69,6 @@ class _StoryPageState extends State<StoryPage> {
       body: FutureBuilder<BlogsFormat>(
         future: futureBlogs,
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            print('${snapshot.error}');
-          }
           return Skeletonizer(
             enableSwitchAnimation: true,
             enabled: !snapshot.hasData,
@@ -101,36 +108,49 @@ class _StoryPageState extends State<StoryPage> {
                       ],
                     ),
                   ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: IconButton(
+                        onPressed: () {
+                          print(
+                            "The author is ${global.authors[blog.author]?.name}",
+                          );
+                        },
+                        icon: Icon(Icons.person),
+                        tooltip: 'Author',
+                      ),
+                    ),
+                  ],
                 ),
                 SliverList(
-                  delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 13,
-                        right: 13,
-                        bottom: 20,
-                        top: 10,
-                      ),
-                      child: HtmlWidget(markdown.markdownToHtml(blog.content)),
-                    ),
-                    Divider(color: Colors.grey, indent: 13, endIndent: 13),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 13,
-                        right: 13,
-                        bottom: 15,
-                        top: 10,
-                      ),
-                      child: Text(
-                        'Continue reading',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    RecommendationCarousel(id: widget.id),
-                  ]),
+                  delegate: SliverChildListDelegate(
+                    isPublished()
+                        ? [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 13,
+                              right: 13,
+                              bottom: 20,
+                              top: 10,
+                            ),
+                            child: HtmlWidget(
+                              markdown.markdownToHtml(blog.content),
+                            ),
+                          ),
+                          RecommendationCarousel(id: widget.id),
+                        ]
+                        : [
+                          NotPublished(
+                            blog: blog,
+                            onPublish: () {
+                              setState(() {
+                                futureBlogs = fetchData();
+                              });
+                            },
+                          ),
+                        ],
+                  ),
                 ),
               ],
             ),
