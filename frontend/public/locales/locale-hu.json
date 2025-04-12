@@ -1,7 +1,7 @@
 {
   "buttons": {
     "login": "Bejelentkezés",
-    "signup": "Feliratkozás",
+    "signup": "Regisztráció",
     "edit": "Szerkesztés",
     "delete": "Törlés",
     "comment": "Szólj hozzá",
@@ -33,7 +33,7 @@
       "forgot": "<1>Elfelejtetted a jelszavad</1>?"
     },
     "signup": {
-      "title": "Feliratkozás",
+      "title": "Regisztráció",
       "desc": "Kezdj el egy új kalandot",
       "passwordMeter": {
         "low": "Gyenge",
@@ -49,7 +49,7 @@
       },
       "signup": {
         "error": "Hiba történt",
-        "loading": "Feliratkozás...",
+        "loading": "Regisztrálás...",
         "success": "A megerősítő e-mail sikeresen elküldve"
       }
     }
