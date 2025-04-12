@@ -2,7 +2,7 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:mysql://localhost:3306/recowrite
+    url: jdbc:mysql://${MYSQL}/recowrite
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: kerekecske

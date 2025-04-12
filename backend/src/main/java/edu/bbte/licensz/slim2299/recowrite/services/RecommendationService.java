@@ -39,7 +39,7 @@ public class RecommendationService implements RecommendationServiceInterface {
     public List<BlogDtoOut> getRecommendations(String blogId) {
         //TODO: Move these checks to the django server
         Optional<BlogModel> blogModel = blogManager.findById(Long.valueOf(blogId));
-        String apiHost = "http://localhost:8000/recommend";
+        String apiHost = "http://" + System.getenv("RECOMMEND") + "/recommend";
         if (blogModel.isEmpty()) {
             throw new BlogNotFoundException("Blog not found");
         }
@@ -91,7 +91,7 @@ public class RecommendationService implements RecommendationServiceInterface {
     @Override
     public void addRecommendation(long blogId) {
         try {
-            String apiHost = "http://localhost:8000/add";
+            String apiHost = "http://" + System.getenv("RECOMMEND") + "/add";
             Map<String, Long> data = new HashMap<>();
             data.put("id", blogId);
             ObjectMapper objectMapper = new ObjectMapper();
