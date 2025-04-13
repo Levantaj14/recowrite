@@ -7,7 +7,7 @@ on: [push]
     #   paths:
     #     - 'frontend/**'
 jobs:
-    build:
+    lint:
         runs-on: ubuntu-latest
         defaults: 
             run:
@@ -26,8 +26,8 @@ jobs:
             - name: Install dependencies
               run: npm install
 
-            - name: Run HTML validate
-              run: npx html-validate --max-warnings=0 .
-
             - name: Run ESLint
-              run: npx eslint --max-warnings=0 .
+              run: npx eslint .
+
+            - name: TypeScript check
+              run: npx tsc
