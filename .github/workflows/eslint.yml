@@ -1,11 +1,11 @@
 name: eslint
-on: [push]
-    # push:
-    #   paths:
-    #     - 'frontend/**'
-    # pull_request:
-    #   paths:
-    #     - 'frontend/**'
+on:
+    push:
+      paths:
+        - 'frontend/**'
+    pull_request:
+      paths:
+        - 'frontend/**'
 jobs:
     lint:
         runs-on: ubuntu-latest
