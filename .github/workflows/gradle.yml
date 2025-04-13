@@ -1,5 +1,11 @@
-name: CI
-on: [push, pull_request]
+name: gradle check
+on:
+    push:
+      paths:
+        - 'backend/**'
+    # pull_request:
+    #   paths:
+    #     - 'backend/**'
 jobs:
     build:
         runs-on: ubuntu-latest
