@@ -33,14 +33,14 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final UserServiceInterface userService;
     private final JwtAuthFilter jwtAuthFilter;
+    private final UserServiceInterface userService;
     private final CommentOwnerFilter commentOwnerFilter;
 
     @Autowired
-    public SecurityConfig(UserServiceInterface userService, JwtAuthFilter jwtAuthFilter, CommentOwnerFilter commentOwnerFilter) {
-        this.userService = userService;
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, UserServiceInterface userService, CommentOwnerFilter commentOwnerFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.userService = userService;
         this.commentOwnerFilter = commentOwnerFilter;
     }
 
@@ -49,8 +49,9 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*", "/user/*", "/blogs").permitAll()
-                        .requestMatchers("/authentication/*", "/authentication/forgotPassword/*", "/authentication/verify/email", "/error", "/blogs/*", "/user").permitAll()
+                        .requestMatchers("/authentication/*", "/authentication/forgotPassword/*", "/authentication/verify/email","/error", "/blogs/*", "/user").permitAll()
                         .anyRequest().authenticated())
+                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->

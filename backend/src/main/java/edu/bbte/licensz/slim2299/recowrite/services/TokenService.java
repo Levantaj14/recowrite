@@ -19,15 +19,17 @@ import java.util.UUID;
 
 @Service
 public class TokenService implements TokenServiceInterface {
+    private final UserManager userManager;
+    private final TokenManager tokenManager;
+    private final MailServiceInterface mailService;
+    private final String passwordString = "PASSWORD";
 
     @Autowired
-    private UserManager userManager;
-
-    @Autowired
-    private TokenManager tokenManager;
-
-    @Autowired
-    private MailServiceInterface mailService;
+    public TokenService(UserManager userManager, TokenManager tokenManager, MailServiceInterface mailService) {
+        this.userManager = userManager;
+        this.tokenManager = tokenManager;
+        this.mailService = mailService;
+    }
 
     @Override
     public void createPasswordToken(EmailDtoIn emailDtoIn) {
@@ -36,7 +38,7 @@ public class TokenService implements TokenServiceInterface {
             TokenModel tokenModel = new TokenModel();
             tokenModel.setUser(user.get());
             tokenModel.setToken(UUID.randomUUID().toString());
-            tokenModel.setType("PASSWORD");
+            tokenModel.setType(passwordString);
             LocalDateTime expiry = LocalDateTime.now().plusMinutes(30);
             tokenModel.setExpiryDate(expiry);
             tokenManager.save(tokenModel);
@@ -52,7 +54,7 @@ public class TokenService implements TokenServiceInterface {
     public void validatePasswordToken(String token) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
         if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) &&
-                "PASSWORD".equals(tokenModel.get().getType())) {
+                passwordString.equals(tokenModel.get().getType())) {
             return;
         }
         throw new ExpiredTokenException("The token is expired");
@@ -62,7 +64,7 @@ public class TokenService implements TokenServiceInterface {
     public void changePassword(TokenPasswordDtoIn tokenPasswordDtoIn) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(tokenPasswordDtoIn.getToken());
         if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) &&
-                "PASSWORD".equals(tokenModel.get().getType())) {
+                passwordString.equals(tokenModel.get().getType())) {
             UserModel userModel = tokenModel.get().getUser();
             String salt = BCrypt.gensalt(12);
             userModel.setSalt(salt);

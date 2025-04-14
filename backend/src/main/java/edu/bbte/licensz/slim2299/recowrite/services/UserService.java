@@ -18,11 +18,14 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserServiceInterface {
-    @Autowired
-    private UserManager userManager;
+    private final UserManager userManager;
+    private final UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    public UserService(UserManager userManager, UserMapper userMapper) {
+        this.userManager = userManager;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public List<UserDtoOut> getAllUsers() {

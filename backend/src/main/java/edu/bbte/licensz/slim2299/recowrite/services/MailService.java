@@ -19,12 +19,14 @@ import java.util.Map;
 @Slf4j
 @Component
 public class MailService implements MailServiceInterface {
+    private final JavaMailSender emailSender;
+    private final Handlebars handlebars;
 
     @Autowired
-    private JavaMailSender emailSender;
-
-    @Autowired
-    private Handlebars handlebars;
+    public MailService(JavaMailSender emailSender, Handlebars handlebars) {
+        this.emailSender = emailSender;
+        this.handlebars = handlebars;
+    }
 
     @Async
     @Override

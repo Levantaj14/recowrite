@@ -8,8 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.RecommendationServiceNotRespondingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,14 +25,16 @@ import java.time.Instant;
 import java.util.*;
 
 @Service
+@Slf4j
 public class RecommendationService implements RecommendationServiceInterface {
-    private static final Logger log = LoggerFactory.getLogger(RecommendationService.class);
+    private final BlogServiceInterface blogService;
+    private final BlogManager blogManager;
 
     @Autowired
-    private BlogServiceInterface blogService;
-
-    @Autowired
-    private BlogManager blogManager;
+    public RecommendationService(BlogServiceInterface blogService, BlogManager blogManager) {
+        this.blogService = blogService;
+        this.blogManager = blogManager;
+    }
 
     @Override
     public List<BlogDtoOut> getRecommendations(String blogId) {
