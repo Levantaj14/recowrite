@@ -24,6 +24,7 @@ import java.util.UUID;
 
 @Service
 public class AuthService implements AuthServiceInterface {
+    private static final String USERNAME_STRING = "username";
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserServiceInterface userService;
@@ -31,7 +32,6 @@ public class AuthService implements AuthServiceInterface {
     private final MailServiceInterface mailService;
     private final UserManager userManager;
     private final TokenManager tokenManager;
-    private final String usernameString = "username";
 
     @Autowired
     public AuthService(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserServiceInterface userService, UserMapper userMapper, MailServiceInterface mailService, UserManager userManager, TokenManager tokenManager) {
@@ -51,7 +51,7 @@ public class AuthService implements AuthServiceInterface {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
             Map<String, String> model = new HashMap<>();
-            model.put(usernameString, user.getUsername());
+            model.put(USERNAME_STRING, user.getUsername());
             if (userModel.isEmails()) {
                 mailService.sendMessage(userService.getUserModelByUsername(user.getUsername()).getEmail(),
                         "New login to recowrite", "login", model, null);
@@ -73,7 +73,7 @@ public class AuthService implements AuthServiceInterface {
         tokenManager.save(tokenModel);
         Map<String, String> model = new HashMap<>();
         model.put("title", "Verify your account");
-        model.put(usernameString, user.getUsername());
+        model.put(USERNAME_STRING, user.getUsername());
         model.put("token", tokenModel.getToken());
         mailService.sendMessage(user.getEmail(), "Verify your account", "verifyEmail", model, null);
     }
@@ -93,7 +93,7 @@ public class AuthService implements AuthServiceInterface {
             userManager.save(user);
             tokenManager.delete(tokenModel.get());
             Map<String, String> model = new HashMap<>();
-            model.put(usernameString, user.getUsername());
+            model.put(USERNAME_STRING, user.getUsername());
             Map<String, String> images = new HashMap<>();
             images.put("continue-reading", "continue-reading.png");
             images.put("comments", "comments.png");
