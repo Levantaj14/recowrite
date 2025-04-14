@@ -24,20 +24,25 @@ import java.util.UUID;
 
 @Service
 public class AuthService implements AuthServiceInterface {
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final UserServiceInterface userService;
+    private final UserMapper userMapper;
+    private final MailServiceInterface mailService;
+    private final UserManager userManager;
+    private final TokenManager tokenManager;
+    private final String usernameString = "username";
+
     @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private UserServiceInterface userService;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private MailServiceInterface mailService;
-    @Autowired
-    private UserManager userManager;
-    @Autowired
-    private TokenManager tokenManager;
+    public AuthService(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserServiceInterface userService, UserMapper userMapper, MailServiceInterface mailService, UserManager userManager, TokenManager tokenManager) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.userService = userService;
+        this.userMapper = userMapper;
+        this.mailService = mailService;
+        this.userManager = userManager;
+        this.tokenManager = tokenManager;
+    }
 
     @Override
     public String login(LoginDtoIn user) {
@@ -46,7 +51,7 @@ public class AuthService implements AuthServiceInterface {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
             Map<String, String> model = new HashMap<>();
-            model.put("username", user.getUsername());
+            model.put(usernameString, user.getUsername());
             if (userModel.isEmails()) {
                 mailService.sendMessage(userService.getUserModelByUsername(user.getUsername()).getEmail(),
                         "New login to recowrite", "login", model, null);
@@ -68,7 +73,7 @@ public class AuthService implements AuthServiceInterface {
         tokenManager.save(tokenModel);
         Map<String, String> model = new HashMap<>();
         model.put("title", "Verify your account");
-        model.put("username", user.getUsername());
+        model.put(usernameString, user.getUsername());
         model.put("token", tokenModel.getToken());
         mailService.sendMessage(user.getEmail(), "Verify your account", "verifyEmail", model, null);
     }
@@ -88,7 +93,7 @@ public class AuthService implements AuthServiceInterface {
             userManager.save(user);
             tokenManager.delete(tokenModel.get());
             Map<String, String> model = new HashMap<>();
-            model.put("username", user.getUsername());
+            model.put(usernameString, user.getUsername());
             Map<String, String> images = new HashMap<>();
             images.put("continue-reading", "continue-reading.png");
             images.put("comments", "comments.png");

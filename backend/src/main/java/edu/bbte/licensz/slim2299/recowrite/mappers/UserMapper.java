@@ -21,9 +21,12 @@ import java.util.List;
 @Slf4j
 @Component
 public class UserMapper {
+    private final SocialsMapper socialsMapper;
 
     @Autowired
-    private SocialsMapper socialsMapper;
+    public UserMapper(SocialsMapper socialsMapper) {
+        this.socialsMapper = socialsMapper;
+    }
 
     public UserDtoOut modelToDto(UserModel user) {
         UserDtoOut dto = new UserDtoOut();

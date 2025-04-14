@@ -17,18 +17,18 @@ import java.util.List;
 @RestController()
 @RequestMapping("/blogs")
 public class BlogController {
+    private final BlogServiceInterface blogService;
+    private final RecommendationServiceInterface recommendationService;
+    private final AuthCookieFinder authCookieFinder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private BlogServiceInterface blogService;
-
-    @Autowired
-    private RecommendationServiceInterface recommendationService;
-
-    @Autowired
-    private AuthCookieFinder authCookieFinder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public BlogController(BlogServiceInterface blogService, RecommendationServiceInterface recommendationService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil) {
+        this.blogService = blogService;
+        this.recommendationService = recommendationService;
+        this.authCookieFinder = authCookieFinder;
+        this.jwtUtil = jwtUtil;
+    }
 
     @GetMapping()
     public List<BlogDtoOut> getBlogs() {

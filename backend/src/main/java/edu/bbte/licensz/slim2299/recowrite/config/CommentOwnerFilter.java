@@ -15,12 +15,14 @@ import java.io.IOException;
 
 @Component
 public class CommentOwnerFilter extends OncePerRequestFilter {
+    private final CommentServiceInterface commentService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private CommentServiceInterface commentService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public CommentOwnerFilter(CommentServiceInterface commentService, JwtUtil jwtUtil) {
+        this.commentService = commentService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

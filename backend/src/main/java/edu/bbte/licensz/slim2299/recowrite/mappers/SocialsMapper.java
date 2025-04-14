@@ -8,9 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SocialsMapper {
+    private final SocialsTypeService socialsTypeService;
 
     @Autowired
-    private SocialsTypeService socialsTypeService;
+    public SocialsMapper(SocialsTypeService socialsTypeService) {
+        this.socialsTypeService = socialsTypeService;
+    }
 
     public SocialMediaDtoOut modelToDto(SocialsModel model) {
         SocialMediaDtoOut dto = new SocialMediaDtoOut();

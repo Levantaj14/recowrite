@@ -21,18 +21,18 @@ import java.util.*;
 
 @Service
 public class AccountService implements AccountServiceInterface {
+    private final UserManager userManager;
+    private final SocialsTypeManager socialsTypeManager;
+    private final SocialsManager socialsManager;
+    private final MailServiceInterface mailService;
 
     @Autowired
-    private UserManager userManager;
-
-    @Autowired
-    private SocialsTypeManager socialsTypeManager;
-
-    @Autowired
-    private SocialsManager socialsManager;
-
-    @Autowired
-    private MailServiceInterface mailService;
+    public AccountService(UserManager userManager, SocialsTypeManager socialsTypeManager, SocialsManager socialsManager, MailServiceInterface mailService) {
+        this.userManager = userManager;
+        this.socialsTypeManager = socialsTypeManager;
+        this.socialsManager = socialsManager;
+        this.mailService = mailService;
+    }
 
     private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/";
 
