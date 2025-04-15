@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
@@ -40,7 +41,6 @@ public class RecommendationService implements RecommendationServiceInterface {
     public List<BlogDtoOut> getRecommendations(String blogId) {
         //TODO: Move these checks to the django server
         Optional<BlogModel> blogModel = blogManager.findById(Long.valueOf(blogId));
-        String apiHost = "http://localhost:8000/recommend";
         if (blogModel.isEmpty()) {
             throw new BlogNotFoundException("Blog not found");
         }
@@ -50,6 +50,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             throw new BlogNotAvailableException("Blog not available");
         }
         try {
+            String apiHost = "http://localhost:8000/recommend";
             ObjectMapper objectMapper = new ObjectMapper();
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
                     .queryParam("id", blogId)
@@ -62,13 +63,15 @@ public class RecommendationService implements RecommendationServiceInterface {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
-            var br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
             var sb = new StringBuilder();
-            String output;
-            while ((output = br.readLine()) != null) {
-                sb.append(output);
+            try (var ir = new InputStreamReader(conn.getInputStream());
+                 var br = new BufferedReader(ir)) {
+                String output = br.readLine();
+                while (output != null) {
+                    sb.append(output);
+                    output = br.readLine();
+                }
             }
-            // Converting response body from JSON to Java Object with Jackson
             List<String> data = objectMapper.readValue(
                     objectMapper.readTree(sb.toString()).get("data").toString(),
                     new TypeReference<>() {
@@ -92,12 +95,12 @@ public class RecommendationService implements RecommendationServiceInterface {
     @Override
     public void addRecommendation(long blogId) {
         try {
-            String apiHost = "http://localhost:8000/add";
-            Map<String, Long> data = new HashMap<>();
+            Map<String, Long> data = new ConcurrentHashMap<>();
             data.put("id", blogId);
             ObjectMapper objectMapper = new ObjectMapper();
             String dataToSend = objectMapper.writeValueAsString(data);
 
+            String apiHost = "http://localhost:8000/add";
             URL url = new URI(apiHost).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");

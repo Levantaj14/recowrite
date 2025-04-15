@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 @Slf4j
@@ -42,7 +43,7 @@ public class BlogMapper {
             Instant instant = Instant.parse(blog.getDate());
             Date date = Date.from(instant);
             blogModel.setDate(date);
-        } catch (Exception e) {
+        } catch (DateTimeParseException e) {
             log.error("Error parsing with Instant: {}", e.getMessage());
         }
         return blogModel;

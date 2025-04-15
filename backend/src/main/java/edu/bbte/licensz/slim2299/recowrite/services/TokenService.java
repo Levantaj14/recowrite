@@ -12,10 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TokenService implements TokenServiceInterface {
@@ -42,7 +42,7 @@ public class TokenService implements TokenServiceInterface {
             LocalDateTime expiry = LocalDateTime.now().plusMinutes(30);
             tokenModel.setExpiryDate(expiry);
             tokenManager.save(tokenModel);
-            Map<String, String> model = new HashMap<>();
+            Map<String, String> model = new ConcurrentHashMap<>();
             model.put("title", "Forgot password");
             model.put("username", user.get().getUsername());
             model.put("token", tokenModel.getToken());
@@ -72,7 +72,7 @@ public class TokenService implements TokenServiceInterface {
             userManager.save(userModel);
             tokenManager.delete(tokenModel.get());
             if (userModel.isEmails()) {
-                Map<String, String> model = new HashMap<>();
+                Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
                 mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);
             }

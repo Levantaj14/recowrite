@@ -29,6 +29,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     public JwtAuthFilter(JwtUtil jwtUtil, UserServiceInterface userService) {
+        super();
         this.jwtUtil = jwtUtil;
         this.userService = userService;
     }

@@ -20,6 +20,7 @@ public class CommentOwnerFilter extends OncePerRequestFilter {
 
     @Autowired
     public CommentOwnerFilter(CommentServiceInterface commentService, JwtUtil jwtUtil) {
+        super();
         this.commentService = commentService;
         this.jwtUtil = jwtUtil;
     }
@@ -29,18 +30,25 @@ public class CommentOwnerFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.matches("/comments/\\d+") &&
-                (request.getMethod().equals("PUT") || request.getMethod().equals("DELETE"))) {
+                ("PUT".equals(request.getMethod()) || "DELETE".equals(request.getMethod()))) {
             long taskId = Math.toIntExact(extractId(path));
             Cookie cookie = serachAuthCookie(response, request.getCookies());
-            if (cookie != null) {
-                String currentUsername = jwtUtil.extractUsername(cookie.getValue());
-                if (!commentService.isCommentOwnedByUser(taskId, currentUsername)) {
-                    response.sendError(HttpStatus.FORBIDDEN.value(), "Access denied to this endpoint");
-                    return;
-                }
+            if (checkCommentAuthor(response, cookie, taskId)) {
+                return;
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean checkCommentAuthor(HttpServletResponse response, Cookie cookie, long taskId) throws IOException {
+        if (cookie != null) {
+            String currentUsername = jwtUtil.extractUsername(cookie.getValue());
+            if (!commentService.isCommentOwnedByUser(taskId, currentUsername)) {
+                response.sendError(HttpStatus.FORBIDDEN.value(), "Access denied to this endpoint");
+                return true;
+            }
+        }
+        return false;
     }
 
     private int extractId(String path) {

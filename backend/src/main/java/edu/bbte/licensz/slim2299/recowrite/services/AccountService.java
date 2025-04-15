@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class AccountService implements AccountServiceInterface {
@@ -25,6 +26,7 @@ public class AccountService implements AccountServiceInterface {
     private final SocialsTypeManager socialsTypeManager;
     private final SocialsManager socialsManager;
     private final MailServiceInterface mailService;
+    private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/";
 
     @Autowired
     public AccountService(UserManager userManager, SocialsTypeManager socialsTypeManager, SocialsManager socialsManager, MailServiceInterface mailService) {
@@ -33,8 +35,6 @@ public class AccountService implements AccountServiceInterface {
         this.socialsManager = socialsManager;
         this.mailService = mailService;
     }
-
-    private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/";
 
     @Override
     public void updateName(String username, UserNameDtoIn userNameDtoIn) {
@@ -87,12 +87,11 @@ public class AccountService implements AccountServiceInterface {
             UserModel userModel = user.get();
             if (!BCrypt.checkpw(userPasswordChangeDtoIn.getOldPassword(), userModel.getPassword())) {
                 throw new IncorrectPasswordException("Old password does not match");
-            } else {
-                userModel.setPassword(BCrypt.hashpw(userPasswordChangeDtoIn.getNewPassword(), userModel.getSalt()));
-                userManager.save(userModel);
             }
+            userModel.setPassword(BCrypt.hashpw(userPasswordChangeDtoIn.getNewPassword(), userModel.getSalt()));
+            userManager.save(userModel);
             if (userModel.isEmails()) {
-                Map<String, String> model = new HashMap<>();
+                Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
                 mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);
             }

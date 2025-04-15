@@ -36,7 +36,7 @@ public class BlogController {
     }
 
     @GetMapping("/author")
-    public List<BlogDtoOut> getBlogsByAuthor(@RequestParam(value = "id") long authorId) {
+    public List<BlogDtoOut> getBlogsByAuthor(@RequestParam("id") long authorId) {
         return blogService.getBlogsByAuthor(authorId);
     }
 
