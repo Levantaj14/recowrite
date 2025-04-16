@@ -19,7 +19,7 @@ const StickyNavbar = () => {
       <Container mt="1" mb="1" maxW="6xl">
         <Flex align="center">
           <NavLink to="/">
-            <Heading>recowrite</Heading>
+            <Heading>recowrite haha</Heading>
           </NavLink>
           <Spacer />
           <NavLink to="/dashboard">
