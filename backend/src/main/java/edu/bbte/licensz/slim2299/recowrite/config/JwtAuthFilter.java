@@ -9,8 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,13 +22,17 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
+@Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
-    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+    private final UserServiceInterface userService;
 
     @Autowired
-    private UserServiceInterface userService;
+    public JwtAuthFilter(JwtUtil jwtUtil, UserServiceInterface userService) {
+        super();
+        this.jwtUtil = jwtUtil;
+        this.userService = userService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -45,23 +48,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             username = jwtUtil.extractUsername(jwt);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                try {
-                    UserModel user = userService.getUserModelByUsername(username);
-                    if (jwtUtil.validateToken(jwt, user.getUsername())) {
-                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                user, null, Collections.singleton(
-                                new SimpleGrantedAuthority("ROLE_" + user.getRole())));
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }
-                } catch (UserNotFoundException ignored) {
-                    log.info("User not found");
-                }
+                checkUser(request, username, jwt);
             }
         } catch (ExpiredJwtException ignored) {
             log.info("JWT expired");
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void checkUser(HttpServletRequest request, String username, String jwt) {
+        try {
+            UserModel user = userService.getUserModelByUsername(username);
+            if (jwtUtil.validateToken(jwt, user.getUsername())) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        user, null, Collections.singleton(
+                        new SimpleGrantedAuthority("ROLE_" + user.getRole())));
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        } catch (UserNotFoundException ignored) {
+            log.info("User not found");
+        }
     }
 
     private Cookie serachAuthCookie(Cookie... cookies) {

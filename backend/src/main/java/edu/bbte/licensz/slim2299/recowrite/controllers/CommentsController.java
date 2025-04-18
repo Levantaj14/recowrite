@@ -18,15 +18,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {
+    private final CommentServiceInterface commentService;
+    private final AuthCookieFinder authCookieFinder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private CommentServiceInterface commentService;
-
-    @Autowired
-    private AuthCookieFinder authCookieFinder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public CommentsController(CommentServiceInterface commentService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil) {
+        this.commentService = commentService;
+        this.authCookieFinder = authCookieFinder;
+        this.jwtUtil = jwtUtil;
+    }
 
     @GetMapping("/{blogId}")
     public List<CommentDtoOut> getCommentsByBlog(@PathVariable Long blogId) {

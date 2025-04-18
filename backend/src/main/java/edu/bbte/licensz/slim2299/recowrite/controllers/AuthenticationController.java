@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/authentication")
 public class AuthenticationController {
+    private final AuthServiceInterface authenticationService;
+    private final JwtUtil jwtUtil;
+    private final AuthCookieFinder authCookieFinder;
+    private final TokenServiceInterface tokenService;
 
     @Autowired
-    private AuthServiceInterface authenticationService;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private AuthCookieFinder authCookieFinder;
-    @Autowired
-    private TokenServiceInterface tokenService;
+    public AuthenticationController(AuthServiceInterface authenticationService, JwtUtil jwtUtil, AuthCookieFinder authCookieFinder, TokenServiceInterface tokenService) {
+        this.authenticationService = authenticationService;
+        this.jwtUtil = jwtUtil;
+        this.authCookieFinder = authCookieFinder;
+        this.tokenService = tokenService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginDtoOut> login(@RequestBody @Valid LoginDtoIn loginDtoIn) {

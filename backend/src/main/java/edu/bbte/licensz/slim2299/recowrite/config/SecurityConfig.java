@@ -33,26 +33,28 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter;
+    private final JwtAuthFilter jwtAuthFilter;
+    private final UserServiceInterface userService;
+    private final CommentOwnerFilter commentOwnerFilter;
 
     @Autowired
-    private UserServiceInterface userService;
-
-    @Autowired
-    private CommentOwnerFilter commentOwnerFilter;
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, UserServiceInterface userService, CommentOwnerFilter commentOwnerFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.userService = userService;
+        this.commentOwnerFilter = commentOwnerFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // NOPMD
         http.cors(Customizer.withDefaults())
-                .authorizeHttpRequests((auth) -> auth
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*", "/user/*", "/blogs").permitAll()
                         .requestMatchers("/authentication/*", "/authentication/forgotPassword/*", "/authentication/verify/email","/error", "/blogs/*", "/user").permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .sessionManagement((session) ->
+                .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

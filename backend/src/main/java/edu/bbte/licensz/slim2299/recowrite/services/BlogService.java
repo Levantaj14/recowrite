@@ -22,14 +22,16 @@ import java.util.Optional;
 
 @Service
 public class BlogService implements BlogServiceInterface {
-    @Autowired
-    private BlogManager blogManager;
+    private final BlogManager blogManager;
+    private final BlogMapper blogMapper;
+    private final UserManager userManager;
 
     @Autowired
-    private BlogMapper blogMapper;
-
-    @Autowired
-    private UserManager userManager;
+    public BlogService(BlogManager blogManager, BlogMapper blogMapper, UserManager userManager) {
+        this.blogManager = blogManager;
+        this.blogMapper = blogMapper;
+        this.userManager = userManager;
+    }
 
     @Override
     public List<BlogDtoOut> getAllBlogs() {

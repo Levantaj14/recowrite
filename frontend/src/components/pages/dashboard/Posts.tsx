@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { Flex, Heading, HStack, Stat, Text } from '@chakra-ui/react';
 import NumberFlow from '@number-flow/react';
 import { motion } from 'motion/react';
@@ -12,7 +11,7 @@ import BlogCard from '@/components/elements/BlogCard.tsx';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
 export default function Posts() {
-  const navigate = useNavigate();
+  useNavigate();
   const { t } = useTranslation();
   const { userDetails } = useContext(UserDetailContext);
 
@@ -58,7 +57,6 @@ export default function Posts() {
     <>
       <Flex align="start" alignItems="center" justifyContent="space-between">
         <Heading size="2xl">{t('dashboard.tabs.posts')}</Heading>
-        <Button size="xs" onClick={() => navigate('/blog/create')}>{t('dashboard.posts.create')}</Button>
       </Flex>
       {isLoading ? <LoadingAnimation /> : content()}
     </>

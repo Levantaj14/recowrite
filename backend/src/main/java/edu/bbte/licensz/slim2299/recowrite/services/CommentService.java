@@ -24,18 +24,18 @@ import java.util.Optional;
 
 @Service
 public class CommentService implements CommentServiceInterface{
+    private final CommentManager commentManager;
+    private final CommentMapper commentMapper;
+    private final BlogManager blogManager;
+    private final UserManager userManager;
 
     @Autowired
-    private CommentManager commentManager;
-
-    @Autowired
-    private CommentMapper commentMapper;
-
-    @Autowired
-    private BlogManager blogManager;
-
-    @Autowired
-    private UserManager userManager;
+    public CommentService(CommentManager commentManager, CommentMapper commentMapper, BlogManager blogManager, UserManager userManager) {
+        this.commentManager = commentManager;
+        this.commentMapper = commentMapper;
+        this.blogManager = blogManager;
+        this.userManager = userManager;
+    }
 
     @Override
     public List<CommentDtoOut> findAllByBlog(Long blogId) {

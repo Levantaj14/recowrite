@@ -16,15 +16,16 @@ import java.util.Optional;
 
 @Service
 public class LikeService implements LikeServiceInterface {
+    private final LikeManager likeManager;
+    private final UserServiceInterface userService;
+    private final BlogServiceInterface blogService;
 
     @Autowired
-    private LikeManager likeManager;
-
-    @Autowired
-    private UserServiceInterface userService;
-
-    @Autowired
-    private BlogServiceInterface blogService;
+    public LikeService(LikeManager likeManager, UserServiceInterface userService, BlogServiceInterface blogService) {
+        this.likeManager = likeManager;
+        this.userService = userService;
+        this.blogService = blogService;
+    }
 
     @Override
     public long likeCount(long blogId) {

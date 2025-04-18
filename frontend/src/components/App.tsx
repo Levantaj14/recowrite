@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Container } from '@chakra-ui/react';
 import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { Provider } from '@/components/ui/provider.tsx';
-import { UserDetailContext, UserDetailContextType, UserDetailType } from '@/contexts/userDetailContext.ts';
+import { UserDetailContext, UserDetailType } from '@/contexts/userDetailContext.ts';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import StickyNavbar from '@/components/elements/navbar/Navbar.tsx';
 import Story from '@/components/pages/story/Story.tsx';
@@ -31,11 +31,10 @@ function App() {
   const { i18n } = useTranslation();
 
   const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
-  const userDetailsMemo: UserDetailContextType = {
-    userDetails,
-    setUserDetails,
-  };
-  const userDetailContext = useMemo(() => userDetailsMemo, [userDetails]);
+  const userDetailContext = useMemo(
+    () => ({ userDetails, setUserDetails }),
+    [userDetails]
+  );
 
   useEffect(() => {
     if (userDetails) {
