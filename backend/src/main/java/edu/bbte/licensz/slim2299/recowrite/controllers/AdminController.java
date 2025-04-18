@@ -65,7 +65,7 @@ public class AdminController {
         return ResponseEntity.ok(reportService.getAllReports());
     }
 
-    @GetMapping("report/{id}")
+    @GetMapping("/report/{id}")
     public ResponseEntity<ReportModel> getReportsById(@PathVariable("id") long id) {
         return ResponseEntity.ok(reportService.getReportById(id));
     }

@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
+import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportClosedException;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.StrikeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,11 @@ public class StrikeService implements StrikeServiceInterface {
             throw new ReportNotFoundException("Report " + strike.getReportId() + " not found");
         }
         ReportModel reportModel = report.get();
+
+        if ("OPEN".equals(String.valueOf(reportModel.getStatus()))){
+            throw new ReportClosedException("Report " + strike.getReportId() + " is closed");
+        }
+
         UserModel adminModel = admin.get();
         StrikeModel strikeModel = new StrikeModel();
         strikeModel.setAdmin(adminModel);
@@ -68,6 +74,9 @@ public class StrikeService implements StrikeServiceInterface {
         strikeModel.setReport(reportModel);
         strikeModel.setUser(reportModel.getReportedUser());
         long strikeId = strikeManager.save(strikeModel).getId();
+
+        reportModel.setStatus(ReportModel.ReportStatus.valueOf("STRIKE_GIVEN"));
+        reportManager.save(reportModel);
 
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", reportModel.getReportedUser().getUsername());
@@ -88,7 +97,11 @@ public class StrikeService implements StrikeServiceInterface {
             throw new StrikeNotFoundException("Strike " + id + " not found");
         }
         UserModel user = strike.get().getReport().getReportedUser();
+        ReportModel reportModel = strike.get().getReport();
         strikeManager.delete(strike.get());
+
+        reportModel.setStatus(ReportModel.ReportStatus.valueOf("DISMISSED"));
+        reportManager.save(reportModel);
 
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", user.getUsername());
