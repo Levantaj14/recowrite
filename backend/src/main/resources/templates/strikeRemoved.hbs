@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet">
+    <style>
+        #main-screen {
+            margin: 70px;
+            font-family: 'Inter', 'Roboto', 'Helvetica', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            #main-screen {
+                margin: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #main-screen {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="main-screen">
+    <h4>recowrite</h4>
+    <div style="text-align: center">
+        <h1>Update on Your Strike</h1>
+    </div>
+    <p>Hi there, {{username}}!</p>
+    <p>We're reaching out yet again, but now with good news. Your strike was <strong>revoked</strong>.</p>
+    <p>Upon further internal review, we concluded that the reason for your strike was
+        inappropriate and unfair, so it has been removed from your account.</p>
+    <p>We are sorry for this inconvenience and appreciate your patience during the review process.</p>
+    <p>After this removal you have <strong>{{strikeNr}} out of 3</strong> strikes.</p>
+    <p>Happy blogging!</p>
+    <br/>
+    <p style="margin-bottom: 0;">Best regards,</p>
+    <p style="margin-top: 0.25rem;"><strong>The recowrite team</strong></p>
+    <hr/>
+    <div style="text-align: center; color: gray; font-size: smaller">
+        <p>©{{year}} recowrite</p>
+    </div>
+</div>
+</body>
+</html>

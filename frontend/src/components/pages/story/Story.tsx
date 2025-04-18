@@ -25,6 +25,8 @@ import Markdown from 'react-markdown';
 import ContinueReadingSection from '@/components/pages/story/ContinueReadingSection.tsx';
 import PostOpening from '@/components/pages/story/PostOpening.tsx';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { FiAlertTriangle } from 'react-icons/fi';
 
 function Story() {
   const { t } = useTranslation();
@@ -87,7 +89,13 @@ function Story() {
               </HoverCardContent>
             </HoverCardRoot>
           </Flex>
-          <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
+          <Box>
+            <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
+            <Button variant="ghost">
+              <FiAlertTriangle />
+              Report
+            </Button>
+          </Box>
         </Flex>
         <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
         {(date && date > new Date()) || data?.blogData.content === '' ? (

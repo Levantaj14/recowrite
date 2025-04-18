@@ -1,9 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.dao.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,17 +14,22 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "reports")
-public class ReportsModel extends BaseEntity {
+public class ReportModel extends BaseEntity {
     public enum ReportStatus {
         OPEN,
         DISMISSED,
         STRIKE_GIVEN
     }
 
-    private long reporterId;
-    private long reportedUserId;
-    private String contentType;
-    private long contentId;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private UserModel reporter;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private UserModel reportedUser;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private BlogModel blog;
+
     private String reason;
 
     @Enumerated(EnumType.STRING)

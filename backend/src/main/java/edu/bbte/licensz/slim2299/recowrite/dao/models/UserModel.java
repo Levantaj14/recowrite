@@ -40,4 +40,20 @@ public class UserModel extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
     private List<LikeModel> likes;
+
+    @OneToMany(mappedBy = "reporter", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<ReportModel> reporters;
+
+    @OneToMany(mappedBy = "reportedUser", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    private List<ReportModel> reportedUsers;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    private List<StrikeModel> strikes;
+
+    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<StrikeModel> strikeAdmins;
 }
