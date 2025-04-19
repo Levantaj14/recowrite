@@ -10,7 +10,8 @@
     "change": "Változtasd meg",
     "reset": "Visszaállítás",
     "submit": "Beküldés",
-    "choose": "Vállaszd ki"
+    "choose": "Vállaszd ki",
+    "report": "Jelentés"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -111,7 +112,26 @@
       }
     },
     "continue": "Olvass tovább",
-    "unavailable": "Ez a blog elérhető lesz:"
+    "unavailable": "Ez a blog elérhető lesz:",
+    "report": {
+      "toast": {
+        "error": "Hiba történt a jelentés küldése közben",
+        "loading": "Jelentés küldése...",
+        "success": "Jelentés elküldve. Köszönjük a közreműködésed!"
+      },
+      "title": "Cikk jelentése",
+      "emptyError": "Kérlek válassz egy okot",
+      "options": {
+        "spam": "Spam",
+        "hate": "Gyűlöletbeszéd vagy visszaélésszerű tartalom",
+        "bully": "Zaklatás vagy fenyegetés",
+        "explicit": "Sexuális tartalom vagy obszcén nyelvezet",
+        "violent": "Erőszakos vagy grafikus tartalom",
+        "misinformation": "Hamis információ",
+        "copyright": "Szerzői jog megsértése",
+        "plagiarism": "Plágium"
+      }
+    }
   },
   "notFound": {
     "tabTile": "Nem található",

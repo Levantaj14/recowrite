@@ -62,7 +62,7 @@ public class StrikeService implements StrikeServiceInterface {
         }
         ReportModel reportModel = report.get();
 
-        if ("OPEN".equals(String.valueOf(reportModel.getStatus()))){
+        if (!"OPEN".equals(String.valueOf(reportModel.getStatus()))){
             throw new ReportClosedException("Report " + strike.getReportId() + " is closed");
         }
 
@@ -106,7 +106,7 @@ public class StrikeService implements StrikeServiceInterface {
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", user.getUsername());
         model.put("strikeNr", strikeManager.countByUser(user));
-        mailService.sendMessage(user.getEmail(), "Update on Your Strike",
+        mailService.sendMessage(user.getEmail(), "An Update on Your Strike",
                 "strikeRemoved", model, null);
     }
 }

@@ -10,7 +10,8 @@
     "change": "Change it",
     "reset": "Reset",
     "submit": "Submit",
-    "choose": "Choose"
+    "choose": "Choose",
+    "report": "Report"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -113,7 +114,26 @@
       }
     },
     "continue": "Continue reading",
-    "unavailable": "This blog will be available in:"
+    "unavailable": "This blog will be available in:",
+    "report": {
+      "toast": {
+        "loading": "Sending report...",
+        "success": "Report sent successfully. Thank you for your contribution.",
+        "error": "An error occurred while sending the report"
+      },
+      "options": {
+        "spam": "Spam",
+        "hate": "Hate speech or abusive content",
+        "bully": "Harassment or bullying",
+        "explicit": "Sexual or explicit content",
+        "violent": "Violent or graphic content",
+        "misinformation": "Misinformation",
+        "copyright": "Copyright infringement",
+        "plagiarism": "Plagiarism"
+      },
+      "emptyError": "Please select an option",
+      "title": "Report this article"
+    }
   },
   "notFound": {
     "tabTile": "Not Found",

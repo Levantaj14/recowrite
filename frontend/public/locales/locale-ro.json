@@ -10,7 +10,8 @@
     "change": "Schimabă",
     "reset": "Resetare",
     "submit": "Trimite",
-    "choose": "Alege"
+    "choose": "Alege",
+    "report": "Raportează"
   },
   "dashboard": {
     "preferences": {
@@ -207,7 +208,26 @@
       "unavailable": "Acest blog nu este încă publicat"
     },
     "written": "Scris de",
-    "unavailable": "Acest blog va fi disponibil în:"
+    "unavailable": "Acest blog va fi disponibil în:",
+    "report": {
+      "toast": {
+        "loading": "Se trimite raportul...",
+        "success": "Raportul a fost trimis cu succes. Îți mulțumim pentru contribuție!",
+        "error": "A apărut o eroare la trimiterea raportului"
+      },
+      "title": "Raportează această postare",
+      "emptyError": "Te rugăm să alege un motiv",
+      "options": {
+        "spam": "Spam",
+        "hate": "Ură sau conținut abuziv",
+        "bully": "Hărțuire sau intimidare",
+        "explicit": "Conținut explicit sau sexual",
+        "violent": "Conținut violent sau grafic",
+        "misinformation": "Dezinformare",
+        "copyright": "Încălcare a drepturilor de autor",
+        "plagiarism": "Plagiat"
+      }
+    }
   },
   "tabLoading": "Încărcare...",
   "user": {

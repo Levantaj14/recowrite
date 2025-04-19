@@ -25,8 +25,7 @@ import Markdown from 'react-markdown';
 import ContinueReadingSection from '@/components/pages/story/ContinueReadingSection.tsx';
 import PostOpening from '@/components/pages/story/PostOpening.tsx';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
-import { Button } from '@/components/ui/button.tsx';
-import { FiAlertTriangle } from 'react-icons/fi';
+import ReportButton from '@/components/pages/story/ReportButton.tsx';
 
 function Story() {
   const { t } = useTranslation();
@@ -91,10 +90,7 @@ function Story() {
           </Flex>
           <Box>
             <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
-            <Button variant="ghost">
-              <FiAlertTriangle />
-              Report
-            </Button>
+            <ReportButton blogData={data?.blogData} />
           </Box>
         </Flex>
         <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
