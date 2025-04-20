@@ -6,7 +6,7 @@ const adminApi = axios.create({
   headers: {
     Accept: 'application/json',
   },
-})
+});
 
 type StatusType = 'OPEN' | 'DISMISSED' | 'STRIKE_GIVEN';
 
@@ -34,7 +34,16 @@ export async function getAllReports(): Promise<ReportType[]> {
   return res.data;
 }
 
-export async function getReport(reportId: number | undefined): Promise<ReportType> {
-  const res = await adminApi.get(`/reports/${reportId}`);
-  return res.data;
+export async function dismissReport(id: number): Promise<void> {
+  await adminApi.put(`/reports/${id}`);
+}
+
+export async function giveStrike(id: number): Promise<void> {
+  await adminApi.post(`/strikes`, {
+    reportId: id,
+  });
+}
+
+export async function revokeStrike(id: number): Promise<void> {
+  await adminApi.delete(`/strikes/report/${id}`);
 }
