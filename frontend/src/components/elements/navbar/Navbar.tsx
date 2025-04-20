@@ -1,18 +1,28 @@
 import { Flex, Spacer, Container, Heading, Box, Button } from '@chakra-ui/react';
 import { NavLink } from 'react-router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import LoggedInAvatar from '@/components/elements/navbar/LoggedInAvatar.tsx';
 import { checkCookie } from '@/apis/authApi.ts';
 import { useTranslation } from 'react-i18next';
+import { testAdmin } from '@/apis/adminApi.ts';
 
 const StickyNavbar = () => {
   const { t } = useTranslation();
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     checkCookie().then(setUserDetails);
   }, [setUserDetails]);
+
+  useEffect(() => {
+    if (!userDetails) {
+      setIsAdmin(false);
+      return;
+    }
+    testAdmin().then((response) => setIsAdmin(response));
+  }, [userDetails]);
 
   return (
     <Box as="nav" position="sticky" top="0" zIndex="sticky" p={4} backdropFilter="saturate(180%) blur(5px)">
@@ -22,6 +32,13 @@ const StickyNavbar = () => {
             <Heading>recowrite</Heading>
           </NavLink>
           <Spacer />
+          {isAdmin && (
+            <NavLink to="/admin">
+              <Button variant="ghost" size="xs" mr="2">
+                Admin console
+              </Button>
+            </NavLink>
+          )}
           <NavLink to="/dashboard">
             <Button variant="ghost" size="xs" mr="2">
               {t('navbar.buttons.dashboard')}
