@@ -4,6 +4,7 @@ import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.StrikeDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.IdDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
 import edu.bbte.licensz.slim2299.recowrite.services.ReportServiceInterface;
@@ -36,15 +37,15 @@ public class AdminController {
 
     @GetMapping()
     public ResponseEntity<MessageDtoOut> test() {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new MessageDtoOut("Admin endpoint accessible"));
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Admin endpoint accessible"));
     }
 
-    @GetMapping("/strike")
+    @GetMapping("/strikes")
     public ResponseEntity<List<StrikeModel>> getStrikes() {
         return ResponseEntity.ok(strikeService.getAllStrikes());
     }
 
-    @PostMapping("/strike")
+    @PostMapping("/strikes")
     public ResponseEntity<IdDtoOut> addStrike(HttpServletRequest request, @RequestBody @Valid StrikeDtoIn strikeDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
@@ -54,19 +55,24 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @DeleteMapping("/strike/{id}")
+    @DeleteMapping("/strikes/{id}")
     public ResponseEntity<MessageDtoOut> deleteStrike(@PathVariable("id") long id) {
         strikeService.deleteStrike(id);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Strike revoked successfully"));
     }
 
-    @GetMapping("/report")
-    public ResponseEntity<List<ReportModel>> getReports() {
+    @GetMapping("/reports")
+    public ResponseEntity<List<ReportDtoOut>> getReports() {
         return ResponseEntity.ok(reportService.getAllReports());
     }
 
-    @GetMapping("/report/{id}")
-    public ResponseEntity<ReportModel> getReportsById(@PathVariable("id") long id) {
+    @GetMapping("/reports/{id}")
+    public ResponseEntity<ReportDtoOut> getReportsById(@PathVariable("id") long id) {
         return ResponseEntity.ok(reportService.getReportById(id));
+    }
+
+    @PutMapping("/reports/{id}")
+    public ResponseEntity<MessageDtoOut> dismissReport(@PathVariable("id") long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Report dismissed successfully"));
     }
 }
