@@ -240,7 +240,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                     </DataList.Item>
                   </DataList.Root>
 
-                  <Textarea placeholder="Admin notes" mt="8" />
+                  <Textarea placeholder="Admin notes" mt="8" disabled={selectedReport?.status !== 'OPEN'}/>
                 </Dialog.Body>
                 <Dialog.CloseTrigger asChild>
                   <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
