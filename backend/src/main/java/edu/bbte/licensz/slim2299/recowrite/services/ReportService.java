@@ -76,17 +76,13 @@ public class ReportService implements ReportServiceInterface {
     }
 
     @Override
-    public void dismissReport(String username, long id) {
-        Optional<UserModel> admin = userManager.findByUsername(username);
-        if (admin.isEmpty()) {
-            throw new UserNotFoundException("User " + username + " not found");
-        }
+    public void dismissReport(long id) {
         Optional<ReportModel> report = reportManager.findById(id);
         if (report.isEmpty()) {
             throw new ReportNotFoundException("Report with id " + id + " not found");
         }
-        UserModel adminUser = admin.get();
         ReportModel reportModel = report.get();
-
+        reportModel.setStatus(ReportModel.ReportStatus.valueOf("DISMISSED"));
+        reportManager.save(reportModel);
     }
 }

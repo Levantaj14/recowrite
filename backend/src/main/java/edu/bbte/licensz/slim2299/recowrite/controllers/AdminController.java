@@ -5,7 +5,6 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.StrikeDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.IdDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
 import edu.bbte.licensz.slim2299.recowrite.services.ReportServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.StrikeServiceInterface;
@@ -61,6 +60,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Strike revoked successfully"));
     }
 
+    @DeleteMapping("strikes/report/{id}")
+    public ResponseEntity<MessageDtoOut> deleteStrikeFromReport(@PathVariable("id") long id) {
+        strikeService.deleteStrikeFromReport(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Strike removed successfully"));
+    }
+
     @GetMapping("/reports")
     public ResponseEntity<List<ReportDtoOut>> getReports() {
         return ResponseEntity.ok(reportService.getAllReports());
@@ -73,6 +78,7 @@ public class AdminController {
 
     @PutMapping("/reports/{id}")
     public ResponseEntity<MessageDtoOut> dismissReport(@PathVariable("id") long id) {
+        reportService.dismissReport(id);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Report dismissed successfully"));
     }
 }

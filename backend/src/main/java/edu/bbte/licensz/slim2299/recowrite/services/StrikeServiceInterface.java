@@ -13,4 +13,6 @@ public interface StrikeServiceInterface {
     long addStrike(String adminUsername, StrikeDtoIn strike);
 
     void deleteStrike(long id);
+
+    void deleteStrikeFromReport(long id);
 }

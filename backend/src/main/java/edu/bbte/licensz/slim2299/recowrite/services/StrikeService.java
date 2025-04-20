@@ -62,7 +62,7 @@ public class StrikeService implements StrikeServiceInterface {
         }
         ReportModel reportModel = report.get();
 
-        if (!"OPEN".equals(String.valueOf(reportModel.getStatus()))){
+        if (!"OPEN".equals(String.valueOf(reportModel.getStatus()))) {
             throw new ReportClosedException("Report " + strike.getReportId() + " is closed");
         }
 
@@ -98,7 +98,26 @@ public class StrikeService implements StrikeServiceInterface {
         }
         UserModel user = strike.get().getReport().getReportedUser();
         ReportModel reportModel = strike.get().getReport();
-        strikeManager.delete(strike.get());
+        RemoveStrikeAndSendMail(strike.get(), user, reportModel);
+    }
+
+    @Override
+    public void deleteStrikeFromReport(long id) {
+        Optional<ReportModel> report = reportManager.findById(id);
+        if (report.isEmpty()) {
+            throw new ReportNotFoundException("Report " + id + " not found");
+        }
+        Optional<StrikeModel> strike = strikeManager.findByReport(report.get());
+        if (strike.isEmpty()) {
+            throw new StrikeNotFoundException("Strike " + id + " not found");
+        }
+        UserModel user = strike.get().getReport().getReportedUser();
+        ReportModel reportModel = report.get();
+        RemoveStrikeAndSendMail(strike.get(), user, reportModel);
+    }
+
+    private void RemoveStrikeAndSendMail(StrikeModel strike, UserModel user, ReportModel reportModel) {
+        strikeManager.delete(strike);
 
         reportModel.setStatus(ReportModel.ReportStatus.valueOf("DISMISSED"));
         reportManager.save(reportModel);

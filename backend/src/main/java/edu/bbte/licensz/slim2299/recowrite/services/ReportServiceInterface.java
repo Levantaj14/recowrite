@@ -12,5 +12,5 @@ public interface ReportServiceInterface {
 
     long addReport(ReportDtoIn report, String username);
 
-    void dismissReport(String username, long id);
+    void dismissReport(long id);
 }
