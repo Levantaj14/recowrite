@@ -9,14 +9,16 @@ import {
   Table,
   Textarea, VStack,
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { getAllReports, ReportType } from '@/apis/adminApi.ts';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { dismissReport, getAllReports, giveStrike, ReportType, revokeStrike } from '@/apis/adminApi.ts';
 import { fetchAllUsers, UserType } from '@/apis/userApi.ts';
 import { BlogType, fetchAllBlogs } from '@/apis/blogApi.ts';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button.tsx';
+import { toast } from 'sonner';
+import CustomLoading from '@/components/elements/CustomLoading.tsx';
 
 type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
@@ -27,7 +29,9 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
   const [selectedReportedUser, setSelectedReportedUser] = useState<UserType | undefined>(undefined);
   const [selectedReportedByUser, setSelectedReportedByUser] = useState<UserType | undefined>(undefined);
   const [selectedBlog, setSelectedBlog] = useState<BlogType | undefined>(undefined);
+  const [blockButtons, setBlockButtons] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ['reports'],
@@ -48,6 +52,69 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
     DISMISSED: { color: 'orange', label: 'Dismissed' },
     STRIKE_GIVEN: { color: 'red', label: 'Strike Given' },
   };
+
+  function pressedDismiss() {
+    if (selectedReport) {
+      setBlockButtons(true);
+      toast.promise(dismissReport(selectedReport.id), {
+        loading: CustomLoading('Dismissing report...'),
+        success: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: ['reports'],
+          });
+          setBlockButtons(false);
+          setSelectedReport(null);
+          return 'Report dismissed';
+        },
+        error: () => {
+          setBlockButtons(false);
+          return 'Error dismissing report';
+        },
+      });
+    }
+  }
+
+  function pressedStrike() {
+    if (selectedReport) {
+      setBlockButtons(true);
+      toast.promise(giveStrike(selectedReport.id), {
+        loading: CustomLoading('Giving strike...'),
+        success: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: ['reports'],
+          });
+          setBlockButtons(false);
+          setSelectedReport(null);
+          return 'Strike given';
+        },
+        error: () => {
+          setBlockButtons(false);
+          return 'Error giving strike';
+        },
+      });
+    }
+  }
+
+  function pressedRevoke() {
+    if (selectedReport) {
+      setBlockButtons(true);
+      toast.promise(revokeStrike(selectedReport.id), {
+        loading: CustomLoading('Revoking strike...'),
+        success: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: ['reports'],
+          });
+          setBlockButtons(false);
+          setSelectedReport(null);
+          return 'Strike revoked';
+        },
+        error: () => {
+          setBlockButtons(false);
+          return 'Error revoking strike';
+        },
+      });
+    }
+  }
 
   function content() {
     return (
@@ -176,12 +243,19 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                   <Textarea placeholder="Admin notes" mt="8" />
                 </Dialog.Body>
                 <Dialog.CloseTrigger asChild>
-                  <CloseButton size="sm" onClick={() => setSelectedReport(null)} />
+                  <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
                 </Dialog.CloseTrigger>
-                <Dialog.Footer>
-                  <Button variant="outline">Dismiss</Button>
-                  <Button colorPalette="red">Give a strike</Button>
-                </Dialog.Footer>
+                {selectedReport?.status === 'OPEN' && (
+                  <Dialog.Footer>
+                    <Button variant="outline" disabled={blockButtons} onClick={pressedDismiss}>Dismiss</Button>
+                    <Button colorPalette="red" disabled={blockButtons} onClick={pressedStrike}>Give a strike</Button>
+                  </Dialog.Footer>
+                )}
+                {selectedReport?.status === 'STRIKE_GIVEN' && (
+                  <Dialog.Footer>
+                    <Button variant="outline" disabled={blockButtons} onClick={pressedRevoke}>Revoke strike</Button>
+                  </Dialog.Footer>
+                )}
               </Dialog.Content>
             </Dialog.Positioner>
           </Portal>
