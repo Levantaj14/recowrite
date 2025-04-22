@@ -54,7 +54,7 @@ function App() {
               <Container as="main" mt="4" mb="4" maxW="6xl">
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/blog/create" element={<NewStory />} />
+                  <Route path="/create" element={<NewStory />} />
                   <Route path="/blog/:blogId" element={<Story />} />
                   <Route path="/user/:userId" element={<User />} />
                   <Route path="/login" element={<LoginPage />} />

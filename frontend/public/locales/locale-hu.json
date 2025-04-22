@@ -11,7 +11,10 @@
     "reset": "Visszaállítás",
     "submit": "Beküldés",
     "choose": "Vállaszd ki",
-    "report": "Jelentés"
+    "report": "Jelentés",
+    "dismiss": "Elutasítás",
+    "revokeStrike": "Strike visszavonása",
+    "giveStrike": "Strike adása"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -344,5 +347,59 @@
     },
     "title": "Ellenőrző email elküldve",
     "desc": "Ellenőrizd az email címed, mielőtt bejelentkezel. Nézz be a bejövő üzenetek közé a következő lépésekért. Ha nem látod, ne aggódj, ellenőrizd a spam mappát is!"
+  },
+  "admin": {
+    "report": {
+      "status": {
+        "open": "Nyitott",
+        "dismissed": "Elutasítva",
+        "strike": "Strike kiosztva"
+      },
+      "table": {
+        "header": {
+          "reportedUser": "Jelentett felhasználó",
+          "status": "Státusz",
+          "blog": "Blog"
+        },
+        "dialog": {
+          "title": "Jelentés részletei",
+          "reported": "Jelentett felhasználó",
+          "reportedBy": "Jelentette",
+          "status": "Státusz",
+          "blogTitle": "Blog címe",
+          "reason": "Ok",
+          "date": "Jelentés dátuma",
+          "adminNotes": "Admin megjegyzések"
+        }
+      },
+      "title": "Jelentések"
+    },
+    "toast": {
+      "report": {
+        "loading": "Jelentés elutasítása...",
+        "success": "Jelentés elutasítva",
+        "error": "Hiba történt a jelentés elutasítása közben"
+      },
+      "giveStrike": {
+        "loading": "Strike kiosztása...",
+        "success": "Strike kiosztva",
+        "error": "Hiba történt a strike kiosztása közben"
+      },
+      "revokeStrike": {
+        "loading": "Strike visszavonása...",
+        "success": "Strike visszavonva",
+        "error": "Hiba történt a strike visszavonása közben"
+      }
+    },
+    "title": "Admin konzol",
+    "strikes": {
+      "title": "Strike-ok"
+    },
+    "dismissed": {
+      "title": "Elutasítva"
+    },
+    "users": {
+      "title": "Felhasználók"
+    }
   }
 }

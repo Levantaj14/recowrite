@@ -4,10 +4,12 @@ import {
   CloseButton,
   DataList,
   Dialog,
-  HStack, Link,
+  HStack,
+  Link,
   Portal,
   Table,
-  Textarea, VStack,
+  Textarea,
+  VStack,
 } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { dismissReport, getAllReports, giveStrike, ReportType, revokeStrike } from '@/apis/adminApi.ts';
@@ -19,12 +21,14 @@ import { useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button.tsx';
 import { toast } from 'sonner';
 import CustomLoading from '@/components/elements/CustomLoading.tsx';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
-}
+};
 
 export default function ReportsTab({ setIsAuthorized }: Props) {
+  const { t } = useTranslation();
   const [selectedReport, setSelectedReport] = useState<ReportType | null>(null);
   const [selectedReportedUser, setSelectedReportedUser] = useState<UserType | undefined>(undefined);
   const [selectedReportedByUser, setSelectedReportedByUser] = useState<UserType | undefined>(undefined);
@@ -48,27 +52,27 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
   });
 
   const badges = {
-    OPEN: { color: 'green', label: 'Open' },
-    DISMISSED: { color: 'orange', label: 'Dismissed' },
-    STRIKE_GIVEN: { color: 'red', label: 'Strike Given' },
+    OPEN: { color: 'green', label: t('admin.report.status.open') },
+    DISMISSED: { color: 'orange', label: t('admin.report.status.dismissed') },
+    STRIKE_GIVEN: { color: 'red', label: t('admin.report.status.strike') },
   };
 
   function pressedDismiss() {
     if (selectedReport) {
       setBlockButtons(true);
       toast.promise(dismissReport(selectedReport.id), {
-        loading: CustomLoading('Dismissing report...'),
+        loading: CustomLoading(t('admin.toast.report.loading')),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['reports'],
           });
           setBlockButtons(false);
           setSelectedReport(null);
-          return 'Report dismissed';
+          return t('admin.toast.report.success');
         },
         error: () => {
           setBlockButtons(false);
-          return 'Error dismissing report';
+          return t('admin.toast.report.error');
         },
       });
     }
@@ -78,18 +82,18 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
     if (selectedReport) {
       setBlockButtons(true);
       toast.promise(giveStrike(selectedReport.id), {
-        loading: CustomLoading('Giving strike...'),
+        loading: CustomLoading(t('admin.toast.giveStrike.loading')),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['reports'],
           });
           setBlockButtons(false);
           setSelectedReport(null);
-          return 'Strike given';
+          return t('admin.toast.giveStrike.success');
         },
         error: () => {
           setBlockButtons(false);
-          return 'Error giving strike';
+          return t('admin.toast.giveStrike.error');
         },
       });
     }
@@ -99,18 +103,18 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
     if (selectedReport) {
       setBlockButtons(true);
       toast.promise(revokeStrike(selectedReport.id), {
-        loading: CustomLoading('Revoking strike...'),
+        loading: CustomLoading(t('admin.toast.revokeStrike.loading')),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['reports'],
           });
           setBlockButtons(false);
           setSelectedReport(null);
-          return 'Strike revoked';
+          return t('admin.toast.revokeStrike.success');
         },
         error: () => {
           setBlockButtons(false);
-          return 'Error revoking strike';
+          return t('admin.toast.revokeStrike.error');
         },
       });
     }
@@ -118,37 +122,34 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
 
   function content() {
     return (
-      <Table.ScrollArea borderWidth="1px" rounded="sm" height="calc(100vh - 350px)">
+      <Table.ScrollArea borderWidth="1px" rounded="sm" height="calc(100vh - 300px)">
         <Table.Root size="sm" stickyHeader interactive>
           <Table.Header>
             <Table.Row bg="bg.subtle">
               <Table.ColumnHeader>ID</Table.ColumnHeader>
-              <Table.ColumnHeader>Reported User</Table.ColumnHeader>
-              <Table.ColumnHeader>Status</Table.ColumnHeader>
-              <Table.ColumnHeader>Blog</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('admin.report.table.header.reportedUser')}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('admin.report.table.header.status')}</Table.ColumnHeader>
+              <Table.ColumnHeader>{t('admin.report.table.header.blog')}</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
             {data?.reports.map((report) => (
-              <Table.Row key={report.id} onClick={() => {
-                setSelectedReport(report);
-                setSelectedReportedUser(data?.users.find((u) => u.id === report.reportedUserId));
-                setSelectedBlog(data?.blogs.find((b) => Number(b.id) === report.blogId));
-                setSelectedReportedByUser(data?.users.find((u) => u.id === report.reporterId));
-              }}>
+              <Table.Row
+                key={report.id}
+                onClick={() => {
+                  setSelectedReport(report);
+                  setSelectedReportedUser(data?.users.find((u) => u.id === report.reportedUserId));
+                  setSelectedBlog(data?.blogs.find((b) => Number(b.id) === report.blogId));
+                  setSelectedReportedByUser(data?.users.find((u) => u.id === report.reporterId));
+                }}
+              >
                 <Table.Cell>{report.id}</Table.Cell>
+                <Table.Cell>{data?.users.find((u) => u.id === report.reportedUserId)?.name ?? 'unknown'}</Table.Cell>
                 <Table.Cell>
-                  {data?.users.find((u) => u.id === report.reportedUserId)?.name ?? 'unknown'}
+                  <Badge colorPalette={badges[report.status].color}>{badges[report.status].label}</Badge>
                 </Table.Cell>
-                <Table.Cell>
-                  <Badge colorPalette={badges[report.status].color}>
-                    {badges[report.status].label}
-                  </Badge>
-                </Table.Cell>
-                <Table.Cell>
-                  {data?.blogs.find((b) => Number(b.id) === report.blogId)?.title ?? 'unknown'}
-                </Table.Cell>
+                <Table.Cell>{data?.blogs.find((b) => Number(b.id) === report.blogId)?.title ?? 'unknown'}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -166,19 +167,17 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
             <Dialog.Positioner>
               <Dialog.Content>
                 <Dialog.Header>
-                  <Dialog.Title>Report Details</Dialog.Title>
+                  <Dialog.Title>{t('admin.report.table.dialog.title')}</Dialog.Title>
                 </Dialog.Header>
                 <Dialog.Body pb="8">
                   <DataList.Root orientation="horizontal">
                     <DataList.Item>
-                      <DataList.ItemLabel>Reported User</DataList.ItemLabel>
+                      <DataList.ItemLabel>{t('admin.report.table.dialog.reported')}</DataList.ItemLabel>
                       <DataList.ItemValue>
                         <HStack>
                           <Avatar.Root size="xs">
-                            <Avatar.Image
-                              src={`data:image;base64,${selectedReportedUser?.avatar ?? ''}`} />
-                            <Avatar.Fallback
-                              name={selectedReportedUser?.name ?? ''} />
+                            <Avatar.Image src={`data:image;base64,${selectedReportedUser?.avatar ?? ''}`} />
+                            <Avatar.Fallback name={selectedReportedUser?.name ?? ''} />
                           </Avatar.Root>
                           {selectedReportedUser?.name ?? ''}
                         </HStack>
@@ -186,23 +185,20 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                     </DataList.Item>
 
                     <DataList.Item>
-                      <DataList.ItemLabel>Reported By</DataList.ItemLabel>
+                      <DataList.ItemLabel>{t('admin.report.table.dialog.reportedBy')}</DataList.ItemLabel>
                       <DataList.ItemValue>
                         <HStack>
                           <Avatar.Root size="xs">
-                            <Avatar.Image
-                              src={`data:image;base64,${selectedReportedByUser?.avatar ?? ''}`} />
-                            <Avatar.Fallback
-                              name={selectedReportedByUser?.name ?? ''} />
+                            <Avatar.Image src={`data:image;base64,${selectedReportedByUser?.avatar ?? ''}`} />
+                            <Avatar.Fallback name={selectedReportedByUser?.name ?? ''} />
                           </Avatar.Root>
                           {selectedReportedByUser?.name ?? ''}
                         </HStack>
                       </DataList.ItemValue>
                     </DataList.Item>
 
-
                     <DataList.Item>
-                      <DataList.ItemLabel>Status</DataList.ItemLabel>
+                      <DataList.ItemLabel>{t('admin.report.table.dialog.status')}</DataList.ItemLabel>
                       <DataList.ItemValue>
                         {selectedReport && (
                           <Badge colorPalette={badges[selectedReport.status].color}>
@@ -213,7 +209,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                     </DataList.Item>
 
                     <DataList.Item>
-                      <DataList.ItemLabel>Blog title</DataList.ItemLabel>
+                      <DataList.ItemLabel>{t('admin.report.table.dialog.blogTitle')}</DataList.ItemLabel>
                       <DataList.ItemValue>
                         <Link onClick={() => navigate(`/blog/${selectedBlog?.id}`)}>
                           {selectedBlog?.title ?? 'unknown'}
@@ -222,38 +218,45 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                     </DataList.Item>
 
                     <DataList.Item>
-                      <DataList.ItemLabel>Reason</DataList.ItemLabel>
+                      <DataList.ItemLabel>{t('admin.report.table.dialog.reason')}</DataList.ItemLabel>
                       <DataList.ItemValue>{selectedReport?.reason}</DataList.ItemValue>
                     </DataList.Item>
 
                     <DataList.Item>
-                      <DataList.ItemLabel>Reported on</DataList.ItemLabel>
+                      <DataList.ItemLabel>{t('admin.report.table.dialog.date')}</DataList.ItemLabel>
                       <DataList.ItemValue>
-                        {selectedReport?.date && new Date(selectedReport.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
+                        {selectedReport?.date &&
+                          new Date(selectedReport.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
                       </DataList.ItemValue>
                     </DataList.Item>
                   </DataList.Root>
 
-                  <Textarea placeholder="Admin notes" mt="8" disabled={selectedReport?.status !== 'OPEN'}/>
+                  <Textarea placeholder={t('admin.report.table.dialog.adminNotes')} mt="8" disabled={selectedReport?.status !== 'OPEN'} />
                 </Dialog.Body>
                 <Dialog.CloseTrigger asChild>
                   <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
                 </Dialog.CloseTrigger>
                 {selectedReport?.status === 'OPEN' && (
                   <Dialog.Footer>
-                    <Button variant="outline" disabled={blockButtons} onClick={pressedDismiss}>Dismiss</Button>
-                    <Button colorPalette="red" disabled={blockButtons} onClick={pressedStrike}>Give a strike</Button>
+                    <Button variant="outline" disabled={blockButtons} onClick={pressedDismiss}>
+                      {t('buttons.dismiss')}
+                    </Button>
+                    <Button colorPalette="red" disabled={blockButtons} onClick={pressedStrike}>
+                      {t('buttons.giveStrike')}
+                    </Button>
                   </Dialog.Footer>
                 )}
                 {selectedReport?.status === 'STRIKE_GIVEN' && (
                   <Dialog.Footer>
-                    <Button variant="outline" disabled={blockButtons} onClick={pressedRevoke}>Revoke strike</Button>
+                    <Button variant="outline" disabled={blockButtons} onClick={pressedRevoke}>
+                      {t('buttons.revokeStrike')}
+                    </Button>
                   </Dialog.Footer>
                 )}
               </Dialog.Content>

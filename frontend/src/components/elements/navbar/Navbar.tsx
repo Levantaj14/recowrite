@@ -35,7 +35,7 @@ const StickyNavbar = () => {
           {isAdmin && (
             <NavLink to="/admin">
               <Button variant="ghost" size="xs" mr="2">
-                Admin console
+                {t('admin.title')}
               </Button>
             </NavLink>
           )}

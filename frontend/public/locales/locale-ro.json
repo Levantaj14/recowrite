@@ -11,7 +11,10 @@
     "reset": "Resetare",
     "submit": "Trimite",
     "choose": "Alege",
-    "report": "Raportează"
+    "report": "Raportează",
+    "dismiss": "Respinge",
+    "revokeStrike": "Revocă strike",
+    "giveStrike": "Dă strike"
   },
   "dashboard": {
     "preferences": {
@@ -346,5 +349,59 @@
     },
     "title": "Emailul de verificare a fost trimis",
     "desc": "Verifică-ți adresa de email înainte de a te autentifica. Aruncă o privire în inbox pentru pașii următori. Dacă nu îl vezi, nu-ți face griji, verifică și folderul de spam!"
+  },
+  "admin": {
+    "report": {
+      "status": {
+        "open": "Deschis",
+        "dismissed": "Respins",
+        "strike": "Strike dat"
+      },
+      "table": {
+        "header": {
+          "reportedUser": "Utilizator raportat",
+          "status": "Status",
+          "blog": "Blog"
+        },
+        "dialog": {
+          "title": "Detalii raport",
+          "reported": "Utilizator raportat",
+          "reportedBy": "Raportat de",
+          "status": "Status",
+          "blogTitle": "Titlu blog",
+          "reason": "Motiv",
+          "date": "Raportat la",
+          "adminNotes": "Note admin"
+        }
+      },
+      "title": "Rapoarte"
+    },
+    "toast": {
+      "report": {
+        "loading": "Se respinge raportul...",
+        "success": "Raport respins",
+        "error": "Eroare la respingerea raportului"
+      },
+      "giveStrike": {
+        "loading": "Se acordă strike...",
+        "success": "Strike acordat",
+        "error": "Eroare la acordarea strike-ului"
+      },
+      "revokeStrike": {
+        "loading": "Se revocă strike-ul...",
+        "success": "Strike revocat",
+        "error": "Eroare la revocarea strike-ului"
+      }
+    },
+    "title": "Consolă Admin",
+    "strikes": {
+      "title": "Strike-uri"
+    },
+    "dismissed": {
+      "title": "Respinse"
+    },
+    "users": {
+      "title": "Utilizatori"
+    }
   }
 }

@@ -11,7 +11,10 @@
     "reset": "Reset",
     "submit": "Submit",
     "choose": "Choose",
-    "report": "Report"
+    "report": "Report",
+    "dismiss": "Dismiss",
+    "revokeStrike": "Revoke strike",
+    "giveStrike": "Give a strike"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -346,5 +349,59 @@
     },
     "desc": "Verify your email before logging in. Take a peek in your inbox for the next steps. If you don’t see it, don’t worry, check your spam folder too!",
     "title": "Verification email sent"
+  },
+  "admin": {
+    "report": {
+      "status": {
+        "open": "Open",
+        "dismissed": "Dismissed",
+        "strike": "Strike Given"
+      },
+      "table": {
+        "header": {
+          "reportedUser": "Reported User",
+          "status": "Status",
+          "blog": "Blog"
+        },
+        "dialog": {
+          "title": "Report Details",
+          "reported": "Reported User",
+          "reportedBy": "Reported By",
+          "status": "Status",
+          "blogTitle": "Blog title",
+          "reason": "Reason",
+          "date": "Reported on",
+          "adminNotes": "Admin notes"
+        }
+      },
+      "title": "Reports"
+    },
+    "toast": {
+      "report": {
+        "loading": "Dismissing report...",
+        "success": "Report dismissed",
+        "error": "Error dismissing report"
+      },
+      "giveStrike": {
+        "loading": "Giving strike...",
+        "success": "Strike given",
+        "error": "Error giving strike"
+      },
+      "revokeStrike": {
+        "loading": "Revoking strike...",
+        "success": "Strike revoked",
+        "error": "Error revoking strike"
+      }
+    },
+    "title": "Admin Console",
+    "strikes": {
+      "title": "Strikes"
+    },
+    "dismissed": {
+      "title": "Dismissed"
+    },
+    "users": {
+      "title": "Users"
+    }
   }
 }
