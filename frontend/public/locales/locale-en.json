@@ -216,13 +216,19 @@
           "success": "Social media username saved",
           "error": "Failed to save your username for one of your socials",
           "loading": "Saving social media username..."
+        },
+        "bio": {
+          "loading": "Updating bio...",
+          "success": "Bio updated successfully",
+          "error": "Failed to update bio"
         }
       },
       "uploadButton": "Upload picture",
       "fields": {
         "email": "Email",
         "name": "Name",
-        "password": "Change Password"
+        "password": "Change Password",
+        "bio": "Bio"
       },
       "errors": {
         "minPassword": "The password must be at least 8 characters",

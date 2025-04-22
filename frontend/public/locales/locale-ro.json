@@ -66,7 +66,8 @@
       "fields": {
         "email": "Email",
         "name": "Nume",
-        "password": "Schimbați parola"
+        "password": "Schimbați parola",
+        "bio": "Despre mine"
       },
       "password": {
         "new": "Parola nouă",
@@ -96,6 +97,11 @@
           "error": "Salvarea numeleui de utilizator a unui social media a eșuat",
           "loading": "Salvarea numelui de utilizator...",
           "success": "Nume de utilizator salvat cu succes"
+        },
+        "bio": {
+          "loading": "Salvarea biografiei...",
+          "success": "Biografie salvată cu succes",
+          "error": "Salvarea biografiei a eșuat"
         }
       },
       "uploadButton": "Încărcare imagine",

@@ -197,7 +197,8 @@
       "fields": {
         "email": "Email",
         "name": "Név",
-        "password": "Jelszó változtatása"
+        "password": "Jelszó változtatása",
+        "bio": "Rólam"
       },
       "password": {
         "new": "Új jelszó",
@@ -227,6 +228,11 @@
           "error": "Nem sikerült menteni a felhasználóneved egyik közösségi oldalahoz",
           "loading": "Közösségi háló felhsználónév mentése...",
           "success": "Közösségi háló felhasználónév lementve"
+        },
+        "bio": {
+          "loading": "Bio mentése...",
+          "success": "Bio sikeresen lementve",
+          "error": "Hiba történt a bio mentése közben"
         }
       },
       "uploadButton": "Kép feltöltés",
