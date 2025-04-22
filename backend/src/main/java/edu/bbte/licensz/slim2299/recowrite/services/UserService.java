@@ -37,6 +37,15 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
+    public List<UserDtoOut> getAdminUsers() {
+        List<UserDtoOut> users = new ArrayList<>();
+        for (UserModel user : userManager.findAllByRole("ADMIN")) {
+            users.add(userMapper.modelToDto(user));
+        }
+        return users;
+    }
+
+    @Override
     public UserDtoOut findUserById(Long id) {
         Optional<UserModel> user = userManager.findById(id);
         if (user.isPresent()) {

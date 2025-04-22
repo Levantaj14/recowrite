@@ -49,8 +49,8 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*", "/user/*", "/blogs").permitAll()
-                        .requestMatchers("/authentication/*", "/authentication/forgotPassword/*", "/authentication/verify/email","/error", "/blogs/*", "/user").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/authentication/**", "/error", "/blogs/*", "/user").permitAll()
+                        .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

@@ -11,4 +11,6 @@ public interface UserManager extends JpaRepository<UserModel, Long> {
     Optional<UserModel> findByUsername(String username);
 
     Optional<UserModel> findByEmail(String email);
+
+    UserModel[] findAllByRole(String role);
 }

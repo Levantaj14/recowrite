@@ -1,6 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.*;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
 
 import java.io.IOException;
 
@@ -16,4 +17,8 @@ public interface AccountServiceInterface {
     void updateSocial(String username, SocialDtoIn socialDtoIn);
 
     void updateBio(String username, BioDtoIn bioDtoIn);
+
+    void deleteAccount(long accountId);
+
+    void changeRole(long accountId);
 }

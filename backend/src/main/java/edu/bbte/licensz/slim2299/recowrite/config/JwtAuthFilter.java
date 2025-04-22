@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        Cookie auhtCookie = serachAuthCookie(request.getCookies());
+        Cookie auhtCookie = searchAuthCookie(request.getCookies());
         if (auhtCookie == null) {
             filterChain.doFilter(request, response);
             return;
@@ -71,7 +71,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
     }
 
-    private Cookie serachAuthCookie(Cookie... cookies) {
+    private Cookie searchAuthCookie(Cookie... cookies) {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("auth".equals(cookie.getName())) {
