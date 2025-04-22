@@ -8,6 +8,7 @@ import StrikesTab from '@/components/pages/admin/tabs/StrikesTab.tsx';
 import ReportsTab from '@/components/pages/admin/tabs/ReportsTab.tsx';
 import DismissedTab from '@/components/pages/admin/tabs/DismissedTab.tsx';
 import { useTranslation } from 'react-i18next';
+import UsersTab from '@/components/pages/admin/tabs/UsersTab.tsx';
 
 export default function AdminConsole() {
   const { t } = useTranslation();
@@ -39,9 +40,9 @@ export default function AdminConsole() {
                  onValueChange={(e) => setTabs(e.value)}>
         <Tabs.List>
           <Tabs.Trigger value="reports">{t('admin.report.title')}</Tabs.Trigger>
-          <Tabs.Trigger value="strikes" disabled>{t('admin.strikes.title')}</Tabs.Trigger>
-          <Tabs.Trigger value="dismissed" disabled>{t('admin.dismissed.title')}</Tabs.Trigger>
-          <Tabs.Trigger value="dismissed" disabled>{t('admin.users.title')}</Tabs.Trigger>
+          <Tabs.Trigger value="strikes" >{t('admin.strikes.title')}</Tabs.Trigger>
+          <Tabs.Trigger value="dismissed" >{t('admin.dismissed.title')}</Tabs.Trigger>
+          <Tabs.Trigger value="users">{t('admin.users.title')}</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="preferences">
           <Preferences />
@@ -49,6 +50,7 @@ export default function AdminConsole() {
         <Tabs.Content value="reports"><ReportsTab setIsAuthorized={setIsAuthorized} /></Tabs.Content>
         <Tabs.Content value="strikes"><StrikesTab /></Tabs.Content>
         <Tabs.Content value="dismissed"><DismissedTab /></Tabs.Content>
+        <Tabs.Content value="users"><UsersTab setIsAuthorized={setIsAuthorized} /></Tabs.Content>
       </Tabs.Root>
     </>
   ) : (

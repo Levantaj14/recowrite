@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { UserType } from '@/apis/userApi.ts';
 
 const adminApi = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/admin`,
@@ -46,4 +47,19 @@ export async function giveStrike(id: number): Promise<void> {
 
 export async function revokeStrike(id: number): Promise<void> {
   await adminApi.delete(`/strikes/report/${id}`);
+}
+
+export async function fetchAllAdmins(): Promise<UserType[]> {
+  const res = await adminApi.get('/admins');
+  return res.data;
+}
+
+export async function changeRole(id: number): Promise<boolean> {
+  const res = await adminApi.put(`/account/${id}`);
+  return res.status === 200;
+}
+
+export async function deleteAccount(id: number): Promise<boolean> {
+  const res = await adminApi.delete(`/account/${id}`);
+  return res.status === 200;
 }
