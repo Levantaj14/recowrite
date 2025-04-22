@@ -125,4 +125,14 @@ public class AccountController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
+
+    @PutMapping("/bio")
+    public ResponseEntity<?> changeBio(HttpServletRequest request, @RequestBody @Valid BioDtoIn bioDtoIn) {
+        Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
+        if (cookie != null) {
+            accountService.updateBio(jwtUtil.extractUsername(cookie.getValue()), bioDtoIn);
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("User bio updated successfully"));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
+    }
 }

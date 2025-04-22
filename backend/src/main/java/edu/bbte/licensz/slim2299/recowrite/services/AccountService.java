@@ -130,4 +130,15 @@ public class AccountService implements AccountServiceInterface {
         }
         throw new UserNotFoundException("User not found");
     }
+
+    @Override
+    public void updateBio(String username, BioDtoIn bioDtoIn) {
+        Optional<UserModel> user = userManager.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        UserModel userModel = user.get();
+        userModel.setBio(bioDtoIn.getBio());
+        userManager.save(userModel);
+    }
 }
