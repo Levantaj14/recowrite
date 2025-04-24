@@ -39,6 +39,7 @@ public class BlogMapper {
         blogModel.setDescription(blog.getDescription());
         blogModel.setContent(blog.getContent());
         blogModel.setBanner(blog.getBanner());
+        blogModel.setBannerType(BlogModel.BannerType.valueOf("URL"));
         try {
             Instant instant = Instant.parse(blog.getDate());
             Date date = Date.from(instant);

@@ -16,12 +16,20 @@ import java.util.List;
 @Entity
 @Table(name = "blogs")
 public class BlogModel extends BaseEntity {
+    public enum BannerType {
+        URL,
+        UPLOAD
+    }
+
     private String title;
     @Lob
     private String content;
     private String description;
     private String banner;
     private Date date;
+
+    @Enumerated(EnumType.STRING)
+    private BannerType bannerType;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel user;
