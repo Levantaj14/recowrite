@@ -71,7 +71,7 @@ public class TokenService implements TokenServiceInterface {
             userModel.setPassword(BCrypt.hashpw(tokenPasswordDtoIn.getPassword(), salt));
             userManager.save(userModel);
             tokenManager.delete(tokenModel.get());
-            if (userModel.isEmails()) {
+            if (userModel.getPreferences().isEmails()) {
                 Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
                 mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);

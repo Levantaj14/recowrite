@@ -47,6 +47,5 @@ export default function Dashboard() {
         <Tabs.Content value="likes"><Likes /></Tabs.Content>
       </Tabs.Root>
     </>
-  )
-    ;
+  );
 }

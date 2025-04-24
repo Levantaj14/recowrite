@@ -52,7 +52,7 @@ public class AuthService implements AuthServiceInterface {
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
             Map<String, String> model = new ConcurrentHashMap<>();
             model.put(USERNAME_STRING, user.getUsername());
-            if (userModel.isEmails()) {
+            if (userModel.getPreferences().isEmails()) {
                 mailService.sendMessage(userService.getUserModelByUsername(user.getUsername()).getEmail(),
                         "New login to recowrite", "login", model, null);
             }

@@ -49,7 +49,8 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*", "/user/*", "/blogs").permitAll()
-                        .requestMatchers("/authentication/*", "/authentication/forgotPassword/*", "/authentication/verify/email","/error", "/blogs/*", "/user").permitAll()
+                        .requestMatchers("/authentication/**", "/error", "/blogs/*", "/user").permitAll()
+                        .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -65,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000", "http://192.168.1.11:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000", "http://192.168.1.12:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);

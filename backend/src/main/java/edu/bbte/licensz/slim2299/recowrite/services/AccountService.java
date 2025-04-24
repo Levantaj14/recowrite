@@ -90,7 +90,7 @@ public class AccountService implements AccountServiceInterface {
             }
             userModel.setPassword(BCrypt.hashpw(userPasswordChangeDtoIn.getNewPassword(), userModel.getSalt()));
             userManager.save(userModel);
-            if (userModel.isEmails()) {
+            if (userModel.getPreferences().isEmails()) {
                 Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
                 mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);
@@ -129,5 +129,40 @@ public class AccountService implements AccountServiceInterface {
             throw new SocialMediaNotSupportedException("Social media not supported");
         }
         throw new UserNotFoundException("User not found");
+    }
+
+    @Override
+    public void updateBio(String username, BioDtoIn bioDtoIn) {
+        Optional<UserModel> user = userManager.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        UserModel userModel = user.get();
+        userModel.setBio(bioDtoIn.getBio());
+        userManager.save(userModel);
+    }
+
+    @Override
+    public void deleteAccount(long accountId) {
+        Optional<UserModel> user = userManager.findById(accountId);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        userManager.delete(user.get());
+    }
+
+    @Override
+    public void changeRole(long accountId) {
+        Optional<UserModel> user = userManager.findById(accountId);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        UserModel userModel = user.get();
+        if ("ADMIN".equals(userModel.getRole())) {
+            userModel.setRole("USER");
+        } else if ("USER".equals(userModel.getRole())) {
+            userModel.setRole("ADMIN");
+        }
+        userManager.save(userModel);
     }
 }

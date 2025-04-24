@@ -29,4 +29,8 @@ public class BlogModel extends BaseEntity {
     @OneToMany(mappedBy = "blog", fetch = FetchType.EAGER, cascade = {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
     private List<LikeModel> likes;
+
+    @OneToMany(mappedBy = "blog", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<ReportModel> reports;
 }

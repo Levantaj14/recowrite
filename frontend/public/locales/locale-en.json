@@ -10,7 +10,11 @@
     "change": "Change it",
     "reset": "Reset",
     "submit": "Submit",
-    "choose": "Choose"
+    "choose": "Choose",
+    "report": "Report",
+    "dismiss": "Dismiss",
+    "revokeStrike": "Revoke strike",
+    "giveStrike": "Give a strike"
   },
   "tabLoading": "Loading...",
   "loginPage": {
@@ -113,7 +117,26 @@
       }
     },
     "continue": "Continue reading",
-    "unavailable": "This blog will be available in:"
+    "unavailable": "This blog will be available in:",
+    "report": {
+      "toast": {
+        "loading": "Sending report...",
+        "success": "Report sent successfully. Thank you for your contribution.",
+        "error": "An error occurred while sending the report"
+      },
+      "options": {
+        "spam": "Spam",
+        "hate": "Hate speech or abusive content",
+        "bully": "Harassment or bullying",
+        "explicit": "Sexual or explicit content",
+        "violent": "Violent or graphic content",
+        "misinformation": "Misinformation",
+        "copyright": "Copyright infringement",
+        "plagiarism": "Plagiarism"
+      },
+      "emptyError": "Please select an option",
+      "title": "Report this article"
+    }
   },
   "notFound": {
     "tabTile": "Not Found",
@@ -193,13 +216,19 @@
           "success": "Social media username saved",
           "error": "Failed to save your username for one of your socials",
           "loading": "Saving social media username..."
+        },
+        "bio": {
+          "loading": "Updating bio...",
+          "success": "Bio updated successfully",
+          "error": "Failed to update bio"
         }
       },
       "uploadButton": "Upload picture",
       "fields": {
         "email": "Email",
         "name": "Name",
-        "password": "Change Password"
+        "password": "Change Password",
+        "bio": "Bio"
       },
       "errors": {
         "minPassword": "The password must be at least 8 characters",
@@ -326,5 +355,59 @@
     },
     "desc": "Verify your email before logging in. Take a peek in your inbox for the next steps. If you don’t see it, don’t worry, check your spam folder too!",
     "title": "Verification email sent"
+  },
+  "admin": {
+    "report": {
+      "status": {
+        "open": "Open",
+        "dismissed": "Dismissed",
+        "strike": "Strike Given"
+      },
+      "table": {
+        "header": {
+          "reportedUser": "Reported User",
+          "status": "Status",
+          "blog": "Blog"
+        },
+        "dialog": {
+          "title": "Report Details",
+          "reported": "Reported User",
+          "reportedBy": "Reported By",
+          "status": "Status",
+          "blogTitle": "Blog title",
+          "reason": "Reason",
+          "date": "Reported on",
+          "adminNotes": "Admin notes"
+        }
+      },
+      "title": "Reports"
+    },
+    "toast": {
+      "report": {
+        "loading": "Dismissing report...",
+        "success": "Report dismissed",
+        "error": "Error dismissing report"
+      },
+      "giveStrike": {
+        "loading": "Giving strike...",
+        "success": "Strike given",
+        "error": "Error giving strike"
+      },
+      "revokeStrike": {
+        "loading": "Revoking strike...",
+        "success": "Strike revoked",
+        "error": "Error revoking strike"
+      }
+    },
+    "title": "Admin Console",
+    "strikes": {
+      "title": "Strikes"
+    },
+    "dismissed": {
+      "title": "Dismissed"
+    },
+    "users": {
+      "title": "Users"
+    }
   }
 }

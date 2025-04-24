@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet">
+    <style>
+        a {
+            color: black;
+        }
+
+        a:hover {
+            color: black;
+        }
+
+        a:visited {
+            color: black;
+        }
+        #main-screen {
+            margin: 70px;
+            font-family: 'Inter', 'Roboto', 'Helvetica', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            #main-screen {
+                margin: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #main-screen {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="main-screen">
+    <h4>recowrite</h4>
+    <div style="text-align: center">
+        <h1>Notice of Policy Violation</h1>
+    </div>
+    <p>Hi there, {{username}}!</p>
+    <p>We're reaching out to let you know that we received a report concerning your activity on our platform
+        and determined that it violates our community guidelines.</p>
+    <p>As a result, a <strong>strike</strong> has been issued to your account.</p>
+    <hr />
+    <h3>Details</h3>
+    <dl>
+        <dt>Date:</dt>
+        <dd>{{date}}</dd>
+        <dt>Blog:</dt>
+        <dd>{{blogTitle}}</dd>
+        <dt>Reason:</dt>
+        <dd>{{reason}}</dd>
+    </dl>
+    <p>You currently have <strong>{{strikeNr}} out of 3</strong> strikes.</p>
+    <p>Keep in mind that once your reach 3 strikes your account will be <strong>permanently terminated</strong>.</p>
+    <hr/>
+    <h3>What's next?</h3>
+    <p>Please review our <a href="">Community Guidelines</a> to ensure that your future posts will comply to our ruleset.
+    If you think this is a mistake please do not hesitate to contact us, by replying to this email.</p>
+    <p>Thank you for helping us maintain a welcoming and safe platform for everyone.</p>
+    <br />
+    <p style="margin-bottom: 0;">Best regards,</p>
+    <p style="margin-top: 0.25rem;"><strong>The recowrite team</strong></p>
+    <hr/>
+    <div style="text-align: center; color: gray; font-size: smaller">
+        <p>©{{year}} recowrite</p>
+    </div>
+</div>
+</body>
+</html>

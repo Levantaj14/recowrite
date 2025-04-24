@@ -37,6 +37,15 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
+    public List<UserDtoOut> getAdminUsers() {
+        List<UserDtoOut> users = new ArrayList<>();
+        for (UserModel user : userManager.findAllByRole("ADMIN")) {
+            users.add(userMapper.modelToDto(user));
+        }
+        return users;
+    }
+
+    @Override
     public UserDtoOut findUserById(Long id) {
         Optional<UserModel> user = userManager.findById(id);
         if (user.isPresent()) {
@@ -77,8 +86,8 @@ public class UserService implements UserServiceInterface {
         Optional<UserModel> result = userManager.findByUsername(username);
         if (result.isPresent()) {
             UserModel userModel = result.get();
-            userModel.setLanguage(settings.getLanguage());
-            userModel.setEmails(settings.isGetEmail());
+            userModel.getPreferences().setLanguage(settings.getLanguage());
+            userModel.getPreferences().setEmails(settings.isGetEmail());
             userManager.save(userModel);
         } else {
             throw new UserNotFoundException("User with username " + username + " not found");

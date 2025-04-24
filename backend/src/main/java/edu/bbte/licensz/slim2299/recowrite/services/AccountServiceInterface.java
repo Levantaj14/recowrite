@@ -14,4 +14,10 @@ public interface AccountServiceInterface {
     void updatePassword(String username, UserPasswordChangeDtoIn userPasswordChangeDtoIn);
 
     void updateSocial(String username, SocialDtoIn socialDtoIn);
+
+    void updateBio(String username, BioDtoIn bioDtoIn);
+
+    void deleteAccount(long accountId);
+
+    void changeRole(long accountId);
 }

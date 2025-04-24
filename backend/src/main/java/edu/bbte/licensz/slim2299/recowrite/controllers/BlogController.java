@@ -41,7 +41,7 @@ public class BlogController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public BlogDtoOut getBlogsById(@PathVariable("id") long id) {
+    public BlogDtoOut getBlogById(@PathVariable("id") long id) {
         return blogService.getBlogById(id);
     }
 
