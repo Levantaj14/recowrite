@@ -89,7 +89,7 @@ export default function UsersTab({ setIsAuthorized }: Props) {
                   <Badge variant="surface">Admin</Badge>
                 )}</Table.Cell>
                 <Table.Cell>{user.name}</Table.Cell>
-                <Table.Cell>
+                <Table.Cell textAlign="right">
                   <ButtonGroup size="xs">
                     <Button onClick={() => pressedChange(user.id)}>Change Role</Button>
                     <Button colorPalette="red" onClick={() => pressedDelete(user.id)}>Delete</Button>

@@ -15,6 +15,7 @@ export type LoginType = {
 
 const authApi = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/authentication`,
+  withCredentials: true,
   headers: {
     Accept: 'application/json',
   },
@@ -34,17 +35,13 @@ export async function signup(user: SignUpType): Promise<boolean> {
 }
 
 export async function logout(): Promise<boolean> {
-  const res = await authApi.post('/logout', {
-    withCredentials: true,
-  });
+  const res = await authApi.post('/logout');
   return res.status === 200;
 }
 
 export async function checkCookie(): Promise<UserDetailType | null> {
   try {
-    const res = await authApi.get('/check', {
-      withCredentials: true,
-    });
+    const res = await authApi.get('/check');
     return res.data;
   } catch {
     return null;
