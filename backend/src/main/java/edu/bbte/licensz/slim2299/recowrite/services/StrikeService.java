@@ -98,7 +98,7 @@ public class StrikeService implements StrikeServiceInterface {
         }
         UserModel user = strike.get().getReport().getReportedUser();
         ReportModel reportModel = strike.get().getReport();
-        RemoveStrikeAndSendMail(strike.get(), user, reportModel);
+        removeStrikeAndSendMail(strike.get(), user, reportModel);
     }
 
     @Override
@@ -113,10 +113,10 @@ public class StrikeService implements StrikeServiceInterface {
         }
         UserModel user = strike.get().getReport().getReportedUser();
         ReportModel reportModel = report.get();
-        RemoveStrikeAndSendMail(strike.get(), user, reportModel);
+        removeStrikeAndSendMail(strike.get(), user, reportModel);
     }
 
-    private void RemoveStrikeAndSendMail(StrikeModel strike, UserModel user, ReportModel reportModel) {
+    private void removeStrikeAndSendMail(StrikeModel strike, UserModel user, ReportModel reportModel) {
         strikeManager.delete(strike);
 
         reportModel.setStatus(ReportModel.ReportStatus.valueOf("DISMISSED"));

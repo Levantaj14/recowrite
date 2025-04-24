@@ -86,8 +86,8 @@ public class UserService implements UserServiceInterface {
         Optional<UserModel> result = userManager.findByUsername(username);
         if (result.isPresent()) {
             UserModel userModel = result.get();
-            userModel.setLanguage(settings.getLanguage());
-            userModel.setEmails(settings.isGetEmail());
+            userModel.getPreferences().setLanguage(settings.getLanguage());
+            userModel.getPreferences().setEmails(settings.isGetEmail());
             userManager.save(userModel);
         } else {
             throw new UserNotFoundException("User with username " + username + " not found");

@@ -90,7 +90,7 @@ public class AccountService implements AccountServiceInterface {
             }
             userModel.setPassword(BCrypt.hashpw(userPasswordChangeDtoIn.getNewPassword(), userModel.getSalt()));
             userManager.save(userModel);
-            if (userModel.isEmails()) {
+            if (userModel.getPreferences().isEmails()) {
                 Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
                 mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);
