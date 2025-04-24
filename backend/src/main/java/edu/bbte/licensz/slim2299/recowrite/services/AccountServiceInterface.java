@@ -1,7 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.*;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
 
 import java.io.IOException;
 
