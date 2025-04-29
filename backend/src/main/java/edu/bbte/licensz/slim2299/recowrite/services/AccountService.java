@@ -111,17 +111,17 @@ public class AccountService implements AccountServiceInterface {
                 Optional<SocialsModel> socialsModel = socialsManager.findBySocialsTypeAndUser(socialsTypesModel, userModel);
                 if (socialsModel.isPresent()) {
                     SocialsModel socialsModelModel = socialsModel.get();
-                    if (Objects.equals(socialDtoIn.getUrl(), "")) {
+                    if (Objects.equals(socialDtoIn.getUsername(), "")) {
                         socialsManager.delete(socialsModelModel);
                     } else {
-                        socialsModelModel.setLink(socialDtoIn.getUrl());
+                        socialsModelModel.setLink(socialDtoIn.getUsername());
                         socialsManager.save(socialsModelModel);
                     }
                 } else {
                     SocialsModel newSocialsModel = new SocialsModel();
                     newSocialsModel.setUser(userModel);
                     newSocialsModel.setSocialsType(socialsTypesModel);
-                    newSocialsModel.setLink(socialDtoIn.getUrl());
+                    newSocialsModel.setLink(socialDtoIn.getUsername());
                     socialsManager.save(newSocialsModel);
                 }
                 return;
