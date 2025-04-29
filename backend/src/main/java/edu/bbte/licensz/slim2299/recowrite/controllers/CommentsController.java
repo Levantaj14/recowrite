@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOu
 import edu.bbte.licensz.slim2299.recowrite.services.CommentServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class CommentsController {
 
     @PostMapping("/{blogId}")
     public ResponseEntity<IdDtoOut> addComment(HttpServletRequest request,
-                                               @PathVariable Long blogId, @RequestBody CommentDtoIn commentDtoIn) {
+                                               @PathVariable Long blogId, @RequestBody @Valid CommentDtoIn commentDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -53,7 +54,7 @@ public class CommentsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageDtoOut> editComment(@PathVariable Long id, @RequestBody CommentDtoIn commentDtoIn) {
+    public ResponseEntity<MessageDtoOut> editComment(@PathVariable Long id, @RequestBody @Valid CommentDtoIn commentDtoIn) {
         commentService.editComment(commentDtoIn, id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

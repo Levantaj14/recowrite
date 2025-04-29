@@ -40,7 +40,7 @@ public class AccountController {
     }
 
     @PutMapping("/preferences")
-    public ResponseEntity<?> updateSettings(HttpServletRequest request, @RequestBody SettingsDtoIn settingsDtoIn) {
+    public ResponseEntity<?> updateSettings(HttpServletRequest request, @RequestBody @Valid SettingsDtoIn settingsDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             userService.updateUserPreferences(jwtUtil.extractUsername(cookie.getValue()), settingsDtoIn);
@@ -77,7 +77,7 @@ public class AccountController {
     }
 
     @PutMapping("/name")
-    public ResponseEntity<?> changeName(HttpServletRequest request, @RequestBody UserNameDtoIn userNameDtoIn) {
+    public ResponseEntity<?> changeName(HttpServletRequest request, @RequestBody @Valid UserNameDtoIn userNameDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updateName(jwtUtil.extractUsername(cookie.getValue()), userNameDtoIn);
