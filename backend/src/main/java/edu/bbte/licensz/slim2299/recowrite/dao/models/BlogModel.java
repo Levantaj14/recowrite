@@ -16,9 +16,9 @@ import java.util.List;
 @Entity
 @Table(name = "blogs")
 public class BlogModel extends BaseEntity {
-    private enum BannerType {
-        URL,
-        UPLOAD
+    public enum BannerImageSource {
+        IMAGE_URL,
+        IMAGE_UPLOAD
     }
 
     private String title;
@@ -29,7 +29,7 @@ public class BlogModel extends BaseEntity {
     private Date date;
 
     @Enumerated(EnumType.STRING)
-    private BannerType bannerType;
+    private BannerImageSource bannerType;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel user;
