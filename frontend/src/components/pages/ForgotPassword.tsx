@@ -20,7 +20,10 @@ export default function ForgotPassword() {
 
   const schema = z.object({
     password: z.string().min(8, t('loginPage.errors.password')),
-    passwordConfirm: z.string().min(8, t('loginPage.errors.password'))
+    passwordConfirm: z.string(),
+  }).refine((data) => data.password === data.passwordConfirm, {
+    message: t('loginPage.errors.confPassword'),
+    path: ['passwordConfirm'],
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -58,8 +61,8 @@ export default function ForgotPassword() {
         setIsSubmitting(false);
         return t('forgotPassword.toast.error');
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     document.title = t('forgotPassword.title');

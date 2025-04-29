@@ -61,7 +61,8 @@
     "account": {
       "errors": {
         "minPassword": "Parola trebuie să conțină măcar 8 caractere",
-        "noPassword": "Parola veche este necesară"
+        "noPassword": "Parola veche este necesară",
+        "confPassword": "Parolele nu se potrivesc"
       },
       "fields": {
         "email": "Email",
@@ -71,7 +72,8 @@
       },
       "password": {
         "new": "Parola nouă",
-        "old": "Parola veche"
+        "old": "Parola veche",
+        "confirm": "Reintrodu parola"
       },
       "toast": {
         "avatar": {
@@ -117,7 +119,8 @@
       "password": "Parola trebuie să aibă cel puțin 8 caractere",
       "username": "Numele de utilizator e necesar",
       "email": "Această adresă de email nu este validă",
-      "name": "Numele este obligatorie"
+      "name": "Numele este obligatorie",
+      "confPassword": "Parolele nu se potrivesc"
     },
     "fields": {
       "confPassword": "Reintroduceți parola",
