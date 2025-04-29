@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.services.BlogServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.RecommendationServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class BlogController {
     }
 
     @PostMapping()
-    public IdDtoOut addBlog(HttpServletRequest request, @RequestBody BlogDtoIn blog) {
+    public IdDtoOut addBlog(HttpServletRequest request, @RequestBody @Valid BlogDtoIn blog) {
         Cookie authCookie = authCookieFinder.serachAuthCookie(request.getCookies());
         long blogId = blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue()));
         recommendationService.addRecommendation(blogId);

@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class SignUpDtoIn {
     @NotNull
-    @Size(max = 255)
+    @Size(min = 1, max = 255)
     private String name;
 
     @NotNull
-    @Size(max = 255)
+    @Size(min = 1, max = 255)
     private String username;
 
     @NotNull
