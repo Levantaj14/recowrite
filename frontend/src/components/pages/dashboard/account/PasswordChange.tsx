@@ -28,6 +28,10 @@ export function PasswordChange() {
   const schema = z.object({
     oldPassword: z.string().nonempty(t('dashboard.account.errors.noPassword')),
     newPassword: z.string().min(8, t('dashboard.account.errors.minPassword')),
+    passwordConfirm: z.string(),
+  }).refine((data) => data.newPassword === data.passwordConfirm, {
+    message: t('loginPage.errors.confPassword'),
+    path: ['passwordConfirm'],
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -100,6 +104,12 @@ export function PasswordChange() {
                   <PasswordInput {...register('newPassword')} />
                   <Field.ErrorText>{errors.newPassword?.message}</Field.ErrorText>
                   <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('newPassword'))} />
+                </Field.Root>
+
+                <Field.Root invalid={!!errors.passwordConfirm}>
+                  <Field.Label>{t('dashboard.account.password.confirm')}</Field.Label>
+                  <PasswordInput {...register('passwordConfirm')} />
+                  <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
                 </Field.Root>
               </Fieldset.Root>
             </DialogBody>

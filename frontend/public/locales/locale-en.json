@@ -22,7 +22,8 @@
       "password": "The password must have at least 8 characters",
       "username": "Username is required",
       "name": "Name is required",
-      "email": "The email must be valid"
+      "email": "The email must be valid",
+      "confPassword": "The passwords do not match"
     },
     "fields": {
       "confPassword": "Confirm your password",
@@ -236,7 +237,8 @@
       },
       "password": {
         "old": "Old password",
-        "new": "New password"
+        "new": "New password",
+        "confirm": "Confirm new password"
       },
       "username": "Username",
       "socials": "Socials"

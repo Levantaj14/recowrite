@@ -22,7 +22,8 @@
       "password": "A jelszó legalább 8 karakter hosszú kell legyen",
       "username": "A felhasználónév kötelező",
       "email": "Ez nem egy helyes email",
-      "name": "A név kötelező"
+      "name": "A név kötelező",
+      "confPassword": "A jelszavaknak egyezniük kell"
     },
     "fields": {
       "confPassword": "Írja be újra a jelszót",
@@ -192,7 +193,8 @@
     "account": {
       "errors": {
         "minPassword": "A jelszó legalább 8 karakterből kell álljon",
-        "noPassword": "A régi jelszó kötelező"
+        "noPassword": "A régi jelszó kötelező",
+        "confPassword": "A jelszavaknak egyezniük kell"
       },
       "fields": {
         "email": "Email",
@@ -202,7 +204,8 @@
       },
       "password": {
         "new": "Új jelszó",
-        "old": "Régi jelszó"
+        "old": "Régi jelszó",
+        "confirm": "Írd be újra a jelszót"
       },
       "toast": {
         "avatar": {
