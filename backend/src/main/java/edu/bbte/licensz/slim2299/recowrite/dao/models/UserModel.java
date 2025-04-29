@@ -20,7 +20,6 @@ public class UserModel extends BaseEntity {
     private String name;
     private String avatar;
     private String bio;
-    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private String salt;
@@ -28,8 +27,8 @@ public class UserModel extends BaseEntity {
     private boolean valid;
 
     @Embedded
-    private UserPreferences preferences;
+    private UserPreferences preferences = new UserPreferences();
 
     @Embedded
-    private UserAssociations associations;
+    private UserAssociations associations = new UserAssociations();
 }
