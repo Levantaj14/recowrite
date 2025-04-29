@@ -61,8 +61,8 @@ export async function uploadAvatar(picture: string, name: string): Promise<boole
   return res.status === 200;
 }
 
-export async function updateSocial(url: string, name: string): Promise<boolean> {
-  const res = await accountApi.put('/socials', { url, name });
+export async function updateSocial(username: string, name: string): Promise<boolean> {
+  const res = await accountApi.put('/socials', { username, name });
   return res.status === 200;
 }
 
