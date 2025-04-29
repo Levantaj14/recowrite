@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "blogs")
 public class BlogModel extends BaseEntity {
-    public enum BannerType {
+    private enum BannerType {
         URL,
         UPLOAD
     }
