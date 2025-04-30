@@ -1,14 +1,15 @@
 FROM continuumio/miniconda3:main
 WORKDIR /usr/app/
 
-RUN conda create -n myenv python=3.9 -y
-SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
-RUN conda install -c conda-forge faiss-cpu -y
-RUN conda install django -y
+RUN conda create -n myenv python=3.10 faiss-cpu -c conda-forge -y
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+SHELL ["/bin/bash", "-c"]
+RUN source activate myenv && pip install --upgrade pip && pip install -r requirements.txt
+
+ENV PATH /opt/conda/envs/myenv/bin:$PATH
+ENV CONDA_DEFAULT_ENV=myenv
 
 COPY . ./
 
-CMD ["conda", "run", "-n", "myenv", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
