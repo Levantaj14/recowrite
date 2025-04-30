@@ -6,3 +6,5 @@
 */.gitignore
 */README.md
 .env
+*/.scannerwork
+*/sonar.txt
