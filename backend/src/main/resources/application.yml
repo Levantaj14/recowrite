@@ -2,10 +2,10 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:mysql://${MYSQL}/recowrite
+    url: jdbc:mysql://${MYSQL_HOST}/recowrite
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: kerekecske
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
     hikari:
       maximum-pool-size: 4
   jpa:
