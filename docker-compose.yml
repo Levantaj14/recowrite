@@ -18,7 +18,9 @@ services:
     build: ./backend
     container_name: backend
     environment:
-      - MYSQL=mysql
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=kerekecske
       - JWT_SECRET=${JWT_SECRET}
       - EMAIL=${EMAIL}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
@@ -34,7 +36,9 @@ services:
     build: ./tfidfApiServer
     container_name: recommendations
     environment:
-      - MYSQL=mysql
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=kerekecske
     platform: linux/amd64
     depends_on:
       mysql:
