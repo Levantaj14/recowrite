@@ -11,6 +11,8 @@ import java.util.List;
 public interface UserServiceInterface {
     List<UserDtoOut> getAllUsers();
 
+    List<UserDtoOut> getAdminUsers();
+
     UserDtoOut findUserById(Long id);
 
     UserModel getUserModelByUsername(String username);

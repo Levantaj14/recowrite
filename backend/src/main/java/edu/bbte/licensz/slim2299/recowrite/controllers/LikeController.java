@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/likes")
 public class LikeController {
+    private final LikeServiceInterface likeService;
+    private final AuthCookieFinder authCookieFinder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private LikeServiceInterface likeService;
-
-    @Autowired
-    private AuthCookieFinder authCookieFinder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public LikeController(LikeServiceInterface likeService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil) {
+        this.likeService = likeService;
+        this.authCookieFinder = authCookieFinder;
+        this.jwtUtil = jwtUtil;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<LikedDtoOut> like(HttpServletRequest request, @PathVariable long id) {

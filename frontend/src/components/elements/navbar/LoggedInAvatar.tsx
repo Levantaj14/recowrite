@@ -15,6 +15,9 @@ export default function LoggedInAvatar() {
 
   const selectedItem = (menuSelectionDetails: MenuSelectionDetails) => {
     switch (menuSelectionDetails.value) {
+      case 'newBlog':
+        navigate('/create');
+        break;
       case 'profile':
         navigate(`/user/${userDetails?.id}`);
         break;
@@ -38,6 +41,7 @@ export default function LoggedInAvatar() {
           <Avatar size="xs" name={userDetails?.name} src={`data:image;base64,${userDetails?.avatar}`} />
         </MenuTrigger>
         <MenuContent zIndex="popover" position="absolute" right="0">
+          <MenuItem value="newBlog">{t('dashboard.posts.create')}</MenuItem>
           <MenuItem value="profile">{t('navbar.buttons.profile')}</MenuItem>
           <MenuItem value="logout" color="fg.error" _hover={{ bg: 'bg.error', color: 'fg.error' }}>
             {t('navbar.buttons.logout')}

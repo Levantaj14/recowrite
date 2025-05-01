@@ -21,32 +21,32 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/account")
 public class AccountController {
-    @Autowired
-    private AccountServiceInterface accountService;
+    private static final String AUTH_TOKEN_NOT_FOUND = "Auth token not found";
+    private final AccountServiceInterface accountService;
+    private final UserServiceInterface userService;
+    private final AuthCookieFinder authCookieFinder;
+    private final LikeService likeService;
+    private final CommentService commentService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private UserServiceInterface userService;
-
-    @Autowired
-    private AuthCookieFinder authCookieFinder;
-
-    @Autowired
-    private LikeService likeService;
-
-    @Autowired
-    private CommentService commentService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public AccountController(AccountServiceInterface accountService, UserServiceInterface userService, AuthCookieFinder authCookieFinder, LikeService likeService, CommentService commentService, JwtUtil jwtUtil) {
+        this.accountService = accountService;
+        this.userService = userService;
+        this.authCookieFinder = authCookieFinder;
+        this.likeService = likeService;
+        this.commentService = commentService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PutMapping("/preferences")
-    public ResponseEntity<?> updateSettings(HttpServletRequest request, @RequestBody SettingsDtoIn settingsDtoIn) {
+    public ResponseEntity<?> updateSettings(HttpServletRequest request, @RequestBody @Valid SettingsDtoIn settingsDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             userService.updateUserPreferences(jwtUtil.extractUsername(cookie.getValue()), settingsDtoIn);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("User preferences updated successfully"));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @GetMapping("/likes/given")
@@ -55,7 +55,7 @@ public class AccountController {
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.OK).body(likeService.getLikedBlogs(jwtUtil.extractUsername(cookie.getValue())));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @GetMapping("/likes/received")
@@ -64,7 +64,7 @@ public class AccountController {
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new LikeCountDtoOut(likeService.receivedLikeCount(jwtUtil.extractUsername(cookie.getValue()))));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @GetMapping("/comments")
@@ -73,17 +73,17 @@ public class AccountController {
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.OK).body(commentService.findAllByAccount(jwtUtil.extractUsername(cookie.getValue())));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @PutMapping("/name")
-    public ResponseEntity<?> changeName(HttpServletRequest request, @RequestBody UserNameDtoIn userNameDtoIn) {
+    public ResponseEntity<?> changeName(HttpServletRequest request, @RequestBody @Valid UserNameDtoIn userNameDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updateName(jwtUtil.extractUsername(cookie.getValue()), userNameDtoIn);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("User name updated successfully"));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @PutMapping("/email")
@@ -93,7 +93,7 @@ public class AccountController {
             accountService.updateEmail(jwtUtil.extractUsername(cookie.getValue()), userEmailDtoIn);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("User email updated successfully"));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @PutMapping("/password")
@@ -103,7 +103,7 @@ public class AccountController {
             accountService.updatePassword(jwtUtil.extractUsername(cookie.getValue()), userPasswordChangeDtoIn);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("User password updated successfully"));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @PostMapping("/avatar")
@@ -113,7 +113,7 @@ public class AccountController {
             accountService.uploadAvatar(jwtUtil.extractUsername(cookie.getValue()), userAvatarDtoIn);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("User avatar updated successfully"));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 
     @PutMapping("/socials")
@@ -123,6 +123,16 @@ public class AccountController {
             accountService.updateSocial(jwtUtil.extractUsername(cookie.getValue()), socialDtoIn);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Social updated successfully"));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
+    }
+
+    @PutMapping("/bio")
+    public ResponseEntity<?> changeBio(HttpServletRequest request, @RequestBody @Valid BioDtoIn bioDtoIn) {
+        Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
+        if (cookie != null) {
+            accountService.updateBio(jwtUtil.extractUsername(cookie.getValue()), bioDtoIn);
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("User bio updated successfully"));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut(AUTH_TOKEN_NOT_FOUND));
     }
 }

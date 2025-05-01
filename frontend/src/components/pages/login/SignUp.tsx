@@ -22,7 +22,10 @@ export default function SignUp({setVerify}: Props) {
     email: z.string().email(t('loginPage.errors.email')),
     username: z.string().nonempty(t('loginPage.errors.username')),
     password: z.string().min(8, t('loginPage.errors.password')),
-    passwordConfirm: z.string().min(8, t('loginPage.errors.password'))
+    passwordConfirm: z.string()
+  }).refine((data) => data.password === data.passwordConfirm, {
+    message: t('loginPage.errors.confPassword'),
+    path: ['passwordConfirm'],
   });
 
   type FormFields = z.infer<typeof schema>;

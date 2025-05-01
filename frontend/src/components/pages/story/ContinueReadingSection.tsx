@@ -2,7 +2,7 @@ import { Card, Heading, Image, Separator, Stack, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import { fetchBlogRecommendation } from '@/apis/blogApi.ts';
+import { BlogType, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,6 +35,26 @@ export default function ContinueReadingSection() {
     }
   }, [recData, recIsLoading, recIsError]);
 
+  const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
+
+  function decideDescription(blog: BlogType) {
+    if (new Date(blog.date) > new Date()) {
+      return t('story.like.unavailable');
+    }
+    if (blog.description === '') {
+      let auxContent = blog.content;
+      patternsToRemove.forEach(pattern => {
+        auxContent = auxContent.replace(new RegExp(pattern, 'g'), '');
+      });
+      auxContent = auxContent.slice(0, 100);
+      if (blog.content.length > 100) {
+        auxContent = auxContent + '...';
+      }
+      return auxContent;
+    }
+    return blog.description;
+  }
+
   return (
     <>
       {(!!recData || hasLoadedOnce) && (
@@ -65,7 +85,7 @@ export default function ContinueReadingSection() {
                         <Card.Body gap="2">
                           <Text>{recommendation.authorName}</Text>
                           <Card.Title>{recommendation.title}</Card.Title>
-                          <Card.Description>{recommendation.description}</Card.Description>
+                          <Card.Description>{decideDescription(recommendation)}</Card.Description>
                         </Card.Body>
                       </Card.Root>
                     </Link>

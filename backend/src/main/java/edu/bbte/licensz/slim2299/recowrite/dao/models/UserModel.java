@@ -1,12 +1,12 @@
 package edu.bbte.licensz.slim2299.recowrite.dao.models;
 
+import edu.bbte.licensz.slim2299.recowrite.dao.models.embeddings.UserAssociations;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.embeddings.UserPreferences;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,24 +20,15 @@ public class UserModel extends BaseEntity {
     private String name;
     private String avatar;
     private String bio;
-    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private String salt;
     private String role = "USER";
-    private String language = "en";
-    private boolean emails = true;
-    private boolean valid = false;
+    private boolean valid;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
-            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
-    private List<BlogModel> blogs;
+    @Embedded
+    private UserPreferences preferences = new UserPreferences();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
-            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
-    private List<SocialsModel> socials;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {
-            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
-    private List<LikeModel> likes;
+    @Embedded
+    private UserAssociations associations = new UserAssociations();
 }

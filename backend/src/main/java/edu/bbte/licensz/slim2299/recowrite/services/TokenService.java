@@ -12,22 +12,24 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class TokenService implements TokenServiceInterface {
+    private static final String PASSWORD_STRING = "PASSWORD";
+    private final UserManager userManager;
+    private final TokenManager tokenManager;
+    private final MailServiceInterface mailService;
 
     @Autowired
-    private UserManager userManager;
-
-    @Autowired
-    private TokenManager tokenManager;
-
-    @Autowired
-    private MailServiceInterface mailService;
+    public TokenService(UserManager userManager, TokenManager tokenManager, MailServiceInterface mailService) {
+        this.userManager = userManager;
+        this.tokenManager = tokenManager;
+        this.mailService = mailService;
+    }
 
     @Override
     public void createPasswordToken(EmailDtoIn emailDtoIn) {
@@ -36,11 +38,11 @@ public class TokenService implements TokenServiceInterface {
             TokenModel tokenModel = new TokenModel();
             tokenModel.setUser(user.get());
             tokenModel.setToken(UUID.randomUUID().toString());
-            tokenModel.setType("PASSWORD");
+            tokenModel.setType(PASSWORD_STRING);
             LocalDateTime expiry = LocalDateTime.now().plusMinutes(30);
             tokenModel.setExpiryDate(expiry);
             tokenManager.save(tokenModel);
-            Map<String, String> model = new HashMap<>();
+            Map<String, String> model = new ConcurrentHashMap<>();
             model.put("title", "Forgot password");
             model.put("username", user.get().getUsername());
             model.put("token", tokenModel.getToken());
@@ -52,7 +54,7 @@ public class TokenService implements TokenServiceInterface {
     public void validatePasswordToken(String token) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
         if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) &&
-                "PASSWORD".equals(tokenModel.get().getType())) {
+                PASSWORD_STRING.equals(tokenModel.get().getType())) {
             return;
         }
         throw new ExpiredTokenException("The token is expired");
@@ -62,15 +64,15 @@ public class TokenService implements TokenServiceInterface {
     public void changePassword(TokenPasswordDtoIn tokenPasswordDtoIn) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(tokenPasswordDtoIn.getToken());
         if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) &&
-                "PASSWORD".equals(tokenModel.get().getType())) {
+                PASSWORD_STRING.equals(tokenModel.get().getType())) {
             UserModel userModel = tokenModel.get().getUser();
             String salt = BCrypt.gensalt(12);
             userModel.setSalt(salt);
             userModel.setPassword(BCrypt.hashpw(tokenPasswordDtoIn.getPassword(), salt));
             userManager.save(userModel);
             tokenManager.delete(tokenModel.get());
-            if (userModel.isEmails()) {
-                Map<String, String> model = new HashMap<>();
+            if (userModel.getPreferences().isEmails()) {
+                Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
                 mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);
             }

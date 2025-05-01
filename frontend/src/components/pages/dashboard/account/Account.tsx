@@ -14,6 +14,7 @@ import { SocialsBoxes } from '@/components/pages/dashboard/account/SocialsBoxes.
 import { FileAcceptDetails } from '@zag-js/file-upload';
 import { uploadAvatar } from '@/apis/accountApi';
 import { toast } from 'sonner';
+import { BioDialog } from '@/components/pages/dashboard/account/BioDialog.tsx';
 
 export function Account() {
   const { t } = useTranslation();
@@ -60,6 +61,7 @@ export function Account() {
       <NameField />
       <EmailField />
       <PasswordChange />
+      <BioDialog />
       <SocialsBoxes />
     </>
   );

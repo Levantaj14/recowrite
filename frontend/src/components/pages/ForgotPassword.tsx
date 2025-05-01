@@ -1,7 +1,7 @@
 import { Button, Field, Fieldset, Heading, Stack } from '@chakra-ui/react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useContext, useEffect, useState } from 'react';
-import { resetPasswordwithToken, validateToken } from '@/apis/authApi.ts';
+import { resetPasswordWithToken, validateToken } from '@/apis/authApi.ts';
 import { toast } from 'sonner';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +20,10 @@ export default function ForgotPassword() {
 
   const schema = z.object({
     password: z.string().min(8, t('loginPage.errors.password')),
-    passwordConfirm: z.string().min(8, t('loginPage.errors.password'))
+    passwordConfirm: z.string(),
+  }).refine((data) => data.password === data.passwordConfirm, {
+    message: t('loginPage.errors.confPassword'),
+    path: ['passwordConfirm'],
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -47,7 +50,7 @@ export default function ForgotPassword() {
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
-    toast.promise(resetPasswordwithToken(searchParams.get('token'), data.password), {
+    toast.promise(resetPasswordWithToken(searchParams.get('token'), data.password), {
       loading: CustomLoading(t('forgotPassword.toast.loading')),
       success: async () => {
         navigate('/');
@@ -58,8 +61,8 @@ export default function ForgotPassword() {
         setIsSubmitting(false);
         return t('forgotPassword.toast.error');
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     document.title = t('forgotPassword.title');

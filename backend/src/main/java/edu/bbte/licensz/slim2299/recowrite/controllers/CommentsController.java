@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOu
 import edu.bbte.licensz.slim2299.recowrite.services.CommentServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentsController {
+    private final CommentServiceInterface commentService;
+    private final AuthCookieFinder authCookieFinder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private CommentServiceInterface commentService;
-
-    @Autowired
-    private AuthCookieFinder authCookieFinder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public CommentsController(CommentServiceInterface commentService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil) {
+        this.commentService = commentService;
+        this.authCookieFinder = authCookieFinder;
+        this.jwtUtil = jwtUtil;
+    }
 
     @GetMapping("/{blogId}")
     public List<CommentDtoOut> getCommentsByBlog(@PathVariable Long blogId) {
@@ -35,7 +37,7 @@ public class CommentsController {
 
     @PostMapping("/{blogId}")
     public ResponseEntity<IdDtoOut> addComment(HttpServletRequest request,
-                                               @PathVariable Long blogId, @RequestBody CommentDtoIn commentDtoIn) {
+                                               @PathVariable Long blogId, @RequestBody @Valid CommentDtoIn commentDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -52,7 +54,7 @@ public class CommentsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageDtoOut> editComment(@PathVariable Long id, @RequestBody CommentDtoIn commentDtoIn) {
+    public ResponseEntity<MessageDtoOut> editComment(@PathVariable Long id, @RequestBody @Valid CommentDtoIn commentDtoIn) {
         commentService.editComment(commentDtoIn, id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

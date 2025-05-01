@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.services.BlogServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.RecommendationServiceInterface;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +18,18 @@ import java.util.List;
 @RestController()
 @RequestMapping("/blogs")
 public class BlogController {
+    private final BlogServiceInterface blogService;
+    private final RecommendationServiceInterface recommendationService;
+    private final AuthCookieFinder authCookieFinder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private BlogServiceInterface blogService;
-
-    @Autowired
-    private RecommendationServiceInterface recommendationService;
-
-    @Autowired
-    private AuthCookieFinder authCookieFinder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    public BlogController(BlogServiceInterface blogService, RecommendationServiceInterface recommendationService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil) {
+        this.blogService = blogService;
+        this.recommendationService = recommendationService;
+        this.authCookieFinder = authCookieFinder;
+        this.jwtUtil = jwtUtil;
+    }
 
     @GetMapping()
     public List<BlogDtoOut> getBlogs() {
@@ -36,17 +37,17 @@ public class BlogController {
     }
 
     @GetMapping("/author")
-    public List<BlogDtoOut> getBlogsByAuthor(@RequestParam(value = "id") long authorId) {
+    public List<BlogDtoOut> getBlogsByAuthor(@RequestParam("id") long authorId) {
         return blogService.getBlogsByAuthor(authorId);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public BlogDtoOut getBlogsById(@PathVariable("id") long id) {
+    public BlogDtoOut getBlogById(@PathVariable("id") long id) {
         return blogService.getBlogById(id);
     }
 
     @PostMapping()
-    public IdDtoOut addBlog(HttpServletRequest request, @RequestBody BlogDtoIn blog) {
+    public IdDtoOut addBlog(HttpServletRequest request, @RequestBody @Valid BlogDtoIn blog) {
         Cookie authCookie = authCookieFinder.serachAuthCookie(request.getCookies());
         long blogId = blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue()));
         recommendationService.addRecommendation(blogId);

@@ -13,8 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private final UserServiceInterface userService;
+
     @Autowired
-    private UserServiceInterface userService;
+    public UserController(UserServiceInterface userService) {
+        this.userService = userService;
+    }
 
     @GetMapping()
     public List<UserDtoOut> getUser() {

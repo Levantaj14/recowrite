@@ -55,8 +55,8 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
       positioning={{ placement: 'top' }}
     >
       <Button variant="ghost" disabled={userDetails === null} onClick={clickedLike}>
-        {localLikeCount !== undefined && <NumberFlow value={localLikeCount} />}
         {localLiked ? <FaHeart /> : <FaRegHeart />}
+        {localLikeCount !== undefined && <NumberFlow value={localLikeCount} />}
       </Button>
     </Tooltip>
   );

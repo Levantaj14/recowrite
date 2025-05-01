@@ -21,9 +21,12 @@ import java.util.List;
 @Slf4j
 @Component
 public class UserMapper {
+    private final SocialsMapper socialsMapper;
 
     @Autowired
-    private SocialsMapper socialsMapper;
+    public UserMapper(SocialsMapper socialsMapper) {
+        this.socialsMapper = socialsMapper;
+    }
 
     public UserDtoOut modelToDto(UserModel user) {
         UserDtoOut dto = new UserDtoOut();
@@ -43,8 +46,8 @@ public class UserMapper {
         }
         dto.setBio(user.getBio());
         List<SocialMediaDtoOut> socials = new ArrayList<>();
-        if (user.getSocials() != null) {
-            for (SocialsModel social : user.getSocials()) {
+        if (user.getAssociations().getSocials() != null) {
+            for (SocialsModel social : user.getAssociations().getSocials()) {
                 socials.add(socialsMapper.modelToDto(social));
             }
         }
@@ -67,7 +70,7 @@ public class UserMapper {
         dto.setUsername(userModel.getUsername());
         dto.setName(userModel.getName());
         dto.setEmail(userModel.getEmail());
-        dto.setGetEmail(userModel.isEmails());
+        dto.setGetEmail(userModel.getPreferences().isEmails());
         dto.setBio(userModel.getBio());
         if (userModel.getAvatar() != null && !userModel.getAvatar().isEmpty()) {
             Path path = Paths.get(userModel.getAvatar());
@@ -80,10 +83,10 @@ public class UserMapper {
                 dto.setAvatar("");
             }
         }
-        dto.setLanguage(userModel.getLanguage());
+        dto.setLanguage(userModel.getPreferences().getLanguage());
         List<SocialMediaDtoOut> socials = new ArrayList<>();
-        if (userModel.getSocials() != null) {
-            for (SocialsModel social : userModel.getSocials()) {
+        if (userModel.getAssociations().getSocials() != null) {
+            for (SocialsModel social : userModel.getAssociations().getSocials()) {
                 socials.add(socialsMapper.modelToDto(social));
             }
         }

@@ -16,6 +16,11 @@ import java.util.List;
 @Entity
 @Table(name = "blogs")
 public class BlogModel extends BaseEntity {
+    public enum BannerImageSource {
+        IMAGE_URL,
+        IMAGE_UPLOAD
+    }
+
     private String title;
     @Lob
     private String content;
@@ -23,10 +28,17 @@ public class BlogModel extends BaseEntity {
     private String banner;
     private Date date;
 
+    @Enumerated(EnumType.STRING)
+    private BannerImageSource bannerType;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel user;
 
     @OneToMany(mappedBy = "blog", fetch = FetchType.EAGER, cascade = {
             CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
     private List<LikeModel> likes;
+
+    @OneToMany(mappedBy = "blog", fetch = FetchType.EAGER, cascade = {
+            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<ReportModel> reports;
 }

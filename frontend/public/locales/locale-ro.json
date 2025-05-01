@@ -10,7 +10,11 @@
     "change": "Schimabă",
     "reset": "Resetare",
     "submit": "Trimite",
-    "choose": "Alege"
+    "choose": "Alege",
+    "report": "Raportează",
+    "dismiss": "Respinge",
+    "revokeStrike": "Revocă strike",
+    "giveStrike": "Dă strike"
   },
   "dashboard": {
     "preferences": {
@@ -57,16 +61,19 @@
     "account": {
       "errors": {
         "minPassword": "Parola trebuie să conțină măcar 8 caractere",
-        "noPassword": "Parola veche este necesară"
+        "noPassword": "Parola veche este necesară",
+        "confPassword": "Parolele nu se potrivesc"
       },
       "fields": {
         "email": "Email",
         "name": "Nume",
-        "password": "Schimbați parola"
+        "password": "Schimbați parola",
+        "bio": "Despre mine"
       },
       "password": {
         "new": "Parola nouă",
-        "old": "Parola veche"
+        "old": "Parola veche",
+        "confirm": "Reintrodu parola"
       },
       "toast": {
         "avatar": {
@@ -92,6 +99,11 @@
           "error": "Salvarea numeleui de utilizator a unui social media a eșuat",
           "loading": "Salvarea numelui de utilizator...",
           "success": "Nume de utilizator salvat cu succes"
+        },
+        "bio": {
+          "loading": "Salvarea biografiei...",
+          "success": "Biografie salvată cu succes",
+          "error": "Salvarea biografiei a eșuat"
         }
       },
       "uploadButton": "Încărcare imagine",
@@ -107,7 +119,8 @@
       "password": "Parola trebuie să aibă cel puțin 8 caractere",
       "username": "Numele de utilizator e necesar",
       "email": "Această adresă de email nu este validă",
-      "name": "Numele este obligatorie"
+      "name": "Numele este obligatorie",
+      "confPassword": "Parolele nu se potrivesc"
     },
     "fields": {
       "confPassword": "Reintroduceți parola",
@@ -207,7 +220,26 @@
       "unavailable": "Acest blog nu este încă publicat"
     },
     "written": "Scris de",
-    "unavailable": "Acest blog va fi disponibil în:"
+    "unavailable": "Acest blog va fi disponibil în:",
+    "report": {
+      "toast": {
+        "loading": "Se trimite raportul...",
+        "success": "Raportul a fost trimis cu succes. Îți mulțumim pentru contribuție!",
+        "error": "A apărut o eroare la trimiterea raportului"
+      },
+      "title": "Raportează această postare",
+      "emptyError": "Te rugăm să alege un motiv",
+      "options": {
+        "spam": "Spam",
+        "hate": "Ură sau conținut abuziv",
+        "bully": "Hărțuire sau intimidare",
+        "explicit": "Conținut explicit sau sexual",
+        "violent": "Conținut violent sau grafic",
+        "misinformation": "Dezinformare",
+        "copyright": "Încălcare a drepturilor de autor",
+        "plagiarism": "Plagiat"
+      }
+    }
   },
   "tabLoading": "Încărcare...",
   "user": {
@@ -326,5 +358,59 @@
     },
     "title": "Emailul de verificare a fost trimis",
     "desc": "Verifică-ți adresa de email înainte de a te autentifica. Aruncă o privire în inbox pentru pașii următori. Dacă nu îl vezi, nu-ți face griji, verifică și folderul de spam!"
+  },
+  "admin": {
+    "report": {
+      "status": {
+        "open": "Deschis",
+        "dismissed": "Respins",
+        "strike": "Strike dat"
+      },
+      "table": {
+        "header": {
+          "reportedUser": "Utilizator raportat",
+          "status": "Status",
+          "blog": "Blog"
+        },
+        "dialog": {
+          "title": "Detalii raport",
+          "reported": "Utilizator raportat",
+          "reportedBy": "Raportat de",
+          "status": "Status",
+          "blogTitle": "Titlu blog",
+          "reason": "Motiv",
+          "date": "Raportat la",
+          "adminNotes": "Note admin"
+        }
+      },
+      "title": "Rapoarte"
+    },
+    "toast": {
+      "report": {
+        "loading": "Se respinge raportul...",
+        "success": "Raport respins",
+        "error": "Eroare la respingerea raportului"
+      },
+      "giveStrike": {
+        "loading": "Se acordă strike...",
+        "success": "Strike acordat",
+        "error": "Eroare la acordarea strike-ului"
+      },
+      "revokeStrike": {
+        "loading": "Se revocă strike-ul...",
+        "success": "Strike revocat",
+        "error": "Eroare la revocarea strike-ului"
+      }
+    },
+    "title": "Consolă Admin",
+    "strikes": {
+      "title": "Strike-uri"
+    },
+    "dismissed": {
+      "title": "Respinse"
+    },
+    "users": {
+      "title": "Utilizatori"
+    }
   }
 }

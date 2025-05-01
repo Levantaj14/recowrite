@@ -10,9 +10,12 @@ import java.util.Optional;
 
 @Service
 public class SocialsTypeService implements SocialsTypeServiceInterface {
+    private final SocialsTypeManager socialsTypeManager;
 
     @Autowired
-    private SocialsTypeManager socialsTypeManager;
+    public SocialsTypeService(SocialsTypeManager socialsTypeManager) {
+        this.socialsTypeManager = socialsTypeManager;
+    }
 
     @Override
     public SocialsTypesModel getSocialsType(Long id) {

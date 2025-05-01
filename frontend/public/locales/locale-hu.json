@@ -1,7 +1,7 @@
 {
   "buttons": {
     "login": "Bejelentkezés",
-    "signup": "Feliratkozás",
+    "signup": "Regisztráció",
     "edit": "Szerkesztés",
     "delete": "Törlés",
     "comment": "Szólj hozzá",
@@ -10,7 +10,11 @@
     "change": "Változtasd meg",
     "reset": "Visszaállítás",
     "submit": "Beküldés",
-    "choose": "Vállaszd ki"
+    "choose": "Vállaszd ki",
+    "report": "Jelentés",
+    "dismiss": "Elutasítás",
+    "revokeStrike": "Strike visszavonása",
+    "giveStrike": "Strike adása"
   },
   "tabLoading": "Betöltés...",
   "loginPage": {
@@ -18,7 +22,8 @@
       "password": "A jelszó legalább 8 karakter hosszú kell legyen",
       "username": "A felhasználónév kötelező",
       "email": "Ez nem egy helyes email",
-      "name": "A név kötelező"
+      "name": "A név kötelező",
+      "confPassword": "A jelszavaknak egyezniük kell"
     },
     "fields": {
       "confPassword": "Írja be újra a jelszót",
@@ -33,7 +38,7 @@
       "forgot": "<1>Elfelejtetted a jelszavad</1>?"
     },
     "signup": {
-      "title": "Feliratkozás",
+      "title": "Regisztráció",
       "desc": "Kezdj el egy új kalandot",
       "passwordMeter": {
         "low": "Gyenge",
@@ -49,7 +54,7 @@
       },
       "signup": {
         "error": "Hiba történt",
-        "loading": "Feliratkozás...",
+        "loading": "Regisztrálás...",
         "success": "A megerősítő e-mail sikeresen elküldve"
       }
     }
@@ -111,7 +116,26 @@
       }
     },
     "continue": "Olvass tovább",
-    "unavailable": "Ez a blog elérhető lesz:"
+    "unavailable": "Ez a blog elérhető lesz:",
+    "report": {
+      "toast": {
+        "error": "Hiba történt a jelentés küldése közben",
+        "loading": "Jelentés küldése...",
+        "success": "Jelentés elküldve. Köszönjük a közreműködésed!"
+      },
+      "title": "Cikk jelentése",
+      "emptyError": "Kérlek válassz egy okot",
+      "options": {
+        "spam": "Spam",
+        "hate": "Gyűlöletbeszéd vagy visszaélésszerű tartalom",
+        "bully": "Zaklatás vagy fenyegetés",
+        "explicit": "Sexuális tartalom vagy obszcén nyelvezet",
+        "violent": "Erőszakos vagy grafikus tartalom",
+        "misinformation": "Hamis információ",
+        "copyright": "Szerzői jog megsértése",
+        "plagiarism": "Plágium"
+      }
+    }
   },
   "notFound": {
     "tabTile": "Nem található",
@@ -169,16 +193,19 @@
     "account": {
       "errors": {
         "minPassword": "A jelszó legalább 8 karakterből kell álljon",
-        "noPassword": "A régi jelszó kötelező"
+        "noPassword": "A régi jelszó kötelező",
+        "confPassword": "A jelszavaknak egyezniük kell"
       },
       "fields": {
         "email": "Email",
         "name": "Név",
-        "password": "Jelszó változtatása"
+        "password": "Jelszó változtatása",
+        "bio": "Rólam"
       },
       "password": {
         "new": "Új jelszó",
-        "old": "Régi jelszó"
+        "old": "Régi jelszó",
+        "confirm": "Írd be újra a jelszót"
       },
       "toast": {
         "avatar": {
@@ -204,6 +231,11 @@
           "error": "Nem sikerült menteni a felhasználóneved egyik közösségi oldalahoz",
           "loading": "Közösségi háló felhsználónév mentése...",
           "success": "Közösségi háló felhasználónév lementve"
+        },
+        "bio": {
+          "loading": "Bio mentése...",
+          "success": "Bio sikeresen lementve",
+          "error": "Hiba történt a bio mentése közben"
         }
       },
       "uploadButton": "Kép feltöltés",
@@ -324,5 +356,59 @@
     },
     "title": "Ellenőrző email elküldve",
     "desc": "Ellenőrizd az email címed, mielőtt bejelentkezel. Nézz be a bejövő üzenetek közé a következő lépésekért. Ha nem látod, ne aggódj, ellenőrizd a spam mappát is!"
+  },
+  "admin": {
+    "report": {
+      "status": {
+        "open": "Nyitott",
+        "dismissed": "Elutasítva",
+        "strike": "Strike kiosztva"
+      },
+      "table": {
+        "header": {
+          "reportedUser": "Jelentett felhasználó",
+          "status": "Státusz",
+          "blog": "Blog"
+        },
+        "dialog": {
+          "title": "Jelentés részletei",
+          "reported": "Jelentett felhasználó",
+          "reportedBy": "Jelentette",
+          "status": "Státusz",
+          "blogTitle": "Blog címe",
+          "reason": "Ok",
+          "date": "Jelentés dátuma",
+          "adminNotes": "Admin megjegyzések"
+        }
+      },
+      "title": "Jelentések"
+    },
+    "toast": {
+      "report": {
+        "loading": "Jelentés elutasítása...",
+        "success": "Jelentés elutasítva",
+        "error": "Hiba történt a jelentés elutasítása közben"
+      },
+      "giveStrike": {
+        "loading": "Strike kiosztása...",
+        "success": "Strike kiosztva",
+        "error": "Hiba történt a strike kiosztása közben"
+      },
+      "revokeStrike": {
+        "loading": "Strike visszavonása...",
+        "success": "Strike visszavonva",
+        "error": "Hiba történt a strike visszavonása közben"
+      }
+    },
+    "title": "Admin konzol",
+    "strikes": {
+      "title": "Strike-ok"
+    },
+    "dismissed": {
+      "title": "Elutasítva"
+    },
+    "users": {
+      "title": "Felhasználók"
+    }
   }
 }

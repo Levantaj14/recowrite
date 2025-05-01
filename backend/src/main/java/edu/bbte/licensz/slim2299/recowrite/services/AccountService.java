@@ -18,23 +18,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class AccountService implements AccountServiceInterface {
-
-    @Autowired
-    private UserManager userManager;
-
-    @Autowired
-    private SocialsTypeManager socialsTypeManager;
-
-    @Autowired
-    private SocialsManager socialsManager;
-
-    @Autowired
-    private MailServiceInterface mailService;
-
+    private final UserManager userManager;
+    private final SocialsTypeManager socialsTypeManager;
+    private final SocialsManager socialsManager;
+    private final MailServiceInterface mailService;
     private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/";
+
+    @Autowired
+    public AccountService(UserManager userManager, SocialsTypeManager socialsTypeManager, SocialsManager socialsManager, MailServiceInterface mailService) {
+        this.userManager = userManager;
+        this.socialsTypeManager = socialsTypeManager;
+        this.socialsManager = socialsManager;
+        this.mailService = mailService;
+    }
 
     @Override
     public void updateName(String username, UserNameDtoIn userNameDtoIn) {
@@ -87,12 +87,11 @@ public class AccountService implements AccountServiceInterface {
             UserModel userModel = user.get();
             if (!BCrypt.checkpw(userPasswordChangeDtoIn.getOldPassword(), userModel.getPassword())) {
                 throw new IncorrectPasswordException("Old password does not match");
-            } else {
-                userModel.setPassword(BCrypt.hashpw(userPasswordChangeDtoIn.getNewPassword(), userModel.getSalt()));
-                userManager.save(userModel);
             }
-            if (userModel.isEmails()) {
-                Map<String, String> model = new HashMap<>();
+            userModel.setPassword(BCrypt.hashpw(userPasswordChangeDtoIn.getNewPassword(), userModel.getSalt()));
+            userManager.save(userModel);
+            if (userModel.getPreferences().isEmails()) {
+                Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
                 mailService.sendMessage(userModel.getEmail(), "Security update", "securityUpdate", model, null);
             }
@@ -112,17 +111,17 @@ public class AccountService implements AccountServiceInterface {
                 Optional<SocialsModel> socialsModel = socialsManager.findBySocialsTypeAndUser(socialsTypesModel, userModel);
                 if (socialsModel.isPresent()) {
                     SocialsModel socialsModelModel = socialsModel.get();
-                    if (Objects.equals(socialDtoIn.getUrl(), "")) {
+                    if (Objects.equals(socialDtoIn.getUsername(), "")) {
                         socialsManager.delete(socialsModelModel);
                     } else {
-                        socialsModelModel.setLink(socialDtoIn.getUrl());
+                        socialsModelModel.setLink(socialDtoIn.getUsername());
                         socialsManager.save(socialsModelModel);
                     }
                 } else {
                     SocialsModel newSocialsModel = new SocialsModel();
                     newSocialsModel.setUser(userModel);
                     newSocialsModel.setSocialsType(socialsTypesModel);
-                    newSocialsModel.setLink(socialDtoIn.getUrl());
+                    newSocialsModel.setLink(socialDtoIn.getUsername());
                     socialsManager.save(newSocialsModel);
                 }
                 return;
@@ -130,5 +129,40 @@ public class AccountService implements AccountServiceInterface {
             throw new SocialMediaNotSupportedException("Social media not supported");
         }
         throw new UserNotFoundException("User not found");
+    }
+
+    @Override
+    public void updateBio(String username, BioDtoIn bioDtoIn) {
+        Optional<UserModel> user = userManager.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        UserModel userModel = user.get();
+        userModel.setBio(bioDtoIn.getBio());
+        userManager.save(userModel);
+    }
+
+    @Override
+    public void deleteAccount(long accountId) {
+        Optional<UserModel> user = userManager.findById(accountId);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        userManager.delete(user.get());
+    }
+
+    @Override
+    public void changeRole(long accountId) {
+        Optional<UserModel> user = userManager.findById(accountId);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        UserModel userModel = user.get();
+        if ("ADMIN".equals(userModel.getRole())) {
+            userModel.setRole("USER");
+        } else if ("USER".equals(userModel.getRole())) {
+            userModel.setRole("ADMIN");
+        }
+        userManager.save(userModel);
     }
 }

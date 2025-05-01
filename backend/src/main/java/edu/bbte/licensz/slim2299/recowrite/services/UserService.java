@@ -18,16 +18,28 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserServiceInterface {
-    @Autowired
-    private UserManager userManager;
+    private final UserManager userManager;
+    private final UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    public UserService(UserManager userManager, UserMapper userMapper) {
+        this.userManager = userManager;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public List<UserDtoOut> getAllUsers() {
         List<UserDtoOut> users = new ArrayList<>();
         for (UserModel user : userManager.findAll()) {
+            users.add(userMapper.modelToDto(user));
+        }
+        return users;
+    }
+
+    @Override
+    public List<UserDtoOut> getAdminUsers() {
+        List<UserDtoOut> users = new ArrayList<>();
+        for (UserModel user : userManager.findAllByRole("ADMIN")) {
             users.add(userMapper.modelToDto(user));
         }
         return users;
@@ -74,8 +86,8 @@ public class UserService implements UserServiceInterface {
         Optional<UserModel> result = userManager.findByUsername(username);
         if (result.isPresent()) {
             UserModel userModel = result.get();
-            userModel.setLanguage(settings.getLanguage());
-            userModel.setEmails(settings.isGetEmail());
+            userModel.getPreferences().setLanguage(settings.getLanguage());
+            userModel.getPreferences().setEmails(settings.isGetEmail());
             userManager.save(userModel);
         } else {
             throw new UserNotFoundException("User with username " + username + " not found");
