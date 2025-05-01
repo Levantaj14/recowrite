@@ -39,7 +39,7 @@ public class RecommendationService implements RecommendationServiceInterface {
     public List<BlogDtoOut> getRecommendations(String blogId) {
         //TODO: Move these checks to the django server
         Optional<BlogModel> blogModel = blogManager.findById(Long.valueOf(blogId));
-        String apiHost = "http://" + System.getenv("RECOMMEND") + "/recommend";
+        String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/recommend";
         if (blogModel.isEmpty()) {
             throw new BlogNotFoundException("Blog not found");
         }
