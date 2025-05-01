@@ -50,7 +50,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             throw new BlogNotAvailableException("Blog not available");
         }
         try {
-            String apiHost = "http://localhost:8000/recommend";
+            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/recommend";
             ObjectMapper objectMapper = new ObjectMapper();
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
                     .queryParam("id", blogId)
@@ -100,7 +100,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             ObjectMapper objectMapper = new ObjectMapper();
             String dataToSend = objectMapper.writeValueAsString(data);
 
-            String apiHost = "http://localhost:8000/add";
+            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/recommend";
             URL url = new URI(apiHost).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");

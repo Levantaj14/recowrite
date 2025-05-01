@@ -1,0 +1,45 @@
+services:
+  mysql:
+    image: mysql:8.0.40-debian
+    container_name: mysql_db
+    restart: unless-stopped
+    platform: linux/amd64
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=kerekecske
+    healthcheck:
+      test: mysqladmin ping -h localhost
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=kerekecske
+      - JWT_SECRET=${JWT_SECRET}
+      - EMAIL=${EMAIL}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - RECOMMEND=recommendations
+    ports:
+      - 8080:8080
+    platform: linux/amd64
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  recommendations:
+    build: ./tfidfApiServer
+    container_name: recommendations
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=kerekecske
+    platform: linux/amd64
+    depends_on:
+      mysql:
+        condition: service_healthy
