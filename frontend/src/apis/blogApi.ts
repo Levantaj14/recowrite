@@ -17,6 +17,8 @@ export type CreateBlogType = {
   description: string;
   date: string;
   banner: string;
+  banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
+  banner_name: string;
 }
 
 type BlogIdType = {

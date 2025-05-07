@@ -14,18 +14,19 @@ import { useColorMode } from '@/components/ui/color-mode';
 import { hu, ro, enUS } from 'react-day-picker/locale';
 import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { NewStoryFormFields } from '@/components/pages/newStory/NewStory.tsx';
+import { FileAcceptDetails } from '@zag-js/file-upload';
 
 type Props = {
   register: UseFormRegister<NewStoryFormFields>;
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
-  setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
+  setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[]) => void;
   setValue: UseFormSetValue<NewStoryFormFields>;
 };
 
 export default function Customize({ register, errors, isVisible, setValidateFields, setValue }: Props) {
   const { t, i18n } = useTranslation();
-  const [imageType, setImageType] = useState('2');
+  const [imageType, setImageType] = useState<'IMAGE_UPLOAD' | 'IMAGE_URL'>('IMAGE_UPLOAD');
   const { colorMode } = useColorMode();
   const [postingTime, setPostingTime] = useState<string>('now');
   const [selected, setSelected] = useState<Date>(new Date());
@@ -47,6 +48,26 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
   useEffect(() => {
     setValue('date', selected.toISOString());
   }, [selected, setValue]);
+
+  useEffect(() => {
+    setValue('banner', '');
+    setValue('banner_type', imageType);
+  }, [imageType, setValue]);
+
+  function convertBannerImage(banner: FileAcceptDetails) {
+    const file = banner.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      const cleanBase64 = base64String.split(',')[1];
+      setValue('banner', cleanBase64);
+      setValue('banner_name', file.name);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
 
   return (
     <>
@@ -140,16 +161,17 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
             >
               <Field.Root mt="4">
                 <Field.Label>{t('newStory.customize.fields.picture.name')}</Field.Label>
-                <RadioGroup value={imageType} onValueChange={(e) => setImageType(e.value)}>
+                <RadioGroup value={imageType}
+                            onValueChange={(e) => setImageType(e.value as 'IMAGE_UPLOAD' | 'IMAGE_URL')}>
                   <HStack gap="6">
-                    <Radio value="1" disabled>
+                    <Radio value="IMAGE_UPLOAD">
                       {t('newStory.customize.fields.picture.radio.upload')}
                     </Radio>
-                    <Radio value="2">{t('newStory.customize.fields.picture.radio.online')}</Radio>
+                    <Radio value="IMAGE_URL">{t('newStory.customize.fields.picture.radio.online')}</Radio>
                   </HStack>
                 </RadioGroup>
-                {imageType === '1' && (
-                  <FileUploadRoot accept={['image/*']} mt="4">
+                {imageType === 'IMAGE_UPLOAD' && (
+                  <FileUploadRoot accept={['image/*']} mt="4" onFileAccept={convertBannerImage}>
                     <FileUploadTrigger>
                       <Button size="sm">
                         <HiUpload /> {t('newStory.customize.fields.picture.uploadButton')}
@@ -158,7 +180,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
                     <FileUploadList />
                   </FileUploadRoot>
                 )}
-                {imageType === '2' && (
+                {imageType === 'IMAGE_URL' && (
                   <Field.Root required mt="4" invalid={!!errors.banner}>
                     <Field.Label>
                       URL
