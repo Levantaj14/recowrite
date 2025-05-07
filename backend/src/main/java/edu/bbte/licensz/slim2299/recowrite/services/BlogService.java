@@ -10,17 +10,20 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.BlogMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+@Slf4j
 @Service
 public class BlogService implements BlogServiceInterface {
     private final BlogManager blogManager;
@@ -39,7 +42,8 @@ public class BlogService implements BlogServiceInterface {
     public List<BlogDtoOut> getAllBlogs() {
         List<BlogDtoOut> blogList = new ArrayList<>();
         for (BlogModel blog : blogManager.findAll()) {
-            blogList.add(blogMapper.modelToDto(blog));
+            BlogDtoOut auxDto = createBlogDto(blog);
+            blogList.add(auxDto);
         }
         return blogList;
     }
@@ -54,7 +58,8 @@ public class BlogService implements BlogServiceInterface {
         Optional<List<BlogModel>> result = blogManager.findByUser(userResult.get());
         if (result.isPresent()) {
             for (BlogModel blog : result.get()) {
-                blogList.add(blogMapper.modelToDto(blog));
+                BlogDtoOut auxDto = createBlogDto(blog);
+                blogList.add(auxDto);
             }
         }
         return blogList;
@@ -64,7 +69,7 @@ public class BlogService implements BlogServiceInterface {
     public BlogDtoOut getBlogById(long id) {
         Optional<BlogModel> blog = blogManager.findById(id);
         if (blog.isPresent()) {
-            return blogMapper.modelToDto(blog.get());
+            return createBlogDto(blog.get());
         }
         throw new BlogNotFoundException("Blog with id " + id + " not found");
     }
@@ -108,5 +113,21 @@ public class BlogService implements BlogServiceInterface {
         }
         model.setUser(userResult.get());
         return blogManager.save(model).getId();
+    }
+
+    private BlogDtoOut createBlogDto(BlogModel blog) {
+        BlogDtoOut blogDto = blogMapper.modelToDto(blog);
+        if (BlogModel.BannerImageSource.valueOf("IMAGE_UPLOAD").equals(blog.getBannerType())) {
+            Path path = Paths.get(blog.getBanner());
+            try {
+                byte[] fileBytes = Files.readAllBytes(path);
+                String base64 = Base64.getEncoder().encodeToString(fileBytes);
+                blogDto.setBanner(base64);
+            } catch (IOException e) {
+                log.error("There was an error reading the article banner file");
+                blogDto.setBanner("");
+            }
+        }
+        return blogDto;
     }
 }

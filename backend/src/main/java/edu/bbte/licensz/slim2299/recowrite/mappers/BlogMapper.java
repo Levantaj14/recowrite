@@ -19,6 +19,7 @@ public class BlogMapper {
         blogDtoOut.setId(blog.getId());
         blogDtoOut.setTitle(blog.getTitle());
         blogDtoOut.setBanner(blog.getBanner());
+        blogDtoOut.setBanner_type(String.valueOf(blog.getBannerType()));
         blogDtoOut.setAuthor(blog.getUser().getId());
         Instant now = Instant.now();
         Instant blogDate = blog.getDate().toInstant();
