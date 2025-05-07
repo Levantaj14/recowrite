@@ -13,18 +13,20 @@ import edu.bbte.licensz.slim2299.recowrite.mappers.BlogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BlogService implements BlogServiceInterface {
     private final BlogManager blogManager;
     private final BlogMapper blogMapper;
     private final UserManager userManager;
+    private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/banners/";
 
     @Autowired
     public BlogService(BlogManager blogManager, BlogMapper blogMapper, UserManager userManager) {
@@ -77,7 +79,7 @@ public class BlogService implements BlogServiceInterface {
     }
 
     @Override
-    public Long addBlog(BlogDtoIn blog, String username) {
+    public Long addBlog(BlogDtoIn blog, String username) throws IOException {
         Optional<UserModel> userResult = userManager.findByUsername(username);
         if (userResult.isEmpty()) {
             throw new UserNotFoundException("User with name " + username + " not found");
@@ -93,6 +95,17 @@ public class BlogService implements BlogServiceInterface {
         }
 
         BlogModel model = blogMapper.dtoToModel(blog);
+        if ("IMAGE_UPLOAD".equals(blog.getBanner_type())) {
+            byte[] imageBytes = Base64.getDecoder().decode(blog.getBanner());
+
+            String[] filenameParts = blog.getBanner_name().split("\\.");
+            String fileName = UUID.randomUUID() + "." + filenameParts[filenameParts.length - 1];
+            String filePath = UPLOAD_DIR + fileName;
+
+            Files.write(Paths.get(filePath), imageBytes);
+
+            model.setBanner(filePath);
+        }
         model.setUser(userResult.get());
         return blogManager.save(model).getId();
     }

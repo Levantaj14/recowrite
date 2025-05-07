@@ -1,6 +1,5 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,7 +18,7 @@ public class BlogDtoIn {
     private String title;
 
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     private String description;
 
     @NotNull
@@ -27,10 +26,15 @@ public class BlogDtoIn {
     private String content;
 
     @NotNull
-    @FutureOrPresent
     private String date;
 
     @NotNull
     @NotEmpty
     private String banner;
+
+    @NotNull
+    @NotEmpty
+    private String banner_type;
+
+    private String banner_name;
 }
