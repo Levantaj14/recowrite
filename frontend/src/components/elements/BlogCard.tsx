@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  imageUrl?: string;
+  banner?: string;
   title: string;
   date: string;
   content: string;
@@ -13,7 +13,7 @@ type Props = {
   index: number;
 };
 
-function BlogCard({ imageUrl, title, description, content, date, href, index }: Props) {
+function BlogCard({ banner, title, description, content, date, href, index }: Props) {
   const { t } = useTranslation();
   const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
 
@@ -48,7 +48,7 @@ function BlogCard({ imageUrl, title, description, content, date, href, index }: 
       <LinkBox as="article">
         <Link to={href}>
           <Card.Root flexDirection="row" overflow="hidden" maxW="100%" size="sm" mb={4}>
-            <Image objectFit="cover" h="100px" w="100px" src={imageUrl} />
+            <Image objectFit="cover" h="100px" w="100px" src={banner} />
             <Box>
               <Card.Body>
                 <Card.Title mb={1}>{title}</Card.Title>

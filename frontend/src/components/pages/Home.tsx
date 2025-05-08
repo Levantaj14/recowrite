@@ -66,7 +66,9 @@ function Home() {
             >
               <Link to={`/blog/${blog.id}`}>
                 <Card.Root overflow="hidden" h="500px" w="full" display="flex" flexDirection="column">
-                  <Image h="2xs" src={blog.banner} objectFit="cover" />
+                  <Image h="2xs"
+                         src={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
+                         objectFit="cover" />
                   <Card.Body gap="2" display="flex" flexDirection="column" flex="1" overflow="hidden" p="5">
                     <Text fontSize="sm">
                       {data?.userData.find((u) => u.id === blog.author)?.name ?? 'unknown'}

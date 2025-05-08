@@ -93,7 +93,9 @@ function Story() {
             <ReportButton blogData={data?.blogData} />
           </Box>
         </Flex>
-        <Image rounded="lg" maxH="300px" w="100%" src={data?.blogData.banner} objectFit="cover" />
+        <Image rounded="lg" maxH="300px" w="100%"
+               src={data?.blogData.banner_type === 'IMAGE_URL' ? data?.blogData.banner : `data:image;base64,${data?.blogData.banner}`}
+               objectFit="cover" />
         {(date && date > new Date()) || data?.blogData.content === '' ? (
           <PostOpening data={data} setDate={setDate} />
         ) : (

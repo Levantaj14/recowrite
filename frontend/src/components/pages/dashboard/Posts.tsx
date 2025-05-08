@@ -37,7 +37,7 @@ export default function Posts() {
           data.map((blog, index) => (
             <BlogCard
               key={blog.id}
-              imageUrl={blog.banner}
+              banner={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
               title={blog.title}
               description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
               href={`/blog/${blog.id}`}

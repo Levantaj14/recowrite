@@ -117,7 +117,7 @@ public class AccountController {
     }
 
     @PutMapping("/socials")
-    public ResponseEntity<?> chnageSocials(HttpServletRequest request, @RequestBody @Valid SocialDtoIn socialDtoIn) {
+    public ResponseEntity<?> changeSocials(HttpServletRequest request, @RequestBody @Valid SocialDtoIn socialDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updateSocial(jwtUtil.extractUsername(cookie.getValue()), socialDtoIn);

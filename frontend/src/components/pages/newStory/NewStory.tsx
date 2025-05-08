@@ -24,6 +24,8 @@ export interface NewStoryFormFields {
   description: string;
   date: string;
   banner: string;
+  banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
+  banner_name: string;
 }
 
 export default function NewStory() {
@@ -31,7 +33,7 @@ export default function NewStory() {
   const navigate = useNavigate();
   const { userDetails } = useContext(UserDetailContext);
   const [step, setStep] = useState(0);
-  const [validateFields, setValidateFields] = useState<('content' | 'title' | 'description' | 'date' | 'banner')[]>([]);
+  const [validateFields, setValidateFields] = useState<('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[]>([]);
 
   const schema = z.object({
     content: z.string().nonempty(t('newStory.erros.notEmpty')),
@@ -43,7 +45,24 @@ export default function NewStory() {
         message: t('newStory.erros.date'),
       },
     ),
-    banner: z.string().nonempty(t('newStory.erros.notEmpty')).url(t('newStory.erros.url')),
+    banner: z.string().nonempty(t('newStory.erros.notEmpty')).refine(
+      (val) => {
+        if (getValues('banner_type') === 'IMAGE_URL') {
+          try {
+            new URL(val);
+            return true;
+          } catch {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: t('newStory.erros.url'),
+      }
+    ),
+    banner_type: z.enum(['IMAGE_URL', 'IMAGE_UPLOAD']),
+    banner_name: z.string().optional(),
   });
 
   const {
