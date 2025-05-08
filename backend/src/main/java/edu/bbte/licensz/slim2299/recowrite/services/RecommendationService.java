@@ -100,7 +100,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             ObjectMapper objectMapper = new ObjectMapper();
             String dataToSend = objectMapper.writeValueAsString(data);
 
-            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/recommend";
+            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/add";
             URL url = new URI(apiHost).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
