@@ -8,6 +8,7 @@ export type BlogType = {
   description: string;
   date: string;
   banner: string;
+  banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
   authorName?: string;
 }
 

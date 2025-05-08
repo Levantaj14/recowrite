@@ -81,7 +81,7 @@ export default function ContinueReadingSection() {
                   >
                     <Link to={`/blog/${recommendation.id}`}>
                       <Card.Root maxW="sm" overflow="hidden">
-                        <Image h="2xs" src={recommendation.banner} />
+                        <Image h="2xs" src={recommendation.banner_type === "IMAGE_URL" ? recommendation.banner : `data:image;base64,${recommendation.banner}`} />
                         <Card.Body gap="2">
                           <Text>{recommendation.authorName}</Text>
                           <Card.Title>{recommendation.title}</Card.Title>
