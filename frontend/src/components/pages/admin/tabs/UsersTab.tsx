@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { changeRole, deleteAccount, fetchAllAdmins } from '@/apis/adminApi.ts';
 import { toast } from 'sonner';
 import CustomLoading from '@/components/elements/CustomLoading.tsx';
+import { motion } from 'motion/react';
 
 type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
@@ -34,72 +35,75 @@ export default function UsersTab({ setIsAuthorized }: Props) {
     toast.promise(
       changeRole(userId),
       {
-        loading: CustomLoading("Changing role..."),
+        loading: CustomLoading('Changing role...'),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['users'],
           });
-          return "Role changed successfully";
+          return 'Role changed successfully';
         },
         error: () => {
-          return "Failed to change role";
+          return 'Failed to change role';
         },
-      }
-    )
+      },
+    );
   }
 
   function pressedDelete(userId: number) {
     toast.promise(
       deleteAccount(userId),
       {
-        loading: CustomLoading("Deleting account..."),
+        loading: CustomLoading('Deleting account...'),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['users'],
           });
-          return "Account deleted successfully";
+          return 'Account deleted successfully';
         },
         error: () => {
-          return "Failed to delete account";
+          return 'Failed to delete account';
         },
-      }
-    )
+      },
+    );
   }
 
   function content() {
     return (
-      <Table.ScrollArea borderWidth="1px" rounded="sm" height="calc(100vh - 300px)">
-        <Table.Root size="sm" stickyHeader interactive>
-          <Table.Header>
-            <Table.Row bg="bg.subtle">
-              <Table.ColumnHeader>ID</Table.ColumnHeader>
-              <Table.ColumnHeader>Username</Table.ColumnHeader>
-              <Table.ColumnHeader>Name</Table.ColumnHeader>
-              <Table.ColumnHeader></Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            {data?.users.map((user) => (
-              <Table.Row
-                key={user.id}
-              >
-                <Table.Cell>{user.id}</Table.Cell>
-                <Table.Cell>{user.username} {(data?.admins.find((u) => u.id === user.id)) !== undefined && (
-                  <Badge variant="surface">Admin</Badge>
-                )}</Table.Cell>
-                <Table.Cell>{user.name}</Table.Cell>
-                <Table.Cell textAlign="right">
-                  <ButtonGroup size="xs">
-                    <Button onClick={() => pressedChange(user.id)}>Change Role</Button>
-                    <Button colorPalette="red" onClick={() => pressedDelete(user.id)}>Delete</Button>
-                  </ButtonGroup>
-                </Table.Cell>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}>
+        <Table.ScrollArea borderWidth="1px" rounded="sm" height="calc(100vh - 300px)">
+          <Table.Root size="sm" stickyHeader interactive>
+            <Table.Header>
+              <Table.Row bg="bg.subtle">
+                <Table.ColumnHeader>ID</Table.ColumnHeader>
+                <Table.ColumnHeader>Username</Table.ColumnHeader>
+                <Table.ColumnHeader>Name</Table.ColumnHeader>
+                <Table.ColumnHeader></Table.ColumnHeader>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      </Table.ScrollArea>
+            </Table.Header>
+
+            <Table.Body>
+              {data?.users.map((user) => (
+                <Table.Row
+                  key={user.id}
+                >
+                  <Table.Cell>{user.id}</Table.Cell>
+                  <Table.Cell>{user.username} {(data?.admins.find((u) => u.id === user.id)) !== undefined && (
+                    <Badge variant="surface">Admin</Badge>
+                  )}</Table.Cell>
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell textAlign="right">
+                    <ButtonGroup size="xs">
+                      <Button onClick={() => pressedChange(user.id)}>Change Role</Button>
+                      <Button colorPalette="red" onClick={() => pressedDelete(user.id)}>Delete</Button>
+                    </ButtonGroup>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Table.ScrollArea>
+      </motion.div>
     );
   }
 

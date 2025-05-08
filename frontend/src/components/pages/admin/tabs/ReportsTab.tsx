@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { toast } from 'sonner';
 import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
@@ -122,39 +123,42 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
 
   function content() {
     return (
-      <Table.ScrollArea borderWidth="1px" rounded="sm" height="calc(100vh - 300px)">
-        <Table.Root size="sm" stickyHeader interactive>
-          <Table.Header>
-            <Table.Row bg="bg.subtle">
-              <Table.ColumnHeader>ID</Table.ColumnHeader>
-              <Table.ColumnHeader>{t('admin.report.table.header.reportedUser')}</Table.ColumnHeader>
-              <Table.ColumnHeader>{t('admin.report.table.header.status')}</Table.ColumnHeader>
-              <Table.ColumnHeader>{t('admin.report.table.header.blog')}</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            {data?.reports.map((report) => (
-              <Table.Row
-                key={report.id}
-                onClick={() => {
-                  setSelectedReport(report);
-                  setSelectedReportedUser(data?.users.find((u) => u.id === report.reportedUserId));
-                  setSelectedBlog(data?.blogs.find((b) => Number(b.id) === report.blogId));
-                  setSelectedReportedByUser(data?.users.find((u) => u.id === report.reporterId));
-                }}
-              >
-                <Table.Cell>{report.id}</Table.Cell>
-                <Table.Cell>{data?.users.find((u) => u.id === report.reportedUserId)?.name ?? 'unknown'}</Table.Cell>
-                <Table.Cell>
-                  <Badge colorPalette={badges[report.status].color}>{badges[report.status].label}</Badge>
-                </Table.Cell>
-                <Table.Cell>{data?.blogs.find((b) => Number(b.id) === report.blogId)?.title ?? 'unknown'}</Table.Cell>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}>
+        <Table.ScrollArea borderWidth="1px" rounded="sm" height="calc(100vh - 300px)">
+          <Table.Root size="sm" stickyHeader interactive>
+            <Table.Header>
+              <Table.Row bg="bg.subtle">
+                <Table.ColumnHeader>ID</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('admin.report.table.header.reportedUser')}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('admin.report.table.header.status')}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('admin.report.table.header.blog')}</Table.ColumnHeader>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      </Table.ScrollArea>
+            </Table.Header>
+
+            <Table.Body>
+              {data?.reports.map((report) => (
+                <Table.Row
+                  key={report.id}
+                  onClick={() => {
+                    setSelectedReport(report);
+                    setSelectedReportedUser(data?.users.find((u) => u.id === report.reportedUserId));
+                    setSelectedBlog(data?.blogs.find((b) => Number(b.id) === report.blogId));
+                    setSelectedReportedByUser(data?.users.find((u) => u.id === report.reporterId));
+                  }}
+                >
+                  <Table.Cell>{report.id}</Table.Cell>
+                  <Table.Cell>{data?.users.find((u) => u.id === report.reportedUserId)?.name ?? 'unknown'}</Table.Cell>
+                  <Table.Cell>
+                    <Badge colorPalette={badges[report.status].color}>{badges[report.status].label}</Badge>
+                  </Table.Cell>
+                  <Table.Cell>{data?.blogs.find((b) => Number(b.id) === report.blogId)?.title ?? 'unknown'}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Table.ScrollArea>
+      </motion.div>
     );
   }
 
@@ -237,7 +241,8 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                     </DataList.Item>
                   </DataList.Root>
 
-                  <Textarea placeholder={t('admin.report.table.dialog.adminNotes')} mt="8" disabled={selectedReport?.status !== 'OPEN'} />
+                  <Textarea placeholder={t('admin.report.table.dialog.adminNotes')} mt="8"
+                            disabled={selectedReport?.status !== 'OPEN'} />
                 </Dialog.Body>
                 <Dialog.CloseTrigger asChild>
                   <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
