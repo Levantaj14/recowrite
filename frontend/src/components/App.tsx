@@ -28,13 +28,58 @@ const queryClient = new QueryClient({
   },
 });
 
+function ThemeFavicon() {
+  const lightIcon = '/icon_light.png';
+  const darkIcon = '/icon_dark.png';
+  const [isDarkMode, setIsDarkMode] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkSystemTheme = () => {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setIsDarkMode(prefersDark);
+    };
+
+    checkSystemTheme();
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleThemeChange = (e: MediaQueryListEvent) => {
+      setIsDarkMode(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleThemeChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleThemeChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode === null) return;
+
+    const faviconPath = isDarkMode ? darkIcon : lightIcon;
+
+    let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link') as HTMLLinkElement;
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+
+    link.href = faviconPath;
+
+  }, [isDarkMode, darkIcon, lightIcon]);
+
+  return null;
+}
+
 function App() {
   const { i18n } = useTranslation();
 
   const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
   const userDetailContext = useMemo(
     () => ({ userDetails, setUserDetails }),
-    [userDetails]
+    [userDetails],
   );
 
   useEffect(() => {
@@ -46,6 +91,7 @@ function App() {
 
   return (
     <StrictMode>
+      <ThemeFavicon />
       <Provider>
         <QueryClientProvider client={queryClient}>
           <UserDetailContext.Provider value={userDetailContext}>
