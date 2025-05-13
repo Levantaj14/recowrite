@@ -32,6 +32,8 @@ public class ReportModel extends BaseEntity {
 
     private String reason;
 
+    private String note;
+
     @Enumerated(EnumType.STRING)
     private ReportStatus status = ReportStatus.OPEN;
 

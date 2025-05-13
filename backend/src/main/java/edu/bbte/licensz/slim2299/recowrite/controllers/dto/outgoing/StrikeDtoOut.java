@@ -10,6 +10,6 @@ public class StrikeDtoOut {
     private UserDtoOut user;
     private UserDtoOut admin;
     private ReportDtoOut report;
-    private Date evaluatedOn;
+    private Date evaluated;
     private String note;
 }

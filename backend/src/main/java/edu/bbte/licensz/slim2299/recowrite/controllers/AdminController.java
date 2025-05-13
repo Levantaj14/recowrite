@@ -2,11 +2,7 @@ package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.StrikeDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.IdDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.*;
 import edu.bbte.licensz.slim2299.recowrite.services.AccountServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.ReportServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.StrikeServiceInterface;
@@ -49,7 +45,7 @@ public class AdminController {
     }
 
     @GetMapping("/strikes")
-    public ResponseEntity<List<StrikeModel>> getStrikes() {
+    public ResponseEntity<List<StrikeDtoOut>> getStrikes() {
         return ResponseEntity.ok(strikeService.getAllStrikes());
     }
 

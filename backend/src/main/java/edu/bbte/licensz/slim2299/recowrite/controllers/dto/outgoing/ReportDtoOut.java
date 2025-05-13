@@ -13,4 +13,5 @@ public class ReportDtoOut {
     private long blogId;
     private long reportedUserId;
     private long reporterId;
+    private String note;
 }

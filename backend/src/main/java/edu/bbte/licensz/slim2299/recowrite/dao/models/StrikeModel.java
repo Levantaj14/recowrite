@@ -24,6 +24,5 @@ public class StrikeModel extends BaseEntity {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private UserModel admin;
 
-    private String note;
     private Date evaluated;
 }
