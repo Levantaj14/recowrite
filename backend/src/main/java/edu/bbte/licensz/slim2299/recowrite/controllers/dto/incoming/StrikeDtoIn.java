@@ -6,8 +6,7 @@ import lombok.Data;
 
 @Data
 public class StrikeDtoIn {
-    @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 255)
     private String note;
 
     @NotNull
