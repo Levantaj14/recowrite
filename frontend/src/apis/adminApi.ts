@@ -19,6 +19,7 @@ export type ReportType = {
   blogId: number;
   reportedUserId: number;
   reporterId: number;
+  note: string;
 }
 
 export async function testAdmin(): Promise<boolean> {
@@ -39,9 +40,10 @@ export async function dismissReport(id: number): Promise<void> {
   await adminApi.put(`/reports/${id}`);
 }
 
-export async function giveStrike(id: number): Promise<void> {
+export async function giveStrike(id: number, note: string | null): Promise<void> {
   await adminApi.post(`/strikes`, {
     reportId: id,
+    note,
   });
 }
 

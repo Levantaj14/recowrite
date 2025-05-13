@@ -34,6 +34,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
   const [selectedReportedUser, setSelectedReportedUser] = useState<UserType | undefined>(undefined);
   const [selectedReportedByUser, setSelectedReportedByUser] = useState<UserType | undefined>(undefined);
   const [selectedBlog, setSelectedBlog] = useState<BlogType | undefined>(undefined);
+  const [adminNotes, setAdminNotes] = useState<string | null>(null);
   const [blockButtons, setBlockButtons] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -82,7 +83,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
   function pressedStrike() {
     if (selectedReport) {
       setBlockButtons(true);
-      toast.promise(giveStrike(selectedReport.id), {
+      toast.promise(giveStrike(selectedReport.id, adminNotes), {
         loading: CustomLoading(t('admin.toast.giveStrike.loading')),
         success: async () => {
           await queryClient.invalidateQueries({
@@ -142,6 +143,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                   key={report.id}
                   onClick={() => {
                     setSelectedReport(report);
+                    setAdminNotes(report.note);
                     setSelectedReportedUser(data?.users.find((u) => u.id === report.reportedUserId));
                     setSelectedBlog(data?.blogs.find((b) => Number(b.id) === report.blogId));
                     setSelectedReportedByUser(data?.users.find((u) => u.id === report.reporterId));
@@ -242,7 +244,8 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
                   </DataList.Root>
 
                   <Textarea placeholder={t('admin.report.table.dialog.adminNotes')} mt="8"
-                            disabled={selectedReport?.status !== 'OPEN'} />
+                            disabled={selectedReport?.status !== 'OPEN'} value={adminNotes ?? ''}
+                            onChange={(e) => setAdminNotes(e.target.value)} />
                 </Dialog.Body>
                 <Dialog.CloseTrigger asChild>
                   <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
