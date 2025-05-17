@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 from base.models import Blog
-from tfidf import tf_idf
+from tfidf import tf_idf_new
 from .serializers import ListSerializer
 
 
@@ -16,7 +16,7 @@ def blog_list(request):
         result = Blog.objects.get(id=int(blog_id))
 
         if result:
-            data = tf_idf.search(result.content, k)
+            data = (tf_idf_new.search(result.content, k))
             serializer = ListSerializer(data={'data': data})
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -29,7 +29,7 @@ def blog_list(request):
 def blog_post(request):
     try:
         blog_id = int(request.data.get('id'))
-        tf_idf.add(blog_id)
+        tf_idf_new.add(blog_id)
         return Response("Added successfully", status=status.HTTP_200_OK)
     except (ValueError, TypeError):
         return Response("ID must be an integer", status=status.HTTP_400_BAD_REQUEST)
