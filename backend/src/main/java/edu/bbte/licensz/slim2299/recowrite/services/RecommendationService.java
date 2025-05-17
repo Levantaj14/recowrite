@@ -54,7 +54,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             ObjectMapper objectMapper = new ObjectMapper();
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
                     .queryParam("id", blogId)
-                    .queryParam("k", 4)
+                    .queryParam("k", 3)
                     .build()
                     .toUri();
 
@@ -79,7 +79,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             );
 
             List<BlogDtoOut> blogs = new ArrayList<>();
-            for (String s : data.subList(1, data.size())) {
+            for (String s : data) {
                 blogs.add(blogService.getBlogById(Long.parseLong(s)));
             }
 
