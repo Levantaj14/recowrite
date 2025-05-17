@@ -16,7 +16,7 @@ def blog_list(request):
         result = Blog.objects.get(id=int(blog_id))
 
         if result:
-            data = (tf_idf_new.search(result.content, k))
+            data = (tf_idf_new.search(result, k))
             serializer = ListSerializer(data={'data': data})
             if serializer.is_valid():
                 return Response(serializer.data, status=status.HTTP_200_OK)

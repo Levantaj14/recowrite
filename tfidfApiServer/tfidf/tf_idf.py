@@ -81,17 +81,18 @@ def setup():
         index = faiss.read_index("tfidf/index.bin")
 
 
-def search(blog_content, k=1):
-    query = filtering(blog_content)
+def search(blog_article, k=1):
+    query = filtering(blog_article.content)
     query_vector = vectorizer.transform([query]).toarray().astype(np.float32)
-    distances, indices = index.search(query_vector, k)
+    distances, indices = index.search(query_vector, k=(k + 1))
     print("FAISS search result:")
     print(distances, indices)
-    ids = []
+    ids = set()
     # TODO: DO NOT include the unrealised posts
     for faiss_index in indices[0]:
-        ids.append(faiss_index)
-    return ids
+        ids.add(faiss_index)
+    ids.discard(blog_article.id)
+    return list(ids)[:3]
 
 
 def add(blog_id):

@@ -1,4 +1,5 @@
-import sklearn.feature_extraction.text as ft
+import math
+
 import numpy as np
 import faiss
 import nltk
@@ -9,6 +10,7 @@ from nltk.stem import SnowballStemmer
 import string
 import os
 from joblib import dump, load
+from collections import Counter
 
 from base.models import Blog
 
@@ -50,23 +52,17 @@ iso_to_nltk = {
 }
 
 
-def read_file(filename):
-    f = open(filename, 'r')
-    document = []
-    aux = f.readline()
-    while aux != '':
-        document.append(aux)
-        aux = f.readline()
-    f.close()
-    return ''.join(document)
-
-
 def filtering(blog):
-    language = iso_to_nltk[detect(blog)]
+    try:
+        sample_text = blog[:min(len(blog), 1000)]
+        language = iso_to_nltk.get(detect(sample_text), 'english')
+    except Exception:
+        language = 'english'
     try:
         stop_words = set(stopwords.words(language))
-    except KeyError:
-        stop_words = []
+    except LookupError:
+        stop_words = set()
+
     words = word_tokenize(blog)
     filtered_words = [word.lower() for word in words if
                       word.lower() not in stop_words and word not in string.punctuation]
@@ -78,8 +74,65 @@ def filtering(blog):
         return " ".join(filtered_words)
 
 
+def create_vector(corpus):
+    df = {}
+    N = len(corpus)
+
+    for doc in corpus:
+        unique_words = set(word_tokenize(doc))
+        for word in unique_words:
+            df[word] = df.get(word, 0) + 1
+
+    min_df = max(2, int(0.01 * N))
+    max_df = int(0.8 * N)
+
+    filtered_vocab = {word: freq for word, freq in df.items()
+                      if min_df <= freq <= max_df}
+
+    vocab = {}
+    filtered_df = {}
+    for i, word in enumerate(filtered_vocab.keys()):
+        vocab[word] = i
+        filtered_df[word] = df[word]
+
+    print(f"Vocabulary size: {len(vocab)} terms after filtering from {len(df)} original terms")
+
+    return N, filtered_df, vocab
+
+
+def create_transform(document):
+    global vectorizer_data
+    N, df, vocab = vectorizer_data
+    words = word_tokenize(document)
+    word_counts = Counter(words)
+
+    vector = np.zeros(len(vocab), dtype=np.float32)
+
+    for word, idx in vocab.items():
+        if word in word_counts:
+            tf = 1 + math.log(word_counts[word]) if word_counts[word] > 0 else 0
+            idf = math.log((N + 1) / (df[word] + 1)) + 1
+            vector[idx] = tf * idf
+
+    norm = np.linalg.norm(vector)
+    if norm > 0:
+        vector = vector / norm
+
+    return vector
+
+
+def create_fit(corpus):
+    global vectorizer_data
+    N, df, vocab = vectorizer_data
+    matrix = np.zeros((len(corpus), len(vocab)), dtype=np.float32)
+    for i, doc in enumerate(corpus):
+        matrix[i] = create_transform(doc)
+
+    return matrix
+
+
 def setup():
-    global vectorizer, index
+    global vectorizer_data, index
     index_path = 'tfidf/index.bin'
     vectorizer_path = 'tfidf/vectorizer.joblib'
     # initialize vectorizer and creating a fit
@@ -91,57 +144,50 @@ def setup():
             filtered_corpus.append(filtering(corpus.content))
             my_sql_ids.append(corpus.id)
 
-        vectorizer = ft.TfidfVectorizer()
-        fit = vectorizer.fit_transform(filtered_corpus)
+        print('Creating vectorizer...')
+        vectorizer_data = create_vector(filtered_corpus)
+        fit = create_fit(filtered_corpus)
 
         # saving the vectorizer
-        dump(vectorizer, 'tfidf/vectorizer.joblib')
-
-        # print
-        print("Feature names:")
-        print(vectorizer.get_feature_names_out())
-
-        print("\nOriginal transformed data:")
-        print(fit.toarray())
-
-        # converting data for faiss
-        dense_matrix = fit.toarray().astype(np.float32)
+        dump(vectorizer_data, vectorizer_path)
 
         # setting up faiss
-        dimension = dense_matrix.shape[1]
+        print('Setting up FAISS...')
+        dimension = fit.shape[1]
 
         # setting up indexes
-        base_index = faiss.IndexFlatL2(dimension)
+        base_index = faiss.IndexFlatIP(dimension)
         index = faiss.IndexIDMap(base_index)
         my_sql_ids = np.array(my_sql_ids, dtype=np.int64)
 
         # print("Dimension: ", dimension)
-        index.add_with_ids(dense_matrix, my_sql_ids)
+        index.add_with_ids(fit, my_sql_ids)
 
         # saving faiss index
-        faiss.write_index(index, "tfidf/index.bin")
+        faiss.write_index(index, index_path)
+        print('Everything is set up and saved to the drive')
     else:
         print("Loading necessary files...")
-        vectorizer = load('tfidf/vectorizer.joblib')
-        index = faiss.read_index("tfidf/index.bin")
+        vectorizer_data = load(vectorizer_path)
+        index = faiss.read_index(index_path)
 
 
-def search(blog_content, k=1):
-    query = filtering(blog_content)
-    query_vector = vectorizer.transform([query]).toarray().astype(np.float32)
-    distances, indices = index.search(query_vector, k)
+def search(blog, k=1):
+    query = filtering(blog.content)
+    query_vector = np.array([create_transform(query)], dtype=np.float32)
+    distances, indices = index.search(query_vector, k=(k + 1))
     print("FAISS search result:")
     print(distances, indices)
-    ids = []
-    # TODO: DO NOT include the unrealised posts
+    ids = set()
     for faiss_index in indices[0]:
-        ids.append(faiss_index)
-    return ids
+        ids.add(faiss_index)
+    ids.discard(blog.id)
+    return list(ids)[:3]
 
 
 def add(blog_id):
     blog = filtering(Blog.objects.get(id=blog_id).content)
-    transformed_data = vectorizer.transform([blog])
-    index.add_with_ids(transformed_data.toarray().astype(np.float32), np.array([blog_id]))
+    transformed_data = np.array([create_transform(blog)], dtype=np.float32)
+    index.add_with_ids(transformed_data, np.array([blog_id]))
     faiss.write_index(index, "tfidf/index.bin")
     print("New blog added successfully")
