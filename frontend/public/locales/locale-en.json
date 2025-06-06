@@ -73,6 +73,17 @@
       "logout": "Log out"
     }
   },
+  "notFound": {
+    "tabTile": "Not Found",
+    "title": "Maybe your lost",
+    "desc": "The page that your trying to access does not exist"
+  },
+  "user": {
+    "about": "About me",
+    "articles": "Articles",
+    "noArticles": "No articles found",
+    "othersAlert": "This is how others see your page"
+  },
   "story": {
     "written": "Written by",
     "like": {
@@ -125,6 +136,8 @@
         "success": "Report sent successfully. Thank you for your contribution.",
         "error": "An error occurred while sending the report"
       },
+      "title": "Report this article",
+      "emptyError": "Please select an option",
       "options": {
         "spam": "Spam",
         "hate": "Hate speech or abusive content",
@@ -134,21 +147,8 @@
         "misinformation": "Misinformation",
         "copyright": "Copyright infringement",
         "plagiarism": "Plagiarism"
-      },
-      "emptyError": "Please select an option",
-      "title": "Report this article"
+      }
     }
-  },
-  "notFound": {
-    "tabTile": "Not Found",
-    "title": "Maybe your lost",
-    "desc": "The page that your trying to access does not exist"
-  },
-  "user": {
-    "about": "About me",
-    "articles": "Articles",
-    "noArticles": "No articles found",
-    "othersAlert": "This is how others see your page"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -191,6 +191,9 @@
         "title": "Title",
         "author": "Author"
       }
+    },
+    "comments": {
+      "comment": "Comment"
     },
     "account": {
       "toast": {
@@ -242,9 +245,6 @@
       },
       "username": "Username",
       "socials": "Socials"
-    },
-    "comments": {
-      "comment": "Comment"
     }
   },
   "newStory": {
@@ -341,7 +341,7 @@
         "mandatory": "This is mandatory"
       }
     },
-    "desc": "If we find an account linked to your email, we’ll send you an email with the next steps.",
+    "desc": "If we find an account linked to your email, we'll send you an email with the next steps.",
     "email": "Email address",
     "toast": {
       "loading": "Sending request...",
@@ -355,15 +355,16 @@
       "success": "Email verified successfully",
       "error": "Email verification failed"
     },
-    "desc": "Verify your email before logging in. Take a peek in your inbox for the next steps. If you don’t see it, don’t worry, check your spam folder too!",
-    "title": "Verification email sent"
+    "title": "Verification email sent",
+    "desc": "Verify your email before logging in. Take a peek in your inbox for the next steps. If you don't see it, don't worry, check your spam folder too!"
   },
   "admin": {
+    "title": "Admin Console",
     "report": {
       "status": {
         "open": "Open",
         "dismissed": "Dismissed",
-        "strike": "Strike Given"
+        "strike": "Received Strike"
       },
       "table": {
         "header": {
@@ -399,9 +400,18 @@
         "loading": "Revoking strike...",
         "success": "Strike revoked",
         "error": "Error revoking strike"
+      },
+      "roleChange": {
+        "loading": "Changing role...",
+        "success": "Role changed successfully",
+        "error": "Error changing role"
+      },
+      "userDelete": {
+        "loading": "Deleting user...",
+        "success": "User deleted successfully",
+        "error": "Error deleting user"
       }
     },
-    "title": "Admin Console",
     "strikes": {
       "title": "Strikes"
     },
@@ -409,7 +419,16 @@
       "title": "Dismissed"
     },
     "users": {
-      "title": "Users"
+      "title": "Users",
+      "table": {
+        "username": "Username",
+        "name": "Name",
+        "admin": "Admin",
+        "buttons": {
+          "role": "Change Role",
+          "delete": "Delete"
+        }
+      }
     }
   }
 }

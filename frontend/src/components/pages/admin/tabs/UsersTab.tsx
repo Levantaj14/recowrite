@@ -10,6 +10,7 @@ import { changeRole, deleteAccount, fetchAllAdmins } from '@/apis/adminApi.ts';
 import { toast } from 'sonner';
 import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
@@ -17,6 +18,7 @@ type Props = {
 
 export default function UsersTab({ setIsAuthorized }: Props) {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const { data, isLoading } = useQuery({
     queryKey: ['users'],
@@ -35,15 +37,15 @@ export default function UsersTab({ setIsAuthorized }: Props) {
     toast.promise(
       changeRole(userId),
       {
-        loading: CustomLoading('Changing role...'),
+        loading: CustomLoading(t('admin.toast.roleChange.loading')),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['users'],
           });
-          return 'Role changed successfully';
+          return t('admin.toast.roleChange.success');
         },
         error: () => {
-          return 'Failed to change role';
+          return t('admin.toast.roleChange.error');
         },
       },
     );
@@ -53,15 +55,15 @@ export default function UsersTab({ setIsAuthorized }: Props) {
     toast.promise(
       deleteAccount(userId),
       {
-        loading: CustomLoading('Deleting account...'),
+        loading: CustomLoading(t('admin.toast.userDelete.loading')),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['users'],
           });
-          return 'Account deleted successfully';
+          return t('admin.toast.userDelete.success');
         },
         error: () => {
-          return 'Failed to delete account';
+          return t('admin.toast.userDelete.error');
         },
       },
     );
@@ -76,8 +78,8 @@ export default function UsersTab({ setIsAuthorized }: Props) {
             <Table.Header>
               <Table.Row bg="bg.subtle">
                 <Table.ColumnHeader>ID</Table.ColumnHeader>
-                <Table.ColumnHeader>Username</Table.ColumnHeader>
-                <Table.ColumnHeader>Name</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('admin.users.table.username')}</Table.ColumnHeader>
+                <Table.ColumnHeader>{t('admin.users.table.name')}</Table.ColumnHeader>
                 <Table.ColumnHeader></Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
@@ -89,13 +91,13 @@ export default function UsersTab({ setIsAuthorized }: Props) {
                 >
                   <Table.Cell>{user.id}</Table.Cell>
                   <Table.Cell>{user.username} {(data?.admins.find((u) => u.id === user.id)) !== undefined && (
-                    <Badge variant="surface">Admin</Badge>
+                    <Badge variant="surface">{t('admin.users.table.admin')}</Badge>
                   )}</Table.Cell>
                   <Table.Cell>{user.name}</Table.Cell>
                   <Table.Cell textAlign="right">
                     <ButtonGroup size="xs">
-                      <Button onClick={() => pressedChange(user.id)}>Change Role</Button>
-                      <Button colorPalette="red" onClick={() => pressedDelete(user.id)}>Delete</Button>
+                      <Button onClick={() => pressedChange(user.id)}>{t('admin.users.table.buttons.role')}</Button>
+                      <Button colorPalette="red" onClick={() => pressedDelete(user.id)}>{t('admin.users.table.buttons.delete')}</Button>
                     </ButtonGroup>
                   </Table.Cell>
                 </Table.Row>
