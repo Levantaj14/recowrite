@@ -16,137 +16,309 @@
     "revokeStrike": "Revocă strike",
     "giveStrike": "Dă strike"
   },
-  "tabLoading": "Încărcare...",
-  "loginPage": {
-    "errors": {
-      "password": "Parola trebuie să aibă cel puțin 8 caractere",
-      "username": "Numele de utilizator e necesar",
-      "name": "Numele este obligatorie",
-      "email": "Această adresă de email nu este validă",
-      "confPassword": "Parolele nu se potrivesc"
+  "common": {
+    "tabLoading": "Încărcare...",
+    "actions": {
+      "continue": "Citește mai departe"
     },
     "fields": {
-      "confPassword": "Reintroduceți parola",
       "email": "Email",
       "name": "Nume",
+      "username": "Nume de utilizator",
       "password": "Parolă",
-      "username": "Nume de utilizator"
+      "confirmPassword": "Reintroduceți parola",
+      "bio": "Despre mine",
+      "title": "Titlu",
+      "description": "Descriere"
     },
+    "errors": {
+      "required": {
+        "username": "Numele de utilizator e necesar",
+        "name": "Numele este obligatorie",
+        "comment": "Comentariul este necesar",
+        "field": "Acest câmp este obligatoriu"
+      },
+      "validation": {
+        "email": "Această adresă de email nu este validă",
+        "commentLength": "Comentariul nu poate fi mai lung de 255 de caractere",
+        "maxChars": "Numărul maxim de caractere este 255",
+        "invalidDate": "Format de dată ISO invalid",
+        "invalidUrl": "Acesta trebuie să fie un URL valid"
+      }
+    },
+    "statuses": {
+      "open": "Deschis",
+      "dismissed": "Respins",
+      "strike": "Strike primit"
+    },
+    "password": {
+      "oldPassword": "Parola veche",
+      "newPassword": "Parola nouă",
+      "confirmPassword": "Reintrodu parola",
+      "errors": {
+        "required": "Parola veche este necesară",
+        "minLength": "Parola trebuie să aibă cel puțin 8 caractere",
+        "passwordMatch": "Parolele nu se potrivesc"
+      },
+      "meter": {
+        "low": "Slab",
+        "medium": "Mediu",
+        "high": "Puternic"
+      },
+      "toast": {
+        "loading": "Schimbarea parolei...",
+        "success": "Parolă schimbată cu succes",
+        "error": "Schimbarea parolei a eșuat",
+        "resetLoading": "Resetarea parolei",
+        "resetSuccess": "Parola a fost resetată cu succes",
+        "resetError": "Resetarea parolei a eșuat"
+      }
+    }
+  },
+  "auth": {
     "login": {
       "title": "Autentificare",
       "desc": "Bine te-am regăsit! Încă un pas și ești gata",
-      "forgot": "Ți-ai <1>uitat parola</1>?"
+      "forgot": "Ți-ai <1>uitat parola</1>?",
+      "toast": {
+        "error": "Numele de utilizator sau parolă incorectă",
+        "loading": "Autentificare...",
+        "success": "Autentificat cu succes"
+      }
     },
     "signup": {
       "title": "Conectare",
       "desc": "Începe o nouă aventură",
-      "passwordMeter": {
-        "low": "Slab",
-        "medium": "Mediu",
-        "high": "Puternic"
-      }
-    },
-    "toast": {
-      "login": {
-        "error": "Numele de utilizator sau parolă incorectă",
-        "loading": "Autentificare...",
-        "success": "Autentificat cu succes"
-      },
-      "signup": {
+      "toast": {
         "error": "Ceva nu a mers bine",
         "loading": "Conectare...",
         "success": "Emailul de verificare a fost trimis cu succes"
       }
-    }
-  },
-  "navbar": {
-    "toast": {
-      "logout": {
-        "loading": "Deconectare...",
-        "success": "Deconectarea s-a desfășurat cu succes",
-        "error": "Deconectarea a eșuat"
+    },
+    "logout": {
+      "loading": "Deconectare...",
+      "success": "Deconectarea s-a desfășurat cu succes",
+      "error": "Deconectarea a eșuat"
+    },
+    "forgotPassword": {
+      "title": "Ți-ai uitat parola",
+      "invalid": "Linkul este incorrect sau a expirat",
+      "dialog": {
+        "desc": "Dacă găsim un cont asociat cu adresa ta de email, îți vom trimite un email cu pașii următori.",
+        "email": "Adresă de email",
+        "toast": {
+          "loading": "Se trimite cererea...",
+          "success": "Cerererea a fost trimisă cu succes",
+          "error": "Trimiterea cererii a eșuat"
+        },
+        "error": {
+          "email": {
+            "incorrect": "Adresa de email trebuie să fie validă.",
+            "mandatory": "Acest câmp este obligatoriu"
+          }
+        }
       }
     },
-    "buttons": {
-      "dashboard": "Panou de control",
-      "profile": "Profil",
-      "logout": "Deconectare"
+    "emailVerification": {
+      "title": "Emailul de verificare a fost trimis",
+      "desc": "Verifică-ți adresa de email înainte de a te autentifica. Aruncă o privire în inbox pentru pașii următori. Dacă nu îl vezi, nu-ți face griji, verifică și folderul de spam!",
+      "toast": {
+        "loading": "Verificarea adresei de email...",
+        "success": "Adresă de email verificată cu succes",
+        "error": "Verificarea adresei de email a eșuat"
+      }
     }
   },
-  "notFound": {
-    "tabTile": "Nu există",
-    "title": "T-ai pierdut?",
-    "desc": "Pagina pe care-l vrei să-l vizitezi nu există"
+  "navigation": {
+    "notFound": {
+      "tabTile": "Nu există",
+      "title": "T-ai pierdut?",
+      "desc": "Pagina pe care-l vrei să-l vizitezi nu există"
+    },
+    "navbar": {
+      "buttons": {
+        "create": "Scrie un articol",
+        "dashboard": "Panou de control",
+        "profile": "Profil",
+        "logout": "Deconectare"
+      }
+    }
   },
   "user": {
     "about": "Despre mine",
     "articles": "Articole",
     "noArticles": "Nu s-au găsit articole",
-    "othersAlert": "Așa vor vedea ceilalți utilizatori pagina ta"
+    "othersAlert": "Așa vor vedea ceilalți utilizatori pagina ta",
+    "profile": {
+      "account": {
+        "toast": {
+          "avatar": {
+            "success": "Imagine încărcată cu succes",
+            "error": "Încărcarea imaginii a eșuat"
+          },
+          "email": {
+            "loading": "Schimaberea adresei de email...",
+            "success": "Adresă de email schimbată cu succes",
+            "error": "Schimabrea adresei de email a eșuat"
+          },
+          "name": {
+            "loading": "Schimbarea numeleu...",
+            "success": "Nume salvat cu succes",
+            "error": "Schimbarea numelui a eșuat"
+          },
+          "socials": {
+            "loading": "Salvarea numelui de utilizator...",
+            "success": "Nume de utilizator salvat cu succes",
+            "error": "Salvarea numeleui de utilizator a unui social media a eșuat"
+          },
+          "bio": {
+            "loading": "Salvarea biografiei...",
+            "success": "Biografie salvată cu succes",
+            "error": "Salvarea biografiei a eșuat"
+          }
+        },
+        "uploadButton": "Încărcare imagine",
+        "fields": {
+          "email": "Email",
+          "changePassword": "Schimbați parola",
+          "name": "Nume",
+          "bio": "Despre mine"
+        },
+        "username": "Nume de utilizator",
+        "socials": "Social media"
+      }
+    }
   },
-  "story": {
-    "written": "Scris de",
-    "like": {
-      "noLogin": "Trebuie să fii autentificat",
-      "unavailable": "Acest blog nu este încă publicat"
-    },
-    "comments": {
-      "title": "Comentării",
-      "new": "Adaugă un comentariu",
-      "none": "Nu există comentarii",
-      "showMore": {
-        "base": "Afișați {{count}} {{comment}}",
-        "comment_one": "comentariu",
-        "comment_other": "comentarii"
+  "content": {
+    "story": {
+      "written": "Scris de",
+      "unpublished": "Acest blog nu este încă publicat",
+      "like": {
+        "noLogin": "Trebuie să fii autentificat"
       },
-      "delete": {
-        "title": "Ești sigur?",
-        "desc": "Această acțiune nu poate fi anulată. Comentariul va fi ștearsă în mod permanent!"
-      },
-      "edit": {
-        "title": "Editare comentariu"
-      },
-      "toasts": {
-        "post": {
-          "loading": "Postarea comentariului...",
-          "success": "Comentariu postat cu succes",
-          "error": "Editarea comentariului a eșuat"
+      "comments": {
+        "title": "Comentării",
+        "new": "Adaugă un comentariu",
+        "none": "Nu există comentarii",
+        "showMore": {
+          "base": "Afișați {{count}} {{comment}}",
+          "comment_one": "comentariu",
+          "comment_other": "comentarii"
         },
         "delete": {
-          "loading": "Ștergerea comentariului...",
-          "success": "Comentariu șters cu succes",
-          "error": "Ștergerea comentariului a eșuat"
+          "title": "Ești sigur?",
+          "desc": "Această acțiune nu poate fi anulată. Comentariul va fi ștearsă în mod permanent!"
         },
         "edit": {
-          "loading": "Salvarea modificărilor...",
-          "success": "Comentariu editat cu succes",
-          "error": "Ștergerea comentariului a eșuat"
+          "title": "Editare comentariu"
+        },
+        "toasts": {
+          "post": {
+            "loading": "Postarea comentariului...",
+            "success": "Comentariu postat cu succes",
+            "error": "Editarea comentariului a eșuat"
+          },
+          "delete": {
+            "loading": "Ștergerea comentariului...",
+            "success": "Comentariu șters cu succes",
+            "error": "Ștergerea comentariului a eșuat"
+          },
+          "edit": {
+            "loading": "Salvarea modificărilor...",
+            "success": "Comentariu editat cu succes",
+            "error": "Ștergerea comentariului a eșuat"
+          }
         }
       },
-      "errors": {
-        "commentRequired": "Comentariul este necesar",
-        "commentLength": "Comentariul nu poate fi mai lung de 255 de caractere"
+      "unavailable": "Acest blog va fi disponibil în:",
+      "report": {
+        "toast": {
+          "loading": "Se trimite raportul...",
+          "success": "Raportul a fost trimis cu succes. Îți mulțumim pentru contribuție!",
+          "error": "A apărut o eroare la trimiterea raportului"
+        },
+        "title": "Raportează această postare",
+        "emptyError": "Te rugăm să alege un motiv",
+        "options": {
+          "spam": "Spam",
+          "hate": "Ură sau conținut abuziv",
+          "bully": "Hărțuire sau intimidare",
+          "explicit": "Conținut explicit sau sexual",
+          "violent": "Conținut violent sau grafic",
+          "misinformation": "Dezinformare",
+          "copyright": "Încălcare a drepturilor de autor",
+          "plagiarism": "Plagiat"
+        }
       }
     },
-    "continue": "Citește mai departe",
-    "unavailable": "Acest blog va fi disponibil în:",
-    "report": {
-      "toast": {
-        "loading": "Se trimite raportul...",
-        "success": "Raportul a fost trimis cu succes. Îți mulțumim pentru contribuție!",
-        "error": "A apărut o eroare la trimiterea raportului"
+    "newStory": {
+      "title": "Nou articol",
+      "tabs": {
+        "write": "Scrie",
+        "preview": "Previzualizare",
+        "customize": "Personalizați"
       },
-      "title": "Raportează această postare",
-      "emptyError": "Te rugăm să alege un motiv",
-      "options": {
-        "spam": "Spam",
-        "hate": "Ură sau conținut abuziv",
-        "bully": "Hărțuire sau intimidare",
-        "explicit": "Conținut explicit sau sexual",
-        "violent": "Conținut violent sau grafic",
-        "misinformation": "Dezinformare",
-        "copyright": "Încălcare a drepturilor de autor",
-        "plagiarism": "Plagiat"
+      "buttons": {
+        "prev": "Înapoi",
+        "post": "Postare",
+        "next": "Următorul"
+      },
+      "write": {
+        "title": "Împărtășește-ți povestea cu lumea",
+        "desc": "Poți utiliza formatarea <1>Markdown</1> pentru ați îmbunătăți povestea",
+        "placeholder": "Scriți articolul aici...",
+        "markdown": {
+          "heading": "Titlu",
+          "bold": "Îngroșat",
+          "quote": "Citat",
+          "unorderedList": "Listă neordonată",
+          "orderedList": "Listă ordonată",
+          "hr": "Linie orizontală",
+          "link": {
+            "tooltip": "Link",
+            "title": "Titlul linkului"
+          },
+          "image": {
+            "tooltip": "Imagine",
+            "alt": "Text alternativ",
+            "url": "URL-ul imaginii"
+          },
+          "code": {
+            "tooltip": "Cod",
+            "text": "Introduceți codul aici"
+          },
+          "info": "Suportăm sintaxa Markdown pentru formatarea poveștii tale. Apasă aici pentru a afla mai mult."
+        }
+      },
+      "preview": {
+        "title": "Să vedem cum arată"
+      },
+      "customize": {
+        "title": "Hai să facem asta mai unic",
+        "fields": {
+          "title": "Titlu",
+          "desc": "Descriere",
+          "picture": {
+            "name": "Imagine",
+            "radio": {
+              "upload": "Încărcare",
+              "online": "Imagine online"
+            },
+            "uploadButton": "Încărcare fișier",
+            "urlHelper": "Asigură-te că imaginea este liberă de utilizat și nu este protejată de drepturi de autor"
+          },
+          "date": {
+            "title": "Data postări",
+            "options": {
+              "now": "Acum",
+              "schedule": "Programează"
+            }
+          }
+        }
+      },
+      "posting": {
+        "success": "Postare încărcată cu succes",
+        "loading": "Se încarcă postarea ta"
       }
     }
   },
@@ -181,8 +353,7 @@
       }
     },
     "posts": {
-      "postCount": "Numărul de articole",
-      "create": "Scrie un articol"
+      "postCount": "Numărul de articole"
     },
     "likes": {
       "received": "Aprecieri primite",
@@ -194,170 +365,7 @@
     },
     "comments": {
       "comment": "Comentariu"
-    },
-    "account": {
-      "toast": {
-        "avatar": {
-          "success": "Imagine încărcată cu succes",
-          "error": "Încărcarea imaginii a eșuat"
-        },
-        "email": {
-          "loading": "Schimaberea adresei de email...",
-          "success": "Adresă de email schimbată cu succes",
-          "error": "Schimabrea adresei de email a eșuat"
-        },
-        "name": {
-          "loading": "Schimbarea numeleu...",
-          "success": "Nume salvat cu succes",
-          "error": "Schimbarea numelui a eșuat"
-        },
-        "password": {
-          "loading": "Schimbarea parolei...",
-          "success": "Parolă schimbată cu succes",
-          "error": "Schimbarea parolei a eșuat"
-        },
-        "socials": {
-          "loading": "Salvarea numelui de utilizator...",
-          "success": "Nume de utilizator salvat cu succes",
-          "error": "Salvarea numeleui de utilizator a unui social media a eșuat"
-        },
-        "bio": {
-          "loading": "Salvarea biografiei...",
-          "success": "Biografie salvată cu succes",
-          "error": "Salvarea biografiei a eșuat"
-        }
-      },
-      "uploadButton": "Încărcare imagine",
-      "fields": {
-        "email": "Email",
-        "name": "Nume",
-        "password": "Schimbați parola",
-        "bio": "Despre mine"
-      },
-      "errors": {
-        "minPassword": "Parola trebuie să conțină măcar 8 caractere",
-        "noPassword": "Parola veche este necesară",
-        "confPassword": "Parolele nu se potrivesc"
-      },
-      "password": {
-        "old": "Parola veche",
-        "new": "Parola nouă",
-        "confirm": "Reintrodu parola"
-      },
-      "username": "Nume de utilizator",
-      "socials": "Social media"
     }
-  },
-  "newStory": {
-    "title": "Nou articol",
-    "tabs": {
-      "write": "Scrie",
-      "preview": "Previzualizare",
-      "customize": "Personalizați"
-    },
-    "buttons": {
-      "prev": "Înapoi",
-      "post": "Postare",
-      "next": "Următorul"
-    },
-    "write": {
-      "title": "Împărtășește-ți povestea cu lumea",
-      "desc": "Poți utiliza formatarea <1>Markdown</1> pentru ați îmbunătăți povestea",
-      "placeholder": "Scriți articolul aici...",
-      "markdown": {
-        "heading": "Titlu",
-        "bold": "Îngroșat",
-        "quote": "Citat",
-        "unorderedList": "Listă neordonată",
-        "orderedList": "Listă ordonată",
-        "hr": "Linie orizontală",
-        "link": {
-          "tooltip": "Link",
-          "title": "Titlul linkului"
-        },
-        "image": {
-          "tooltip": "Imagine",
-          "alt": "Text alternativ",
-          "url": "URL-ul imaginii"
-        },
-        "code": {
-          "tooltip": "Cod",
-          "text": "Introduceți codul aici"
-        },
-        "info": "Suportăm sintaxa Markdown pentru formatarea poveștii tale. Apasă aici pentru a afla mai mult."
-      }
-    },
-    "preview": {
-      "title": "Să vedem cum arată"
-    },
-    "customize": {
-      "title": "Hai să facem asta mai unic",
-      "fields": {
-        "title": "Titlu",
-        "desc": "Descriere",
-        "picture": {
-          "name": "Imagine",
-          "radio": {
-            "upload": "Încărcare",
-            "online": "Imagine online"
-          },
-          "uploadButton": "Încărcare fișier",
-          "urlHelper": "Asigură-te că imaginea este liberă de utilizat și nu este protejată de drepturi de autor"
-        },
-        "date": {
-          "title": "Data postări",
-          "options": {
-            "now": "Acum",
-            "schedule": "Programează"
-          }
-        }
-      }
-    },
-    "posting": {
-      "success": "Postare încărcată cu succes",
-      "loading": "Se încarcă postarea ta"
-    },
-    "erros": {
-      "notEmpty": "Acest câmp este obligatoriu",
-      "max": "Numărul maxim de caractere este 255",
-      "date": "Format de dată ISO invalid",
-      "url": "Acesta trebuie să fie un URL valid"
-    }
-  },
-  "forgotPassword": {
-    "toast": {
-      "loading": "Resetarea parolei",
-      "success": "Parola a fost resetată cu succes",
-      "error": "Resetarea parolei a eșuat"
-    },
-    "title": "Ți-ai uitat parola",
-    "invalid": "Linkul este incorrect sau a expirat",
-    "password": "Parolă",
-    "confirm": "Reintrodu parola"
-  },
-  "forgotPasswordDialog": {
-    "error": {
-      "email": {
-        "incorrect": "Adresa de email trebuie să fie validă.",
-        "mandatory": "Acest câmp este obligatoriu"
-      }
-    },
-    "desc": "Dacă găsim un cont asociat cu adresa ta de email, îți vom trimite un email cu pașii următori.",
-    "email": "Adresă de email",
-    "toast": {
-      "loading": "Se trimite cererea...",
-      "success": "Cerererea a fost trimisă cu succes",
-      "error": "Trimiterea cererii a eșuat"
-    }
-  },
-  "emailVerification": {
-    "toast": {
-      "loading": "Verificarea adresei de email...",
-      "success": "Adresă de email verificată cu succes",
-      "error": "Verificarea adresei de email a eșuat"
-    },
-    "title": "Emailul de verificare a fost trimis",
-    "desc": "Verifică-ți adresa de email înainte de a te autentifica. Aruncă o privire în inbox pentru pașii următori. Dacă nu îl vezi, nu-ți face griji, verifică și folderul de spam!"
   },
   "admin": {
     "title": "Consolă Admin",
@@ -408,9 +416,9 @@
         "error": "Schimbarea rolului a eșuat"
       },
       "userDelete": {
-        "error": "Ștergerea utilizatorului a eșuat",
         "loading": "Ștergerea utilizatorului...",
-        "success": "Utilizator șters cu succes"
+        "success": "Utilizator șters cu succes",
+        "error": "Ștergerea utilizatorului a eșuat"
       }
     },
     "strikes": {
@@ -422,13 +430,13 @@
     "users": {
       "title": "Utilizatori",
       "table": {
+        "username": "Nume de utilizator",
+        "name": "Nume",
         "admin": "Admin",
         "buttons": {
-          "delete": "Șterge",
-          "role": "Schimbă rolul"
-        },
-        "name": "Nume",
-        "username": "Nume de utilizator"
+          "role": "Schimbă rolul",
+          "delete": "Șterge"
+        }
       }
     }
   }

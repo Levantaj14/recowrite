@@ -18,7 +18,7 @@ export default function Posting({ isVisible }: Props) {
       >
         <Flex flexDirection="row" justifyContent="flex-start" alignItems="center" gap="3" mt="2">
           <Spinner />
-          <Text>{t('newStory.posting.loading')}</Text>
+          <Text>{t('content.newStory.posting.loading')}</Text>
         </Flex>
       </motion.div>
     )

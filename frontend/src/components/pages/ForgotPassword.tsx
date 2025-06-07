@@ -19,10 +19,10 @@ export default function ForgotPassword() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const schema = z.object({
-    password: z.string().min(8, t('loginPage.errors.password')),
+    password: z.string().min(8, t('common.password.errors.minLength')),
     passwordConfirm: z.string(),
   }).refine((data) => data.password === data.passwordConfirm, {
-    message: t('loginPage.errors.confPassword'),
+    message: t('common.password.errors.passwordMatch'),
     path: ['passwordConfirm'],
   });
 
@@ -51,21 +51,21 @@ export default function ForgotPassword() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(resetPasswordWithToken(searchParams.get('token'), data.password), {
-      loading: CustomLoading(t('forgotPassword.toast.loading')),
+      loading: CustomLoading(t('common.password.toast.resetLoading')),
       success: async () => {
         navigate('/');
         setIsSubmitting(false);
-        return t('forgotPassword.toast.success');
+        return t('common.password.toast.resetSuccess');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('forgotPassword.toast.error');
+        return t('common.password.toast.resetError');
       },
     });
   };
 
   useEffect(() => {
-    document.title = t('forgotPassword.title');
+    document.title = t('auth.forgotPassword.title');
   }, [t]);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export default function ForgotPassword() {
     if (searchParams.get('token') != null) {
       validateToken(searchParams.get('token')).then(r => {
         if (!r) {
-          toast.info(t('forgotPassword.invalid'));
+          toast.info(t('auth.forgotPassword.invalid'));
           navigate('/');
         }
       });
@@ -90,18 +90,18 @@ export default function ForgotPassword() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset.Root size="lg" maxW="md">
           <Stack>
-            <Heading>{t('forgotPassword.title')}</Heading>
+            <Heading>{t('auth.forgotPassword.title')}</Heading>
           </Stack>
           <Fieldset.Content>
             <Field.Root invalid={!!errors.password}>
-              <Field.Label>{t('forgotPassword.password')}</Field.Label>
+              <Field.Label>{t('common.fields.password')}</Field.Label>
               <PasswordInput {...register('password')} />
               <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
               <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('password'))} />
             </Field.Root>
 
             <Field.Root invalid={!!errors.passwordConfirm}>
-              <Field.Label>{t('forgotPassword.confirm')}</Field.Label>
+              <Field.Label>{t('common.fields.confirmPassword')}</Field.Label>
               <PasswordInput {...register('passwordConfirm')} />
               <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
             </Field.Root>

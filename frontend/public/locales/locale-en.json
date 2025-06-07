@@ -16,137 +16,309 @@
     "revokeStrike": "Revoke strike",
     "giveStrike": "Give a strike"
   },
-  "tabLoading": "Loading...",
-  "loginPage": {
-    "errors": {
-      "password": "The password must have at least 8 characters",
-      "username": "Username is required",
-      "name": "Name is required",
-      "email": "The email must be valid",
-      "confPassword": "The passwords do not match"
+  "common": {
+    "tabLoading": "Loading...",
+    "actions": {
+      "continue": "Continue reading"
     },
     "fields": {
-      "confPassword": "Confirm your password",
       "email": "Email",
       "name": "Name",
+      "username": "Username",
       "password": "Password",
-      "username": "Username"
+      "confirmPassword": "Confirm your password",
+      "bio": "Bio",
+      "title": "Title",
+      "description": "Description"
     },
+    "errors": {
+      "required": {
+        "username": "Username is required",
+        "name": "Name is required",
+        "comment": "Comment is required",
+        "field": "This field is mandatory"
+      },
+      "validation": {
+        "email": "The email must be valid",
+        "commentLength": "Comments can't be longer than 255 characters",
+        "maxChars": "The maximum number of characters is 255",
+        "invalidDate": "Invalid ISO date format",
+        "invalidUrl": "This must be a valid URL"
+      }
+    },
+    "statuses": {
+      "open": "Open",
+      "dismissed": "Dismissed",
+      "strike": "Received Strike"
+    },
+    "password": {
+      "oldPassword": "Old password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "errors": {
+        "required": "Old password is required",
+        "minLength": "The password must have at least 8 characters",
+        "passwordMatch": "The passwords do not match"
+      },
+      "meter": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "toast": {
+        "loading": "Saving password...",
+        "success": "Password changed successfully",
+        "error": "Password change failed",
+        "resetLoading": "Resetting your password",
+        "resetSuccess": "Your password has been reset",
+        "resetError": "The password could not be reset"
+      }
+    }
+  },
+  "auth": {
     "login": {
       "title": "Login",
       "desc": "Welcome back! Just a few more steps and you're ready",
-      "forgot": "Did you <1>forget your password</1>?"
+      "forgot": "Did you <1>forget your password</1>?",
+      "toast": {
+        "error": "The credentials are incorrect",
+        "loading": "Logging in...",
+        "success": "Logged in successfully"
+      }
     },
     "signup": {
       "title": "Sign Up",
       "desc": "Start a new adventure",
-      "passwordMeter": {
-        "low": "Low",
-        "medium": "Medium",
-        "high": "High"
-      }
-    },
-    "toast": {
-      "login": {
-        "error": "The credentials are incorrect",
-        "loading": "Logging in...",
-        "success": "Logged in successfully"
-      },
-      "signup": {
+      "toast": {
         "error": "Something went wrong",
         "loading": "Signing up...",
         "success": "Verification email sent successfully"
       }
-    }
-  },
-  "navbar": {
-    "toast": {
-      "logout": {
-        "loading": "Logging out...",
-        "success": "Successfully logged out",
-        "error": "There was an error logging you out"
+    },
+    "logout": {
+      "loading": "Logging out...",
+      "success": "Successfully logged out",
+      "error": "There was an error logging you out"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "invalid": "The link is invalid or expired",
+      "dialog": {
+        "desc": "If we find an account linked to your email, we'll send you an email with the next steps.",
+        "email": "Email address",
+        "toast": {
+          "loading": "Sending request...",
+          "success": "Request sent successfully",
+          "error": "Failed to send request"
+        },
+        "error": {
+          "email": {
+            "incorrect": "Email must be a valid email address",
+            "mandatory": "This is mandatory"
+          }
+        }
       }
     },
-    "buttons": {
-      "dashboard": "Dashboard",
-      "profile": "Profile",
-      "logout": "Log out"
+    "emailVerification": {
+      "title": "Verification email sent",
+      "desc": "Verify your email before logging in. Take a peek in your inbox for the next steps. If you don't see it, don't worry, check your spam folder too!",
+      "toast": {
+        "loading": "Verifying your email...",
+        "success": "Email verified successfully",
+        "error": "Email verification failed"
+      }
     }
   },
-  "notFound": {
-    "tabTile": "Not Found",
-    "title": "Maybe your lost",
-    "desc": "The page that your trying to access does not exist"
+  "navigation": {
+    "notFound": {
+      "tabTile": "Not Found",
+      "title": "Maybe your lost",
+      "desc": "The page that your trying to access does not exist"
+    },
+    "navbar": {
+      "buttons": {
+        "create": "Create Post",
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "logout": "Log out"
+      }
+    }
   },
   "user": {
     "about": "About me",
     "articles": "Articles",
     "noArticles": "No articles found",
-    "othersAlert": "This is how others see your page"
+    "othersAlert": "This is how others see your page",
+    "profile": {
+      "account": {
+        "toast": {
+          "avatar": {
+            "success": "Avatar uploaded successfully",
+            "error": "There was an error while uploading your avatar"
+          },
+          "email": {
+            "loading": "Changing email...",
+            "success": "Email changed successfully",
+            "error": "Email could not be changed"
+          },
+          "name": {
+            "loading": "Changing name...",
+            "success": "Name changed successfully",
+            "error": "Failed to update name"
+          },
+          "socials": {
+            "loading": "Saving social media username...",
+            "success": "Social media username saved",
+            "error": "Failed to save your username for one of your socials"
+          },
+          "bio": {
+            "loading": "Updating bio...",
+            "success": "Bio updated successfully",
+            "error": "Failed to update bio"
+          }
+        },
+        "uploadButton": "Upload picture",
+        "fields": {
+          "email": "Email",
+          "changePassword": "Change Password",
+          "name": "Name",
+          "bio": "Bio"
+        },
+        "username": "Username",
+        "socials": "Socials"
+      }
+    }
   },
-  "story": {
-    "written": "Written by",
-    "like": {
-      "noLogin": "You must be logged in",
-      "unavailable": "This blog is not yet published"
-    },
-    "comments": {
-      "title": "Comments",
-      "new": "Add a new comment",
-      "none": "There are no comments",
-      "showMore": {
-        "base": "Show {{count}} more {{comment}}",
-        "comment_one": "comment",
-        "comment_other": "comments"
+  "content": {
+    "story": {
+      "written": "Written by",
+      "unpublished": "This blog is not yet published",
+      "like": {
+        "noLogin": "You must be logged in"
       },
-      "delete": {
-        "title": "Are you sure?",
-        "desc": "This action cannot be undone. This will permanently delete this comment."
-      },
-      "edit": {
-        "title": "Edit Comment"
-      },
-      "toasts": {
-        "post": {
-          "loading": "Posting comment...",
-          "success": "Comment posted successfully",
-          "error": "There was an error while posting comment"
+      "comments": {
+        "title": "Comments",
+        "new": "Add a new comment",
+        "none": "There are no comments",
+        "showMore": {
+          "base": "Show {{count}} more {{comment}}",
+          "comment_one": "comment",
+          "comment_other": "comments"
         },
         "delete": {
-          "loading": "Deleting comment...",
-          "success": "Comment deleted successfully",
-          "error": "There was an error while deleting the comment"
+          "title": "Are you sure?",
+          "desc": "This action cannot be undone. This will permanently delete this comment."
         },
         "edit": {
-          "loading": "Saving edits...",
-          "success": "Comment edited successfully",
-          "error": "There was an error while editing the comment"
+          "title": "Edit Comment"
+        },
+        "toasts": {
+          "post": {
+            "loading": "Posting comment...",
+            "success": "Comment posted successfully",
+            "error": "There was an error while posting comment"
+          },
+          "delete": {
+            "loading": "Deleting comment...",
+            "success": "Comment deleted successfully",
+            "error": "There was an error while deleting the comment"
+          },
+          "edit": {
+            "loading": "Saving edits...",
+            "success": "Comment edited successfully",
+            "error": "There was an error while editing the comment"
+          }
         }
       },
-      "errors": {
-        "commentRequired": "Comment is required",
-        "commentLength": "Comments can't be longer than 255 characters"
+      "unavailable": "This blog will be available in:",
+      "report": {
+        "toast": {
+          "loading": "Sending report...",
+          "success": "Report sent successfully. Thank you for your contribution.",
+          "error": "An error occurred while sending the report"
+        },
+        "title": "Report this article",
+        "emptyError": "Please select an option",
+        "options": {
+          "spam": "Spam",
+          "hate": "Hate speech or abusive content",
+          "bully": "Harassment or bullying",
+          "explicit": "Sexual or explicit content",
+          "violent": "Violent or graphic content",
+          "misinformation": "Misinformation",
+          "copyright": "Copyright infringement",
+          "plagiarism": "Plagiarism"
+        }
       }
     },
-    "continue": "Continue reading",
-    "unavailable": "This blog will be available in:",
-    "report": {
-      "toast": {
-        "loading": "Sending report...",
-        "success": "Report sent successfully. Thank you for your contribution.",
-        "error": "An error occurred while sending the report"
+    "newStory": {
+      "title": "New Story",
+      "tabs": {
+        "write": "Write",
+        "preview": "Preview",
+        "customize": "Customize"
       },
-      "title": "Report this article",
-      "emptyError": "Please select an option",
-      "options": {
-        "spam": "Spam",
-        "hate": "Hate speech or abusive content",
-        "bully": "Harassment or bullying",
-        "explicit": "Sexual or explicit content",
-        "violent": "Violent or graphic content",
-        "misinformation": "Misinformation",
-        "copyright": "Copyright infringement",
-        "plagiarism": "Plagiarism"
+      "buttons": {
+        "prev": "Previous",
+        "post": "Post",
+        "next": "Next"
+      },
+      "write": {
+        "title": "Share your story with the world",
+        "desc": "Feel free to use <1>Markdown</1> formatting to enhance your story",
+        "placeholder": "Write your story here...",
+        "markdown": {
+          "heading": "Heading",
+          "bold": "Bold",
+          "quote": "Quote",
+          "unorderedList": "Unordered list",
+          "orderedList": "Ordered list",
+          "hr": "Horizontal line",
+          "link": {
+            "tooltip": "Link",
+            "title": "Link title"
+          },
+          "image": {
+            "tooltip": "Image",
+            "alt": "Alternative text",
+            "url": "Image URL"
+          },
+          "code": {
+            "tooltip": "Code",
+            "text": "Insert your code here"
+          },
+          "info": "We support Markdown syntax for formatting your story. Click here to learn more."
+        }
+      },
+      "preview": {
+        "title": "Let's see how it looks"
+      },
+      "customize": {
+        "title": "Let's make this more unique",
+        "fields": {
+          "title": "Title",
+          "desc": "Description",
+          "picture": {
+            "name": "Picture",
+            "radio": {
+              "upload": "Upload",
+              "online": "Online Picture"
+            },
+            "uploadButton": "Upload file",
+            "urlHelper": "Make sure the picture is free to use and not copyrighted"
+          },
+          "date": {
+            "title": "Posting date",
+            "options": {
+              "now": "Now",
+              "schedule": "Schedule"
+            }
+          }
+        }
+      },
+      "posting": {
+        "success": "Post uploaded successfully",
+        "loading": "Uploading your post"
       }
     }
   },
@@ -181,8 +353,7 @@
       }
     },
     "posts": {
-      "postCount": "Number of posts",
-      "create": "Create post"
+      "postCount": "Number of posts"
     },
     "likes": {
       "received": "Received likes",
@@ -194,169 +365,7 @@
     },
     "comments": {
       "comment": "Comment"
-    },
-    "account": {
-      "toast": {
-        "avatar": {
-          "success": "Avatar uploaded successfully",
-          "error": "There was an error while uploading your avatar"
-        },
-        "email": {
-          "loading": "Changing email...",
-          "success": "Email changed successfully",
-          "error": "Email could not be changed"
-        },
-        "name": {
-          "loading": "Changing name...",
-          "success": "Name changed successfully",
-          "error": "Failed to update name"
-        },
-        "password": {
-          "loading": "Saving password...",
-          "success": "Password changed successfully",
-          "error": "Password change failed"
-        },
-        "socials": {
-          "success": "Social media username saved",
-          "error": "Failed to save your username for one of your socials",
-          "loading": "Saving social media username..."
-        },
-        "bio": {
-          "loading": "Updating bio...",
-          "success": "Bio updated successfully",
-          "error": "Failed to update bio"
-        }
-      },
-      "uploadButton": "Upload picture",
-      "fields": {
-        "email": "Email",
-        "name": "Name",
-        "password": "Change Password",
-        "bio": "Bio"
-      },
-      "errors": {
-        "minPassword": "The password must be at least 8 characters",
-        "noPassword": "Old password is required"
-      },
-      "password": {
-        "old": "Old password",
-        "new": "New password",
-        "confirm": "Confirm new password"
-      },
-      "username": "Username",
-      "socials": "Socials"
     }
-  },
-  "newStory": {
-    "title": "New Story",
-    "tabs": {
-      "write": "Write",
-      "preview": "Preview",
-      "customize": "Customize"
-    },
-    "buttons": {
-      "prev": "Prev",
-      "post": "Post",
-      "next": "Next"
-    },
-    "write": {
-      "title": "Share your story with the world",
-      "desc": "Feel free to use <1>Markdown</1> formatting to enhance your story",
-      "placeholder": "Write your story here...",
-      "markdown": {
-        "heading": "Heading",
-        "bold": "Bold",
-        "quote": "Quote",
-        "unorderedList": "Unordered list",
-        "orderedList": "Ordered list",
-        "hr": "Horizontal line",
-        "link": {
-          "tooltip": "Link",
-          "title": "Link title"
-        },
-        "image": {
-          "tooltip": "Image",
-          "alt": "Alternative text",
-          "url": "Image URL"
-        },
-        "code": {
-          "tooltip": "Code",
-          "text": "Insert your code here"
-        },
-        "info": "We support Markdown syntax for formatting your story. Click here to learn more."
-      }
-    },
-    "preview": {
-      "title": "Let's see how it looks"
-    },
-    "customize": {
-      "title": "Let's make this more unique",
-      "fields": {
-        "title": "Title",
-        "desc": "Description",
-        "picture": {
-          "name": "Picture",
-          "radio": {
-            "upload": "Upload",
-            "online": "Online Picture"
-          },
-          "uploadButton": "Upload file",
-          "urlHelper": "Make sure the picture is free to use and not copyrighted"
-        },
-        "date": {
-          "title": "Posting date",
-          "options": {
-            "now": "Now",
-            "schedule": "Schedule"
-          }
-        }
-      }
-    },
-    "posting": {
-      "success": "Post uploaded successfully",
-      "loading": "Uploading your post"
-    },
-    "erros": {
-      "notEmpty": "This field is mandatory",
-      "max": "The maximum number of characters is 255",
-      "date": "Invalid ISO date format",
-      "url": "This must be a valid URL"
-    }
-  },
-  "forgotPassword": {
-    "toast": {
-      "loading": "Resetting your password",
-      "success": "Your password has been reset",
-      "error": "The password could not be reset"
-    },
-    "title": "Forgot Password",
-    "invalid": "The link is invalid or expired",
-    "password": "Password",
-    "confirm": "Confirm your password"
-  },
-  "forgotPasswordDialog": {
-    "error": {
-      "email": {
-        "incorrect": "Email must be a valid email address",
-        "mandatory": "This is mandatory"
-      }
-    },
-    "desc": "If we find an account linked to your email, we'll send you an email with the next steps.",
-    "email": "Email address",
-    "toast": {
-      "loading": "Sending request...",
-      "success": "Request sent successfully",
-      "error": "Failed to send request"
-    }
-  },
-  "emailVerification": {
-    "toast": {
-      "loading": "Verifying your email...",
-      "success": "Email verified successfully",
-      "error": "Email verification failed"
-    },
-    "title": "Verification email sent",
-    "desc": "Verify your email before logging in. Take a peek in your inbox for the next steps. If you don't see it, don't worry, check your spam folder too!"
   },
   "admin": {
     "title": "Admin Console",

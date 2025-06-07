@@ -25,8 +25,8 @@ function LoginPage() {
     return (
       <EmptyState
         icon={<MdOutlineMarkEmailUnread />}
-        title={t('emailVerification.title')}
-        description={t('emailVerification.desc')}
+        title={t('auth.emailVerification.title')}
+        description={t('auth.emailVerification.desc')}
         size="lg"
       />
     )
@@ -36,8 +36,8 @@ function LoginPage() {
     return (
       <Tabs.Root lazyMount unmountOnExit defaultValue="login">
         <Tabs.List>
-          <Tabs.Trigger value="login">{t('loginPage.login.title')}</Tabs.Trigger>
-          <Tabs.Trigger value="signup">{t('loginPage.signup.title')}</Tabs.Trigger>
+          <Tabs.Trigger value="login">{t('auth.login.title')}</Tabs.Trigger>
+          <Tabs.Trigger value="signup">{t('auth.signup.title')}</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="login">
           <motion.div

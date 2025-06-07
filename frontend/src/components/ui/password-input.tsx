@@ -142,10 +142,10 @@ export const PasswordStrengthMeter = React.forwardRef<
 function getColorPalette(percent: number, t: TFunction<"translation", undefined> ) {
   switch (true) {
     case percent < 33:
-      return { label: t('loginPage.signup.passwordMeter.low'), colorPalette: "red" }
+      return { label: t('common.password.meter.low'), colorPalette: "red" }
     case percent < 66:
-      return { label: t('loginPage.signup.passwordMeter.medium'), colorPalette: "orange" }
+      return { label: t('common.password.meter.medium'), colorPalette: "orange" }
     default:
-      return { label: t('loginPage.signup.passwordMeter.high'), colorPalette: "green" }
+      return { label: t('common.password.meter.high'), colorPalette: "green" }
   }
 }

@@ -39,7 +39,7 @@ export default function Posts() {
               key={blog.id}
               banner={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
               title={blog.title}
-              description={new Date(blog.date) > new Date() ? t('story.like.unavailable') : blog.description}
+              description={new Date(blog.date) > new Date() ? t('content.story.unpublished') : blog.description}
               href={`/blog/${blog.id}`}
               index={index}
               date={blog.date}

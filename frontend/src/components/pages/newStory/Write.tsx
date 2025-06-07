@@ -44,7 +44,7 @@ export default function Write({
 
   return (
     <>
-      <Heading size="2xl">{t('newStory.write.title')}</Heading>
+      <Heading size="2xl">{t('content.newStory.write.title')}</Heading>
       <OptionRow setValue={setValue} getValues={getValue} />
       {isVisible && (
         <motion.div
@@ -57,7 +57,7 @@ export default function Write({
               <Field.Root invalid={!!errors.content}>
                 <Textarea
                   id="content"
-                  placeholder={t('newStory.write.placeholder')}
+                  placeholder={t('content.newStory.write.placeholder')}
                   mt="2"
                   height="calc(100vh - 400px)"
                   resize="none"
