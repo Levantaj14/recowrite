@@ -42,6 +42,7 @@ function Story() {
       const likeCount = await getLikeCount(blogId);
       return { blogData, userData, liked, likeCount };
     },
+    retry: false,
   });
 
   useEffect(() => {
