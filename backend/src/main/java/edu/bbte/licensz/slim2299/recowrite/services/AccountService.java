@@ -118,17 +118,23 @@ public class AccountService implements AccountServiceInterface {
                         socialsManager.save(socialsModelModel);
                     }
                 } else {
-                    SocialsModel newSocialsModel = new SocialsModel();
-                    newSocialsModel.setUser(userModel);
-                    newSocialsModel.setSocialsType(socialsTypesModel);
-                    newSocialsModel.setLink(socialDtoIn.getUsername());
-                    socialsManager.save(newSocialsModel);
+                    createSocialEntry(socialDtoIn, userModel, socialsTypesModel);
                 }
                 return;
             }
             throw new SocialMediaNotSupportedException("Social media not supported");
         }
         throw new UserNotFoundException("User not found");
+    }
+
+    private void createSocialEntry(SocialDtoIn socialDtoIn, UserModel userModel, SocialsTypesModel socialsTypesModel) {
+        if (!Objects.equals(socialDtoIn.getUsername(), "")) {
+            SocialsModel newSocialsModel = new SocialsModel();
+            newSocialsModel.setUser(userModel);
+            newSocialsModel.setSocialsType(socialsTypesModel);
+            newSocialsModel.setLink(socialDtoIn.getUsername());
+            socialsManager.save(newSocialsModel);
+        }
     }
 
     @Override
