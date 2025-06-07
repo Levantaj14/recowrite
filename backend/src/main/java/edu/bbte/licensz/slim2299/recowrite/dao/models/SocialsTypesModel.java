@@ -17,7 +17,8 @@ import java.util.List;
 public class SocialsTypesModel extends BaseEntity {
     private String name;
 
-    @OneToMany(mappedBy = "socialsType", fetch = FetchType.EAGER, cascade = {
-            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "socialsType", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SocialsModel> socials;
+
 }
