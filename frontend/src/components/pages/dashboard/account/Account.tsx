@@ -30,9 +30,9 @@ export function Account() {
         try {
           uploadAvatar(cleanBase64, file.name);
           setUserDetails({ ...userDetails, avatar: cleanBase64 });
-          toast.success(t('dashboard.account.toast.avatar.success'));
+          toast.success(t('user.profile.account.toast.avatar.success'));
         } catch (err) {
-          toast.error(t('dashboard.account.toast.avatar.error'));
+          toast.error(t('user.profile.account.toast.avatar.error'));
           console.error(err);
         }
       }
@@ -52,7 +52,7 @@ export function Account() {
           <FileUploadRoot accept={['image/*']} onFileAccept={onUpload}>
             <FileUploadTrigger>
               <Button variant="outline">
-                <HiUpload /> {t('dashboard.account.uploadButton')}
+                <HiUpload /> {t('user.profile.account.uploadButton')}
               </Button>
             </FileUploadTrigger>
           </FileUploadRoot>

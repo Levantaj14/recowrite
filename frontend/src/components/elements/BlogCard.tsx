@@ -19,7 +19,7 @@ function BlogCard({ banner, title, description, content, date, href, index }: Pr
 
   function decideDescription() {
     if (new Date(date) > new Date()) {
-      return t('story.like.unavailable');
+      return t('content.story.unpublished');
     }
     if (description === '') {
       let auxContent = content;

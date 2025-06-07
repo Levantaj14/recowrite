@@ -16,348 +16,357 @@
     "revokeStrike": "Strike visszavonása",
     "giveStrike": "Strike adása"
   },
-  "tabLoading": "Betöltés...",
-  "loginPage": {
-    "errors": {
-      "password": "A jelszó legalább 8 karakter hosszú kell legyen",
-      "username": "A felhasználónév kötelező",
-      "email": "Ez nem egy helyes email",
-      "name": "A név kötelező",
-      "confPassword": "A jelszavaknak egyezniük kell"
+  "common": {
+    "tabLoading": "Betöltés...",
+    "actions": {
+      "continue": "Olvass tovább"
     },
     "fields": {
-      "confPassword": "Írja be újra a jelszót",
       "email": "Email",
       "name": "Név",
+      "username": "Felhasználónév",
       "password": "Jelszó",
-      "username": "Felhasználónév"
+      "confirmPassword": "Írja be újra a jelszót",
+      "bio": "Rólam",
+      "title": "Cím",
+      "description": "Leírás"
     },
+    "errors": {
+      "required": {
+        "username": "A felhasználónév kötelező",
+        "name": "A név kötelező",
+        "comment": "A hozzászólás mező kötelező",
+        "field": "Ez a mező kötelező"
+      },
+      "validation": {
+        "email": "Ez nem egy helyes email",
+        "commentLength": "A hozzászólás nem lehet hosszabb 255 karakternél",
+        "maxChars": "A maximális karakterszám 255",
+        "invalidDate": "Érvénytelen ISO dátumformátum",
+        "invalidUrl": "Ennek érvényes URL-nek kell lennie"
+      }
+    },
+    "statuses": {
+      "open": "Nyitott",
+      "dismissed": "Elutasítva",
+      "strike": "Strike kiosztva"
+    },
+    "password": {
+      "oldPassword": "Régi jelszó",
+      "newPassword": "Új jelszó",
+      "confirmPassword": "Írd be újra a jelszót",
+      "errors": {
+        "required": "A régi jelszó kötelező",
+        "minLength": "A jelszó legalább 8 karakterből kell álljon",
+        "passwordMatch": "A jelszavaknak egyezniük kell"
+      },
+      "meter": {
+        "low": "Gyenge",
+        "medium": "Közepes",
+        "high": "Erős"
+      },
+      "toast": {
+        "loading": "Jelszó mentése...",
+        "success": "Jelszó sikeresen kicserélve",
+        "error": "Jelszó cseréje sikertelen",
+        "resetLoading": "Jelszó kicserélése",
+        "resetSuccess": "A jelszó sikeresen kicserélve",
+        "resetError": "A jelszó kicserélése sikertelen volt"
+      }
+    }
+  },
+  "auth": {
     "login": {
       "title": "Bejelentkezés",
       "desc": "Isten hozott! Még egy pár lépés és máris készen vagy",
-      "forgot": "<1>Elfelejtetted a jelszavad</1>?"
+      "forgot": "<1>Elfelejtetted a jelszavad</1>?",
+      "toast": {
+        "error": "A jelszó vagy felhasználónév nem helyes",
+        "loading": "Bejelentkezés...",
+        "success": "A bejelentkezés sikerült"
+      }
     },
     "signup": {
       "title": "Regisztráció",
       "desc": "Kezdj el egy új kalandot",
-      "passwordMeter": {
-        "low": "Gyenge",
-        "medium": "Közepes",
-        "high": "Erős"
-      }
-    },
-    "toast": {
-      "login": {
-        "error": "A jelszó vagy felhasználónév nem helyes",
-        "loading": "Bejelentkezés...",
-        "success": "A bejelentkezés sikerült"
-      },
-      "signup": {
+      "toast": {
         "error": "Hiba történt",
         "loading": "Regisztrálás...",
         "success": "A megerősítő e-mail sikeresen elküldve"
       }
-    }
-  },
-  "navbar": {
-    "toast": {
-      "logout": {
-        "loading": "Kijelentkezés...",
-        "success": "Sikeresen kejelentkezve",
-        "error": "Hiba történt kijelentkezés közben"
-      }
     },
-    "buttons": {
-      "dashboard": "Irányítópult",
-      "profile": "Profil",
-      "logout": "Kijelentkezés"
-    }
-  },
-  "story": {
-    "written": "Írta",
-    "like": {
-      "noLogin": "Be kell légy jelentkezve",
-      "unavailable": "Ez a blog még elérhetetlen"
+    "logout": {
+      "loading": "Kijelentkezés...",
+      "success": "Sikeresen kejelentkezve",
+      "error": "Hiba történt kijelentkezés közben"
     },
-    "comments": {
-      "title": "Hozzászólások",
-      "new": "Új hozzászólás hozzáadása",
-      "none": "Nincs hozzászólás",
-      "showMore": {
-        "base": "Mutassd a maradék {{count}} hozzászólást"
-      },
-      "delete": {
-        "desc": "Ez a művelet visszafordíthatatlan. Ez véglegesen törölni fogja ezt a hozzászólást.",
-        "title": "Biztos vagy benne?"
-      },
-      "edit": {
-        "title": "Hozzászólás szerkesztése"
-      },
-      "toasts": {
-        "delete": {
-          "error": "Hiba történt a hozzászólás törlése közben",
-          "loading": "Hozzászólás törlése...",
-          "success": "Hozzászólás sikeresen törölve"
+    "forgotPassword": {
+      "title": "Elfelejtettem a jelszót",
+      "invalid": "A link hibás vagy lejárt",
+      "dialog": {
+        "desc": "Ha találunk egy fiókot, amely az e-mail címedhez van kapcsolva, küldünk egy e-mailt a következő lépésekkel.",
+        "email": "Email cím",
+        "toast": {
+          "loading": "Kérés küldése...",
+          "success": "A kérés sikeresen elküldve",
+          "error": "A kérés elküldése sikertelen volt"
         },
-        "edit": {
-          "error": "Hiba történt a hozzászólás törlése közben",
-          "loading": "Szerkesztések mentése...",
-          "success": "Hozzászólás sikeresen szerkesztve"
-        },
-        "post": {
-          "error": "Hiba történt a hozzászólás posztolásakor",
-          "loading": "Hozzászólás posztolása...",
-          "success": "Hozzászólás sikeresen posztolva"
+        "error": {
+          "email": {
+            "incorrect": "Az e-mail címnek érvényesnek kell lennie.",
+            "mandatory": "Ez kötelező"
+          }
         }
-      },
-      "errors": {
-        "commentRequired": "A hozzászólás mező kötelező",
-        "commentLength": "A hozzászólás nem lehet hosszabb 255 karakternél"
       }
     },
-    "continue": "Olvass tovább",
-    "unavailable": "Ez a blog elérhető lesz:",
-    "report": {
+    "emailVerification": {
+      "title": "Ellenőrző email elküldve",
+      "desc": "Ellenőrizd az email címed, mielőtt bejelentkezel. Nézz be a bejövő üzenetek közé a következő lépésekért. Ha nem látod, ne aggódj, ellenőrizd a spam mappát is!",
       "toast": {
-        "error": "Hiba történt a jelentés küldése közben",
-        "loading": "Jelentés küldése...",
-        "success": "Jelentés elküldve. Köszönjük a közreműködésed!"
-      },
-      "title": "Cikk jelentése",
-      "emptyError": "Kérlek válassz egy okot",
-      "options": {
-        "spam": "Spam",
-        "hate": "Gyűlöletbeszéd vagy visszaélésszerű tartalom",
-        "bully": "Zaklatás vagy fenyegetés",
-        "explicit": "Sexuális tartalom vagy obszcén nyelvezet",
-        "violent": "Erőszakos vagy grafikus tartalom",
-        "misinformation": "Hamis információ",
-        "copyright": "Szerzői jog megsértése",
-        "plagiarism": "Plágium"
+        "loading": "Email cím ellenőrzése...",
+        "success": "Email cím sikeresen ellenőrizve",
+        "error": "Sikertelen email ellenőrzés"
       }
     }
   },
-  "notFound": {
-    "tabTile": "Nem található",
-    "title": "Talán el vagy veszlődve",
-    "desc": "Az oldal amit el akarsz érni nem létezik"
+  "navigation": {
+    "notFound": {
+      "tabTile": "Nem található",
+      "title": "Talán el vagy veszlődve",
+      "desc": "Az oldal amit el akarsz érni nem létezik"
+    },
+    "navbar": {
+      "buttons": {
+        "create": "Poszt írása",
+        "dashboard": "Irányítópult",
+        "profile": "Profil",
+        "logout": "Kijelentkezés"
+      }
+    }
   },
   "user": {
     "about": "Rólam",
     "articles": "Cikkek",
     "noArticles": "Nem található cikk",
-    "othersAlert": "Így látja a többi felhasználó az oldalad"
+    "othersAlert": "Így látja a többi felhasználó az oldalad",
+    "profile": {
+      "account": {
+        "toast": {
+          "avatar": {
+            "success": "A kép sikeresen fel lett töltve",
+            "error": "Hiba történt a kép feltöltése közbe"
+          },
+          "email": {
+            "loading": "Emial változtatása...",
+            "success": "Email sikeresen kicserélve",
+            "error": "Hiba történt az email megváltoztatása közben"
+          },
+          "name": {
+            "loading": "Név mentése...",
+            "success": "Név sikeresen lementve",
+            "error": "Hiba történt a név változtatása közben"
+          },
+          "socials": {
+            "loading": "Közösségi háló felhsználónév mentése...",
+            "success": "Közösségi háló felhasználónév lementve",
+            "error": "Nem sikerült menteni a felhasználóneved egyik közösségi oldalahoz"
+          },
+          "bio": {
+            "loading": "Bio mentése...",
+            "success": "Bio sikeresen lementve",
+            "error": "Hiba történt a bio mentése közben"
+          }
+        },
+        "uploadButton": "Kép feltöltés",
+        "fields": {
+          "email": "Email",
+          "changePassword": "Jelszó változtatása",
+          "name": "Név",
+          "bio": "Rólam"
+        },
+        "username": "Felhasználónév",
+        "socials": "Közösségi hálók"
+      }
+    }
+  },
+  "content": {
+    "story": {
+      "written": "Írta",
+      "unpublished": "Ez a blog még nem elérhető",
+      "like": {
+        "noLogin": "Be kell légy jelentkezve"
+      },
+      "comments": {
+        "title": "Hozzászólások",
+        "new": "Új hozzászólás hozzáadása",
+        "none": "Nincs hozzászólás",
+        "showMore": {
+          "base": "Mutassd a maradék {{count}} hozzászólást"
+        },
+        "delete": {
+          "title": "Biztos vagy benne?",
+          "desc": "Ez a művelet visszafordíthatatlan. Ez véglegesen törölni fogja ezt a hozzászólást."
+        },
+        "edit": {
+          "title": "Hozzászólás szerkesztése"
+        },
+        "toasts": {
+          "post": {
+            "loading": "Hozzászólás posztolása...",
+            "success": "Hozzászólás sikeresen posztolva",
+            "error": "Hiba történt a hozzászólás posztolásakor"
+          },
+          "delete": {
+            "loading": "Hozzászólás törlése...",
+            "success": "Hozzászólás sikeresen törölve",
+            "error": "Hiba történt a hozzászólás törlése közben"
+          },
+          "edit": {
+            "loading": "Szerkesztések mentése...",
+            "success": "Hozzászólás sikeresen szerkesztve",
+            "error": "Hiba történt a hozzászólás törlése közben"
+          }
+        }
+      },
+      "unavailable": "Ez a blog elérhető lesz:",
+      "report": {
+        "toast": {
+          "loading": "Jelentés küldése...",
+          "success": "Jelentés elküldve. Köszönjük a közreműködésed!",
+          "error": "Hiba történt a jelentés küldése közben"
+        },
+        "title": "Cikk jelentése",
+        "emptyError": "Kérlek válassz egy okot",
+        "options": {
+          "spam": "Spam",
+          "hate": "Gyűlöletbeszéd vagy visszaélésszerű tartalom",
+          "bully": "Zaklatás vagy fenyegetés",
+          "explicit": "Sexuális tartalom vagy obszcén nyelvezet",
+          "violent": "Erőszakos vagy grafikus tartalom",
+          "misinformation": "Hamis információ",
+          "copyright": "Szerzői jog megsértése",
+          "plagiarism": "Plágium"
+        }
+      }
+    },
+    "newStory": {
+      "title": "Új cikk",
+      "tabs": {
+        "write": "Írj",
+        "preview": "Előnézet",
+        "customize": "Testreszabás"
+      },
+      "buttons": {
+        "prev": "Elöző",
+        "post": "Posztolás",
+        "next": "Következő"
+      },
+      "write": {
+        "title": "Oszd meg a történeted a világgal",
+        "desc": "Nyugodtan használd a <1>Markdown</1> formázást, hogy a cikked fejleszd",
+        "placeholder": "Írd ide a cikked...",
+        "markdown": {
+          "heading": "Fejléc",
+          "bold": "Félkövér",
+          "quote": "Idézet",
+          "unorderedList": "Rendezetlen lista",
+          "orderedList": "Rendezett lista",
+          "hr": "Vízszintes vonal",
+          "link": {
+            "tooltip": "Link",
+            "title": "Link címe"
+          },
+          "image": {
+            "tooltip": "Kép",
+            "alt": "Alternatív szöveg",
+            "url": "Kép URL"
+          },
+          "code": {
+            "tooltip": "Kód",
+            "text": "Illeszd be a kódod ide"
+          },
+          "info": "Támogatjuk a Markdown szintaxist a cikk formázásához. Kattints ide további információért."
+        }
+      },
+      "preview": {
+        "title": "Lássuk, hogyan néz ki"
+      },
+      "customize": {
+        "title": "Tegyük ezt még egyedibbé",
+        "fields": {
+          "title": "Cím",
+          "desc": "Leírás",
+          "picture": {
+            "name": "Kép",
+            "radio": {
+              "upload": "Feltöltés",
+              "online": "Online Kép"
+            },
+            "uploadButton": "Fájl feltöltése",
+            "urlHelper": "Győződj meg arról, hogy a kép szabadon használható és nem áll szerzői jogvédelem alatt"
+          },
+          "date": {
+            "title": "Posztolás dátuma",
+            "options": {
+              "now": "Most",
+              "schedule": "Időzített"
+            }
+          }
+        }
+      },
+      "posting": {
+        "success": "Poszt sikeresen feltöltve",
+        "loading": "Poszt feltöltése"
+      }
+    }
   },
   "dashboard": {
+    "title": "Irányítópult",
+    "tabs": {
+      "preferences": "Preferenciák",
+      "account": "Fiók",
+      "posts": "Posztok",
+      "comments": "Hozzászólások",
+      "likes": "Likeok"
+    },
     "preferences": {
       "language": {
+        "title": "Nyelv",
         "desc": "Ez a beállítás csak az alkalmazás nyelvére vonatkozik, nem a blog nyelvére",
-        "select": "Válassz egy nyelvet",
-        "title": "Nyelv"
+        "select": "Válassz egy nyelvet"
       },
       "theme": {
+        "title": "Téma",
         "desc": "Válassz egy témát, amely neked megfelel",
         "select": "Válassz egy témát",
         "themes": {
-          "dark": "Sötét",
           "light": "Világos",
+          "dark": "Sötét",
           "system": "Rendszer"
-        },
-        "title": "Téma"
+        }
       },
       "notifications": {
-        "desc": "Kapj egy email-t mikor valaki bejelentkezik a fiokódba",
-        "title": "Emailes értesítések"
+        "title": "Emailes értesítések",
+        "desc": "Kapj egy email-t mikor valaki bejelentkezik a fiokódba"
       }
     },
-    "tabs": {
-      "account": "Fiók",
-      "comments": "Hozzászólások",
-      "likes": "Likeok",
-      "preferences": "Preferenciák",
-      "posts": "Posztok"
-    },
-    "title": "Irányítópult",
     "posts": {
-      "create": "Poszt írása",
       "postCount": "Posztok száma"
     },
     "likes": {
-      "liked": {
-        "author": "Író",
-        "title": "Cím"
-      },
+      "received": "Kapott kedvelések",
       "given": "Kedvelt cikkek",
-      "received": "Kapott kedvelések"
-    },
-    "account": {
-      "errors": {
-        "minPassword": "A jelszó legalább 8 karakterből kell álljon",
-        "noPassword": "A régi jelszó kötelező",
-        "confPassword": "A jelszavaknak egyezniük kell"
-      },
-      "fields": {
-        "email": "Email",
-        "name": "Név",
-        "password": "Jelszó változtatása",
-        "bio": "Rólam"
-      },
-      "password": {
-        "new": "Új jelszó",
-        "old": "Régi jelszó",
-        "confirm": "Írd be újra a jelszót"
-      },
-      "toast": {
-        "avatar": {
-          "error": "Hiba történt a kép feltöltése közbe",
-          "success": "A kép sikeresen fel lett töltve"
-        },
-        "email": {
-          "error": "Hiba történt az email megváltoztatása közben",
-          "loading": "Emial változtatása...",
-          "success": "Email sikeresen kicserélve"
-        },
-        "name": {
-          "error": "Hiba történt a név változtatása közben",
-          "loading": "Név mentése...",
-          "success": "Név sikeresen lementve"
-        },
-        "password": {
-          "error": "Jelszó cseréje sikertelen",
-          "loading": "Jelszó mentése...",
-          "success": "Jelszó sikeresen kicserélve"
-        },
-        "socials": {
-          "error": "Nem sikerült menteni a felhasználóneved egyik közösségi oldalahoz",
-          "loading": "Közösségi háló felhsználónév mentése...",
-          "success": "Közösségi háló felhasználónév lementve"
-        },
-        "bio": {
-          "loading": "Bio mentése...",
-          "success": "Bio sikeresen lementve",
-          "error": "Hiba történt a bio mentése közben"
-        }
-      },
-      "uploadButton": "Kép feltöltés",
-      "username": "Felhasználónév",
-      "socials": "Közösségi média"
+      "liked": {
+        "title": "Cím",
+        "author": "Író"
+      }
     },
     "comments": {
       "comment": "Komment"
     }
   },
-  "newStory": {
-    "buttons": {
-      "next": "Következő",
-      "prev": "Elöző",
-      "post": "Posztolás"
-    },
-    "customize": {
-      "fields": {
-        "desc": "Leírás",
-        "picture": {
-          "name": "Kép",
-          "radio": {
-            "online": "Online Kép",
-            "upload": "Feltöltés"
-          },
-          "uploadButton": "Fájl feltöltése",
-          "urlHelper": "Győződj meg arról, hogy a kép szabadon használható és nem áll szerzői jogvédelem alatt"
-        },
-        "title": "Cím",
-        "date": {
-          "options": {
-            "now": "Most",
-            "schedule": "Időzített"
-          },
-          "title": "Posztolás dátuma"
-        }
-      },
-      "title": "Tegyük ezt még egyedibbé"
-    },
-    "posting": {
-      "loading": "Poszt feltöltése",
-      "success": "Poszt sikeresen feltöltve"
-    },
-    "preview": {
-      "title": "Lássuk, hogyan néz ki"
-    },
-    "tabs": {
-      "customize": "Testreszabás",
-      "preview": "Előnézet",
-      "write": "Írj"
-    },
-    "title": "Új cikk",
-    "write": {
-      "placeholder": "Írd ide a cikked...",
-      "title": "Oszd meg a történeted a világgal",
-      "desc": "Nyugodtan használd a <1>Markdown</1> formázást, hogy a cikked fejleszd",
-      "markdown": {
-        "heading": "Fejléc",
-        "bold": "Félkövér",
-        "quote": "Idézet",
-        "unorderedList": "Rendezetlen lista",
-        "orderedList": "Rendezett lista",
-        "hr": "Vízszintes vonal",
-        "link": {
-          "tooltip": "Link",
-          "title": "Link címe"
-        },
-        "image": {
-          "tooltip": "Kép",
-          "alt": "Alternatív szöveg",
-          "url": "Kép URL"
-        },
-        "code": {
-          "tooltip": "Kód",
-          "text": "Illeszd be a kódod ide"
-        },
-        "info": "Támogatjuk a Markdown szintaxist a cikk formázásához. Kattints ide további információért."
-      }
-    },
-    "erros": {
-      "date": "Érvénytelen ISO dátumformátum",
-      "max": "A maximális karakterszám 255",
-      "notEmpty": "Ez a mező kötelező",
-      "url": "Ennek érvényes URL-nek kell lennie"
-    }
-  },
-  "forgotPassword": {
-    "confirm": "Írd be újra a jelszót",
-    "invalid": "A link hibás vagy lejárt",
-    "password": "Jelszó",
-    "title": "Elfelejtettem a jelszót",
-    "toast": {
-      "error": "A jelszó kicserélése sikertelen volt",
-      "loading": "Jelszó kicserélése",
-      "success": "A jelszó sikeresen kicserélve"
-    }
-  },
-  "forgotPasswordDialog": {
-    "desc": "Ha találunk egy fiókot, amely az e-mail címedhez van kapcsolva, küldünk egy e-mailt a következő lépésekkel.",
-    "email": "Email cím",
-    "error": {
-      "email": {
-        "incorrect": "Az e-mail címnek érvényesnek kell lennie.",
-        "mandatory": "Ez kötelező"
-      }
-    },
-    "toast": {
-      "error": "A kérés elküldése sikertelen volt",
-      "loading": "Kérés küldése...",
-      "success": "A kérés sikeresen elküldve"
-    }
-  },
-  "emailVerification": {
-    "toast": {
-      "loading": "Email cím ellenőrzése...",
-      "success": "Email cím sikeresen ellenőrizve",
-      "error": "Sikertelen email ellenőrzés"
-    },
-    "title": "Ellenőrző email elküldve",
-    "desc": "Ellenőrizd az email címed, mielőtt bejelentkezel. Nézz be a bejövő üzenetek közé a következő lépésekért. Ha nem látod, ne aggódj, ellenőrizd a spam mappát is!"
-  },
   "admin": {
+    "title": "Admin konzol",
     "report": {
       "status": {
         "open": "Nyitott",
@@ -398,9 +407,18 @@
         "loading": "Strike visszavonása...",
         "success": "Strike visszavonva",
         "error": "Hiba történt a strike visszavonása közben"
+      },
+      "roleChange": {
+        "loading": "Szerepkör módosítása...",
+        "success": "Szerepkör sikeresen módosítva",
+        "error": "A szerepkör módosítása sikertelen volt"
+      },
+      "userDelete": {
+        "loading": "Felhasználó törlése...",
+        "success": "Felhasználó sikeresen törölve",
+        "error": "A felhasználó törlése sikertelen volt"
       }
     },
-    "title": "Admin konzol",
     "strikes": {
       "title": "Strike-ok"
     },
@@ -408,7 +426,16 @@
       "title": "Elutasítva"
     },
     "users": {
-      "title": "Felhasználók"
+      "title": "Felhasználók",
+      "table": {
+        "username": "Felhasználónév",
+        "name": "Név",
+        "admin": "Admin",
+        "buttons": {
+          "role": "Szerepkör modósítása",
+          "delete": "Törlés"
+        }
+      }
     }
   }
 }

@@ -113,48 +113,48 @@ export function OptionRow({ setValue, getValues }: Props) {
   };
 
   const buttons = [
-    { icon: <MdFormatBold />, tooltip: t('newStory.write.markdown.bold'), action: () => wrapText('**') },
-    { icon: <MdFormatQuote />, tooltip: t('newStory.write.markdown.quote'), action: () => prefixLines('> ') },
+    { icon: <MdFormatBold />, tooltip: t('content.newStory.write.markdown.bold'), action: () => wrapText('**') },
+    { icon: <MdFormatQuote />, tooltip: t('content.newStory.write.markdown.quote'), action: () => prefixLines('> ') },
     {
       icon: <MdFormatListBulleted />,
-      tooltip: t('newStory.write.markdown.unorderedList'),
+      tooltip: t('content.newStory.write.markdown.unorderedList'),
       action: () => prefixLines('- '),
     },
     {
       icon: <MdFormatListNumbered />,
-      tooltip: t('newStory.write.markdown.orderedList'),
+      tooltip: t('content.newStory.write.markdown.orderedList'),
       action: () => prefixLines('1. '),
     },
-    { icon: <TfiLayoutLineSolid />, tooltip: t('newStory.write.markdown.hr'), action: () => insertText('\n\n---\n\n') },
+    { icon: <TfiLayoutLineSolid />, tooltip: t('content.newStory.write.markdown.hr'), action: () => insertText('\n\n---\n\n') },
     {
       icon: <MdOutlineInsertLink />,
-      tooltip: t('newStory.write.markdown.link.tooltip'),
-      action: () => wrapText('[', '](URL)', t('newStory.write.markdown.link.title')),
+      tooltip: t('content.newStory.write.markdown.link.tooltip'),
+      action: () => wrapText('[', '](URL)', t('content.newStory.write.markdown.link.title')),
     },
     {
       icon: <MdOutlineImage />,
-      tooltip: t('newStory.write.markdown.image.tooltip'),
-      action: () => insertText(`![${t('newStory.write.markdown.image.alt')}](${t('newStory.write.markdown.image.url')})`),
+      tooltip: t('content.newStory.write.markdown.image.tooltip'),
+      action: () => insertText(`![${t('content.newStory.write.markdown.image.alt')}](${t('content.newStory.write.markdown.image.url')})`),
     },
     {
       icon: <MdCode />,
-      tooltip: t('newStory.write.markdown.code.tooltip'),
-      action: () => wrapText('\n```\n', '\n```\n', t('newStory.write.markdown.code.text')),
+      tooltip: t('content.newStory.write.markdown.code.tooltip'),
+      action: () => wrapText('\n```\n', '\n```\n', t('content.newStory.write.markdown.code.text')),
     },
   ];
 
   const headingOptions = [
-    { level: '1', text: `${t('newStory.write.markdown.heading')} 1`, size: '4xl' as const },
-    { level: '2', text: `${t('newStory.write.markdown.heading')} 2`, size: '2xl' as const },
-    { level: '3', text: `${t('newStory.write.markdown.heading')} 3`, size: 'xl' as const },
-    { level: '4', text: `${t('newStory.write.markdown.heading')} 4`, size: 'md' as const },
+    { level: '1', text: `${t('content.newStory.write.markdown.heading')} 1`, size: '4xl' as const },
+    { level: '2', text: `${t('content.newStory.write.markdown.heading')} 2`, size: '2xl' as const },
+    { level: '3', text: `${t('content.newStory.write.markdown.heading')} 3`, size: 'xl' as const },
+    { level: '4', text: `${t('content.newStory.write.markdown.heading')} 4`, size: 'md' as const },
   ];
 
   return (
     <HStack gap={2} mt={4}>
       <Menu.Root positioning={{ placement: 'bottom-start' }}>
         <Menu.Trigger>
-          <Tooltip content={t('newStory.write.markdown.heading')} openDelay={500} closeDelay={100}>
+          <Tooltip content={t('content.newStory.write.markdown.heading')} openDelay={500} closeDelay={100}>
             <IconButton variant="outline" size="xs">
               <MdTitle />
             </IconButton>
@@ -197,7 +197,7 @@ export function OptionRow({ setValue, getValues }: Props) {
       <Spacer />
       <Tooltip
         key={'info'}
-        content={t('newStory.write.markdown.info')}
+        content={t('content.newStory.write.markdown.info')}
         openDelay={500}
         closeDelay={100}
       >

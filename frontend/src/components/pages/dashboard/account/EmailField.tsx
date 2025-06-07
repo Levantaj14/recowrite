@@ -14,15 +14,15 @@ export function EmailField() {
 
   const onSave = () => {
     toast.promise(updateEmail(email), {
-      loading: CustomLoading(t('dashboard.account.toast.email.loading')),
+      loading: CustomLoading(t('user.profile.account.toast.email.loading')),
       success: () => {
-        return t('dashboard.account.toast.email.success');
+        return t('user.profile.account.toast.email.success');
       },
       error: () => {
         if (userDetails) {
           setUserDetails({ ...userDetails, email });
         }
-        return t('dashboard.account.toast.email.error');
+        return t('user.profile.account.toast.email.error');
       },
     });
   };
@@ -34,7 +34,7 @@ export function EmailField() {
       transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.08 }}
     >
       <Flex align="start" justifyContent="space-between" alignItems="center" mt="4">
-        <Heading size="md">{t('dashboard.account.fields.email')}</Heading>
+        <Heading size="md">{t('user.profile.account.fields.email')}</Heading>
         <Input width="350px" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={onSave} />
       </Flex>
     </motion.div>

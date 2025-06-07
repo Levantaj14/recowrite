@@ -18,13 +18,13 @@ export default function SignUp({setVerify}: Props) {
   const { t } = useTranslation();
 
   const schema = z.object({
-    name: z.string().nonempty(t('loginPage.errors.name')),
-    email: z.string().email(t('loginPage.errors.email')),
-    username: z.string().nonempty(t('loginPage.errors.username')),
-    password: z.string().min(8, t('loginPage.errors.password')),
+    name: z.string().nonempty(t('common.errors.required.name')),
+    email: z.string().email(t('common.errors.validation.email')),
+    username: z.string().nonempty(t('common.errors.required.username')),
+    password: z.string().min(8, t('common.password.errors.minLength')),
     passwordConfirm: z.string()
   }).refine((data) => data.password === data.passwordConfirm, {
-    message: t('loginPage.errors.confPassword'),
+    message: t('common.password.errors.passwordMatch'),
     path: ['passwordConfirm'],
   });
 
@@ -34,7 +34,7 @@ export default function SignUp({setVerify}: Props) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    document.title = t('loginPage.signup.title');
+    document.title = t('auth.signup.title');
   }, [t]);
 
   const {
@@ -60,7 +60,7 @@ export default function SignUp({setVerify}: Props) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(signup(data), {
-      loading: CustomLoading(t('loginPage.toast.signup.loading')),
+      loading: CustomLoading(t('auth.signup.toast.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['blog'],
@@ -68,11 +68,11 @@ export default function SignUp({setVerify}: Props) {
           exact: false
         });
         setVerify(true);
-        return t('loginPage.toast.signup.success');
+        return t('auth.signup.toast.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('loginPage.toast.signup.error')
+        return t('auth.signup.toast.error')
       },
     }).unwrap().then(() => {
       setIsSubmitting(false);
@@ -83,38 +83,38 @@ export default function SignUp({setVerify}: Props) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Fieldset.Root size="lg" maxW="md">
         <Stack>
-          <Fieldset.Legend>{t('loginPage.signup.title')}</Fieldset.Legend>
-          <Fieldset.HelperText>{t('loginPage.signup.desc')}</Fieldset.HelperText>
+          <Fieldset.Legend>{t('auth.signup.title')}</Fieldset.Legend>
+          <Fieldset.HelperText>{t('auth.signup.desc')}</Fieldset.HelperText>
         </Stack>
 
         <Fieldset.Content>
           <Field.Root invalid={!!errors.name}>
-            <Field.Label>{t('loginPage.fields.name')}</Field.Label>
+            <Field.Label>{t('common.fields.name')}</Field.Label>
             <Input {...register('name')} />
             <Field.ErrorText>{errors.name?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.email}>
-            <Field.Label>{t('loginPage.fields.email')}</Field.Label>
+            <Field.Label>{t('common.fields.email')}</Field.Label>
             <Input {...register('email')} />
             <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.username}>
-            <Field.Label>{t('loginPage.fields.username')}</Field.Label>
+            <Field.Label>{t('common.fields.username')}</Field.Label>
             <Input {...register('username')} />
             <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
           </Field.Root>
 
           <Field.Root invalid={!!errors.password}>
-            <Field.Label>{t('loginPage.fields.password')}</Field.Label>
+            <Field.Label>{t('common.fields.password')}</Field.Label>
             <PasswordInput {...register('password')} />
             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
             <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('password'))} />
           </Field.Root>
 
           <Field.Root invalid={!!errors.passwordConfirm}>
-            <Field.Label>{t('loginPage.fields.confPassword')}</Field.Label>
+            <Field.Label>{t('common.password.confirmPassword')}</Field.Label>
             <PasswordInput {...register('passwordConfirm')} />
             <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
           </Field.Root>

@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next';
 function NotFound() {
   const { t } = useTranslation();
   useEffect(() => {
-    document.title = t('notFound.tabTile');
+    document.title = t('navigation.notFound.tabTile');
   }, [t]);
 
   return (
     <EmptyState
       icon={<TbError404 />}
-      title={t('notFound.title')}
-      description={t('notFound.desc')}
+      title={t('navigation.notFound.title')}
+      description={t('navigation.notFound.desc')}
       size="lg"
     >
       <Code>404 Not Found</Code>

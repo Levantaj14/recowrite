@@ -71,7 +71,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
 
   return (
     <>
-      <Heading size="2xl">{t('newStory.customize.title')}</Heading>
+      <Heading size="2xl">{t('content.newStory.customize.title')}</Heading>
       {isVisible && (
         <>
           <Fieldset.Root>
@@ -82,7 +82,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
             >
               <Field.Root required mt="4" invalid={!!errors.title}>
                 <Field.Label>
-                  {t('newStory.customize.fields.title')}
+                  {t('content.newStory.customize.fields.title')}
                   <Field.RequiredIndicator />
                 </Field.Label>
                 <Input {...register('title')} />
@@ -96,7 +96,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
             >
               <Field.Root mt="4" invalid={!!errors.description}>
                 <Field.Label>
-                  {t('newStory.customize.fields.desc')}
+                  {t('content.newStory.customize.fields.desc')}
                   <Field.RequiredIndicator />
                 </Field.Label>
                 <Textarea {...register('description')} autoresize />
@@ -111,13 +111,13 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
             >
               <Field.Root required mt="4" invalid={!!errors.date}>
                 <Field.Label>
-                  {t('newStory.customize.fields.date.title')}
+                  {t('content.newStory.customize.fields.date.title')}
                   <Field.RequiredIndicator />
                 </Field.Label>
                 <RadioGroup value={postingTime} onValueChange={(e) => setPostingTime(e.value)}>
                   <HStack gap="6">
-                    <Radio value="now">{t('newStory.customize.fields.date.options.now')}</Radio>
-                    <Radio value="schedule">{t('newStory.customize.fields.date.options.schedule')}</Radio>
+                    <Radio value="now">{t('content.newStory.customize.fields.date.options.now')}</Radio>
+                    <Radio value="schedule">{t('content.newStory.customize.fields.date.options.schedule')}</Radio>
                     {postingTime === 'schedule' && (
                       <Popover.Root>
                         <Popover.Trigger asChild>
@@ -160,21 +160,21 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
               transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.12 }}
             >
               <Field.Root mt="4">
-                <Field.Label>{t('newStory.customize.fields.picture.name')}</Field.Label>
+                <Field.Label>{t('content.newStory.customize.fields.picture.name')}</Field.Label>
                 <RadioGroup value={imageType}
                             onValueChange={(e) => setImageType(e.value as 'IMAGE_UPLOAD' | 'IMAGE_URL')}>
                   <HStack gap="6">
                     <Radio value="IMAGE_UPLOAD">
-                      {t('newStory.customize.fields.picture.radio.upload')}
+                      {t('content.newStory.customize.fields.picture.radio.upload')}
                     </Radio>
-                    <Radio value="IMAGE_URL">{t('newStory.customize.fields.picture.radio.online')}</Radio>
+                    <Radio value="IMAGE_URL">{t('content.newStory.customize.fields.picture.radio.online')}</Radio>
                   </HStack>
                 </RadioGroup>
                 {imageType === 'IMAGE_UPLOAD' && (
                   <FileUploadRoot accept={['image/*']} mt="4" onFileAccept={convertBannerImage}>
                     <FileUploadTrigger>
                       <Button size="sm">
-                        <HiUpload /> {t('newStory.customize.fields.picture.uploadButton')}
+                        <HiUpload /> {t('content.newStory.customize.fields.picture.uploadButton')}
                       </Button>
                     </FileUploadTrigger>
                     <FileUploadList />
@@ -188,7 +188,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
                     </Field.Label>
                     <Input {...register('banner')} />
                     <Field.ErrorText>{errors.banner?.message}</Field.ErrorText>
-                    <Field.HelperText>{t('newStory.customize.fields.picture.urlHelper')}</Field.HelperText>
+                    <Field.HelperText>{t('content.newStory.customize.fields.picture.urlHelper')}</Field.HelperText>
                   </Field.Root>
                 )}
               </Field.Root>

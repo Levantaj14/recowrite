@@ -64,9 +64,9 @@ export function SocialsBoxes() {
 
     setUserDetails({ ...userDetails, socials: updatedSocials });
     toast.promise(updateSocial(value, socialName), {
-      loading: CustomLoading(t('dashboard.account.toast.socials.loading')),
-      success: t('dashboard.account.toast.socials.success'),
-      error: t('dashboard.account.toast.socials.error')
+      loading: CustomLoading(t('user.profile.account.toast.socials.loading')),
+      success: t('user.profile.account.toast.socials.success'),
+      error: t('user.profile.account.toast.socials.error')
     })
   };
 
@@ -93,7 +93,7 @@ export function SocialsBoxes() {
       transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.16 }}
     >
       <Heading size="md" mt={4} mb={4}>
-        {t('dashboard.account.socials')}
+        {t('user.profile.account.socials')}
       </Heading>
       <CheckboxGroup>
         <SimpleGrid minChildWidth="200px" gap="2">
@@ -118,7 +118,7 @@ export function SocialsBoxes() {
                   value={getSocialUrl(item.name)}
                   onChange={(e) => handleInputChange(item.name, e.target.value)}
                   onBlur={(e) => handleInputBlur(item.name, e.target.value)}
-                  placeholder={t('dashboard.account.username')}
+                  placeholder={t('user.profile.account.username')}
                 />
               }
             />

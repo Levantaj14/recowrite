@@ -22,7 +22,7 @@ export default function Preview({ content, setValidateFields, isVisible }: Props
 
   return (
     <>
-      <Heading size="2xl">{t('newStory.preview.title')}</Heading>
+      <Heading size="2xl">{t('content.newStory.preview.title')}</Heading>
       {isVisible && (
         <motion.div
           initial={{ opacity: 0, x: 10 }}

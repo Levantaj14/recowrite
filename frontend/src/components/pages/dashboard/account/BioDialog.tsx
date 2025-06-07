@@ -26,7 +26,7 @@ export function BioDialog() {
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
 
   const schema = z.object({
-    bio: z.string().max(255, t('dashboard.account.errors.maxBio')),
+    bio: z.string().max(255, t('common.errors.validation.maxChars')),
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -46,18 +46,18 @@ export function BioDialog() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(updateBio(data.bio), {
-      loading: CustomLoading(t('dashboard.account.toast.bio.loading')),
+      loading: CustomLoading(t('user.profile.account.toast.bio.loading')),
       success: () => {
         setIsSubmitting(false);
         setOpen(false);
         if (userDetails) {
           setUserDetails({ ...userDetails, bio: data.bio });
         }
-        return t('dashboard.account.toast.bio.success');
+        return t('user.profile.account.toast.bio.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('dashboard.account.toast.bio.error');
+        return t('user.profile.account.toast.bio.error');
       },
     });
   };
@@ -74,7 +74,7 @@ export function BioDialog() {
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>{t('dashboard.account.fields.bio')}</DialogTitle>
+              <DialogTitle>{t('user.profile.account.fields.bio')}</DialogTitle>
             </DialogHeader>
             <DialogBody>
               <Fieldset.Root>
@@ -104,7 +104,7 @@ export function BioDialog() {
         transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.12 }}
       >
         <Flex align="start" justifyContent="space-between" alignItems="center" mt="4">
-          <Heading size="md">{t('dashboard.account.fields.bio')}</Heading>
+          <Heading size="md">{t('user.profile.account.fields.bio')}</Heading>
           <Button size="sm" variant="outline" onClick={() => setOpen(true)}>
             {t('buttons.edit')}
           </Button>

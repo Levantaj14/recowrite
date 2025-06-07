@@ -41,7 +41,7 @@ const StickyNavbar = () => {
           )}
           <NavLink to="/dashboard">
             <Button variant="ghost" size="xs" mr="2">
-              {t('navbar.buttons.dashboard')}
+              {t('navigation.navbar.buttons.dashboard')}
             </Button>
           </NavLink>
           {!userDetails && (

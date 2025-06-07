@@ -28,7 +28,7 @@ function Home() {
 
   function decideDescription(blog: BlogType) {
     if (new Date(blog.date) > new Date()) {
-      return t('story.like.unavailable');
+      return t('content.story.unpublished');
     }
     if (blog.description === '') {
       let auxContent = blog.content;

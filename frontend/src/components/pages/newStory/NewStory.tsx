@@ -36,16 +36,16 @@ export default function NewStory() {
   const [validateFields, setValidateFields] = useState<('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[]>([]);
 
   const schema = z.object({
-    content: z.string().nonempty(t('newStory.erros.notEmpty')),
-    title: z.string().nonempty(t('newStory.erros.notEmpty')).max(255, t('newStory.erros.max')),
-    description: z.string().max(255, t('newStory.erros.max')),
+    content: z.string().nonempty(t('common.errors.required.field')),
+    title: z.string().nonempty(t('common.errors.required.field')).max(255, t('common.errors.validation.maxChars')),
+    description: z.string().max(255, t('common.errors.validation.maxChars')),
     date: z.string().nonempty().refine(
       (val) => !isNaN(Date.parse(val)) && val === new Date(val).toISOString(),
       {
-        message: t('newStory.erros.date'),
+        message: t('common.errors.validation.invalidDate'),
       },
     ),
-    banner: z.string().nonempty(t('newStory.erros.notEmpty')).refine(
+    banner: z.string().nonempty(t('common.errors.required.field')).refine(
       (val) => {
         if (getValues('banner_type') === 'IMAGE_URL') {
           try {
@@ -58,7 +58,7 @@ export default function NewStory() {
         return true;
       },
       {
-        message: t('newStory.erros.url'),
+        message: t('common.errors.validation.invalidUrl'),
       }
     ),
     banner_type: z.enum(['IMAGE_URL', 'IMAGE_UPLOAD']),
@@ -81,13 +81,13 @@ export default function NewStory() {
     if (userDetails === null) {
       navigate('/');
     }
-    document.title = t('newStory.title');
+    document.title = t('content.newStory.title');
   }, [navigate, t, userDetails]);
 
   async function onSubmit(data: NewStoryFormFields) {
     setStep(step + 1);
     const id = await createBlog(data);
-    toast.success(t('newStory.posting.success'));
+    toast.success(t('content.newStory.posting.success'));
     navigate(`/blog/${id}`);
   }
 
@@ -102,9 +102,9 @@ export default function NewStory() {
     <>
       <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} count={3}>
         <StepsList>
-          <StepsItem index={0} title={t('newStory.tabs.write')} icon={<LuPencil />} />
-          <StepsItem index={1} title={t('newStory.tabs.preview')} icon={<IoDocumentTextOutline />} />
-          <StepsItem index={2} title={t('newStory.tabs.customize')} icon={<BsStars />} />
+          <StepsItem index={0} title={t('content.newStory.tabs.write')} icon={<LuPencil />} />
+          <StepsItem index={1} title={t('content.newStory.tabs.preview')} icon={<IoDocumentTextOutline />} />
+          <StepsItem index={2} title={t('content.newStory.tabs.customize')} icon={<BsStars />} />
         </StepsList>
 
         <StepsContent index={0}>
@@ -138,15 +138,15 @@ export default function NewStory() {
         {step < 3 && (
           <Group mb={10}>
             <Button variant="outline" size="sm" onClick={() => setStep(step - 1)} disabled={step === 0}>
-              {t('newStory.buttons.prev')}
+              {t('content.newStory.buttons.prev')}
             </Button>
             {step === 2 ? (
               <Button type="submit" variant="outline" size="sm" onClick={handleSubmit(onSubmit)}>
-                {t('newStory.buttons.post')}
+                {t('content.newStory.buttons.post')}
               </Button>
             ) : (
               <Button variant="outline" size="sm" onClick={checkPageCorrectness}>
-                {t('newStory.buttons.next')}
+                {t('content.newStory.buttons.next')}
               </Button>
             )}
           </Group>

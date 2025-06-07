@@ -16,14 +16,14 @@ export function VerifyEmail() {
   useEffect(() => {
     toast
       .promise(verifyEmail(searchParams.get('token')), {
-        loading: CustomLoading(t('emailVerification.toast.loading')),
+        loading: CustomLoading(t('auth.emailVerification.toast.loading')),
         success: () => {
           navigate('/login');
-          return t('emailVerification.toast.success');
+          return t('auth.emailVerification.toast.success');
         },
         error: () => {
           navigate('/');
-          return t('emailVerification.toast.error');
+          return t('auth.emailVerification.toast.error');
         },
       })
       .unwrap()

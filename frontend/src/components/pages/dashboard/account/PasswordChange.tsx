@@ -26,11 +26,11 @@ export function PasswordChange() {
   const { t } = useTranslation();
 
   const schema = z.object({
-    oldPassword: z.string().nonempty(t('dashboard.account.errors.noPassword')),
-    newPassword: z.string().min(8, t('dashboard.account.errors.minPassword')),
+    oldPassword: z.string().nonempty(t('common.password.errors.required')),
+    newPassword: z.string().min(8, t('common.password.errors.minLength')),
     passwordConfirm: z.string(),
   }).refine((data) => data.newPassword === data.passwordConfirm, {
-    message: t('loginPage.errors.confPassword'),
+    message: t('common.password.errors.passwordMatch'),
     path: ['passwordConfirm'],
   });
 
@@ -63,15 +63,15 @@ export function PasswordChange() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(updatePassword(data.oldPassword, data.newPassword), {
-      loading: CustomLoading(t('dashboard.account.toast.password.loading')),
+      loading: CustomLoading(t('common.password.toast.loading')),
       success: () => {
         setIsSubmitting(false);
         setOpen(false);
-        return t('dashboard.account.toast.password.success');
+        return t('common.password.toast.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('dashboard.account.toast.password.error');
+        return t('common.password.toast.error');
       },
     });
   };
@@ -89,25 +89,25 @@ export function PasswordChange() {
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>{t('dashboard.account.fields.password')}</DialogTitle>
+              <DialogTitle>{t('user.profile.account.fields.changePassword')}</DialogTitle>
             </DialogHeader>
             <DialogBody>
               <Fieldset.Root>
                 <Field.Root invalid={!!errors.oldPassword}>
-                  <Field.Label>{t('dashboard.account.password.old')}</Field.Label>
+                  <Field.Label>{t('common.password.oldPassword')}</Field.Label>
                   <PasswordInput {...register('oldPassword')} />
                   <Field.ErrorText>{errors.oldPassword?.message}</Field.ErrorText>
                 </Field.Root>
 
                 <Field.Root invalid={!!errors.newPassword}>
-                  <Field.Label>{t('dashboard.account.password.new')}</Field.Label>
+                  <Field.Label>{t('common.password.newPassword')}</Field.Label>
                   <PasswordInput {...register('newPassword')} />
                   <Field.ErrorText>{errors.newPassword?.message}</Field.ErrorText>
                   <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('newPassword'))} />
                 </Field.Root>
 
                 <Field.Root invalid={!!errors.passwordConfirm}>
-                  <Field.Label>{t('dashboard.account.password.confirm')}</Field.Label>
+                  <Field.Label>{t('common.password.confirmPassword')}</Field.Label>
                   <PasswordInput {...register('passwordConfirm')} />
                   <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
                 </Field.Root>
@@ -133,7 +133,7 @@ export function PasswordChange() {
         transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.12 }}
       >
         <Flex align="start" justifyContent="space-between" alignItems="center" mt="4">
-          <Heading size="md">{t('dashboard.account.fields.password')}</Heading>
+          <Heading size="md">{t('user.profile.account.fields.changePassword')}</Heading>
           <Button size="sm" variant="outline" onClick={() => setOpen(true)}>
             <FaKey />
             {t('buttons.change')}

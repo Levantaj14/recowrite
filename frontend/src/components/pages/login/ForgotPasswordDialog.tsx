@@ -18,7 +18,7 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
   const { t } = useTranslation();
 
   const schema = z.object({
-    email: z.string().email(t('forgotPasswordDialog.error.email.incorrect')).nonempty(t('forgotPasswordDialog.error.email.mandatory')),
+    email: z.string().email(t('auth.forgotPassword.dialog.error.email.incorrect')).nonempty(t('auth.forgotPassword.dialog.error.email.mandatory')),
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -37,15 +37,15 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(forgotPassword(data.email), {
-      loading: CustomLoading(t('forgotPasswordDialog.toast.loading')),
+      loading: CustomLoading(t('auth.forgotPassword.dialog.toast.loading')),
       success: () => {
         setIsSubmitting(false);
         setOpen(false);
-        return t('forgotPasswordDialog.toast.success');
+        return t('auth.forgotPassword.dialog.toast.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('forgotPasswordDialog.toast.error');
+        return t('auth.forgotPassword.dialog.toast.error');
       },
     });
   };
@@ -66,14 +66,14 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Dialog.Header>
                   <Stack gap={2}>
-                    <Dialog.Title>{t('forgotPassword.title')}</Dialog.Title>
-                    <Dialog.Description>{t('forgotPasswordDialog.desc')}</Dialog.Description>
+                    <Dialog.Title>{t('auth.forgotPassword.title')}</Dialog.Title>
+                    <Dialog.Description>{t('auth.forgotPassword.dialog.desc')}</Dialog.Description>
                   </Stack>
                 </Dialog.Header>
                 <Dialog.Body>
                   <Fieldset.Root>
                     <Field.Root invalid={!!errors.email}>
-                      <Field.Label>{t('forgotPasswordDialog.email')}</Field.Label>
+                      <Field.Label>{t('auth.forgotPassword.dialog.email')}</Field.Label>
                       <Input {...register('email')} />
                       <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
                     </Field.Root>

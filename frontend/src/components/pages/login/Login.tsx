@@ -16,8 +16,8 @@ import ForgotPasswordDialog from '@/components/pages/login/ForgotPasswordDialog.
 export default function Login() {
   const { t } = useTranslation();
   const schema = z.object({
-    username: z.string().nonempty(t('loginPage.errors.username')),
-    password: z.string().min(8, t('loginPage.errors.password')),
+    username: z.string().nonempty(t('common.errors.required.username')),
+    password: z.string().min(8, t('common.errors.required.field')),
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -28,7 +28,7 @@ export default function Login() {
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    document.title = t('loginPage.login.title');
+    document.title = t('auth.login.title');
   }, [t]);
 
   const {
@@ -43,7 +43,7 @@ export default function Login() {
     setIsSubmitting(true);
     toast
       .promise(login(data), {
-        loading: CustomLoading(t('loginPage.toast.login.loading')),
+        loading: CustomLoading(t('auth.login.toast.loading')),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['blog'],
@@ -51,11 +51,11 @@ export default function Login() {
             exact: false,
           });
           navigate('/dashboard');
-          return t('loginPage.toast.login.success');
+          return t('auth.login.toast.success');
         },
         error: () => {
           setIsSubmitting(false);
-          return t('loginPage.toast.login.error');
+          return t('auth.login.toast.error');
         },
       })
       .unwrap()
@@ -71,26 +71,26 @@ export default function Login() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset.Root size="lg" maxW="md">
           <Stack>
-            <Fieldset.Legend>{t('loginPage.login.title')}</Fieldset.Legend>
-            <Fieldset.HelperText>{t('loginPage.login.desc')}</Fieldset.HelperText>
+            <Fieldset.Legend>{t('auth.login.title')}</Fieldset.Legend>
+            <Fieldset.HelperText>{t('auth.login.desc')}</Fieldset.HelperText>
           </Stack>
 
           <Fieldset.Content>
             <Field.Root invalid={!!errors.username}>
-              <Field.Label>{t('loginPage.fields.username')}</Field.Label>
+              <Field.Label>{t('common.fields.username')}</Field.Label>
               <Input {...register('username')} />
               <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
             </Field.Root>
 
             <Field.Root invalid={!!errors.password}>
-              <Field.Label>{t('loginPage.fields.password')}</Field.Label>
+              <Field.Label>{t('common.fields.password')}</Field.Label>
               <PasswordInput {...register('password')} />
               <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
             </Field.Root>
           </Fieldset.Content>
 
           <HStack gap={1}>
-            <Trans i18nKey="loginPage.login.forgot">
+            <Trans i18nKey="auth.login.forgot">
               Did you <Link onClick={() => {
               setOpenDialog(true);
             }}>forget your password</Link>?
