@@ -26,13 +26,14 @@ import ContinueReadingSection from '@/components/pages/story/ContinueReadingSect
 import PostOpening from '@/components/pages/story/PostOpening.tsx';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import ReportButton from '@/components/pages/story/ReportButton.tsx';
+import NotFound from '@/components/pages/NotFound.tsx';
 
 function Story() {
   const { t } = useTranslation();
   const { blogId } = useParams();
   const [date, setDate] = useState<Date>();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['blog', blogId],
     queryFn: async () => {
       const blogData = await fetchBlog(blogId);
@@ -49,7 +50,7 @@ function Story() {
   }, [data?.blogData.title]);
 
   function blogPost() {
-    return (
+    return isError ? <NotFound /> : (
       <motion.div
         key={blogId}
         initial={{ opacity: 0, y: 30 }}
