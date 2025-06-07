@@ -55,7 +55,7 @@ export default function PostOpening({ data, setDate }: Props) {
 
   return (
     <Flex mt={5} flexDirection="column" alignItems="center">
-      <Text fontSize="2xl">{t('story.unavailable')}</Text>
+      <Text fontSize="2xl">{t('content.story.unavailable')}</Text>
       <Flex flexDirection="row" alignItems="center">
         <NumberFlowGroup>
           <Text fontSize="2xl" fontWeight="semibold">

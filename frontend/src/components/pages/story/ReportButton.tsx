@@ -32,18 +32,18 @@ export default function ReportButton({ blogData }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const schema = z.object({
-    selected: z.string().nonempty(t('story.report.emptyError')),
+    selected: z.string().nonempty(t('content.story.report.emptyError')),
   });
 
   const items = [
-    {value: 'Spam', label: t('story.report.options.spam')},
-    {value: 'Hate speech or abusive content', label: t('story.report.options.hate')},
-    {value: 'Harassment or bullying', label: t('story.report.options.bully')},
-    {value: 'Sexual or explicit content', label: t('story.report.options.explicit')},
-    {value: 'Violent or graphic content', label: t('story.report.options.violent')},
-    {value: 'Misinformation', label: t('story.report.options.misinformation')},
-    {value: 'Copyright infringement', label: t('story.report.options.copyright')},
-    {value: 'Plagiarism', label: t('story.report.options.plagiarism')}
+    {value: 'Spam', label: t('content.story.report.options.spam')},
+    {value: 'Hate speech or abusive content', label: t('content.story.report.options.hate')},
+    {value: 'Harassment or bullying', label: t('content.story.report.options.bully')},
+    {value: 'Sexual or explicit content', label: t('content.story.report.options.explicit')},
+    {value: 'Violent or graphic content', label: t('content.story.report.options.violent')},
+    {value: 'Misinformation', label: t('content.story.report.options.misinformation')},
+    {value: 'Copyright infringement', label: t('content.story.report.options.copyright')},
+    {value: 'Plagiarism', label: t('content.story.report.options.plagiarism')}
   ];
 
   type FormFields = z.infer<typeof schema>;
@@ -60,15 +60,15 @@ export default function ReportButton({ blogData }: Props) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(sendReport(Number(blogData?.id), data.selected), {
-      loading: CustomLoading(t('story.report.toast.loading')),
+      loading: CustomLoading(t('content.story.report.toast.loading')),
       success: () => {
         setOpen(false);
         setIsSubmitting(false);
-        return t('story.report.toast.success');
+        return t('content.story.report.toast.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('story.report.toast.error');
+        return t('content.story.report.toast.error');
       },
     })
   };
@@ -93,7 +93,7 @@ export default function ReportButton({ blogData }: Props) {
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>{t('story.report.title')}</DialogTitle>
+              <DialogTitle>{t('content.story.report.title')}</DialogTitle>
             </DialogHeader>
             <DialogBody>
               <Fieldset.Root>
@@ -142,7 +142,7 @@ export default function ReportButton({ blogData }: Props) {
         </DialogContent>
       </DialogRoot>
       <Tooltip
-        content={userDetails === null && t('story.like.noLogin')}
+        content={userDetails === null && t('content.story.like.noLogin')}
         disabled={userDetails !== null}
         openDelay={100}
         closeDelay={100}

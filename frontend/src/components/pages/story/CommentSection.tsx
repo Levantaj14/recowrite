@@ -36,7 +36,7 @@ export default function CommentSection() {
   const { t } = useTranslation();
 
   const schema = z.object({
-    comment: z.string().nonempty(t('story.comments.errors.commentRequired')).max(255, t('story.comments.errors.commentLength')),
+    comment: z.string().nonempty(t('common.errors.required.comment')).max(255, t('common.errors.validation.commentLength')),
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -69,18 +69,18 @@ export default function CommentSection() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(postComment(blogId, data.comment), {
-      loading: CustomLoading(t('story.comments.toasts.post.loading')),
+      loading: CustomLoading(t('content.story.comments.toasts.post.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],
         });
         setIsSubmitting(false);
         reset();
-        return t('story.comments.toasts.post.success');
+        return t('content.story.comments.toasts.post.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('story.comments.toasts.post.error');
+        return t('content.story.comments.toasts.post.error');
       },
     });
   };
@@ -100,7 +100,7 @@ export default function CommentSection() {
 
   function Comments() {
     if (!data || data.length === 0) {
-      return <Text>{t('story.comments.none')}</Text>;
+      return <Text>{t('content.story.comments.none')}</Text>;
     }
 
     const visibleComments = showAll ? data : [data[0]];
@@ -159,9 +159,9 @@ export default function CommentSection() {
 
         {remainingComments > 0 && !showAll && (
           <Button mt={4} onClick={() => setShowAll(true)}>
-            {t('story.comments.showMore.base', {
+            {t('content.story.comments.showMore.base', {
               count: remainingComments,
-              comment: t('story.comments.showMore.comment', { count: remainingComments }),
+              comment: t('content.story.comments.showMore.comment', { count: remainingComments }),
             })}
           </Button>
         )}
@@ -172,12 +172,12 @@ export default function CommentSection() {
   return (
     <Box mt={5} mb={7}>
       <Heading size="3xl" mb={3}>
-        {t('story.comments.title')}
+        {t('content.story.comments.title')}
       </Heading>
       {userDetails !== null && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Heading size="xl" mb={3}>
-            {t('story.comments.new')}
+            {t('content.story.comments.new')}
           </Heading>
           <Field.Root invalid={!!errors.comment}>
             <Textarea {...register('comment')} autoresize />

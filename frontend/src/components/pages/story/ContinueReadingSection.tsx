@@ -39,7 +39,7 @@ export default function ContinueReadingSection() {
 
   function decideDescription(blog: BlogType) {
     if (new Date(blog.date) > new Date()) {
-      return t('story.like.unavailable');
+      return t('content.story.unpublished');
     }
     if (blog.description === '') {
       let auxContent = blog.content;
@@ -61,7 +61,7 @@ export default function ContinueReadingSection() {
         <>
           <Separator />
           <Heading size="3xl" mt="5" mb="5">
-            {t('story.continue')}
+            {t('common.actions.continue')}
           </Heading>
           {recIsLoading ? <LoadingAnimation /> : (
             <motion.div

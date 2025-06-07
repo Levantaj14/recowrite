@@ -62,7 +62,7 @@ function Story() {
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={3}>
           <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
             <Text textStyle="md" mr={1}>
-              {t('story.written')}
+              {t('content.story.written')}
             </Text>
             <HoverCardRoot>
               <HoverCardTrigger>

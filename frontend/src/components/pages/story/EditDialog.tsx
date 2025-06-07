@@ -31,7 +31,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
   const { t } = useTranslation();
 
   const schema = z.object({
-    comment: z.string().nonempty(t('story.comments.errors.commentRequired')).max(255, t('story.comments.errors.commentLength')),
+    comment: z.string().nonempty(t('common.errors.required.comment')).max(255, t('common.errors.validation.commentLength')),
   });
   
   type FormFields = z.infer<typeof schema>;
@@ -58,18 +58,18 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
   const clickedEdit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(editComments(commentId, data.comment), {
-      loading: CustomLoading(t('story.comments.toasts.edit.loading')),
+      loading: CustomLoading(t('content.story.comments.toasts.edit.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],
         });
         setOpen(false);
         setIsSubmitting(false);
-        return t('story.comments.toasts.edit.success');
+        return t('content.story.comments.toasts.edit.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('story.comments.toasts.edit.error');
+        return t('content.story.comments.toasts.edit.error');
       },
     });
   };
@@ -78,7 +78,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
     <DialogRoot size="lg" placement="top" open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t('story.comments.edit.title')}</DialogTitle>
+          <DialogTitle>{t('content.story.comments.edit.title')}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(clickedEdit)}>
           <DialogBody pb="4">

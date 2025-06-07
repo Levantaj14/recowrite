@@ -169,7 +169,7 @@
           "socials": {
             "loading": "Közösségi háló felhsználónév mentése...",
             "success": "Közösségi háló felhasználónév lementve",
-            "error": "Nem sikerült menteni a felhasználóneved egyik közösségi oldalahoz"
+            "error": "Nem sikerült menteni a felhasználóneved egyik közösségi hálódhoz"
           },
           "bio": {
             "loading": "Bio mentése...",

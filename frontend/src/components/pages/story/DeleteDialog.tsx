@@ -32,18 +32,18 @@ export default function DeleteDialog({ open, setOpen, commentId }: Props) {
   const clickedDelete = () => {
     setIsSubmitting(true);
     toast.promise(deleteComment(commentId), {
-      loading: CustomLoading(t('story.comments.toasts.delete.loading')),
+      loading: CustomLoading(t('content.story.comments.toasts.delete.loading')),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],
         });
         setOpen(false);
         setIsSubmitting(false);
-        return t('story.comments.toasts.delete.success');
+        return t('content.story.comments.toasts.delete.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('story.comments.toasts.delete.error');
+        return t('content.story.comments.toasts.delete.error');
       },
     });
   };
@@ -52,9 +52,9 @@ export default function DeleteDialog({ open, setOpen, commentId }: Props) {
     <DialogRoot placement="center" role="alertdialog" open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t('story.comments.delete.title')}</DialogTitle>
+          <DialogTitle>{t('content.story.comments.delete.title')}</DialogTitle>
         </DialogHeader>
-        <DialogBody>{t('story.comments.delete.desc')}</DialogBody>
+        <DialogBody>{t('content.story.comments.delete.desc')}</DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
             <Button variant="outline" disabled={isSubmitting}>

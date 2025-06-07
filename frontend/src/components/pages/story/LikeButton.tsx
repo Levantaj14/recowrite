@@ -48,7 +48,7 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
 
   return available && (
     <Tooltip
-      content={userDetails === null && t('story.like.noLogin')}
+      content={userDetails === null && t('content.story.like.noLogin')}
       disabled={userDetails !== null}
       openDelay={100}
       closeDelay={100}
