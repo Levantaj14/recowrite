@@ -33,7 +33,7 @@ const StickyNavbar = () => {
           </NavLink>
           <Spacer />
           {isAdmin && (
-            <NavLink to="/admin">
+            <NavLink to="/management">
               <Button variant="ghost" size="xs" mr="2">
                 {t('admin.title')}
               </Button>

@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
 import CustomLoading from '@/components/elements/CustomLoading.tsx';
+import ErrorPage from '@/components/pages/ErrorPage.tsx';
 
 export default function ForgotPassword() {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ export default function ForgotPassword() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const schema = z.object({
     password: z.string().min(8, t('common.password.errors.minLength')),
@@ -82,10 +84,12 @@ export default function ForgotPassword() {
           navigate('/');
         }
       });
+    } else {
+      setShowError(true);
     }
   }, [t, navigate, searchParams]);
 
-  return (
+  return showError ? <ErrorPage code={400} /> : (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset.Root size="lg" maxW="md">

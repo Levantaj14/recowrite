@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createBlog } from '@/apis/blogApi.ts';
 import { toast } from 'sonner';
+import ErrorPage from '@/components/pages/ErrorPage.tsx';
 
 export interface NewStoryFormFields {
   content: string;
@@ -59,7 +60,7 @@ export default function NewStory() {
       },
       {
         message: t('common.errors.validation.invalidUrl'),
-      }
+      },
     ),
     banner_type: z.enum(['IMAGE_URL', 'IMAGE_UPLOAD']),
     banner_name: z.string().optional(),
@@ -78,10 +79,9 @@ export default function NewStory() {
   });
 
   useEffect(() => {
-    if (userDetails === null) {
-      navigate('/');
+    if (userDetails !== null) {
+      document.title = t('content.newStory.title');
     }
-    document.title = t('content.newStory.title');
   }, [navigate, t, userDetails]);
 
   async function onSubmit(data: NewStoryFormFields) {
@@ -98,7 +98,7 @@ export default function NewStory() {
     }
   }
 
-  return (
+  return userDetails === null ? <ErrorPage code={401} /> : (
     <>
       <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} count={3}>
         <StepsList>

@@ -8,7 +8,7 @@ import StickyNavbar from '@/components/elements/navbar/Navbar.tsx';
 import Story from '@/components/pages/story/Story.tsx';
 import User from '@/components/pages/User.tsx';
 import LoginPage from '@/components/pages/login/LoginPage.tsx';
-import NotFound from '@/components/pages/NotFound.tsx';
+import ErrorPage from '@/components/pages/ErrorPage.tsx';
 import { Toaster } from 'sonner';
 import Home from '@/components/pages/Home.tsx';
 import '../i18n.ts';
@@ -105,10 +105,10 @@ function App() {
                   <Route path="/user/:userId" element={<User />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/admin" element={<AdminConsole />} />
+                  <Route path="/management" element={<AdminConsole />} />
                   <Route path="/forgotPassword" element={<ForgotPassword />} />
                   <Route path="/verify/email" element={<VerifyEmail />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="*" element={<ErrorPage code={404} />} />
                 </Routes>
               </Container>
             </BrowserRouter>

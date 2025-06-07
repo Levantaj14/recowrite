@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { testAdmin } from '@/apis/adminApi.ts';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
-import NotFound from '@/components/pages/NotFound.tsx';
+import ErrorPage from '@/components/pages/ErrorPage.tsx';
 import { Heading, Tabs } from '@chakra-ui/react';
 import Preferences from '@/components/pages/dashboard/Preferences.tsx';
 import ReportsTab from '@/components/pages/admin/tabs/ReportsTab.tsx';
@@ -48,6 +48,6 @@ export default function AdminConsole() {
       </Tabs.Root>
     </>
   ) : (
-    <NotFound />
+    <ErrorPage code={404} />
   );
 }
