@@ -131,9 +131,19 @@
   },
   "navigation": {
     "notFound": {
-      "tabTile": "Nem található",
+      "tabTitle": "Nem található",
       "title": "Talán el vagy veszlődve",
       "desc": "Az oldal amit el akarsz érni nem létezik"
+    },
+    "unauthorized": {
+      "tabTitle": "Nem engedélyezett",
+      "title": "Hozzáférés megtagadva",
+      "desc": "Nincs jogosultságod ehhez az oldalhoz. Kérlek jelentkezz be, vagy regisztrálj egy új fiókot"
+    },
+    "badRequest": {
+      "tabTitle": "Hibás kérés",
+      "title": "Hibás kérés",
+      "desc": "A kérésed hibás volt. Kérlek ellenőrizd a bevitelt, és próbáld újra"
     },
     "navbar": {
       "buttons": {

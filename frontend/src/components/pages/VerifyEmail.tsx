@@ -6,6 +6,7 @@ import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useTranslation } from 'react-i18next';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
+import ErrorPage from './ErrorPage.tsx';
 
 export function VerifyEmail() {
   const { t } = useTranslation();
@@ -14,25 +15,27 @@ export function VerifyEmail() {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    toast
-      .promise(verifyEmail(searchParams.get('token')), {
-        loading: CustomLoading(t('auth.emailVerification.toast.loading')),
-        success: () => {
-          navigate('/login');
-          return t('auth.emailVerification.toast.success');
-        },
-        error: () => {
-          navigate('/');
-          return t('auth.emailVerification.toast.error');
-        },
-      })
-      .unwrap()
-      .then((r) => {
-        setUserDetails(r);
-      });
+    if (searchParams.get('token')) {
+      toast
+        .promise(verifyEmail(searchParams.get('token')), {
+          loading: CustomLoading(t('auth.emailVerification.toast.loading')),
+          success: () => {
+            navigate('/login');
+            return t('auth.emailVerification.toast.success');
+          },
+          error: () => {
+            navigate('/');
+            return t('auth.emailVerification.toast.error');
+          },
+        })
+        .unwrap()
+        .then((r) => {
+          setUserDetails(r);
+        });
+    }
   }, [t, navigate, searchParams, setUserDetails]);
 
-  return (
+  return searchParams.get('token') ? (
     <LoadingAnimation />
-  );
+  ) : <ErrorPage code={400} />;
 }

@@ -26,7 +26,7 @@ import ContinueReadingSection from '@/components/pages/story/ContinueReadingSect
 import PostOpening from '@/components/pages/story/PostOpening.tsx';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import ReportButton from '@/components/pages/story/ReportButton.tsx';
-import NotFound from '@/components/pages/NotFound.tsx';
+import ErrorPage from '@/components/pages/ErrorPage.tsx';
 
 function Story() {
   const { t } = useTranslation();
@@ -51,7 +51,7 @@ function Story() {
   }, [data?.blogData.title]);
 
   function blogPost() {
-    return isError ? <NotFound /> : (
+    return isError ? <ErrorPage code={404} /> : (
       <motion.div
         key={blogId}
         initial={{ opacity: 0, y: 30 }}

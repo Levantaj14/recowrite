@@ -131,9 +131,19 @@
   },
   "navigation": {
     "notFound": {
-      "tabTile": "Nu există",
+      "tabTitle": "Nu există",
       "title": "T-ai pierdut?",
       "desc": "Pagina pe care-l vrei să-l vizitezi nu există"
+    },
+    "unauthorized": {
+      "tabTitle": "Neautorizat",
+      "title": "Nu ai acces",
+      "desc": "Trebuie să fii autentificat pentru a accesa această pagină"
+    },
+    "badRequest": {
+      "tabTitle": "Cerere incorectă",
+      "title": "Cerere incorectă",
+      "desc": "Cererea ta nu a putut fi procesată din cauza unei erori de client"
     },
     "navbar": {
       "buttons": {

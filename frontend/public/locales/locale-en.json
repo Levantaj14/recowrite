@@ -131,9 +131,19 @@
   },
   "navigation": {
     "notFound": {
-      "tabTile": "Not Found",
+      "tabTitle": "Not Found",
       "title": "Maybe your lost",
       "desc": "The page that your trying to access does not exist"
+    },
+    "unauthorized": {
+      "tabTitle": "Unauthorized",
+      "title": "Unauthorized",
+      "desc": "You must be logged in to access this page"
+    },
+    "badRequest": {
+      "tabTitle": "Bad Request",
+      "title": "Bad Request",
+      "desc": "The request could not be understood by the server due to malformed syntax"
     },
     "navbar": {
       "buttons": {
