@@ -95,28 +95,45 @@ public class RecommendationService implements RecommendationServiceInterface {
     @Override
     public void addRecommendation(long blogId) {
         try {
-            Map<String, Long> data = new ConcurrentHashMap<>();
-            data.put("id", blogId);
-            ObjectMapper objectMapper = new ObjectMapper();
-            String dataToSend = objectMapper.writeValueAsString(data);
-
             String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/add";
-            URL url = new URI(apiHost).toURL();
+            URI uri = UriComponentsBuilder.fromUriString(apiHost)
+                    .queryParam("id", blogId)
+                    .build()
+                    .toUri();
+            URL url = uri.toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "application/json");
-            try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
-                os.writeBytes(dataToSend);
-                os.flush();
-            }
+            connection.connect();
             int responseCode = connection.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 log.error("Couldn't add the blog with id {} to the recommendation system", blogId);
             }
             connection.disconnect();
-        } catch (URISyntaxException | IOException e) {
-            log.error("Error processing data");
+        } catch (IOException e) {
+            log.error("Error processing data when trying to add the blog with id {}", blogId);
+        }
+    }
+
+    @Override
+    public void removeRecommendation(long blogId) {
+        try {
+            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/remove";
+            URI uri = UriComponentsBuilder.fromUriString(apiHost)
+                    .queryParam("id", blogId)
+                    .build()
+                    .toUri();
+            URL url = uri.toURL();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.connect();
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                log.error("Couldn't remove the blog with id {} from the recommendation system", blogId);
+            }
+            connection.disconnect();
+        } catch (IOException e) {
+            log.error("Error processing data when removing the blog with id {} from the recommendation system",  blogId);
         }
     }
 }

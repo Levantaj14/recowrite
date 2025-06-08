@@ -19,12 +19,15 @@ public class StrikeService implements StrikeServiceInterface {
     private final StrikeManager strikeManager;
     private final BlogManager blogManager;
     private final MailServiceInterface mailService;
+    private final RecommendationService recommendationService;
 
     @Autowired
-    public StrikeService(StrikeManager strikeManager, BlogManager blogManager, MailServiceInterface mailService) {
+    public StrikeService(StrikeManager strikeManager, BlogManager blogManager, MailServiceInterface mailService,
+                         RecommendationService recommendationService) {
         this.strikeManager = strikeManager;
         this.blogManager = blogManager;
         this.mailService = mailService;
+        this.recommendationService = recommendationService;
     }
 
     @Override
@@ -39,6 +42,7 @@ public class StrikeService implements StrikeServiceInterface {
         BlogModel blogModel = reportModel.getBlog();
         blogModel.setVisible(false);
         blogManager.save(blogModel);
+        recommendationService.removeRecommendation(blogModel.getId());
 
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", reportModel.getReportedUser().getUsername());
@@ -62,6 +66,7 @@ public class StrikeService implements StrikeServiceInterface {
         BlogModel blogModel = reportModel.getBlog();
         blogModel.setVisible(true);
         blogManager.save(blogModel);
+        recommendationService.addRecommendation(blogModel.getId());
 
         UserModel user = reportModel.getReportedUser();
         Map<String, String> model = new ConcurrentHashMap<>();
