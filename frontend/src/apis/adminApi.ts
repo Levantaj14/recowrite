@@ -12,9 +12,20 @@ const adminApi = axios.create({
 
 export type StatusType = 'OPEN' | 'DISMISSED' | 'STRIKE_GIVEN';
 
+export const reportReasons: Record<number, string> = {
+  1: 'content.story.report.options.spam',
+  2: 'content.story.report.options.hate',
+  3: 'content.story.report.options.bully',
+  4: 'content.story.report.options.explicit',
+  5: 'content.story.report.options.violent',
+  6: 'content.story.report.options.misinformation',
+  7: 'content.story.report.options.copyright',
+  8: 'content.story.report.options.plagiarism',
+}
+
 export type ReportType = {
   id: number;
-  reason: string;
+  reasonId: number;
   date: Date;
   status: StatusType;
   blogId: number;

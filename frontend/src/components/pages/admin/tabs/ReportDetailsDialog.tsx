@@ -2,7 +2,7 @@ import { Avatar, Badge, CloseButton, DataList, Dialog, HStack, Link, Portal, Tex
 import { Button } from '@/components/ui/button.tsx';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { ReportType, StatusType } from '@/apis/adminApi.ts';
+import { reportReasons, ReportType, StatusType } from '@/apis/adminApi.ts';
 import { UserType } from '@/apis/userApi.ts';
 import { BlogType } from '@/apis/blogApi.ts';
 
@@ -99,7 +99,7 @@ export default function ReportDetailsDialog({
 
                   <DataList.Item>
                     <DataList.ItemLabel>{t('admin.report.table.dialog.reason')}</DataList.ItemLabel>
-                    <DataList.ItemValue>{selectedReport?.reason}</DataList.ItemValue>
+                    <DataList.ItemValue>{selectedReport && t(reportReasons[selectedReport.reasonId])}</DataList.ItemValue>
                   </DataList.Item>
 
                   <DataList.Item>
