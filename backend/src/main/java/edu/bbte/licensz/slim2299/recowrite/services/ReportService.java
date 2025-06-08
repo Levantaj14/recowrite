@@ -7,11 +7,9 @@ import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.ReportManager;
-import edu.bbte.licensz.slim2299.recowrite.dao.managers.StrikeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
-import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.ReportsMapper;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ReportService implements ReportServiceInterface {
@@ -28,18 +25,16 @@ public class ReportService implements ReportServiceInterface {
     private final BlogManager blogManager;
     private final UserManager userManager;
     private final ReportsMapper reportsMapper;
-    private final StrikeManager strikeManager;
-    private final MailServiceInterface mailService;
+    private final StrikeServiceInterface strikeService;
 
     @Autowired
     public ReportService(ReportManager reportManager, BlogManager blogManager, UserManager userManager,
-                         ReportsMapper reportsMapper, StrikeManager strikeManager, MailServiceInterface mailService) {
+                         ReportsMapper reportsMapper, StrikeServiceInterface strikeService) {
         this.reportManager = reportManager;
         this.blogManager = blogManager;
         this.userManager = userManager;
         this.reportsMapper = reportsMapper;
-        this.strikeManager = strikeManager;
-        this.mailService = mailService;
+        this.strikeService = strikeService;
     }
 
     @Override
@@ -109,49 +104,18 @@ public class ReportService implements ReportServiceInterface {
         reportManager.save(reportModel);
 
         if (ReportModel.ReportStatus.STRIKE_GIVEN.equals(reportStatusDtoIn.getReportStatus())) {
-            strikeGiven(reportModel);
+            strikeService.handleStrikeGiven(reportModel);
         }
     }
 
     private void reportReopened(ReportModel reportModel) {
         if (reportModel.getStatus().equals(ReportModel.ReportStatus.STRIKE_GIVEN)) {
-            Optional<StrikeModel> strikeModel = strikeManager.findByReport(reportModel);
-            if (strikeModel.isEmpty()) {
-                return;
-            }
-            strikeManager.delete(strikeModel.get());
-
-            UserModel user = reportModel.getReportedUser();
-            Map<String, String> model = new ConcurrentHashMap<>();
-            model.put("username", user.getUsername());
-            model.put("strikeNr", strikeManager.countByUser(user));
-            mailService.sendMessage(user.getEmail(), "An Update on Your Strike",
-                    "strikeRemoved", model, null);
-
+            strikeService.handleStrikeRemoved(reportModel);
         }
 
         reportModel.setStatus(ReportModel.ReportStatus.OPEN);
         reportModel.setReviewer(null);
         reportModel.setNote("");
         reportManager.save(reportModel);
-    }
-
-    private void strikeGiven(ReportModel reportModel) {
-        StrikeModel strikeModel = new StrikeModel();
-        LocalDateTime now = LocalDateTime.now();
-        strikeModel.setEvaluated(now);
-        strikeModel.setReport(reportModel);
-        strikeModel.setUser(reportModel.getReportedUser());
-        strikeManager.save(strikeModel);
-
-        Map<String, String> model = new ConcurrentHashMap<>();
-        model.put("username", reportModel.getReportedUser().getUsername());
-        model.put("date", strikeModel.getEvaluated().atZone(java.time.ZoneId.systemDefault())
-                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm z")));
-        model.put("blogTitle", reportModel.getBlog().getTitle());
-        model.put("reason", reportModel.getReason());
-        model.put("strikeNr", strikeManager.countByUser(reportModel.getReportedUser()));
-        mailService.sendMessage(reportModel.getReportedUser().getEmail(), "Notice of Policy Violation",
-                "strikeGiven", model, null);
     }
 }
