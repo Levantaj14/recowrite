@@ -1,7 +1,10 @@
 package edu.bbte.licensz.slim2299.recowrite.dao.models.embeddings;
 
 import edu.bbte.licensz.slim2299.recowrite.dao.models.*;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +21,6 @@ public class UserAssociations {
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SocialsModel> socials;
 
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<LikeModel> likes;
 
@@ -28,7 +30,7 @@ public class UserAssociations {
     @OneToMany(mappedBy = "reportedUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ReportModel> reportedUsers;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StrikeModel> strikes;
 
     @OneToMany(mappedBy = "reviewer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

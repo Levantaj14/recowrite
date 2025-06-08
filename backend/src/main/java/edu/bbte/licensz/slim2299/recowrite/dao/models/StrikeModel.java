@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +21,5 @@ public class StrikeModel extends BaseEntity {
     @OneToOne(optional = false, fetch = FetchType.EAGER)
     private ReportModel report;
 
-    private Date evaluated;
+    private LocalDateTime evaluated;
 }

@@ -2,13 +2,13 @@ package edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class ReportDtoOut {
     private long id;
     private String reason;
-    private Date date;
+    private LocalDateTime date;
     private String status;
     private long blogId;
     private long reportedUserId;

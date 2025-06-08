@@ -18,6 +18,7 @@ import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundExc
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,16 +30,18 @@ public class ReportService implements ReportServiceInterface {
     private final ReportsMapper reportsMapper;
     private final StrikeManager strikeManager;
     private final MailServiceInterface mailService;
+    private final UserService userService;
 
     @Autowired
     public ReportService(ReportManager reportManager, BlogManager blogManager, UserManager userManager,
-                         ReportsMapper reportsMapper, StrikeManager strikeManager, MailServiceInterface mailService) {
+                         ReportsMapper reportsMapper, StrikeManager strikeManager, MailServiceInterface mailService, UserService userService) {
         this.reportManager = reportManager;
         this.blogManager = blogManager;
         this.userManager = userManager;
         this.reportsMapper = reportsMapper;
         this.strikeManager = strikeManager;
         this.mailService = mailService;
+        this.userService = userService;
     }
 
     @Override
@@ -75,7 +78,8 @@ public class ReportService implements ReportServiceInterface {
         ReportModel reportModel = new ReportModel();
         reportModel.setBlog(blogModel);
         reportModel.setReason(report.getReason());
-        reportModel.setReportDate(new Date());
+        LocalDateTime now = LocalDateTime.now();
+        reportModel.setReportDate(now);
         reportModel.setReportedUser(blogModel.getUser());
         reportModel.setReporter(reporterUser);
         return reportManager.save(reportModel).getId();
@@ -112,23 +116,32 @@ public class ReportService implements ReportServiceInterface {
     }
 
     private void reportReopened(ReportModel reportModel) {
-        reportModel.setStatus(ReportModel.ReportStatus.OPEN);
-        reportModel.setReviewer(null);
-        reportModel.setNote("");
-        reportManager.save(reportModel);
-
         if (reportModel.getStatus().equals(ReportModel.ReportStatus.STRIKE_GIVEN)) {
             Optional<StrikeModel> strikeModel = strikeManager.findByReport(reportModel);
             if (strikeModel.isEmpty()) {
                 return;
             }
             strikeManager.delete(strikeModel.get());
+
+            UserModel user = reportModel.getReportedUser();
+            Map<String, String> model = new ConcurrentHashMap<>();
+            model.put("username", user.getUsername());
+            model.put("strikeNr", strikeManager.countByUser(user));
+            mailService.sendMessage(user.getEmail(), "An Update on Your Strike",
+                    "strikeRemoved", model, null);
+
         }
+
+        reportModel.setStatus(ReportModel.ReportStatus.OPEN);
+        reportModel.setReviewer(null);
+        reportModel.setNote("");
+        reportManager.save(reportModel);
     }
 
     private void strikeGiven(ReportModel reportModel) {
         StrikeModel strikeModel = new StrikeModel();
-        strikeModel.setEvaluated(new Date());
+        LocalDateTime now = LocalDateTime.now();
+        strikeModel.setEvaluated(now);
         strikeModel.setReport(reportModel);
         strikeModel.setUser(reportModel.getReportedUser());
         strikeManager.save(strikeModel);
