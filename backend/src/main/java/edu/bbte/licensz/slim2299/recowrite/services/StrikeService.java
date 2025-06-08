@@ -49,7 +49,7 @@ public class StrikeService implements StrikeServiceInterface {
         model.put("date", strikeModel.getEvaluated().atZone(java.time.ZoneId.systemDefault())
                 .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm z")));
         model.put("blogTitle", reportModel.getBlog().getTitle());
-        model.put("reason", reportModel.getReason());
+        model.put("reason", reportModel.getReason().getLabel());
         model.put("strikeNr", strikeManager.countByUser(reportModel.getReportedUser()));
         mailService.sendMessage(reportModel.getReportedUser().getEmail(), "Notice of Policy Violation",
                 "strikeGiven", model, null);

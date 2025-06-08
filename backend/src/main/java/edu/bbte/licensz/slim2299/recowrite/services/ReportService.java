@@ -7,15 +7,18 @@ import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.ReportManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.ReportReasonsManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportReasonsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.ReportsMapper;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -26,15 +29,18 @@ public class ReportService implements ReportServiceInterface {
     private final UserManager userManager;
     private final ReportsMapper reportsMapper;
     private final StrikeServiceInterface strikeService;
+    private final ReportReasonsManager reportReasonsManager;
 
     @Autowired
     public ReportService(ReportManager reportManager, BlogManager blogManager, UserManager userManager,
-                         ReportsMapper reportsMapper, StrikeServiceInterface strikeService) {
+                         ReportsMapper reportsMapper, StrikeServiceInterface strikeService,
+                         ReportReasonsManager reportReasonsManager) {
         this.reportManager = reportManager;
         this.blogManager = blogManager;
         this.userManager = userManager;
         this.reportsMapper = reportsMapper;
         this.strikeService = strikeService;
+        this.reportReasonsManager = reportReasonsManager;
     }
 
     @Override
@@ -67,10 +73,14 @@ public class ReportService implements ReportServiceInterface {
         if (blog.isEmpty()) {
             throw new BlogNotFoundException("Blog " + report.getBlogId() + " not found");
         }
+        Optional<ReportReasonsModel> reportReasons = reportReasonsManager.findById(report.getReasonId());
+        if (reportReasons.isEmpty()) {
+            throw new ReportNotFoundException("Reason " + report.getReasonId() + " not found");
+        }
         BlogModel blogModel = blog.get();
         ReportModel reportModel = new ReportModel();
         reportModel.setBlog(blogModel);
-        reportModel.setReason(report.getReason());
+        reportModel.setReason(reportReasons.get());
         LocalDateTime now = LocalDateTime.now();
         reportModel.setReportDate(now);
         reportModel.setReportedUser(blogModel.getUser());

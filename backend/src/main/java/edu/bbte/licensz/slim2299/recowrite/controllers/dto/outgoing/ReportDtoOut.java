@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class ReportDtoOut {
     private long id;
-    private String reason;
+    private long reasonId;
     private LocalDateTime date;
     private String status;
     private long blogId;

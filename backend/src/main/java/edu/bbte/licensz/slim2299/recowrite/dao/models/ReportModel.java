@@ -30,7 +30,8 @@ public class ReportModel extends BaseEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BlogModel blog;
 
-    private String reason;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ReportReasonsModel reason;
 
     private String note;
 
