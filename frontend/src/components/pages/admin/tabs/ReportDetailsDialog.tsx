@@ -89,9 +89,11 @@ export default function ReportDetailsDialog({
                   <DataList.Item>
                     <DataList.ItemLabel>{t('admin.report.table.dialog.blogTitle')}</DataList.ItemLabel>
                     <DataList.ItemValue>
-                      <Link onClick={() => navigate(`/blog/${selectedBlog?.id}`)}>
-                        {selectedBlog?.title ?? 'unknown'}
-                      </Link>
+                      {selectedReport?.status === 'STRIKE_GIVEN' ? (selectedBlog?.title ?? 'unknown') : (
+                        <Link onClick={() => navigate(`/blog/${selectedBlog?.id}`)}>
+                          {selectedBlog?.title ?? 'unknown'}
+                        </Link>
+                      )}
                     </DataList.ItemValue>
                   </DataList.Item>
 
