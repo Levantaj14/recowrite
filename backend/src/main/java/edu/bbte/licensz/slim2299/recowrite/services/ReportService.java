@@ -30,18 +30,16 @@ public class ReportService implements ReportServiceInterface {
     private final ReportsMapper reportsMapper;
     private final StrikeManager strikeManager;
     private final MailServiceInterface mailService;
-    private final UserService userService;
 
     @Autowired
     public ReportService(ReportManager reportManager, BlogManager blogManager, UserManager userManager,
-                         ReportsMapper reportsMapper, StrikeManager strikeManager, MailServiceInterface mailService, UserService userService) {
+                         ReportsMapper reportsMapper, StrikeManager strikeManager, MailServiceInterface mailService) {
         this.reportManager = reportManager;
         this.blogManager = blogManager;
         this.userManager = userManager;
         this.reportsMapper = reportsMapper;
         this.strikeManager = strikeManager;
         this.mailService = mailService;
-        this.userService = userService;
     }
 
     @Override
@@ -148,7 +146,8 @@ public class ReportService implements ReportServiceInterface {
 
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", reportModel.getReportedUser().getUsername());
-        model.put("date", String.valueOf(strikeModel.getEvaluated()));
+        model.put("date", strikeModel.getEvaluated().atZone(java.time.ZoneId.systemDefault())
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm z")));
         model.put("blogTitle", reportModel.getBlog().getTitle());
         model.put("reason", reportModel.getReason());
         model.put("strikeNr", strikeManager.countByUser(reportModel.getReportedUser()));
