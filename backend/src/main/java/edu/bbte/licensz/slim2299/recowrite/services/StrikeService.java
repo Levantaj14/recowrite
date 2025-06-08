@@ -1,7 +1,9 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.StrikeManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
@@ -20,14 +22,26 @@ public class StrikeService implements StrikeServiceInterface {
     private final BlogManager blogManager;
     private final MailServiceInterface mailService;
     private final RecommendationService recommendationService;
+    private final UserManager userManager;
 
     @Autowired
     public StrikeService(StrikeManager strikeManager, BlogManager blogManager, MailServiceInterface mailService,
-                         RecommendationService recommendationService) {
+                         RecommendationService recommendationService, UserManager userManager) {
         this.strikeManager = strikeManager;
         this.blogManager = blogManager;
         this.mailService = mailService;
         this.recommendationService = recommendationService;
+        this.userManager = userManager;
+    }
+
+    @Override
+    public int getStrikeCount(String username) {
+        Optional<UserModel> userModel = userManager.findByUsername(username);
+        if (userModel.isEmpty()) {
+            throw new UserNotFoundException("User " + username + " not found");
+        }
+        String count = strikeManager.countByUser(userModel.get());
+        return Integer.parseInt(count);
     }
 
     @Override

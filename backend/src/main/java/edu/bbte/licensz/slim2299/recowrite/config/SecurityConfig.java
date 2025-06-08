@@ -49,7 +49,7 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*", "/user/*", "/blogs").permitAll()
-                        .requestMatchers("/authentication/**", "/error", "/blogs/*", "/user").permitAll()
+                        .requestMatchers("/authentication/**", "/error", "/blogs/*", "/user", "/report", "/strikes").permitAll()
                         .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
