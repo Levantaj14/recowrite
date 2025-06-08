@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { UserType } from '@/apis/userApi.ts';
+import { BlogType } from '@/apis/blogApi.ts';
 
 const adminApi = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/admin`,
@@ -35,6 +36,11 @@ export async function testAdmin(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+export async function fetchAllBlogsAsAdmin(): Promise<BlogType[]> {
+  const res = await adminApi.get<BlogType[]>('/blogs');
+  return res.data;
 }
 
 export async function getAllReports(): Promise<ReportType[]> {

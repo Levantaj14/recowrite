@@ -1,8 +1,8 @@
 import { Badge, Table } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { changeStatus, getAllReports, ReportType, StatusType } from '@/apis/adminApi.ts';
+import { changeStatus, fetchAllBlogsAsAdmin, getAllReports, ReportType, StatusType } from '@/apis/adminApi.ts';
 import { fetchAllUsers, UserType } from '@/apis/userApi.ts';
-import { BlogType, fetchAllBlogs } from '@/apis/blogApi.ts';
+import { BlogType } from '@/apis/blogApi.ts';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -31,7 +31,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
       try {
         const reports = await getAllReports();
         const users = await fetchAllUsers();
-        const blogs = await fetchAllBlogs();
+        const blogs = await fetchAllBlogsAsAdmin();
         return { reports, users, blogs };
       } catch {
         setIsAuthorized(false);
