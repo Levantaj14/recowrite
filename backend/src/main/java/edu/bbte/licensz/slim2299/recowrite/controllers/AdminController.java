@@ -2,8 +2,12 @@ package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportStatusDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.*;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.AccountServiceInterface;
+import edu.bbte.licensz.slim2299.recowrite.services.BlogService;
 import edu.bbte.licensz.slim2299.recowrite.services.ReportServiceInterface;
 import edu.bbte.licensz.slim2299.recowrite.services.UserServiceInterface;
 import jakarta.servlet.http.Cookie;
@@ -24,15 +28,17 @@ public class AdminController {
     private final UserServiceInterface userService;
     private final AuthCookieFinder authCookieFinder;
     private final JwtUtil jwtUtil;
+    private final BlogService blogService;
 
     @Autowired
     public AdminController(ReportServiceInterface reportService, AccountServiceInterface accountService,
-                           UserServiceInterface userService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil) {
+                           UserServiceInterface userService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil, BlogService blogService) {
         this.reportService = reportService;
         this.accountService = accountService;
         this.userService = userService;
         this.authCookieFinder = authCookieFinder;
         this.jwtUtil = jwtUtil;
+        this.blogService = blogService;
     }
 
     @GetMapping()
@@ -48,6 +54,11 @@ public class AdminController {
     @GetMapping("/reports/{id}")
     public ResponseEntity<ReportDtoOut> getReportsById(@PathVariable("id") long id) {
         return ResponseEntity.ok(reportService.getReportById(id));
+    }
+
+    @GetMapping("/blogs")
+    public ResponseEntity<List<BlogDtoOut>> getBlogs() {
+        return ResponseEntity.ok(blogService.getAllBlogsAsAdmin());
     }
 
     @PutMapping("/reports")

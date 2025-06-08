@@ -10,5 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface BlogManager extends JpaRepository<BlogModel, Long> {
-    Optional<List<BlogModel>> findByUser(UserModel user);
+    Optional<List<BlogModel>> findByUserAndVisible(UserModel user, boolean visible);
+
+    Optional<BlogModel> findByIdAndVisible(long id, boolean visible);
+
+    BlogModel[] findAllByVisible(boolean visible);
 }

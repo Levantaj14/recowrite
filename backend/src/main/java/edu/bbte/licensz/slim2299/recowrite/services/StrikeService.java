@@ -18,10 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StrikeService implements StrikeServiceInterface {
     private final StrikeManager strikeManager;
     private final BlogManager blogManager;
-    private final MailService mailService;
+    private final MailServiceInterface mailService;
 
     @Autowired
-    public StrikeService(StrikeManager strikeManager, BlogManager blogManager, MailService mailService) {
+    public StrikeService(StrikeManager strikeManager, BlogManager blogManager, MailServiceInterface mailService) {
         this.strikeManager = strikeManager;
         this.blogManager = blogManager;
         this.mailService = mailService;
