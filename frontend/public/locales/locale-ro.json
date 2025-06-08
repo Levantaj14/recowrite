@@ -264,6 +264,7 @@
     },
     "newStory": {
       "title": "Nou articol",
+      "strike": "din 3 strike-uri primite",
       "tabs": {
         "write": "Scrie",
         "preview": "Previzualizare",

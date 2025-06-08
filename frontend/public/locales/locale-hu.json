@@ -262,6 +262,7 @@
     },
     "newStory": {
       "title": "Új cikk",
+      "strike": "strike a 3-ból megkapva",
       "tabs": {
         "write": "Írj",
         "preview": "Előnézet",

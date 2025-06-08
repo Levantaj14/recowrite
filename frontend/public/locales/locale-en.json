@@ -264,6 +264,7 @@
     },
     "newStory": {
       "title": "New Story",
+      "strike": "out of 3 strikes received",
       "tabs": {
         "write": "Write",
         "preview": "Preview",
