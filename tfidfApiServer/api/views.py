@@ -28,8 +28,17 @@ def blog_list(request):
 @api_view(['POST'])
 def blog_post(request):
     try:
-        blog_id = int(request.data.get('id'))
+        blog_id = int(request.GET.get('id'))
         tf_idf_new.add(blog_id)
         return Response("Added successfully", status=status.HTTP_200_OK)
+    except (ValueError, TypeError):
+        return Response("ID must be an integer", status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def blog_delete(request):
+    try:
+        blog_id = int(request.GET.get('id'))
+        tf_idf_new.delete(blog_id)
+        return Response("Deleted successfully", status=status.HTTP_200_OK)
     except (ValueError, TypeError):
         return Response("ID must be an integer", status=status.HTTP_400_BAD_REQUEST)
