@@ -38,5 +38,8 @@ public class ReportModel extends BaseEntity {
     private ReportStatus status = ReportStatus.OPEN;
 
     private Date reportDate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserModel reviewer;
 }
 

@@ -21,8 +21,5 @@ public class StrikeModel extends BaseEntity {
     @OneToOne(optional = false, fetch = FetchType.EAGER)
     private ReportModel report;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private UserModel admin;
-
     private Date evaluated;
 }

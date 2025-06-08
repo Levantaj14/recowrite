@@ -31,6 +31,6 @@ public class UserAssociations {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<StrikeModel> strikes;
 
-    @OneToMany(mappedBy = "admin", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<StrikeModel> strikeAdmins;
+    @OneToMany(mappedBy = "reviewer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ReportModel> strikeAdmins;
 }

@@ -1,24 +1,25 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportStatusDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.ReportManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.StrikeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.ReportsMapper;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ReportService implements ReportServiceInterface {
@@ -26,19 +27,24 @@ public class ReportService implements ReportServiceInterface {
     private final BlogManager blogManager;
     private final UserManager userManager;
     private final ReportsMapper reportsMapper;
+    private final StrikeManager strikeManager;
+    private final MailServiceInterface mailService;
 
     @Autowired
-    public ReportService(ReportManager reportManager, BlogManager blogManager, UserManager userManager, ReportsMapper reportsMapper) {
+    public ReportService(ReportManager reportManager, BlogManager blogManager, UserManager userManager,
+                         ReportsMapper reportsMapper, StrikeManager strikeManager, MailServiceInterface mailService) {
         this.reportManager = reportManager;
         this.blogManager = blogManager;
         this.userManager = userManager;
         this.reportsMapper = reportsMapper;
+        this.strikeManager = strikeManager;
+        this.mailService = mailService;
     }
 
     @Override
     public List<ReportDtoOut> getAllReports() {
         List<ReportModel> reportsModel = reportManager.findAll();
-        List <ReportDtoOut> reportDtoOutList = new ArrayList<>();
+        List<ReportDtoOut> reportDtoOutList = new ArrayList<>();
         for (ReportModel reportModel : reportsModel) {
             reportDtoOutList.add(reportsMapper.modelToDto(reportModel));
         }
@@ -48,7 +54,7 @@ public class ReportService implements ReportServiceInterface {
     @Override
     public ReportDtoOut getReportById(long id) {
         Optional<ReportModel> reportsModel = reportManager.findById(id);
-        if(reportsModel.isPresent()) {
+        if (reportsModel.isPresent()) {
             return reportsMapper.modelToDto(reportsModel.get());
         }
         throw new ReportNotFoundException("Report with id " + id + " not found");
@@ -76,13 +82,43 @@ public class ReportService implements ReportServiceInterface {
     }
 
     @Override
-    public void dismissReport(long id) {
-        Optional<ReportModel> report = reportManager.findById(id);
-        if (report.isEmpty()) {
-            throw new ReportNotFoundException("Report with id " + id + " not found");
+    public void changeStatus(String adminUsername, ReportStatusDtoIn reportStatusDtoIn) {
+        Optional<UserModel> admin = userManager.findByUsername(adminUsername);
+        if (admin.isEmpty()) {
+            throw new UserNotFoundException("User " + adminUsername + " not found");
         }
+        Optional<ReportModel> report = reportManager.findById(reportStatusDtoIn.getReportId());
+        if (report.isEmpty()) {
+            throw new ReportNotFoundException("Report with id " + reportStatusDtoIn.getReportId() + " not found");
+        }
+        UserModel adminUser = admin.get();
         ReportModel reportModel = report.get();
-        reportModel.setStatus(ReportModel.ReportStatus.valueOf("DISMISSED"));
+        reportModel.setStatus(reportStatusDtoIn.getReportStatus());
+        reportModel.setReviewer(adminUser);
+        if (!"".equals(reportStatusDtoIn.getNote())) {
+            reportModel.setNote(reportStatusDtoIn.getNote());
+        }
         reportManager.save(reportModel);
+
+        if (ReportModel.ReportStatus.valueOf("STRIKE_GIVEN").equals(reportStatusDtoIn.getReportStatus())) {
+            strikeGiven(reportModel);
+        }
+    }
+
+    private void strikeGiven(ReportModel reportModel) {
+        StrikeModel strikeModel = new StrikeModel();
+        strikeModel.setEvaluated(new Date());
+        strikeModel.setReport(reportModel);
+        strikeModel.setUser(reportModel.getReportedUser());
+        strikeManager.save(strikeModel);
+
+        Map<String, String> model = new ConcurrentHashMap<>();
+        model.put("username", reportModel.getReportedUser().getUsername());
+        model.put("date", String.valueOf(strikeModel.getEvaluated()));
+        model.put("blogTitle", reportModel.getBlog().getTitle());
+        model.put("reason", reportModel.getReason());
+        model.put("strikeNr", strikeManager.countByUser(reportModel.getReportedUser()));
+        mailService.sendMessage(reportModel.getReportedUser().getEmail(), "Notice of Policy Violation",
+                "strikeGiven", model, null);
     }
 }
