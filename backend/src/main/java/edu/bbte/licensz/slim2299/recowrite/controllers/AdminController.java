@@ -55,7 +55,7 @@ public class AdminController {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             reportService.changeStatus(jwtUtil.extractUsername(cookie.getValue()), reportStatusDtoIn);
-            return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Report dismissed successfully"));
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Report status changed successfully"));
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }

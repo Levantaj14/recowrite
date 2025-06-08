@@ -83,16 +83,22 @@ public class ReportService implements ReportServiceInterface {
 
     @Override
     public void changeStatus(String adminUsername, ReportStatusDtoIn reportStatusDtoIn) {
-        Optional<UserModel> admin = userManager.findByUsername(adminUsername);
-        if (admin.isEmpty()) {
-            throw new UserNotFoundException("User " + adminUsername + " not found");
-        }
         Optional<ReportModel> report = reportManager.findById(reportStatusDtoIn.getReportId());
         if (report.isEmpty()) {
             throw new ReportNotFoundException("Report with id " + reportStatusDtoIn.getReportId() + " not found");
         }
-        UserModel adminUser = admin.get();
+
         ReportModel reportModel = report.get();
+        if (ReportModel.ReportStatus.OPEN.equals(reportStatusDtoIn.getReportStatus())) {
+            reportReopened(reportModel);
+            return;
+        }
+
+        Optional<UserModel> admin = userManager.findByUsername(adminUsername);
+        if (admin.isEmpty()) {
+            throw new UserNotFoundException("User " + adminUsername + " not found");
+        }
+        UserModel adminUser = admin.get();
         reportModel.setStatus(reportStatusDtoIn.getReportStatus());
         reportModel.setReviewer(adminUser);
         if (!"".equals(reportStatusDtoIn.getNote())) {
@@ -100,8 +106,23 @@ public class ReportService implements ReportServiceInterface {
         }
         reportManager.save(reportModel);
 
-        if (ReportModel.ReportStatus.valueOf("STRIKE_GIVEN").equals(reportStatusDtoIn.getReportStatus())) {
+        if (ReportModel.ReportStatus.STRIKE_GIVEN.equals(reportStatusDtoIn.getReportStatus())) {
             strikeGiven(reportModel);
+        }
+    }
+
+    private void reportReopened(ReportModel reportModel) {
+        reportModel.setStatus(ReportModel.ReportStatus.OPEN);
+        reportModel.setReviewer(null);
+        reportModel.setNote("");
+        reportManager.save(reportModel);
+
+        if (reportModel.getStatus().equals(ReportModel.ReportStatus.STRIKE_GIVEN)) {
+            Optional<StrikeModel> strikeModel = strikeManager.findByReport(reportModel);
+            if (strikeModel.isEmpty()) {
+                return;
+            }
+            strikeManager.delete(strikeModel.get());
         }
     }
 
