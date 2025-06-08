@@ -14,7 +14,8 @@
     "report": "Jelentés",
     "dismiss": "Elutasítás",
     "revokeStrike": "Strike visszavonása",
-    "giveStrike": "Strike adása"
+    "giveStrike": "Strike adása",
+    "reopen": "Újranyitás"
   },
   "common": {
     "tabLoading": "Betöltés...",
@@ -417,6 +418,11 @@
         "loading": "Strike visszavonása...",
         "success": "Strike visszavonva",
         "error": "Hiba történt a strike visszavonása közben"
+      },
+      "reopen": {
+        "loading": "Jelentés újranyitása...",
+        "success": "Jelentés újranyitva",
+        "error": "A jelentés újranyitása sikertelen volt"
       },
       "roleChange": {
         "loading": "Szerepkör módosítása...",

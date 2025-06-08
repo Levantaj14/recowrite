@@ -9,7 +9,7 @@ const adminApi = axios.create({
   },
 });
 
-type StatusType = 'OPEN' | 'DISMISSED' | 'STRIKE_GIVEN';
+export type StatusType = 'OPEN' | 'DISMISSED' | 'STRIKE_GIVEN';
 
 export type ReportType = {
   id: number;
@@ -20,6 +20,12 @@ export type ReportType = {
   reportedUserId: number;
   reporterId: number;
   note: string;
+}
+
+export type ReportStatusChangeType = {
+  reportId: number;
+  reportStatus: StatusType;
+  note: string | null;
 }
 
 export async function testAdmin(): Promise<boolean> {
@@ -36,19 +42,8 @@ export async function getAllReports(): Promise<ReportType[]> {
   return res.data;
 }
 
-export async function dismissReport(id: number): Promise<void> {
-  await adminApi.put(`/reports/${id}`);
-}
-
-export async function giveStrike(id: number, note: string | null): Promise<void> {
-  await adminApi.post(`/strikes`, {
-    reportId: id,
-    note,
-  });
-}
-
-export async function revokeStrike(id: number): Promise<void> {
-  await adminApi.delete(`/strikes/report/${id}`);
+export async function changeStatus(reportChange: ReportStatusChangeType): Promise<void> {
+  await adminApi.put('/reports', reportChange);
 }
 
 export async function fetchAllAdmins(): Promise<UserType[]> {

@@ -14,7 +14,8 @@
     "report": "Raportează",
     "dismiss": "Respinge",
     "revokeStrike": "Revocă strike",
-    "giveStrike": "Dă strike"
+    "giveStrike": "Dă strike",
+    "reopen": "Redeschide"
   },
   "common": {
     "tabLoading": "Încărcare...",
@@ -419,6 +420,11 @@
         "loading": "Se revocă strike-ul...",
         "success": "Strike revocat",
         "error": "Eroare la revocarea strike-ului"
+      },
+      "reopen": {
+        "loading": "Redeschiderea raportului...",
+        "success": "Raport redeschis cu succes",
+        "error": "Redeschiderea raportului a eșuat"
       },
       "roleChange": {
         "loading": "Schimbarea rolului...",

@@ -14,7 +14,8 @@
     "report": "Report",
     "dismiss": "Dismiss",
     "revokeStrike": "Revoke strike",
-    "giveStrike": "Give a strike"
+    "giveStrike": "Give a strike",
+    "reopen": "Reopen"
   },
   "common": {
     "tabLoading": "Loading...",
@@ -419,6 +420,11 @@
         "loading": "Revoking strike...",
         "success": "Strike revoked",
         "error": "Error revoking strike"
+      },
+      "reopen": {
+        "loading": "Reopening report...",
+        "success": "Report reopened",
+        "error": "Error reopening report"
       },
       "roleChange": {
         "loading": "Changing role...",
