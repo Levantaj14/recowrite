@@ -65,7 +65,7 @@ public class CommentService implements CommentServiceInterface{
 
     @Override
     public long addComment(CommentDtoIn commentDtoIn, long blogId, String username) {
-        Optional<BlogModel> blog = blogManager.findById(blogId);
+        Optional<BlogModel> blog = blogManager.findByIdAndVisible(blogId, true);
         if (blog.isEmpty()) {
             throw new BlogNotFoundException("Blog not found");
         }

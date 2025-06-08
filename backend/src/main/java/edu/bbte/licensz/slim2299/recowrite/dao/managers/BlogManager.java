@@ -14,5 +14,5 @@ public interface BlogManager extends JpaRepository<BlogModel, Long> {
 
     Optional<BlogModel> findByIdAndVisible(long id, boolean visible);
 
-    BlogModel[] findAllByVisible(boolean visible);
+    List<BlogModel> findAllByVisible(boolean visible);
 }

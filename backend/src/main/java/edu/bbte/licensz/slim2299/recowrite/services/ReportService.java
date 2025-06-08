@@ -63,7 +63,7 @@ public class ReportService implements ReportServiceInterface {
             throw new UserNotFoundException("User " + username + " not found");
         }
         UserModel reporterUser = reporter.get();
-        Optional<BlogModel> blog = blogManager.findById(report.getBlogId());
+        Optional<BlogModel> blog = blogManager.findByIdAndVisible(report.getBlogId(), true);
         if (blog.isEmpty()) {
             throw new BlogNotFoundException("Blog " + report.getBlogId() + " not found");
         }

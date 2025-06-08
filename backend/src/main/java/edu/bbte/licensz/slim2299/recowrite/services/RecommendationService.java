@@ -40,7 +40,7 @@ public class RecommendationService implements RecommendationServiceInterface {
     @Override
     public List<BlogDtoOut> getRecommendations(String blogId) {
         //TODO: Move these checks to the django server
-        Optional<BlogModel> blogModel = blogManager.findById(Long.valueOf(blogId));
+        Optional<BlogModel> blogModel = blogManager.findByIdAndVisible(Long.valueOf(blogId), true);
         if (blogModel.isEmpty()) {
             throw new BlogNotFoundException("Blog not found");
         }
