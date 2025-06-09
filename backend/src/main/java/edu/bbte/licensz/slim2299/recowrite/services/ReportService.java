@@ -124,7 +124,7 @@ public class ReportService implements ReportServiceInterface {
 
         reportModel.setStatus(ReportModel.ReportStatus.OPEN);
         reportModel.setReviewer(null);
-        reportModel.setNote("");
+        reportModel.setNote(null);
         reportManager.save(reportModel);
     }
 }
