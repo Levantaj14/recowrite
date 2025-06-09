@@ -48,7 +48,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
   function buttonPressed(status: StatusType, key: string) {
     if (selectedReport) {
       setBlockButtons(true);
-      toast.promise(changeStatus({ reportId: selectedReport.id, reportStatus: status, note: '' }), {
+      toast.promise(changeStatus({ reportId: selectedReport.id, reportStatus: status, note: adminNotes }), {
         loading: CustomLoading(t(`admin.toast.${key}.loading`)),
         success: async () => {
           await queryClient.invalidateQueries({
