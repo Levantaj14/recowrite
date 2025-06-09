@@ -19,6 +19,7 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { sendReport } from '@/apis/reportApi.ts';
 import CustomLoading from '@/components/elements/CustomLoading';
+import { reportReasons } from '@/apis/adminApi.ts';
 
 type Props = {
   blogData: BlogType | undefined;
@@ -35,17 +36,6 @@ export default function ReportButton({ blogData }: Props) {
     selected: z.string().nonempty(t('content.story.report.emptyError')),
   });
 
-  const items = [
-    {value: 'Spam', label: t('content.story.report.options.spam')},
-    {value: 'Hate speech or abusive content', label: t('content.story.report.options.hate')},
-    {value: 'Harassment or bullying', label: t('content.story.report.options.bully')},
-    {value: 'Sexual or explicit content', label: t('content.story.report.options.explicit')},
-    {value: 'Violent or graphic content', label: t('content.story.report.options.violent')},
-    {value: 'Misinformation', label: t('content.story.report.options.misinformation')},
-    {value: 'Copyright infringement', label: t('content.story.report.options.copyright')},
-    {value: 'Plagiarism', label: t('content.story.report.options.plagiarism')}
-  ];
-
   type FormFields = z.infer<typeof schema>;
 
   const {
@@ -59,7 +49,7 @@ export default function ReportButton({ blogData }: Props) {
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
-    toast.promise(sendReport(Number(blogData?.id), data.selected), {
+    toast.promise(sendReport(Number(blogData?.id), Number(data.selected)), {
       loading: CustomLoading(t('content.story.report.toast.loading')),
       success: () => {
         setOpen(false);
@@ -70,7 +60,7 @@ export default function ReportButton({ blogData }: Props) {
         setIsSubmitting(false);
         return t('content.story.report.toast.error');
       },
-    })
+    });
   };
 
   useEffect(() => {
@@ -102,23 +92,23 @@ export default function ReportButton({ blogData }: Props) {
                   control={control}
                   render={({ field }) => (
                     <>
-                    <RadioGroup.Root
-                      name={field.name}
-                      value={field.value}
-                      onValueChange={({ value }) => {
-                        field.onChange(value)
-                      }}
-                    >
-                      <VStack gap="6" align="start">
-                        {items.map((item) => (
-                          <RadioGroup.Item key={item.value} value={item.value}>
-                            <RadioGroup.ItemHiddenInput onBlur={field.onBlur} />
-                            <RadioGroup.ItemIndicator />
-                            <RadioGroup.ItemText>{item.label}</RadioGroup.ItemText>
-                          </RadioGroup.Item>
-                        ))}
-                      </VStack>
-                    </RadioGroup.Root>
+                      <RadioGroup.Root
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={({ value }) => {
+                          field.onChange(value);
+                        }}
+                      >
+                        <VStack gap="6" align="start">
+                          {Object.entries(reportReasons).map(([id, label]) => (
+                            <RadioGroup.Item key={id} value={id}>
+                              <RadioGroup.ItemHiddenInput onBlur={field.onBlur} />
+                              <RadioGroup.ItemIndicator />
+                              <RadioGroup.ItemText>{t(label)}</RadioGroup.ItemText>
+                            </RadioGroup.Item>
+                          ))}
+                        </VStack>
+                      </RadioGroup.Root>
                     </>
                   )}
                 />

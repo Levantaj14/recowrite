@@ -8,4 +8,6 @@ public interface RecommendationServiceInterface {
     List<BlogDtoOut> getRecommendations(String blogId);
 
     void addRecommendation(long blogId);
+
+    void removeRecommendation(long blogId);
 }

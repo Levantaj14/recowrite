@@ -2,6 +2,8 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LikedBlogsDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotAvailableException;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.LikeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.LikeModel;
@@ -18,13 +20,13 @@ import java.util.Optional;
 public class LikeService implements LikeServiceInterface {
     private final LikeManager likeManager;
     private final UserServiceInterface userService;
-    private final BlogServiceInterface blogService;
+    private final BlogManager blogManager;
 
     @Autowired
-    public LikeService(LikeManager likeManager, UserServiceInterface userService, BlogServiceInterface blogService) {
+    public LikeService(LikeManager likeManager, UserServiceInterface userService, BlogManager blogManager) {
         this.likeManager = likeManager;
         this.userService = userService;
-        this.blogService = blogService;
+        this.blogManager = blogManager;
     }
 
     @Override
@@ -34,7 +36,11 @@ public class LikeService implements LikeServiceInterface {
 
     @Override
     public void changeLike(long blogId, String username) {
-        BlogModel blogModel = blogService.getBlogModelById(blogId);
+        Optional<BlogModel> blog = blogManager.findByIdAndVisible(blogId, true);
+        if (blog.isEmpty()) {
+            throw new BlogNotFoundException("Blog with id " + blogId + " not found");
+        }
+        BlogModel blogModel = blog.get();
         Instant now = Instant.now();
         Instant blogDate = blogModel.getDate().toInstant();
         if (blogDate.isAfter(now)) {

@@ -1,4 +1,4 @@
-import { Group } from '@chakra-ui/react';
+import { Badge, Flex, Group } from '@chakra-ui/react';
 import { StepsCompletedContent, StepsContent, StepsItem, StepsList, StepsRoot } from '../../ui/steps';
 import { Button } from '../../ui/button';
 import { LuPencil } from 'react-icons/lu';
@@ -18,6 +18,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createBlog } from '@/apis/blogApi.ts';
 import { toast } from 'sonner';
 import ErrorPage from '@/components/pages/ErrorPage.tsx';
+import { useQuery } from '@tanstack/react-query';
+import { getStrikeCount } from '@/apis/strikeApi.ts';
 
 export interface NewStoryFormFields {
   content: string;
@@ -35,6 +37,11 @@ export default function NewStory() {
   const { userDetails } = useContext(UserDetailContext);
   const [step, setStep] = useState(0);
   const [validateFields, setValidateFields] = useState<('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[]>([]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['strike'],
+    queryFn: getStrikeCount,
+  });
 
   const schema = z.object({
     content: z.string().nonempty(t('common.errors.required.field')),
@@ -136,20 +143,24 @@ export default function NewStory() {
         </StepsCompletedContent>
 
         {step < 3 && (
-          <Group mb={10}>
-            <Button variant="outline" size="sm" onClick={() => setStep(step - 1)} disabled={step === 0}>
-              {t('content.newStory.buttons.prev')}
-            </Button>
-            {step === 2 ? (
-              <Button type="submit" variant="outline" size="sm" onClick={handleSubmit(onSubmit)}>
-                {t('content.newStory.buttons.post')}
+          <Flex align="center" justify="space-between" mb={10}>
+            <Group>
+              <Button variant="outline" size="sm" onClick={() => setStep(step - 1)} disabled={step === 0}>
+                {t('content.newStory.buttons.prev')}
               </Button>
-            ) : (
-              <Button variant="outline" size="sm" onClick={checkPageCorrectness}>
-                {t('content.newStory.buttons.next')}
-              </Button>
-            )}
-          </Group>
+              {step === 2 ? (
+                <Button type="submit" variant="outline" size="sm" onClick={handleSubmit(onSubmit)}>
+                  {t('content.newStory.buttons.post')}
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" onClick={checkPageCorrectness}>
+                  {t('content.newStory.buttons.next')}
+                </Button>
+              )}
+            </Group>
+            {!isLoading && data && data.count > 0 &&
+              <Badge colorPalette="red" size="md">{data.count} {t('content.newStory.strike')}</Badge>}
+          </Flex>
         )}
       </StepsRoot>
     </>

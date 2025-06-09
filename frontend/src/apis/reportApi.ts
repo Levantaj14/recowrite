@@ -8,9 +8,9 @@ const reportApi = axios.create({
   },
 });
 
-export async function sendReport(blogId: number | undefined, reason: string): Promise<boolean> {
+export async function sendReport(blogId: number | undefined, reasonId: number): Promise<boolean> {
   const res = await reportApi.post('', {
-    blogId, reason,
+    blogId, reasonId,
   });
   return res.status === 200;
 }

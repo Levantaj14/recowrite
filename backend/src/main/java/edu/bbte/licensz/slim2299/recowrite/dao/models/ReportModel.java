@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,22 +21,26 @@ public class ReportModel extends BaseEntity {
         STRIKE_GIVEN
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UserModel reporter;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private UserModel reportedUser;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private BlogModel blog;
 
-    private String reason;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ReportReasonsModel reason;
 
     private String note;
 
     @Enumerated(EnumType.STRING)
     private ReportStatus status = ReportStatus.OPEN;
 
-    private Date reportDate;
+    private LocalDateTime reportDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserModel reviewer;
 }
 

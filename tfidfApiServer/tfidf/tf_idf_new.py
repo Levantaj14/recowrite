@@ -3,6 +3,7 @@ import math
 import numpy as np
 import faiss
 import nltk
+from django.utils import timezone
 from langdetect import detect
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -137,7 +138,7 @@ def setup():
     vectorizer_path = 'tfidf/vectorizer.joblib'
     # initialize vectorizer and creating a fit
     if not os.path.exists(index_path) or not os.path.exists(vectorizer_path):
-        corpora = Blog.objects.all()
+        corpora = Blog.objects.filter(visible=True, date__lte=timezone.now())
         filtered_corpus = []
         my_sql_ids = []
         for corpus in corpora:
@@ -192,3 +193,9 @@ def add(blog_id):
     index.add_with_ids(transformed_data, np.array([blog_id]))
     faiss.write_index(index, "tfidf/index.bin")
     print("New blog added successfully")
+
+
+def delete(blog_id):
+    index.remove_ids(np.array([blog_id]))
+    faiss.write_index(index, "tfidf/index.bin")
+    print("Blog deleted successfully")

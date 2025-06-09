@@ -1,28 +1,15 @@
-import {
-  Avatar,
-  Badge,
-  CloseButton,
-  DataList,
-  Dialog,
-  HStack,
-  Link,
-  Portal,
-  Table,
-  Textarea,
-  VStack,
-} from '@chakra-ui/react';
+import { Badge, Table } from '@chakra-ui/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { dismissReport, getAllReports, giveStrike, ReportType, revokeStrike } from '@/apis/adminApi.ts';
+import { changeStatus, fetchAllBlogsAsAdmin, getAllReports, ReportType, StatusType } from '@/apis/adminApi.ts';
 import { fetchAllUsers, UserType } from '@/apis/userApi.ts';
-import { BlogType, fetchAllBlogs } from '@/apis/blogApi.ts';
+import { BlogType } from '@/apis/blogApi.ts';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { Button } from '@/components/ui/button.tsx';
 import { toast } from 'sonner';
 import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import ReportDetailsDialog from '@/components/pages/admin/tabs/ReportDetailsDialog.tsx';
 
 type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
@@ -36,7 +23,6 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
   const [selectedBlog, setSelectedBlog] = useState<BlogType | undefined>(undefined);
   const [adminNotes, setAdminNotes] = useState<string | null>(null);
   const [blockButtons, setBlockButtons] = useState(false);
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -45,7 +31,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
       try {
         const reports = await getAllReports();
         const users = await fetchAllUsers();
-        const blogs = await fetchAllBlogs();
+        const blogs = await fetchAllBlogsAsAdmin();
         return { reports, users, blogs };
       } catch {
         setIsAuthorized(false);
@@ -59,64 +45,22 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
     STRIKE_GIVEN: { color: 'red', label: t('admin.report.status.strike') },
   };
 
-  function pressedDismiss() {
+  function buttonPressed(status: StatusType, key: string) {
     if (selectedReport) {
       setBlockButtons(true);
-      toast.promise(dismissReport(selectedReport.id), {
-        loading: CustomLoading(t('admin.toast.report.loading')),
+      toast.promise(changeStatus({ reportId: selectedReport.id, reportStatus: status, note: adminNotes }), {
+        loading: CustomLoading(t(`admin.toast.${key}.loading`)),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['reports'],
           });
           setBlockButtons(false);
           setSelectedReport(null);
-          return t('admin.toast.report.success');
+          return t(`admin.toast.${key}.success`);
         },
         error: () => {
           setBlockButtons(false);
-          return t('admin.toast.report.error');
-        },
-      });
-    }
-  }
-
-  function pressedStrike() {
-    if (selectedReport) {
-      setBlockButtons(true);
-      toast.promise(giveStrike(selectedReport.id, adminNotes), {
-        loading: CustomLoading(t('admin.toast.giveStrike.loading')),
-        success: async () => {
-          await queryClient.invalidateQueries({
-            queryKey: ['reports'],
-          });
-          setBlockButtons(false);
-          setSelectedReport(null);
-          return t('admin.toast.giveStrike.success');
-        },
-        error: () => {
-          setBlockButtons(false);
-          return t('admin.toast.giveStrike.error');
-        },
-      });
-    }
-  }
-
-  function pressedRevoke() {
-    if (selectedReport) {
-      setBlockButtons(true);
-      toast.promise(revokeStrike(selectedReport.id), {
-        loading: CustomLoading(t('admin.toast.revokeStrike.loading')),
-        success: async () => {
-          await queryClient.invalidateQueries({
-            queryKey: ['reports'],
-          });
-          setBlockButtons(false);
-          setSelectedReport(null);
-          return t('admin.toast.revokeStrike.success');
-        },
-        error: () => {
-          setBlockButtons(false);
-          return t('admin.toast.revokeStrike.error');
+          return t(`admin.toast.${key}.error`);
         },
       });
     }
@@ -166,112 +110,10 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
 
   return (
     <>
-      <VStack alignItems="start">
-        <Dialog.Root open={selectedReport !== null}>
-          <Portal>
-            <Dialog.Backdrop />
-            <Dialog.Positioner>
-              <Dialog.Content>
-                <Dialog.Header>
-                  <Dialog.Title>{t('admin.report.table.dialog.title')}</Dialog.Title>
-                </Dialog.Header>
-                <Dialog.Body pb="8">
-                  <DataList.Root orientation="horizontal">
-                    <DataList.Item>
-                      <DataList.ItemLabel>{t('admin.report.table.dialog.reported')}</DataList.ItemLabel>
-                      <DataList.ItemValue>
-                        <HStack>
-                          <Avatar.Root size="xs">
-                            <Avatar.Image src={`data:image;base64,${selectedReportedUser?.avatar ?? ''}`} />
-                            <Avatar.Fallback name={selectedReportedUser?.name ?? ''} />
-                          </Avatar.Root>
-                          {selectedReportedUser?.name ?? ''}
-                        </HStack>
-                      </DataList.ItemValue>
-                    </DataList.Item>
-
-                    <DataList.Item>
-                      <DataList.ItemLabel>{t('admin.report.table.dialog.reportedBy')}</DataList.ItemLabel>
-                      <DataList.ItemValue>
-                        <HStack>
-                          <Avatar.Root size="xs">
-                            <Avatar.Image src={`data:image;base64,${selectedReportedByUser?.avatar ?? ''}`} />
-                            <Avatar.Fallback name={selectedReportedByUser?.name ?? ''} />
-                          </Avatar.Root>
-                          {selectedReportedByUser?.name ?? ''}
-                        </HStack>
-                      </DataList.ItemValue>
-                    </DataList.Item>
-
-                    <DataList.Item>
-                      <DataList.ItemLabel>{t('admin.report.table.dialog.status')}</DataList.ItemLabel>
-                      <DataList.ItemValue>
-                        {selectedReport && (
-                          <Badge colorPalette={badges[selectedReport.status].color}>
-                            {badges[selectedReport.status].label}
-                          </Badge>
-                        )}
-                      </DataList.ItemValue>
-                    </DataList.Item>
-
-                    <DataList.Item>
-                      <DataList.ItemLabel>{t('admin.report.table.dialog.blogTitle')}</DataList.ItemLabel>
-                      <DataList.ItemValue>
-                        <Link onClick={() => navigate(`/blog/${selectedBlog?.id}`)}>
-                          {selectedBlog?.title ?? 'unknown'}
-                        </Link>
-                      </DataList.ItemValue>
-                    </DataList.Item>
-
-                    <DataList.Item>
-                      <DataList.ItemLabel>{t('admin.report.table.dialog.reason')}</DataList.ItemLabel>
-                      <DataList.ItemValue>{selectedReport?.reason}</DataList.ItemValue>
-                    </DataList.Item>
-
-                    <DataList.Item>
-                      <DataList.ItemLabel>{t('admin.report.table.dialog.date')}</DataList.ItemLabel>
-                      <DataList.ItemValue>
-                        {selectedReport?.date &&
-                          new Date(selectedReport.date).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                      </DataList.ItemValue>
-                    </DataList.Item>
-                  </DataList.Root>
-
-                  <Textarea placeholder={t('admin.report.table.dialog.adminNotes')} mt="8"
-                            disabled={selectedReport?.status !== 'OPEN'} value={adminNotes ?? ''}
-                            onChange={(e) => setAdminNotes(e.target.value)} />
-                </Dialog.Body>
-                <Dialog.CloseTrigger asChild>
-                  <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
-                </Dialog.CloseTrigger>
-                {selectedReport?.status === 'OPEN' && (
-                  <Dialog.Footer>
-                    <Button variant="outline" disabled={blockButtons} onClick={pressedDismiss}>
-                      {t('buttons.dismiss')}
-                    </Button>
-                    <Button colorPalette="red" disabled={blockButtons} onClick={pressedStrike}>
-                      {t('buttons.giveStrike')}
-                    </Button>
-                  </Dialog.Footer>
-                )}
-                {selectedReport?.status === 'STRIKE_GIVEN' && (
-                  <Dialog.Footer>
-                    <Button variant="outline" disabled={blockButtons} onClick={pressedRevoke}>
-                      {t('buttons.revokeStrike')}
-                    </Button>
-                  </Dialog.Footer>
-                )}
-              </Dialog.Content>
-            </Dialog.Positioner>
-          </Portal>
-        </Dialog.Root>
-      </VStack>
+      <ReportDetailsDialog selectedReport={selectedReport} setSelectedReport={setSelectedReport}
+                           selectedReportedUser={selectedReportedUser} selectedReportedByUser={selectedReportedByUser}
+                           selectedBlog={selectedBlog} adminNotes={adminNotes} setAdminNotes={setAdminNotes}
+                           blockButtons={blockButtons} buttonPressed={buttonPressed} />
       {isLoading ? <LoadingAnimation /> : content()}
     </>
   );

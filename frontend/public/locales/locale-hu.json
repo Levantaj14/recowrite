@@ -14,7 +14,8 @@
     "report": "Jelentés",
     "dismiss": "Elutasítás",
     "revokeStrike": "Strike visszavonása",
-    "giveStrike": "Strike adása"
+    "giveStrike": "Strike kiosztása",
+    "reopen": "Újranyitás"
   },
   "common": {
     "tabLoading": "Betöltés...",
@@ -261,6 +262,7 @@
     },
     "newStory": {
       "title": "Új cikk",
+      "strike": "strike a 3-ból megkapva",
       "tabs": {
         "write": "Írj",
         "preview": "Előnézet",
@@ -417,6 +419,11 @@
         "loading": "Strike visszavonása...",
         "success": "Strike visszavonva",
         "error": "Hiba történt a strike visszavonása közben"
+      },
+      "reopen": {
+        "loading": "Jelentés újranyitása...",
+        "success": "Jelentés újranyitva",
+        "error": "A jelentés újranyitása sikertelen volt"
       },
       "roleChange": {
         "loading": "Szerepkör módosítása...",

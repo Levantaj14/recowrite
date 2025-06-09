@@ -9,7 +9,7 @@ public class ReportsMapper {
     public ReportDtoOut modelToDto(ReportModel reportModel) {
         ReportDtoOut dto = new ReportDtoOut();
         dto.setId(reportModel.getId());
-        dto.setReason(reportModel.getReason());
+        dto.setReasonId(reportModel.getReason().getId());
         dto.setDate(reportModel.getReportDate());
         dto.setStatus(String.valueOf(reportModel.getStatus()));
         dto.setBlogId(reportModel.getBlog().getId());

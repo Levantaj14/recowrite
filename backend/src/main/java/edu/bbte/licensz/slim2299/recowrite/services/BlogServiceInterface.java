@@ -10,6 +10,8 @@ import java.util.List;
 public interface BlogServiceInterface {
     List<BlogDtoOut> getAllBlogs();
 
+    List<BlogDtoOut> getAllBlogsAsAdmin();
+
     List<BlogDtoOut> getBlogsByAuthor(Long userId);
 
     BlogDtoOut getBlogById(long id);

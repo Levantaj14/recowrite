@@ -8,6 +8,7 @@ class Blog(models.Model):
     description = models.CharField(max_length=255, null=True, blank=True)
     title = models.CharField(max_length=255, null=True, blank=True)
     user_id = models.BigIntegerField()
+    visible = models.BooleanField()
 
     class Meta:
         managed = False  # Prevents Django from modifying the table

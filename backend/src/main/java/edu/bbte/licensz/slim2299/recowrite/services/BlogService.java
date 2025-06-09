@@ -41,6 +41,16 @@ public class BlogService implements BlogServiceInterface {
     @Override
     public List<BlogDtoOut> getAllBlogs() {
         List<BlogDtoOut> blogList = new ArrayList<>();
+        for (BlogModel blog : blogManager.findAllByVisible(true)) {
+            BlogDtoOut auxDto = createBlogDto(blog);
+            blogList.add(auxDto);
+        }
+        return blogList;
+    }
+
+    @Override
+    public List<BlogDtoOut> getAllBlogsAsAdmin() {
+        List<BlogDtoOut> blogList = new ArrayList<>();
         for (BlogModel blog : blogManager.findAll()) {
             BlogDtoOut auxDto = createBlogDto(blog);
             blogList.add(auxDto);
@@ -55,7 +65,7 @@ public class BlogService implements BlogServiceInterface {
         if (userResult.isEmpty()) {
             throw new UserNotFoundException("User with id " + userId + " not found");
         }
-        Optional<List<BlogModel>> result = blogManager.findByUser(userResult.get());
+        Optional<List<BlogModel>> result = blogManager.findByUserAndVisible(userResult.get(), true);
         if (result.isPresent()) {
             for (BlogModel blog : result.get()) {
                 BlogDtoOut auxDto = createBlogDto(blog);
@@ -67,7 +77,7 @@ public class BlogService implements BlogServiceInterface {
 
     @Override
     public BlogDtoOut getBlogById(long id) {
-        Optional<BlogModel> blog = blogManager.findById(id);
+        Optional<BlogModel> blog = blogManager.findByIdAndVisible(id, true);
         if (blog.isPresent()) {
             return createBlogDto(blog.get());
         }
@@ -76,7 +86,7 @@ public class BlogService implements BlogServiceInterface {
 
     @Override
     public BlogModel getBlogModelById(long id) {
-        Optional<BlogModel> blog = blogManager.findById(id);
+        Optional<BlogModel> blog = blogManager.findByIdAndVisible(id, true);
         if (blog.isPresent()) {
             return blog.get();
         }

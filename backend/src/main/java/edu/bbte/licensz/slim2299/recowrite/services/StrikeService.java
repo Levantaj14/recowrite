@@ -1,140 +1,88 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.StrikeDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.StrikeDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
-import edu.bbte.licensz.slim2299.recowrite.dao.managers.ReportManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.StrikeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
-import edu.bbte.licensz.slim2299.recowrite.mappers.StrikeMapper;
-import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportClosedException;
-import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
-import edu.bbte.licensz.slim2299.recowrite.services.exceptions.StrikeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class StrikeService implements StrikeServiceInterface {
     private final StrikeManager strikeManager;
-    private final StrikeMapper strikeMapper;
-    private final UserManager userManager;
-    private final ReportManager reportManager;
+    private final BlogManager blogManager;
     private final MailServiceInterface mailService;
+    private final RecommendationService recommendationService;
+    private final UserManager userManager;
 
     @Autowired
-    public StrikeService(StrikeManager strikeManager, StrikeMapper strikeMapper, UserManager userManager, ReportManager reportManager, MailServiceInterface mailService) {
+    public StrikeService(StrikeManager strikeManager, BlogManager blogManager, MailServiceInterface mailService,
+                         RecommendationService recommendationService, UserManager userManager) {
         this.strikeManager = strikeManager;
-        this.strikeMapper = strikeMapper;
-        this.userManager = userManager;
-        this.reportManager = reportManager;
+        this.blogManager = blogManager;
         this.mailService = mailService;
+        this.recommendationService = recommendationService;
+        this.userManager = userManager;
     }
 
     @Override
-    public List<StrikeDtoOut> getAllStrikes() {
-        List<StrikeDtoOut> strikes = new ArrayList<>();
-        List<StrikeModel> strikeModels = strikeManager.findAll();
-        for (StrikeModel strikeModel : strikeModels) {
-            StrikeDtoOut strikeDto = strikeMapper.modelToDto(strikeModel);
-            strikes.add(strikeDto);
-        }
-        return strikes;
-    }
-
-    @Override
-    public List<StrikeDtoOut> getUserStrikes(String username) {
-        Optional<UserModel> user = userManager.findByUsername(username);
-        if (user.isEmpty()) {
+    public int getStrikeCount(String username) {
+        Optional<UserModel> userModel = userManager.findByUsername(username);
+        if (userModel.isEmpty()) {
             throw new UserNotFoundException("User " + username + " not found");
         }
-        UserModel userModel = user.get();
-        List<StrikeDtoOut> strikes = new ArrayList<>();
-        List<StrikeModel> strikeModels = strikeManager.findAllByUserId(userModel.getId());
-        for (StrikeModel strikeModel : strikeModels) {
-            StrikeDtoOut strikeDto = strikeMapper.modelToDto(strikeModel);
-            strikes.add(strikeDto);
-        }
-        return strikes;
+        String count = strikeManager.countByUser(userModel.get());
+        return Integer.parseInt(count);
     }
 
     @Override
-    public long addStrike(String adminUsername, StrikeDtoIn strike) {
-        Optional<UserModel> admin = userManager.findByUsername(adminUsername);
-        if (admin.isEmpty()) {
-            throw new UserNotFoundException("User " + adminUsername + " not found");
-        }
-        Optional<ReportModel> report = reportManager.findById(strike.getReportId());
-        if (report.isEmpty()) {
-            throw new ReportNotFoundException("Report " + strike.getReportId() + " not found");
-        }
-        ReportModel reportModel = report.get();
-
-        if (!"OPEN".equals(String.valueOf(reportModel.getStatus()))) {
-            throw new ReportClosedException("Report " + strike.getReportId() + " is closed");
-        }
-
-        UserModel adminModel = admin.get();
+    public void handleStrikeGiven(ReportModel reportModel) {
         StrikeModel strikeModel = new StrikeModel();
-        strikeModel.setAdmin(adminModel);
-        strikeModel.setEvaluated(new Date());
+        LocalDateTime now = LocalDateTime.now();
+        strikeModel.setEvaluated(now);
         strikeModel.setReport(reportModel);
         strikeModel.setUser(reportModel.getReportedUser());
-        long strikeId = strikeManager.save(strikeModel).getId();
+        strikeManager.save(strikeModel);
 
-        reportModel.setNote(strike.getNote());
-        reportModel.setStatus(ReportModel.ReportStatus.valueOf("STRIKE_GIVEN"));
-        reportManager.save(reportModel);
+        BlogModel blogModel = reportModel.getBlog();
+        blogModel.setVisible(false);
+        blogManager.save(blogModel);
+        recommendationService.removeRecommendation(blogModel.getId());
 
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", reportModel.getReportedUser().getUsername());
-        model.put("date", String.valueOf(strikeModel.getEvaluated()));
+        model.put("date", strikeModel.getEvaluated().atZone(java.time.ZoneId.systemDefault())
+                .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm z")));
         model.put("blogTitle", reportModel.getBlog().getTitle());
-        model.put("reason", reportModel.getReason());
+        model.put("reason", reportModel.getReason().getLabel());
         model.put("strikeNr", strikeManager.countByUser(reportModel.getReportedUser()));
         mailService.sendMessage(reportModel.getReportedUser().getEmail(), "Notice of Policy Violation",
                 "strikeGiven", model, null);
-
-        return strikeId;
     }
 
     @Override
-    public void deleteStrike(long id) {
-        Optional<StrikeModel> strike = strikeManager.findById(id);
-        if (strike.isEmpty()) {
-            throw new StrikeNotFoundException("Strike " + id + " not found");
+    public void handleStrikeRemoved(ReportModel reportModel) {
+        Optional<StrikeModel> strikeModel = strikeManager.findByReport(reportModel);
+        if (strikeModel.isEmpty()) {
+            return;
         }
-        UserModel user = strike.get().getReport().getReportedUser();
-        ReportModel reportModel = strike.get().getReport();
-        removeStrikeAndSendMail(strike.get(), user, reportModel);
-    }
+        strikeManager.delete(strikeModel.get());
 
-    @Override
-    public void deleteStrikeFromReport(long id) {
-        Optional<ReportModel> report = reportManager.findById(id);
-        if (report.isEmpty()) {
-            throw new ReportNotFoundException("Report " + id + " not found");
-        }
-        Optional<StrikeModel> strike = strikeManager.findByReport(report.get());
-        if (strike.isEmpty()) {
-            throw new StrikeNotFoundException("Strike " + id + " not found");
-        }
-        UserModel user = strike.get().getReport().getReportedUser();
-        ReportModel reportModel = report.get();
-        removeStrikeAndSendMail(strike.get(), user, reportModel);
-    }
+        BlogModel blogModel = reportModel.getBlog();
+        blogModel.setVisible(true);
+        blogManager.save(blogModel);
+        recommendationService.addRecommendation(blogModel.getId());
 
-    private void removeStrikeAndSendMail(StrikeModel strike, UserModel user, ReportModel reportModel) {
-        strikeManager.delete(strike);
-
-        reportModel.setStatus(ReportModel.ReportStatus.valueOf("DISMISSED"));
-        reportManager.save(reportModel);
-
+        UserModel user = reportModel.getReportedUser();
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", user.getUsername());
         model.put("strikeNr", strikeManager.countByUser(user));
