@@ -173,6 +173,7 @@ def setup():
 
 
 def search(blog, k=1):
+    print("Searching for similar blogs...")
     query = filtering(blog.content)
     query_vector = np.array([create_transform(query)], dtype=np.float32)
     distances, indices = index.search(query_vector, k=(k + 1))
