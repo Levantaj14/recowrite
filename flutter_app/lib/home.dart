@@ -9,6 +9,7 @@ import 'package:recowrite/formats/author_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import 'login/login_page.dart';
 import 'globals.dart' as global;
 import 'new_post.dart';
 
@@ -77,7 +78,25 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
+      appBar: AppBar(
+        title: Text('Home'),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
       body: Center(
         child: RefreshIndicator(
           onRefresh: () {
@@ -138,13 +157,18 @@ class _HomePageState extends State<HomePage>
                   padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                   itemCount: blogs.length,
                   itemBuilder: (context, index) {
-                    return ArticleCard(blog: blogs[index], author: global.authors[blogs[index].author] ?? AuthorFormat(
-                      id: 0,
-                      name: 'Unknown',
-                      bio: 'Unknown',
-                      avatar: '',
-                      username: 'Unknown',
-                    ));
+                    return ArticleCard(
+                      blog: blogs[index],
+                      author:
+                          global.authors[blogs[index].author] ??
+                          AuthorFormat(
+                            id: 0,
+                            name: 'Unknown',
+                            bio: 'Unknown',
+                            avatar: '',
+                            username: 'Unknown',
+                          ),
+                    );
                   },
                 ),
               );
@@ -152,18 +176,15 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: global.auth,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const NewPost()),
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-      ),
+      floatingActionButton: global.auth ? FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const NewPost()),
+          );
+        },
+        child: Icon(Icons.add),
+      ) : null,
     );
   }
 }

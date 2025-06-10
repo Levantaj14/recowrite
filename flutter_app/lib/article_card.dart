@@ -80,7 +80,7 @@ class ArticleCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     blog.title,
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
