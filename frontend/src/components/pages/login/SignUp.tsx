@@ -114,7 +114,7 @@ export default function SignUp({setVerify}: Props) {
           </Field.Root>
 
           <Field.Root invalid={!!errors.passwordConfirm}>
-            <Field.Label>{t('common.password.confirmPassword')}</Field.Label>
+            <Field.Label>{t('common.fields.confirmPassword')}</Field.Label>
             <PasswordInput {...register('passwordConfirm')} />
             <Field.ErrorText>{errors.passwordConfirm?.message}</Field.ErrorText>
           </Field.Root>
