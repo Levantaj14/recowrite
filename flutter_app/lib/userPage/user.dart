@@ -24,8 +24,7 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
   bool fetch = false;
-  late Future<List<BlogsFormat>> futureBlogs;
-  late Future<UserFormat> futureUser;
+  late Future<List<dynamic>> combinedFuture;
   bool showUser = true;
   UserFormat user = UserFormat(
     id: 0,
@@ -150,8 +149,7 @@ class _UserState extends State<User> {
   @override
   void initState() {
     super.initState();
-    futureBlogs = fetchBlogs();
-    futureUser = fetchUserData();
+    combinedFuture = Future.wait([fetchUserData(), fetchBlogs()]);
   }
 
   @override
@@ -159,78 +157,69 @@ class _UserState extends State<User> {
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder(
-        future: futureUser,
+        future: combinedFuture,
         builder: (context, snapshot) {
-          return Skeletonizer(
-            enableSwitchAnimation: true,
-            enabled: !snapshot.hasData,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Column(
-                        children: [
-                          snapshot.hasData
-                              ? Base64Avatar(
-                                base64Image: user.avatar,
-                                radius: 50,
-                                fallbackName: user.name,
-                              )
-                              : CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.grey,
-                              ),
-                          SizedBox(height: 10),
-                          Text(
-                            user.name,
-                            style: Theme.of(context).textTheme.headlineMedium,
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Skeletonizer(
+                    enableSwitchAnimation: true,
+                    enabled: !snapshot.hasData,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: [
+                            snapshot.hasData
+                                ? Base64Avatar(
+                              base64Image: user.avatar,
+                              radius: 50,
+                              fallbackName: user.name,
+                            )
+                                : CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.grey,
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              user.name,
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                            Text(
+                              '@${user.username}',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            SizedBox(height: user.bio != null ? 10 : 0),
+                            user.bio != null
+                                ? Text(
+                              user.bio ?? '',
+                              textAlign: TextAlign.center,
+                            )
+                                : Container(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: getSocialLinks(),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Text(
+                            "Articles",
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          Text(
-                            '@${user.username}',
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          SizedBox(height: user.bio != null ? 10 : 0),
-                          user.bio != null
-                              ? Text(
-                                user.bio ?? '',
-                                textAlign: TextAlign.center,
-                              )
-                              : Container(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: getSocialLinks(),
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 8),
+                        ...blogs.map((blog) => VerticalArticleCard(blog: blog))
+                      ],
                     ),
-                    SizedBox(height: 16),
-                    Text(
-                      "Articles",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    SizedBox(height: 8),
-                    FutureBuilder(
-                      future: futureBlogs,
-                      builder: (context, snapshot) {
-                        return Skeletonizer(
-                          enableSwitchAnimation: true,
-                          enabled: !snapshot.hasData,
-                          child: ListView.builder(
-                            shrinkWrap: true, // Add this
-                            physics: NeverScrollableScrollPhysics(), // Add this
-                            itemCount: blogs.length,
-                            itemBuilder: (context, index) {
-                              return VerticalArticleCard(blog: blogs[index]);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

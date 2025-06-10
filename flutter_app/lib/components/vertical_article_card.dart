@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -56,9 +58,16 @@ class VerticalArticleCard extends StatelessWidget {
           children: [
             blog.banner == ''
                 ? const SizedBox(height: 97)
-                : CachedNetworkImage(
+                : blog.bannerType == "IMAGE_URL"
+                ? CachedNetworkImage(
                   imageUrl: blog.banner,
                   errorWidget: (context, url, error) => Icon(Icons.error),
+                  height: 97,
+                  width: 70,
+                  fit: BoxFit.cover,
+                )
+                : Image(
+                  image: MemoryImage(base64Decode(blog.banner)),
                   height: 97,
                   width: 70,
                   fit: BoxFit.cover,

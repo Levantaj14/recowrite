@@ -91,7 +91,10 @@ class _StoryPageState extends State<StoryPage> {
                         blog.banner == ''
                             ? SizedBox()
                             : Image(
-                              image: CachedNetworkImageProvider(blog.banner),
+                              image:
+                                  blog.bannerType == "IMAGE_URL"
+                                      ? CachedNetworkImageProvider(blog.banner)
+                                      : MemoryImage(base64Decode(blog.banner)),
                               fit: BoxFit.cover,
                             ),
                         const DecoratedBox(

@@ -6,6 +6,7 @@ class BlogsFormat {
   final int author;
   final String banner;
   final String date;
+  final String bannerType;
 
   const BlogsFormat({
     required this.id,
@@ -15,6 +16,7 @@ class BlogsFormat {
     required this.author,
     required this.banner,
     required this.date,
+    this.bannerType = 'IMAGE_UPLOAD',
   });
 
   factory BlogsFormat.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class BlogsFormat {
         'description': String descripton,
         'title': String title,
         'author': int author,
+        'banner_type': String bannerType,
       } =>
         BlogsFormat(
           id: id,
@@ -36,6 +39,7 @@ class BlogsFormat {
           author: author,
           banner: banner,
           date: date,
+          bannerType: bannerType,
         ),
       _ => throw const FormatException('Failed to parse blogs.'),
     };
