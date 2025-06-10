@@ -132,6 +132,27 @@ def create_fit(corpus):
     return matrix
 
 
+def test_tfidf_quality():
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    corpora = Blog.objects.filter(visible=True, date__lte=timezone.now())
+    filtered_corpus = []
+    for corpus in corpora:
+        filtered_corpus.append(filtering(corpus.content))
+
+    global vectorizer_data
+    vectorizer_data = create_vector(filtered_corpus)
+    tfidf_matrix = create_fit(filtered_corpus)
+
+    similarities = cosine_similarity(tfidf_matrix)
+
+    np.fill_diagonal(similarities, 0)
+
+    print(f"Average similarity: {similarities.mean():.3f}")
+    print(f"Max similarity: {similarities.max():.3f}")
+    print(f"Standard deviation: {similarities.std():.3f}")
+
+
 def setup():
     global vectorizer_data, index
     index_path = 'tfidf/index.bin'
