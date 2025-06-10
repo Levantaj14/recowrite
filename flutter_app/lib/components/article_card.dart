@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:recowrite/formats/author_format.dart';
+import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
 import 'package:recowrite/storyPage/story.dart';
 
 class ArticleCard extends StatelessWidget {
   final BlogsFormat blog;
-  final AuthorFormat author;
+  final UserFormat author;
 
   const ArticleCard({super.key, required this.blog, required this.author});
 

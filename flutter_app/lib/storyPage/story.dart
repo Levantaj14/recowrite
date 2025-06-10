@@ -9,6 +9,7 @@ import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
 import 'package:recowrite/storyPage/not_published.dart';
 import 'package:recowrite/storyPage/recommendation_carousel.dart';
+import 'package:recowrite/userPage/user.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../formats/blogs_format.dart';
@@ -113,8 +114,11 @@ class _StoryPageState extends State<StoryPage> {
                       padding: const EdgeInsets.only(right: 10),
                       child: IconButton(
                         onPressed: () {
-                          print(
-                            "The author is ${global.authors[blog.author]?.name}",
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => User(id: blog.author),
+                            ),
                           );
                         },
                         icon: Icon(Icons.person),

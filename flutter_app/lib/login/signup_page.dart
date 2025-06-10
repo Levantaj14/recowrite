@@ -46,6 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    autocorrect: false,
                     decoration: InputDecoration(
                       labelText: 'Username',
                       border: OutlineInputBorder(),

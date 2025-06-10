@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http/http.dart' as http;
 import 'package:lorem_ipsum/lorem_ipsum.dart';
-import 'package:recowrite/article_card.dart';
-import 'package:recowrite/formats/author_format.dart';
+import 'package:recowrite/components/article_card.dart';
+import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage>
   bool get wantKeepAlive => true;
 
   late Future<List<BlogsFormat>> futureBlogs;
-  late Future<Map<int, AuthorFormat>> futureAuthors;
+  late Future<Map<int, UserFormat>> futureAuthors;
   List<BlogsFormat> blogs = List<BlogsFormat>.generate(
     5,
     (i) => BlogsFormat(
@@ -51,14 +51,14 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  Future<Map<int, AuthorFormat>> fetchAuthors() async {
+  Future<Map<int, UserFormat>> fetchAuthors() async {
     final response = await http.get(Uri.parse('${global.url}/user'));
     if (response.statusCode == 200) {
       List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       setState(() {
         global.authors = {
           for (var author in jsonData)
-            AuthorFormat.fromJson(author).id: AuthorFormat.fromJson(author),
+            UserFormat.fromJson(author).id: UserFormat.fromJson(author),
         };
       });
       return global.authors;
@@ -161,12 +161,13 @@ class _HomePageState extends State<HomePage>
                       blog: blogs[index],
                       author:
                           global.authors[blogs[index].author] ??
-                          AuthorFormat(
+                          UserFormat(
                             id: 0,
                             name: 'Unknown',
                             bio: 'Unknown',
                             avatar: '',
                             username: 'Unknown',
+                            socials: [],
                           ),
                     );
                   },
