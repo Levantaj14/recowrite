@@ -37,7 +37,7 @@ class _RecommendationCarouselState extends State<RecommendationCarousel> {
       setState(() {
         showRec = false;
       });
-      throw Exception('Failed to load blogs');
+      throw Exception('Failed to load recommendations');
     }
   }
 

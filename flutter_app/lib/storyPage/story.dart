@@ -26,9 +26,7 @@ class StoryPage extends StatefulWidget {
 }
 
 class _StoryPageState extends State<StoryPage> {
-  bool fetch = false;
   late Future<BlogsFormat> futureBlogs;
-  bool showBlog = true;
   BlogsFormat blog = BlogsFormat(
     id: 0,
     title: loremIpsum(),
@@ -38,6 +36,15 @@ class _StoryPageState extends State<StoryPage> {
     date: '2025-04-08T11:05:25Z',
     author: 1,
   );
+  bool isPublished = true;
+
+  void checkPublish() {
+    DateTime now = DateTime.now();
+    DateTime posting = DateTime.parse(blog.date);
+    setState(() {
+      isPublished = posting.isBefore(now);
+    });
+  }
 
   Future<BlogsFormat> fetchData() async {
     final response = await http.get(
@@ -47,16 +54,11 @@ class _StoryPageState extends State<StoryPage> {
       blog = BlogsFormat.fromJson(
         jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
       );
+      checkPublish();
       return blog;
     } else {
       throw Exception('Failed to load blog with id ${widget.id}');
     }
-  }
-
-  bool isPublished() {
-    DateTime now = DateTime.now();
-    DateTime posting = DateTime.parse(blog.date);
-    return posting.isBefore(now);
   }
 
   @override
@@ -133,7 +135,7 @@ class _StoryPageState extends State<StoryPage> {
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
-                    isPublished()
+                    isPublished
                         ? [
                           Padding(
                             padding: EdgeInsets.only(
@@ -165,7 +167,7 @@ class _StoryPageState extends State<StoryPage> {
           );
         },
       ),
-      bottomNavigationBar: StoryOptionsBar()
+      bottomNavigationBar: isPublished ? StoryOptionsBar(id: widget.id) : null,
     );
   }
 }
