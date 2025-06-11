@@ -84,6 +84,7 @@ class _HomePageState extends State<HomePage>
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: IconButton(
+              tooltip: "Login",
               icon: const Icon(Icons.person),
               onPressed: () {
                 Navigator.push(
