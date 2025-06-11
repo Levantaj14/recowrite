@@ -9,6 +9,7 @@ import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
 import 'package:recowrite/storyPage/not_published.dart';
 import 'package:recowrite/storyPage/recommendation_carousel.dart';
+import 'package:recowrite/storyPage/story_options_bar.dart';
 import 'package:recowrite/userPage/user.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -164,17 +165,7 @@ class _StoryPageState extends State<StoryPage> {
           );
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.favorite_outline)),
-            Text('513'),
-            SizedBox(width: 8),
-            IconButton(onPressed: () {}, icon: Icon(Icons.comment)),
-            Text('3'),
-          ],
-        ),
-      ),
+      bottomNavigationBar: StoryOptionsBar()
     );
   }
 }
