@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:grayscale/grayscale.dart';
-import 'package:recowrite/login/login_page.dart';
+import 'package:provider/provider.dart';
+import 'package:recowrite/providers/UserProvider.dart';
 
-import 'dashboard.dart';
-import 'globals.dart' as global;
 import 'home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => UserProvider(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -60,6 +62,24 @@ class MyApp extends StatelessWidget {
         ),
         colorScheme: GrayColorScheme.highContrastGray(Brightness.dark),
         fontFamily: 'Inter',
+        inputDecorationTheme: InputDecorationTheme(
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          errorStyle: TextStyle(
+            color: Colors.white
+          )
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+            elevation: WidgetStateProperty.all(1.0), // Optional: control elevation
+          ),
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -115,7 +135,6 @@ class _MyHomePageState extends State<MyHomePage> {
       },
       children: [
         HomePage(),
-        global.auth ? DashboardPage() : LoginPage(),
       ],
     );
 

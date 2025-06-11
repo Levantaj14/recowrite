@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recowrite/components/base64_avatar.dart';
 import 'package:recowrite/formats/comment_format.dart';
-
-import '../globals.dart' as global;
+import 'package:recowrite/providers/UserProvider.dart';
 
 class CommentsModal extends StatelessWidget {
   final List<CommentFormat> comments;
+
 
   const CommentsModal({super.key, required this.comments});
 
@@ -40,40 +41,46 @@ class CommentsModal extends StatelessWidget {
               },
             ) : Center(child: Text('There are no comments')),
           ),
-          global.auth ? SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 0, 16, 0),
-                  child: CircleAvatar(
-                    radius: 15,
-                    backgroundColor: Colors.grey.shade300,
-                    child: Icon(Icons.person, color: Colors.grey.shade700),
-                  ),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: 45,
-                    child: TextFormField(
-                      style: TextStyle(fontSize: 14),
-                      decoration: InputDecoration(
-                        labelText: 'Add a comment',
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+          Consumer<UserProvider>(
+            builder: (context, userProvider, child) {
+              return userProvider.user != null ?
+              SafeArea(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8.0, 0, 16, 0),
+                        child: Base64Avatar(
+                          base64Image: userProvider.user?.avatar,
+                          radius: 15,
+                          fallbackName: userProvider.user!.name,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Handle comment submission
-                  },
-                  icon: const Icon(Icons.send),
-                ),
-              ],
-            )
-          ) : const SizedBox(),
+                      Expanded(
+                        child: SizedBox(
+                          height: 45,
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 14),
+                            decoration: InputDecoration(
+                              labelText: 'Add a comment',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          // Handle comment submission
+                        },
+                        icon: const Icon(Icons.send),
+                      ),
+                    ],
+                  )
+              ) : const SizedBox();
+            },
+            child: const SizedBox.shrink(),
+          ),
         ],
       ),
     );

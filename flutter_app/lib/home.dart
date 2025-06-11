@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http/http.dart' as http;
 import 'package:lorem_ipsum/lorem_ipsum.dart';
+import 'package:provider/provider.dart';
 import 'package:recowrite/components/article_card.dart';
+import 'package:recowrite/components/base64_avatar.dart';
 import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
+import 'package:recowrite/providers/UserProvider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import 'login/login_page.dart';
@@ -29,15 +32,16 @@ class _HomePageState extends State<HomePage>
   late Future<Map<int, UserFormat>> futureAuthors;
   List<BlogsFormat> blogs = List<BlogsFormat>.generate(
     5,
-    (i) => BlogsFormat(
-      id: i,
-      title: loremIpsum(),
-      content: loremIpsum(),
-      description: loremIpsum(),
-      author: 1,
-      banner: '',
-      date: DateTime.now().toString(),
-    ),
+        (i) =>
+        BlogsFormat(
+          id: i,
+          title: loremIpsum(),
+          content: loremIpsum(),
+          description: loremIpsum(),
+          author: 1,
+          banner: '',
+          date: DateTime.now().toString(),
+        ),
   );
 
   Future<List<BlogsFormat>> fetchBlogs() async {
@@ -58,7 +62,9 @@ class _HomePageState extends State<HomePage>
       setState(() {
         global.authors = {
           for (var author in jsonData)
-            UserFormat.fromJson(author).id: UserFormat.fromJson(author),
+            UserFormat
+                .fromJson(author)
+                .id: UserFormat.fromJson(author),
         };
       });
       return global.authors;
@@ -83,15 +89,25 @@ class _HomePageState extends State<HomePage>
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              tooltip: "Login",
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ),
+            child: Consumer<UserProvider>(
+              builder: (context, userProvider, child) {
+                return userProvider.user == null
+                    ? IconButton(
+                  tooltip: "Login",
+                  icon: const Icon(Icons.login),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                )
+                    : Base64Avatar(
+                  base64Image: userProvider.user?.avatar,
+                  radius: 15,
+                  fallbackName: userProvider.user!.name,
                 );
               },
             ),
@@ -121,33 +137,33 @@ class _HomePageState extends State<HomePage>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children:
-                        [
-                          const Icon(Icons.cloud_off, size: 50),
-                          const SizedBox(height: 11),
-                          const Text(
-                            'There was an error connecting to the server',
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          OutlinedButton(
-                            style: ButtonStyle(
-                              shape: WidgetStateProperty.all<
-                                RoundedRectangleBorder
-                              >(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                              splashFactory: NoSplash.splashFactory,
+                    [
+                      const Icon(Icons.cloud_off, size: 50),
+                      const SizedBox(height: 11),
+                      const Text(
+                        'There was an error connecting to the server',
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      OutlinedButton(
+                        style: ButtonStyle(
+                          shape: WidgetStateProperty.all<
+                              RoundedRectangleBorder
+                          >(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                futureBlogs = fetchBlogs();
-                              });
-                            },
-                            child: const Text('Try again'),
                           ),
-                        ].animate(interval: .10.seconds).fadeIn(),
+                          splashFactory: NoSplash.splashFactory,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            futureBlogs = fetchBlogs();
+                          });
+                        },
+                        child: const Text('Try again'),
+                      ),
+                    ].animate(interval: .10.seconds).fadeIn(),
                   ),
                 );
               }
@@ -161,7 +177,7 @@ class _HomePageState extends State<HomePage>
                     return ArticleCard(
                       blog: blogs[index],
                       author:
-                          global.authors[blogs[index].author] ??
+                      global.authors[blogs[index].author] ??
                           UserFormat(
                             id: 0,
                             name: 'Unknown',
@@ -178,15 +194,19 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
-      floatingActionButton: global.auth ? FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const NewPost()),
-          );
-        },
-        child: Icon(Icons.add),
-      ) : null,
+      floatingActionButton: Consumer<UserProvider>(
+          builder: (context, userProvider, child) {
+            return userProvider.user != null
+                ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NewPost()),
+                );
+              },
+              child: Icon(Icons.add),
+            ) : Container();
+          }),
     );
   }
 }

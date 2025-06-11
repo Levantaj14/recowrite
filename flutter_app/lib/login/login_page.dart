@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/login/password_reset_dialog.dart';
 import 'package:recowrite/login/signup_page.dart';
+
+import '../globals.dart' as global;
+import '../providers/UserProvider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +18,36 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future<bool> loginFuture() async {
+    final response = await http.post(
+      Uri.parse('${global.url}/authentication/login'),
+      headers: <String, String>{'Content-Type': 'application/json'},
+      body: jsonEncode(<String, String>{
+        'username': usernameController.text,
+        'password': passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      global.authCookieContent = response.headers['set-cookie'] ?? '';
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final user = UserFormat.fromJson(
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
+      );
+      userProvider.setUser(user);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Your request failed"))
+      );
+    }
+
+    return response.statusCode == 200;
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -27,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Padding(
             padding: const EdgeInsets.all(25.0),
             child: Form(
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -41,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 16.0),
                   TextFormField(
                     autocorrect: false,
+                    controller: usernameController,
                     decoration: InputDecoration(
                       labelText: 'Username',
                       border: OutlineInputBorder(),
@@ -49,6 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 16.0),
                   TextFormField(
                     obscureText: true,
+                    autocorrect: false,
+                    controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(),
@@ -68,7 +110,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 2.0),
-                  ElevatedButton(onPressed: () {}, child: const Text('Login')),
+                  ElevatedButton(onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final navigator = Navigator.of(context);
+                      loginFuture().then((success) {
+                        if (success) {
+                          navigator.pop();
+                        }
+                      });
+                    }
+                  }, child: const Text('Login')),
                   Center(
                     child: Column(
                       children: [

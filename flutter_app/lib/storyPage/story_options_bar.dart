@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:recowrite/formats/comment_format.dart';
 import 'package:recowrite/formats/like_count_format.dart';
+import 'package:recowrite/providers/UserProvider.dart';
 import 'package:recowrite/storyPage/comments_modal.dart';
 import 'package:recowrite/storyPage/report_dialog.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -82,10 +84,14 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
             enabled: !snapshot.hasData,
             child: Row(
               children: [
-                IconButton(
-                  tooltip: "Like",
-                  onPressed: global.auth ? () {} : null,
-                  icon: Icon(Icons.favorite_outline),
+                Consumer<UserProvider>(
+                  builder: (context, userProvider, child) {
+                    return IconButton(
+                      tooltip: "Like",
+                      onPressed: userProvider.user != null ? () {} : null,
+                      icon: Icon(Icons.favorite_outline),
+                    );
+                  },
                 ),
                 Text(likeCount.count.toString()),
                 SizedBox(width: 8),
@@ -103,15 +109,22 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
                   icon: Icon(Icons.comment),
                 ),
                 Expanded(child: Text(comments.length.toString())),
-                IconButton(
-                  tooltip: "Report",
-                  onPressed: global.auth ? () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => const ReportDialog(),
+                Consumer<UserProvider>(
+                  builder: (context, userProvider, child) {
+                    return IconButton(
+                      tooltip: "Report",
+                      onPressed:
+                      userProvider.user != null
+                          ? () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ReportDialog(),
+                        );
+                      }
+                          : null,
+                      icon: Icon(Icons.warning_amber_rounded),
                     );
-                  } : null,
-                  icon: Icon(Icons.warning_amber_rounded),
+                  },
                 ),
               ],
             ),

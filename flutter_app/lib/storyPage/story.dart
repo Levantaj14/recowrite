@@ -127,7 +127,7 @@ class _StoryPageState extends State<StoryPage> {
                             ),
                           );
                         },
-                        icon: Icon(Icons.person),
+                        icon: Icon(Icons.person_outline),
                         tooltip: 'Author',
                       ),
                     ),
