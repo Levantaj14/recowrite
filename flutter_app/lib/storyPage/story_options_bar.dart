@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:recowrite/formats/comment_format.dart';
 import 'package:recowrite/formats/like_count_format.dart';
 import 'package:recowrite/storyPage/comments_modal.dart';
+import 'package:recowrite/storyPage/report_dialog.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../globals.dart' as global;
@@ -81,23 +82,41 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
             enabled: !snapshot.hasData,
             child: Row(
               children: [
-                IconButton(onPressed: global.auth ? () {} : null, icon: Icon(Icons.favorite_outline)),
+                IconButton(
+                  tooltip: "Like",
+                  onPressed: global.auth ? () {} : null,
+                  icon: Icon(Icons.favorite_outline),
+                ),
                 Text(likeCount.count.toString()),
                 SizedBox(width: 8),
-                IconButton(onPressed: () {
-                  showModalBottomSheet(
+                IconButton(
+                  tooltip: "Comments",
+                  onPressed: () {
+                    showModalBottomSheet(
                       context: context,
                       showDragHandle: true,
                       builder: (BuildContext context) {
                         return CommentsModal(comments: comments);
-                      }
-                  );
-                }, icon: Icon(Icons.comment)),
-                Text(comments.length.toString()),
+                      },
+                    );
+                  },
+                  icon: Icon(Icons.comment),
+                ),
+                Expanded(child: Text(comments.length.toString())),
+                IconButton(
+                  tooltip: "Report",
+                  onPressed: global.auth ? () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const ReportDialog(),
+                    );
+                  } : null,
+                  icon: Icon(Icons.warning_amber_rounded),
+                ),
               ],
             ),
           );
-        }
+        },
       ),
     );
   }
