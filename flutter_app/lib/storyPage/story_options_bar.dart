@@ -102,7 +102,7 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
                       context: context,
                       showDragHandle: true,
                       builder: (BuildContext context) {
-                        return CommentsModal(comments: comments);
+                        return CommentsModal(comments: comments, blogId: widget.id);
                       },
                     );
                   },

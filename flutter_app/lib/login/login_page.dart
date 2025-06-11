@@ -81,6 +81,12 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     autocorrect: false,
                     controller: usernameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your username';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelText: 'Username',
                       border: OutlineInputBorder(),
@@ -91,6 +97,12 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     autocorrect: false,
                     controller: passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(),
