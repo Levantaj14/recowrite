@@ -40,9 +40,9 @@ class _LoginPageState extends State<LoginPage> {
       );
       userProvider.setUser(user);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Your request failed"))
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Your request failed")));
     }
 
     return response.statusCode == 200;
@@ -122,16 +122,26 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 2.0),
-                  ElevatedButton(onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final navigator = Navigator.of(context);
-                      loginFuture().then((success) {
-                        if (success) {
-                          navigator.pop();
-                        }
-                      });
-                    }
-                  }, child: const Text('Login')),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        final navigator = Navigator.of(context);
+                        loginFuture().then((success) {
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Welcome back, ${usernameController.text}!",
+                                ),
+                              ),
+                            );
+                            navigator.pop();
+                          }
+                        });
+                      }
+                    },
+                    child: const Text('Login'),
+                  ),
                   Center(
                     child: Column(
                       children: [
