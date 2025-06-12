@@ -60,7 +60,7 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
     );
     if (response.statusCode == 200) {
       List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      comments = jsonData.map((blog) => CommentFormat.fromJson(blog)).toList();
+      comments = jsonData.map((comment) => CommentFormat.fromJson(comment)).toList();
       return comments;
     } else {
       throw Exception(

@@ -4,7 +4,7 @@ class CommentFormat {
   final int authorId;
   final String authorName;
   final String authorUsername;
-  final String authorAvatar;
+  final String? authorAvatar;
 
   const CommentFormat({
     required this.id,
@@ -23,7 +23,7 @@ class CommentFormat {
       'authorId': int authorId,
       'authorName': String authorName,
       'authorUsername': String authorUsername,
-      'authorAvatar': String authorAvatar,
+      'authorAvatar': String? authorAvatar,
       } =>
           CommentFormat(
             id: id,
