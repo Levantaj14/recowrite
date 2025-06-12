@@ -1,7 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../globals.dart' as globals;
+import '../globals.dart' as global;
 
 class ReportDialog extends StatefulWidget {
-  const ReportDialog({super.key});
+  final int blogId;
+
+  const ReportDialog({super.key, required this.blogId});
 
   @override
   State<ReportDialog> createState() => _ReportDialogState();
@@ -19,7 +27,6 @@ class _ReportDialogState extends State<ReportDialog> {
     "Plagiarism",
   ];
   int? _reasonId;
-  bool enableButtons = true;
 
   List<Widget> createReasonsRadio() {
     List<Widget> reasonRadios = [];
@@ -40,6 +47,21 @@ class _ReportDialogState extends State<ReportDialog> {
     return reasonRadios;
   }
 
+  Future<bool> sendReport() async {
+    final response = await http.post(
+      Uri.parse('${globals.url}/report'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Cookie': global.authCookieContent,
+      },
+      body: jsonEncode(<String, int>{
+        'blogId': widget.blogId,
+        'reasonId': _reasonId ?? 1,
+      }),
+    );
+    return response.statusCode == 200;
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -51,22 +73,38 @@ class _ReportDialogState extends State<ReportDialog> {
       ),
       actions: [
         TextButton(
-          onPressed:
-              enableButtons
-                  ? () {
-                    Navigator.pop(context);
-                  }
-                  : null,
+          onPressed: () {
+            Navigator.pop(context);
+          },
           child: Text('Cancel'),
         ),
         ElevatedButton(
           onPressed:
-              enableButtons
+              _reasonId != null
                   ? () {
-                    Navigator.pop(context);
+                    sendReport().then((success) {
+                      if (success) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Report sent successfully. Thank you for your contribution.",
+                            ),
+                          ),
+                        );
+                        Navigator.pop(context);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "An error occurred while sending the report",
+                            ),
+                          ),
+                        );
+                      }
+                    });
                   }
                   : null,
-          child: enableButtons ? Text('Report') : CircularProgressIndicator(color: Colors.white,),
+          child: Text('Report'),
         ),
       ],
     );

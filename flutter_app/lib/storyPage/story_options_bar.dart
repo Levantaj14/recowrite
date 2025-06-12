@@ -186,7 +186,9 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
                               ? () {
                                 showDialog(
                                   context: context,
-                                  builder: (context) => const ReportDialog(),
+                                  builder:
+                                      (context) =>
+                                          ReportDialog(blogId: widget.id),
                                 );
                               }
                               : null,
