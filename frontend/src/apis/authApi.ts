@@ -31,7 +31,7 @@ export async function login(user: LoginType): Promise<UserDetailType | null> {
 
 export async function signup(user: SignUpType): Promise<boolean> {
   const res = await authApi.post('/signup', user);
-  return res.status === 200;
+  return res.status === 201;
 }
 
 export async function logout(): Promise<boolean> {
