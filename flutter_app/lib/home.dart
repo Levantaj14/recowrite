@@ -4,13 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http/http.dart' as http;
 import 'package:lorem_ipsum/lorem_ipsum.dart';
-import 'package:recowrite/article_card.dart';
-import 'package:recowrite/formats/author_format.dart';
+import 'package:provider/provider.dart';
+import 'package:recowrite/components/article_card.dart';
+import 'package:recowrite/components/base64_avatar.dart';
+import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
+import 'package:recowrite/providers/user_provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import 'components/logout_dialog.dart';
+import 'login/login_page.dart';
 import 'globals.dart' as global;
-import 'new_post.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,7 +29,7 @@ class _HomePageState extends State<HomePage>
   bool get wantKeepAlive => true;
 
   late Future<List<BlogsFormat>> futureBlogs;
-  late Future<Map<int, AuthorFormat>> futureAuthors;
+  late Future<Map<int, UserFormat>> futureAuthors;
   List<BlogsFormat> blogs = List<BlogsFormat>.generate(
     5,
     (i) => BlogsFormat(
@@ -50,14 +54,14 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  Future<Map<int, AuthorFormat>> fetchAuthors() async {
+  Future<Map<int, UserFormat>> fetchAuthors() async {
     final response = await http.get(Uri.parse('${global.url}/user'));
     if (response.statusCode == 200) {
       List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       setState(() {
         global.authors = {
           for (var author in jsonData)
-            AuthorFormat.fromJson(author).id: AuthorFormat.fromJson(author),
+            UserFormat.fromJson(author).id: UserFormat.fromJson(author),
         };
       });
       return global.authors;
@@ -77,7 +81,48 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
+      appBar: AppBar(
+        title: Text('Home'),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Consumer<UserProvider>(
+              builder: (context, userProvider, child) {
+                return userProvider.user == null
+                    ? IconButton(
+                      tooltip: "Login",
+                      icon: const Icon(Icons.login),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
+                      },
+                    )
+                    : Tooltip(
+                      message: "Log out",
+                      child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (builder) => LogoutDialog(),
+                          );
+                        },
+                        child: Base64Avatar(
+                          base64Image: userProvider.user?.avatar,
+                          radius: 15,
+                          fallbackName: userProvider.user!.name,
+                        ),
+                      ),
+                    );
+              },
+            ),
+          ),
+        ],
+      ),
       body: Center(
         child: RefreshIndicator(
           onRefresh: () {
@@ -138,13 +183,19 @@ class _HomePageState extends State<HomePage>
                   padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                   itemCount: blogs.length,
                   itemBuilder: (context, index) {
-                    return ArticleCard(blog: blogs[index], author: global.authors[blogs[index].author] ?? AuthorFormat(
-                      id: 0,
-                      name: 'Unknown',
-                      bio: 'Unknown',
-                      avatar: '',
-                      username: 'Unknown',
-                    ));
+                    return ArticleCard(
+                      blog: blogs[index],
+                      author:
+                          global.authors[blogs[index].author] ??
+                          UserFormat(
+                            id: 0,
+                            name: 'Unknown',
+                            bio: 'Unknown',
+                            avatar: '',
+                            username: 'Unknown',
+                            socials: [],
+                          ),
+                    );
                   },
                 ),
               );
@@ -152,18 +203,22 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: global.auth,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const NewPost()),
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-      ),
+      // Writing posts is not implemented yet, so the button is commented out.
+      // floatingActionButton: Consumer<UserProvider>(
+      //   builder: (context, userProvider, child) {
+      //     return userProvider.user != null
+      //         ? FloatingActionButton(
+      //           onPressed: () {
+      //             Navigator.push(
+      //               context,
+      //               MaterialPageRoute(builder: (context) => const NewPost()),
+      //             );
+      //           },
+      //           child: Icon(Icons.add),
+      //         )
+      //         : Container();
+      //   },
+      // ),
     );
   }
 }

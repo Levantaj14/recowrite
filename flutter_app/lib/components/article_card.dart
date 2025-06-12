@@ -1,12 +1,14 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:recowrite/formats/author_format.dart';
+import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
 import 'package:recowrite/storyPage/story.dart';
 
 class ArticleCard extends StatelessWidget {
   final BlogsFormat blog;
-  final AuthorFormat author;
+  final UserFormat author;
 
   const ArticleCard({super.key, required this.blog, required this.author});
 
@@ -63,9 +65,16 @@ class ArticleCard extends StatelessWidget {
               child:
                   blog.banner == ''
                       ? SizedBox(height: 150)
-                      : CachedNetworkImage(
+                      : blog.bannerType == "IMAGE_URL"
+                      ? CachedNetworkImage(
                         imageUrl: blog.banner,
                         errorWidget: (context, url, error) => Icon(Icons.error),
+                        height: 150,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                      : Image(
+                        image: MemoryImage(base64Decode(blog.banner)),
                         height: 150,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -80,7 +89,10 @@ class ArticleCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     blog.title,
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

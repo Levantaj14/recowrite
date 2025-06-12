@@ -9,6 +9,8 @@ import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
 import 'package:recowrite/storyPage/not_published.dart';
 import 'package:recowrite/storyPage/recommendation_carousel.dart';
+import 'package:recowrite/storyPage/story_options_bar.dart';
+import 'package:recowrite/userPage/user.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../formats/blogs_format.dart';
@@ -24,9 +26,7 @@ class StoryPage extends StatefulWidget {
 }
 
 class _StoryPageState extends State<StoryPage> {
-  bool fetch = false;
   late Future<BlogsFormat> futureBlogs;
-  bool showBlog = true;
   BlogsFormat blog = BlogsFormat(
     id: 0,
     title: loremIpsum(),
@@ -36,6 +36,15 @@ class _StoryPageState extends State<StoryPage> {
     date: '2025-04-08T11:05:25Z',
     author: 1,
   );
+  bool isPublished = true;
+
+  void checkPublish() {
+    DateTime now = DateTime.now();
+    DateTime posting = DateTime.parse(blog.date);
+    setState(() {
+      isPublished = posting.isBefore(now);
+    });
+  }
 
   Future<BlogsFormat> fetchData() async {
     final response = await http.get(
@@ -45,16 +54,11 @@ class _StoryPageState extends State<StoryPage> {
       blog = BlogsFormat.fromJson(
         jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
       );
+      checkPublish();
       return blog;
     } else {
       throw Exception('Failed to load blog with id ${widget.id}');
     }
-  }
-
-  bool isPublished() {
-    DateTime now = DateTime.now();
-    DateTime posting = DateTime.parse(blog.date);
-    return posting.isBefore(now);
   }
 
   @override
@@ -90,7 +94,10 @@ class _StoryPageState extends State<StoryPage> {
                         blog.banner == ''
                             ? SizedBox()
                             : Image(
-                              image: CachedNetworkImageProvider(blog.banner),
+                              image:
+                                  blog.bannerType == "IMAGE_URL"
+                                      ? CachedNetworkImageProvider(blog.banner)
+                                      : MemoryImage(base64Decode(blog.banner)),
                               fit: BoxFit.cover,
                             ),
                         const DecoratedBox(
@@ -113,11 +120,14 @@ class _StoryPageState extends State<StoryPage> {
                       padding: const EdgeInsets.only(right: 10),
                       child: IconButton(
                         onPressed: () {
-                          print(
-                            "The author is ${global.authors[blog.author]?.name}",
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => User(id: blog.author),
+                            ),
                           );
                         },
-                        icon: Icon(Icons.person),
+                        icon: Icon(Icons.person_outline),
                         tooltip: 'Author',
                       ),
                     ),
@@ -125,7 +135,7 @@ class _StoryPageState extends State<StoryPage> {
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
-                    isPublished()
+                    isPublished
                         ? [
                           Padding(
                             padding: EdgeInsets.only(
@@ -157,17 +167,7 @@ class _StoryPageState extends State<StoryPage> {
           );
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.favorite_outline)),
-            Text('513'),
-            SizedBox(width: 8),
-            IconButton(onPressed: () {}, icon: Icon(Icons.comment)),
-            Text('3'),
-          ],
-        ),
-      ),
+      bottomNavigationBar: isPublished ? StoryOptionsBar(id: widget.id) : null,
     );
   }
 }

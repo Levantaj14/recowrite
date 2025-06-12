@@ -37,7 +37,7 @@ class _RecommendationCarouselState extends State<RecommendationCarousel> {
       setState(() {
         showRec = false;
       });
-      throw Exception('Failed to load blogs');
+      throw Exception('Failed to load recommendations');
     }
   }
 
@@ -49,88 +49,128 @@ class _RecommendationCarouselState extends State<RecommendationCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.sizeOf(context).width;
 
-    return showRec ? Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Divider(color: Colors.grey, indent: 13, endIndent: 13),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 13,
-            right: 13,
-            bottom: 15,
-            top: 10,
-          ),
-          child: Text(
-            'Continue reading',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        ),
-        ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 250),
-          child: CarouselView.weighted(
-            enableSplash: true,
-            itemSnapping: true,
-            flexWeights: const <int>[1, 7, 1],
-            onTap: (i) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => StoryPage(id: blogs[i].id),
+    return showRec
+        ? Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Divider(color: Colors.grey, indent: 13, endIndent: 13),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 13,
+                right: 13,
+                bottom: 15,
+                top: 10,
+              ),
+              child: Text(
+                'Continue reading',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-                ModalRoute.withName('/'),
-              );
-            },
-            children: [
-              for (int i = 0; i < blogs.length; i++)
-                Stack(
-                  alignment: AlignmentDirectional.bottomStart,
-                  children: [
-                    ClipRect(
-                      child: OverflowBox(
-                        maxWidth: width * 7 / 8,
-                        minWidth: width * 7 / 8,
-                        child: Image(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(
-                            blogs[i].banner == ''
-                                ? 'https://picsum.photos/seed/${i + 1}/600/400'
-                                : blogs[i].banner,
-                          ),
+              ),
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: 250),
+              child: PageView.builder(
+                controller: PageController(
+                  viewportFraction: 0.875, // Similar to your 7/8 width
+                ),
+                physics: const PageScrollPhysics().applyTo(
+                  const ClampingScrollPhysics(),
+                ),
+                itemCount: blogs.length,
+                onPageChanged: (index) {
+                  // Optional: handle page changes if needed
+                },
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StoryPage(id: blogs[index].id),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            blogs[i].title,
-                            overflow: TextOverflow.fade,
-                            softWrap: false,
-                            style: Theme.of(context).textTheme.headlineSmall
-                                ?.copyWith(color: Colors.white),
+                        ModalRoute.withName('/'),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                      // Add some spacing between items
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomStart,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            // Optional: add rounded corners
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: Image(
+                                fit: BoxFit.cover,
+                                image: CachedNetworkImageProvider(
+                                  blogs[index].banner == ''
+                                      ? 'https://picsum.photos/seed/${index + 1}/600/400'
+                                      : blogs[index].banner,
+                                ),
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            global.authors[blogs[i].author]?.name ?? 'Unknown',
-                            overflow: TextOverflow.fade,
-                            softWrap: false,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: Colors.white),
+                          // Black gradient overlay for better text readability
+                          Container(
+                            width: double.infinity,
+                            height: 120, // Adjust height as needed
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0),
+                              ),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withValues(alpha: .7),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(
+                                  blogs[index].title,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  global.authors[blogs[index].author]?.name ??
+                                      'Unknown',
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-            ],
-          ),
-        ),
-      ],
-    ) : const SizedBox();
+                  );
+                },
+              ),
+            ),
+          ],
+        )
+        : const SizedBox();
   }
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:grayscale/grayscale.dart';
-import 'package:recowrite/authentication.dart';
+import 'package:provider/provider.dart';
+import 'package:recowrite/providers/user_provider.dart';
 
-import 'dashboard.dart';
-import 'globals.dart' as global;
 import 'home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => UserProvider(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +21,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'recowrite',
       theme: ThemeData(
-        useMaterial3: true,
         progressIndicatorTheme: ProgressIndicatorThemeData(year2023: false),
         pageTransitionsTheme: PageTransitionsTheme(
           builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
@@ -28,9 +29,30 @@ class MyApp extends StatelessWidget {
           ),
         ),
         colorScheme: GrayColorScheme.highContrastGray(Brightness.light),
+        fontFamily: 'Inter',
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+            backgroundColor: WidgetStateProperty.all(Colors.black), // White background on light theme
+            foregroundColor: WidgetStateProperty.all(Colors.white), // Black text on light theme
+            elevation: WidgetStateProperty.all(1.0), // Optional: control elevation
+          ),
+        ),
       ),
       darkTheme: ThemeData(
-        useMaterial3: true,
         progressIndicatorTheme: ProgressIndicatorThemeData(year2023: false),
         pageTransitionsTheme: PageTransitionsTheme(
           builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
@@ -40,6 +62,36 @@ class MyApp extends StatelessWidget {
         ),
         colorScheme: GrayColorScheme.highContrastGray(Brightness.dark),
         fontFamily: 'Inter',
+        inputDecorationTheme: InputDecorationTheme(
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          errorStyle: TextStyle(
+            color: Colors.white
+          )
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+            elevation: WidgetStateProperty.all(1.0), // Optional: control elevation
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+            backgroundColor: WidgetStateProperty.all(Colors.white), // White background on light theme
+            foregroundColor: WidgetStateProperty.all(Colors.black), // Black text on light theme
+            elevation: WidgetStateProperty.all(1.0), // Optional: control elevation
+          ),
+        ),
       ),
       home: const MyHomePage(title: 'recowrite'),
     );
@@ -83,32 +135,11 @@ class _MyHomePageState extends State<MyHomePage> {
       },
       children: [
         HomePage(),
-        global.auth ? DashboardPage() : Authentication(),
       ],
     );
 
     return Scaffold(
       body: pageView,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentPage,
-        onDestinationSelected: (int index) {
-          setState(() {
-            controller.jumpToPage(index);
-          });
-        },
-        destinations: [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          global.auth
-              ? NavigationDestination(
-                icon: Icon(Icons.dashboard),
-                label: 'Dashboard',
-              )
-              : NavigationDestination(
-                icon: Icon(Icons.person),
-                label: 'Login',
-              ),
-        ],
-      ),
     );
   }
 }
