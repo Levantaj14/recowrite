@@ -60,7 +60,8 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
     );
     if (response.statusCode == 200) {
       List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      comments = jsonData.map((comment) => CommentFormat.fromJson(comment)).toList();
+      comments =
+          jsonData.map((comment) => CommentFormat.fromJson(comment)).toList();
       return comments;
     } else {
       throw Exception(
@@ -167,9 +168,14 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
                       context: context,
                       showDragHandle: true,
                       builder: (BuildContext context) {
-                        return CommentsModal(
-                          comments: comments,
-                          blogId: widget.id,
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                          ),
+                          child: CommentsModal(
+                            comments: comments,
+                            blogId: widget.id,
+                          ),
                         );
                       },
                     );
