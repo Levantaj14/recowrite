@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:recowrite/components/base64_avatar.dart';
 import 'package:recowrite/formats/comment_format.dart';
-import 'package:recowrite/providers/UserProvider.dart';
+import 'package:recowrite/providers/user_provider.dart';
 
 import '../globals.dart' as global;
 
@@ -33,7 +33,7 @@ class _CommentsModalState extends State<CommentsModal> {
       Uri.parse('${global.url}/comments/${widget.blogId}'),
       headers: <String, String>{
         'Content-Type': 'application/json',
-        'Cookie': global.authCookieContent ?? '',
+        'Cookie': global.authCookieContent,
       },
       body: jsonEncode(<String, String>{'comment': commentController.text}),
     );
@@ -135,11 +135,7 @@ class _CommentsModalState extends State<CommentsModal> {
                           IconButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                commentFuture().then((success) {
-                                  if (success) {
-                                    print('Comment added successfully');
-                                  }
-                                });
+                                commentFuture();
                               }
                             },
                             icon: const Icon(Icons.send),

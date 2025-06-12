@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grayscale/grayscale.dart';
 import 'package:provider/provider.dart';
-import 'package:recowrite/providers/UserProvider.dart';
+import 'package:recowrite/providers/user_provider.dart';
 
 import 'home.dart';
 

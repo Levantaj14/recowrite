@@ -9,7 +9,7 @@ import 'package:recowrite/components/article_card.dart';
 import 'package:recowrite/components/base64_avatar.dart';
 import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
-import 'package:recowrite/providers/UserProvider.dart';
+import 'package:recowrite/providers/user_provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import 'login/login_page.dart';

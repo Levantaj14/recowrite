@@ -4,7 +4,7 @@ import 'formats/user_format.dart';
 
 final failedToLoadBlogSnackBar = SnackBar(content: Text('Failed to load. Please try again!'));
 final String url = "http://192.168.1.130:8080";
-late String? authCookieContent;
+String authCookieContent = '';
 
 Map<int, UserFormat> authors = {
   1: const UserFormat(

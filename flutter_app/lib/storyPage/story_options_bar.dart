@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:recowrite/formats/comment_format.dart';
 import 'package:recowrite/formats/like_count_format.dart';
-import 'package:recowrite/providers/UserProvider.dart';
+import 'package:recowrite/formats/liked_format.dart';
+import 'package:recowrite/providers/user_provider.dart';
 import 'package:recowrite/storyPage/comments_modal.dart';
 import 'package:recowrite/storyPage/report_dialog.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -35,6 +36,7 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
       authorAvatar: '',
     ),
   );
+  LikedFormat liked = const LikedFormat(liked: false);
 
   Future<LikeCountFormat> fetchLikeCount() async {
     final response = await http.get(
@@ -67,10 +69,60 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
     }
   }
 
+  Future<LikedFormat> fetchLiked() async {
+    if (global.authCookieContent == '') {
+      liked = const LikedFormat(liked: false);
+      return liked;
+    }
+    final response = await http.get(
+      Uri.parse('${global.url}/likes/${widget.id}'),
+      headers: <String, String>{'Cookie': global.authCookieContent},
+    );
+    if (response.statusCode == 200) {
+      liked = LikedFormat.fromJson(
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
+      );
+      return liked;
+    } else if (response.statusCode == 403) {
+      liked = LikedFormat(liked: false);
+      return liked;
+    } else {
+      throw Exception(
+        'Failed to load the like status of the blog with id ${widget.id}',
+      );
+    }
+  }
+
+  Future<void> likePost() async {
+    final response = await http.put(
+      Uri.parse('${global.url}/likes/${widget.id}'),
+      headers: <String, String>{'Cookie': global.authCookieContent},
+    );
+    if (response.statusCode == 204) {
+      if (liked.liked) {
+        setState(() {
+          liked = LikedFormat(liked: false);
+          likeCount = LikeCountFormat(count: likeCount.count - 1);
+        });
+      } else {
+        setState(() {
+          liked = LikedFormat(liked: true);
+          likeCount = LikeCountFormat(count: likeCount.count + 1);
+        });
+      }
+    } else {
+      throw Exception('Failed to like the post');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    combinedFuture = Future.wait([fetchLikeCount(), fetchComments()]);
+    combinedFuture = Future.wait([
+      fetchLikeCount(),
+      fetchComments(),
+      fetchLiked(),
+    ]);
   }
 
   @override
@@ -88,8 +140,21 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
                   builder: (context, userProvider, child) {
                     return IconButton(
                       tooltip: "Like",
-                      onPressed: userProvider.user != null ? () {} : null,
-                      icon: Icon(Icons.favorite_outline),
+                      onPressed:
+                          userProvider.user != null
+                              ? () {
+                                try {
+                                  likePost();
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(e.toString())),
+                                  );
+                                }
+                              }
+                              : null,
+                      icon: Icon(
+                        liked.liked ? Icons.favorite : Icons.favorite_outline,
+                      ),
                     );
                   },
                 ),
@@ -102,7 +167,10 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
                       context: context,
                       showDragHandle: true,
                       builder: (BuildContext context) {
-                        return CommentsModal(comments: comments, blogId: widget.id);
+                        return CommentsModal(
+                          comments: comments,
+                          blogId: widget.id,
+                        );
                       },
                     );
                   },
@@ -114,14 +182,14 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
                     return IconButton(
                       tooltip: "Report",
                       onPressed:
-                      userProvider.user != null
-                          ? () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const ReportDialog(),
-                        );
-                      }
-                          : null,
+                          userProvider.user != null
+                              ? () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const ReportDialog(),
+                                );
+                              }
+                              : null,
                       icon: Icon(Icons.warning_amber_rounded),
                     );
                   },

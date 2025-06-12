@@ -8,7 +8,7 @@ import 'package:recowrite/login/password_reset_dialog.dart';
 import 'package:recowrite/login/signup_page.dart';
 
 import '../globals.dart' as global;
-import '../providers/UserProvider.dart';
+import '../providers/user_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
