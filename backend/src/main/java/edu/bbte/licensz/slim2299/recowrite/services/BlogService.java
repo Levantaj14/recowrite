@@ -50,6 +50,7 @@ public class BlogService implements BlogServiceInterface {
 
     @Override
     public List<BlogDtoOut> getAllBlogsAsAdmin() {
+        // Admins must see all blogs, even the ones that are "deleted"
         List<BlogDtoOut> blogList = new ArrayList<>();
         for (BlogModel blog : blogManager.findAll()) {
             BlogDtoOut auxDto = createBlogDto(blog);
@@ -100,6 +101,7 @@ public class BlogService implements BlogServiceInterface {
             throw new UserNotFoundException("User with name " + username + " not found");
         }
 
+        // Checking so a blog can't be posted in the past
         Instant now = Instant.now();
         Instant blogDate = Instant.parse(blog.getDate());
         ZoneId zone = ZoneId.systemDefault();
@@ -111,6 +113,7 @@ public class BlogService implements BlogServiceInterface {
 
         BlogModel model = blogMapper.dtoToModel(blog);
         if ("IMAGE_UPLOAD".equals(blog.getBanner_type())) {
+            // Saving an uploaded picture on the server
             byte[] imageBytes = Base64.getDecoder().decode(blog.getBanner());
 
             String[] filenameParts = blog.getBanner_name().split("\\.");
@@ -128,6 +131,7 @@ public class BlogService implements BlogServiceInterface {
     private BlogDtoOut createBlogDto(BlogModel blog) {
         BlogDtoOut blogDto = blogMapper.modelToDto(blog);
         if (BlogModel.BannerImageSource.valueOf("IMAGE_UPLOAD").equals(blog.getBannerType())) {
+            // Converting the picture into base64 so it can be sent in the JSON response
             Path path = Paths.get(blog.getBanner());
             try {
                 byte[] fileBytes = Files.readAllBytes(path);

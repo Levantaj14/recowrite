@@ -58,6 +58,7 @@ public class StrikeService implements StrikeServiceInterface {
         blogManager.save(blogModel);
         recommendationService.removeRecommendation(blogModel.getId());
 
+        // Notifying the user about the strike and giving more details about it
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("username", reportModel.getReportedUser().getUsername());
         model.put("date", strikeModel.getEvaluated().atZone(java.time.ZoneId.systemDefault())

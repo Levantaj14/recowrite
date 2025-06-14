@@ -36,7 +36,6 @@ public class RecommendationService implements RecommendationServiceInterface {
 
     @Override
     public List<BlogDtoOut> getRecommendations(String blogId) {
-        //TODO: Move these checks to the django server
         Optional<BlogModel> blogModel = blogManager.findByIdAndVisible(Long.parseLong(blogId), true);
         if (blogModel.isEmpty()) {
             throw new BlogNotFoundException("Blog not found");
@@ -47,6 +46,7 @@ public class RecommendationService implements RecommendationServiceInterface {
             throw new BlogNotAvailableException("Blog not available");
         }
         try {
+            // Crafting the URL to the recommendation system
             String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/recommend";
             ObjectMapper objectMapper = new ObjectMapper();
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
@@ -57,9 +57,12 @@ public class RecommendationService implements RecommendationServiceInterface {
 
             URL url = uri.toURL();
 
+            // Connection to it with GET
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
+
+            // Reading and processing the response
             var sb = new StringBuilder();
             try (var ir = new InputStreamReader(conn.getInputStream());
                  var br = new BufferedReader(ir)) {
@@ -92,12 +95,14 @@ public class RecommendationService implements RecommendationServiceInterface {
     @Override
     public void addRecommendation(long blogId) {
         try {
+            // Crafting the URL to the recommendation system
             String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/add";
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
                     .queryParam("id", blogId)
                     .build()
                     .toUri();
             URL url = uri.toURL();
+            // Sending a POST request and checking if it worked
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
@@ -115,12 +120,14 @@ public class RecommendationService implements RecommendationServiceInterface {
     @Override
     public void removeRecommendation(long blogId) {
         try {
+            // Crafting the URL to the recommendation system
             String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/remove";
             URI uri = UriComponentsBuilder.fromUriString(apiHost)
                     .queryParam("id", blogId)
                     .build()
                     .toUri();
             URL url = uri.toURL();
+            // Sending a DELETE request and checking if it worked
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             connection.connect();

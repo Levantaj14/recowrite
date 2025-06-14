@@ -48,8 +48,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // NOPMD
         http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/count/*", "/user/*", "/blogs").permitAll()
-                        .requestMatchers("/authentication/**", "/error", "/blogs/*", "/user", "/report", "/strikes").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/*", "/user/*", "/blogs").permitAll()
+                        .requestMatchers("/authentication/**", "/error", "/blogs/*", "/user").permitAll()
                         .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)

@@ -34,7 +34,9 @@ public class AuthService implements AuthServiceInterface {
     private final TokenManager tokenManager;
 
     @Autowired
-    public AuthService(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserServiceInterface userService, UserMapper userMapper, MailServiceInterface mailService, UserManager userManager, TokenManager tokenManager) {
+    public AuthService(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserServiceInterface userService,
+                       UserMapper userMapper, MailServiceInterface mailService, UserManager userManager,
+                       TokenManager tokenManager) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userService = userService;
@@ -64,6 +66,7 @@ public class AuthService implements AuthServiceInterface {
     @Override
     public void signup(SignUpDtoIn user) {
         UserModel userModel = userService.createUser(user);
+        // Generating a random token for email verification and saving to the database
         TokenModel tokenModel = new TokenModel();
         tokenModel.setUser(userModel);
         tokenModel.setToken(UUID.randomUUID().toString());
@@ -71,6 +74,7 @@ public class AuthService implements AuthServiceInterface {
         LocalDateTime expiry = LocalDateTime.now().plusYears(1);
         tokenModel.setExpiryDate(expiry);
         tokenManager.save(tokenModel);
+        // Sending an email with a link to verify the email using that token
         Map<String, String> model = new ConcurrentHashMap<>();
         model.put("title", "Verify your account");
         model.put(USERNAME_STRING, user.getUsername());
@@ -88,6 +92,7 @@ public class AuthService implements AuthServiceInterface {
     public String validateEmail(String token) {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
         if (tokenModel.isPresent() && "EMAIL".equals(tokenModel.get().getType())) {
+            // Validating the account and deleting the token
             UserModel user = tokenModel.get().getUser();
             user.setValid(true);
             userManager.save(user);
