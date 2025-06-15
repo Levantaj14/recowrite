@@ -19,7 +19,7 @@ class RecommendationCarousel extends StatefulWidget {
 
 class _RecommendationCarouselState extends State<RecommendationCarousel> {
   late Future<List<BlogsFormat>> futureBlogs;
-  bool showRec = true;
+  bool showRec = false;
 
   List<BlogsFormat> blogs = List<BlogsFormat>.empty(growable: true);
 
@@ -32,11 +32,11 @@ class _RecommendationCarouselState extends State<RecommendationCarousel> {
       setState(() {
         blogs = jsonData.map((blog) => BlogsFormat.fromJson(blog)).toList();
       });
+      setState(() {
+        showRec = true;
+      });
       return blogs;
     } else {
-      setState(() {
-        showRec = false;
-      });
       throw Exception('Failed to load recommendations');
     }
   }
@@ -50,6 +50,7 @@ class _RecommendationCarouselState extends State<RecommendationCarousel> {
   @override
   Widget build(BuildContext context) {
 
+    // If no recommendations are available, return an empty SizedBox
     return showRec
         ? Column(
           crossAxisAlignment: CrossAxisAlignment.start,

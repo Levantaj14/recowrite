@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'formats/user_format.dart';
 
 final failedToLoadBlogSnackBar = SnackBar(content: Text('Failed to load. Please try again!'));
-final String url = "http://192.168.1.140:8080";
+final String url = "http://192.168.1.138:8080";
 String authCookieContent = '';
 
 Map<int, UserFormat> authors = {

@@ -76,6 +76,7 @@ class _UserState extends State<User> {
 
   List<Widget> getSocialLinks() {
     List<Widget> socialLinks = [];
+    // Check what socials does the user have
     for (var social in user.socials) {
       if (social.name == 'Instagram') {
         socialLinks.add(

@@ -40,7 +40,7 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
 
   Future<LikeCountFormat> fetchLikeCount() async {
     final response = await http.get(
-      Uri.parse('${global.url}/likes/count/${widget.id}'),
+      Uri.parse('${global.url}/likes/${widget.id}'),
     );
     if (response.statusCode == 200) {
       likeCount = LikeCountFormat.fromJson(
@@ -76,7 +76,7 @@ class _StoryOptionsBarState extends State<StoryOptionsBar> {
       return liked;
     }
     final response = await http.get(
-      Uri.parse('${global.url}/likes/${widget.id}'),
+      Uri.parse('${global.url}/likes/check/${widget.id}'),
       headers: <String, String>{'Cookie': global.authCookieContent},
     );
     if (response.statusCode == 200) {
