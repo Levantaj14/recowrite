@@ -26,7 +26,7 @@ public class LikeController {
         this.jwtUtil = jwtUtil;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/check/{id}")
     public ResponseEntity<LikedDtoOut> like(HttpServletRequest request, @PathVariable long id) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
@@ -36,9 +36,9 @@ public class LikeController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @GetMapping("/count/{blogId}")
+    @GetMapping("/{blogId}")
     public ResponseEntity<LikeCountDtoOut> likeCount(@PathVariable long blogId) {
-    return ResponseEntity.status(HttpStatus.OK).body(new LikeCountDtoOut(likeService.likeCount(blogId)));
+        return ResponseEntity.status(HttpStatus.OK).body(new LikeCountDtoOut(likeService.likeCount(blogId)));
     }
 
     @PutMapping("/{id}")

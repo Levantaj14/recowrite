@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
+      // Store the authentication cookie in a global variable
       global.authCookieContent = response.headers['set-cookie'] ?? '';
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final user = UserFormat.fromJson(
@@ -50,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure that when the user navigates back, they return to the home page
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -145,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                   Center(
                     child: Column(
                       children: [
-                        const Text('Don\'t have an account?'),
+                        const Text("Don't have an account?"),
                         TextButton(
                           onPressed: () {
                             Navigator.push(

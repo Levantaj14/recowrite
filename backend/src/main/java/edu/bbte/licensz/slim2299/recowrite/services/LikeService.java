@@ -41,6 +41,7 @@ public class LikeService implements LikeServiceInterface {
             throw new BlogNotFoundException("Blog with id " + blogId + " not found");
         }
         BlogModel blogModel = blog.get();
+        // Checking if a blog is available so it an unpublished post can't be liked
         Instant now = Instant.now();
         Instant blogDate = blogModel.getDate().toInstant();
         if (blogDate.isAfter(now)) {

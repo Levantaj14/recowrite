@@ -14,7 +14,7 @@ type Props = {
   setVerify: (v: boolean) => void;
 }
 
-export default function SignUp({setVerify}: Props) {
+export default function SignUp({ setVerify }: Props) {
   const { t } = useTranslation();
 
   const schema = z.object({
@@ -22,7 +22,7 @@ export default function SignUp({setVerify}: Props) {
     email: z.string().email(t('common.errors.validation.email')),
     username: z.string().nonempty(t('common.errors.required.username')),
     password: z.string().min(8, t('common.password.errors.minLength')),
-    passwordConfirm: z.string()
+    passwordConfirm: z.string(),
   }).refine((data) => data.password === data.passwordConfirm, {
     message: t('common.password.errors.passwordMatch'),
     path: ['passwordConfirm'],
@@ -46,7 +46,7 @@ export default function SignUp({setVerify}: Props) {
     resolver: zodResolver(schema),
   });
 
-  const passwordStrengthMeter = (password: string) => {
+  function passwordStrengthMeter(password: string) {
     let score = 0;
     if (password !== undefined) {
       if (password.length >= 8) score++;
@@ -55,7 +55,7 @@ export default function SignUp({setVerify}: Props) {
       if (/[^A-Za-z0-9]/.test(password)) score++;
     }
     return score;
-  };
+  }
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
@@ -65,14 +65,14 @@ export default function SignUp({setVerify}: Props) {
         await queryClient.invalidateQueries({
           queryKey: ['blog'],
           refetchType: 'all',
-          exact: false
+          exact: false,
         });
         setVerify(true);
         return t('auth.signup.toast.success');
       },
       error: () => {
         setIsSubmitting(false);
-        return t('auth.signup.toast.error')
+        return t('auth.signup.toast.error');
       },
     }).unwrap().then(() => {
       setIsSubmitting(false);

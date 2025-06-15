@@ -77,6 +77,7 @@ export default function ForgotPassword() {
   }, [navigate, userDetails]);
 
   useEffect(() => {
+    // Check if the token is valid
     if (searchParams.get('token') != null) {
       validateToken(searchParams.get('token')).then(r => {
         if (!r) {

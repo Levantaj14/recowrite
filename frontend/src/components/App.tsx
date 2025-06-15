@@ -47,6 +47,7 @@ function ThemeFavicon() {
       setIsDarkMode(e.matches);
     };
 
+    // Listen for changes in the system theme and update the state and thus the favicon
     mediaQuery.addEventListener('change', handleThemeChange);
 
     return () => {
@@ -55,6 +56,7 @@ function ThemeFavicon() {
   }, []);
 
   useEffect(() => {
+    // Change the favicon based on the system theme
     if (isDarkMode === null) return;
 
     const faviconPath = isDarkMode ? darkIcon : lightIcon;
@@ -106,7 +108,7 @@ function App() {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/management" element={<AdminConsole />} />
-                  <Route path="/forgotPassword" element={<ForgotPassword />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/verify/email" element={<VerifyEmail />} />
                   <Route path="*" element={<ErrorPage code={404} />} />
                 </Routes>

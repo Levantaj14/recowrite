@@ -43,6 +43,7 @@ export default function NewStory() {
     queryFn: getStrikeCount,
   });
 
+  // Using a single schema and form for the 3 steps, only validating fields relevant to the current step
   const schema = z.object({
     content: z.string().nonempty(t('common.errors.required.field')),
     title: z.string().nonempty(t('common.errors.required.field')).max(255, t('common.errors.validation.maxChars')),

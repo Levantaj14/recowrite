@@ -29,7 +29,7 @@ export default function DeleteDialog({ open, setOpen, commentId }: Props) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
-  const clickedDelete = () => {
+  function clickedDelete() {
     setIsSubmitting(true);
     toast.promise(deleteComment(commentId), {
       loading: CustomLoading(t('content.story.comments.toasts.delete.loading')),
@@ -46,7 +46,7 @@ export default function DeleteDialog({ open, setOpen, commentId }: Props) {
         return t('content.story.comments.toasts.delete.error');
       },
     });
-  };
+  }
 
   return (
     <DialogRoot placement="center" role="alertdialog" open={open} onOpenChange={(e) => setOpen(e.open)}>

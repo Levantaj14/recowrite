@@ -93,19 +93,19 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDtoOut("Auth token not found"));
     }
 
-    @PostMapping("/forgotPassword/reset")
+    @PostMapping("/forgot-password/reset")
     public ResponseEntity<?> resetPassword(@RequestBody @Valid TokenPasswordDtoIn tokenPasswordDtoIn) {
         tokenService.changePassword(tokenPasswordDtoIn);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Password reset successfully"));
     }
 
-    @PostMapping("/forgotPassword/validate")
+    @PostMapping("/forgot-password/validate")
     public ResponseEntity<?> validateToken(@RequestBody @Valid TokenDtoIn tokenDtoIn) {
         tokenService.validatePasswordToken(tokenDtoIn.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Token validated successfully"));
     }
 
-    @PostMapping("/forgotPassword")
+    @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody @Valid EmailDtoIn emailDtoIn) {
         tokenService.createPasswordToken(emailDtoIn);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Forgot password request received"));

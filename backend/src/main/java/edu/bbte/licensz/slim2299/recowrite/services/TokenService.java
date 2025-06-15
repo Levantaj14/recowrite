@@ -33,6 +33,7 @@ public class TokenService implements TokenServiceInterface {
 
     @Override
     public void createPasswordToken(EmailDtoIn emailDtoIn) {
+        // When a user forgets the password we generate a random token and send it in an email
         Optional<UserModel> user = userManager.findByEmail(emailDtoIn.getEmail());
         if (user.isPresent()) {
             TokenModel tokenModel = new TokenModel();
@@ -52,6 +53,7 @@ public class TokenService implements TokenServiceInterface {
 
     @Override
     public void validatePasswordToken(String token) {
+        // On the frontend we should only show the reset password page if the token provided is valid
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
         if (tokenModel.isPresent() && tokenModel.get().getExpiryDate().isAfter(LocalDateTime.now()) &&
                 PASSWORD_STRING.equals(tokenModel.get().getType())) {

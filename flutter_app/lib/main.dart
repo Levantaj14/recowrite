@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'recowrite',
+      // Defined a theme to look like the web application with a hint of Material 3
       theme: ThemeData(
         progressIndicatorTheme: ProgressIndicatorThemeData(year2023: false),
         pageTransitionsTheme: PageTransitionsTheme(
@@ -46,8 +47,8 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4.0),
               ),
             ),
-            backgroundColor: WidgetStateProperty.all(Colors.black), // White background on light theme
-            foregroundColor: WidgetStateProperty.all(Colors.white), // Black text on light theme
+            backgroundColor: WidgetStateProperty.all(Colors.black),
+            foregroundColor: WidgetStateProperty.all(Colors.white),
             elevation: WidgetStateProperty.all(1.0), // Optional: control elevation
           ),
         ),
@@ -133,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
           currentPage = index;
         });
       },
+      // This is where you can add more pages in the future
       children: [
         HomePage(),
       ],

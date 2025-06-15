@@ -21,7 +21,7 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
   const [localLikeCount, setLocalLikeCount] = useState(likeCount?.count);
   const [available, setAvailable] = useState<boolean>(false);
 
-  const clickedLike = async () => {
+  async function clickedLike(){
     setLocalLiked(!localLiked);
     if (localLikeCount !== undefined) {
       if (localLiked) {
@@ -31,7 +31,7 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
       }
     }
     await changeLike(blogData?.id);
-  };
+  }
 
   useEffect(() => {
     if (userDetails === null) {
@@ -46,6 +46,7 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
     }
   }, [blogData]);
 
+  // Only show the button if the blog is available
   return available && (
     <Tooltip
       content={userDetails === null && t('content.story.like.noLogin')}

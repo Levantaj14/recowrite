@@ -118,6 +118,7 @@ public class ReportService implements ReportServiceInterface {
     }
 
     private void reportReopened(ReportModel reportModel) {
+        // If there was a strike, we should delete it and notify the user that it's gone now
         if (reportModel.getStatus().equals(ReportModel.ReportStatus.STRIKE_GIVEN)) {
             strikeService.handleStrikeRemoved(reportModel);
         }

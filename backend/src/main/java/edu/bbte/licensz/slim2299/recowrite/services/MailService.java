@@ -30,14 +30,16 @@ public class MailService implements MailServiceInterface {
 
     @Async
     @Override
-    public void sendMessage(String to, String subject, String file, Map<String, String> data, Map<String, String> images) {
+    public void sendMessage(String to, String subject, String file,
+                            Map<String, String> data, Map<String, String> images) {
         if (data == null) {
             log.error("data is null!");
             return;
         }
         try {
             MimeMessage message = emailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_RELATED, "UTF-8");
+            MimeMessageHelper helper = new MimeMessageHelper(message,
+                    MimeMessageHelper.MULTIPART_MODE_RELATED, "UTF-8");
 
             helper.setFrom(System.getenv("EMAIL"));
             helper.setTo(to);

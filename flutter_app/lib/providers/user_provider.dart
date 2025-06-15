@@ -13,7 +13,7 @@ class UserProvider extends ChangeNotifier {
 
   void setUser(UserFormat user) {
     _user = user;
-    notifyListeners(); // This triggers UI updates
+    notifyListeners();
   }
 
   void logout() {

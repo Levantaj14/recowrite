@@ -29,6 +29,7 @@ export function PasswordChange() {
     oldPassword: z.string().nonempty(t('common.password.errors.required')),
     newPassword: z.string().min(8, t('common.password.errors.minLength')),
     passwordConfirm: z.string(),
+    // Ensure newPassword and passwordConfirm match
   }).refine((data) => data.newPassword === data.passwordConfirm, {
     message: t('common.password.errors.passwordMatch'),
     path: ['passwordConfirm'],
@@ -49,7 +50,8 @@ export function PasswordChange() {
     resolver: zodResolver(schema),
   });
 
-  const passwordStrengthMeter = (password: string) => {
+  function passwordStrengthMeter(password: string) {
+    // Calculate password strength based on length, uppercase, digits, and special characters
     let score = 0;
     if (password !== undefined) {
       if (password.length >= 8) score++;
@@ -58,7 +60,7 @@ export function PasswordChange() {
       if (/[^A-Za-z0-9]/.test(password)) score++;
     }
     return score;
-  };
+  }
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);

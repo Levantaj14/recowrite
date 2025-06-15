@@ -30,6 +30,7 @@ class ArticleCard extends StatelessWidget {
         return "This blog is not yet published";
       }
       if (blog.description.isEmpty) {
+        // If description is empty, use content
         String cont = "";
         if (blog.content.length > 100) {
           cont = "${blog.content.substring(0, 100)}...";
@@ -48,6 +49,7 @@ class ArticleCard extends StatelessWidget {
       key: Key("${blog.id}"),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       clipBehavior: Clip.hardEdge,
+      // Use InkWell to make the card tappable
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -63,6 +65,7 @@ class ArticleCard extends StatelessWidget {
                 top: Radius.circular(12),
               ),
               child:
+                  // If the banner is an online image, use cache the image
                   blog.banner == ''
                       ? SizedBox(height: 150)
                       : blog.bannerType == "IMAGE_URL"

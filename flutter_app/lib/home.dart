@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage>
 
   late Future<List<BlogsFormat>> futureBlogs;
   late Future<Map<int, UserFormat>> futureAuthors;
+  // Sample data for blogs, used for skeletonizer when the API is not available
   List<BlogsFormat> blogs = List<BlogsFormat>.generate(
     5,
     (i) => BlogsFormat(
@@ -203,7 +204,7 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ),
-      // Writing posts is not implemented yet, so the button is commented out.
+      // Writing posts is not implemented yet, so the button is commented out
       // floatingActionButton: Consumer<UserProvider>(
       //   builder: (context, userProvider, child) {
       //     return userProvider.user != null

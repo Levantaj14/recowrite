@@ -27,6 +27,7 @@ export default function PostOpening({ data, setDate }: Props) {
   useEffect(() => {
     if (data?.blogData.date) {
       const timer = setInterval(() => {
+        // Calculate the countdown based on the blog post date
         const diff = new Date(data.blogData.date).getTime() - Date.now();
         if (diff <= 0) {
           clearInterval(timer);

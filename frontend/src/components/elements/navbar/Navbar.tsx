@@ -32,6 +32,7 @@ const StickyNavbar = () => {
             <Heading>recowrite</Heading>
           </NavLink>
           <Spacer />
+          {/*The admin button should only show up if an admin is logged in*/}
           {isAdmin && (
             <NavLink to="/management">
               <Button variant="ghost" size="xs" mr="2">
@@ -44,6 +45,7 @@ const StickyNavbar = () => {
               {t('navigation.navbar.buttons.dashboard')}
             </Button>
           </NavLink>
+          {/*The login button should only show up if no one is logged in*/}
           {!userDetails && (
             <NavLink to="/login">
               <Button size="xs">{t('buttons.login')}</Button>

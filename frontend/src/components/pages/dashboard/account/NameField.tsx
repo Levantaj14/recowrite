@@ -12,7 +12,7 @@ export function NameField() {
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const [name, setName] = useState(userDetails ? userDetails.name : '');
 
-  const saveName = () => {
+  function saveName() {
     toast.promise(updateName(name), {
       loading: CustomLoading(t('user.profile.account.toast.name.loading')),
       success: () => {
@@ -25,7 +25,7 @@ export function NameField() {
         return t('user.profile.account.toast.name.error');
       },
     });
-  };
+  }
 
   return (
     <motion.div

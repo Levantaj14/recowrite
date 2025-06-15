@@ -21,6 +21,7 @@ class _NotPublishedState extends State<NotPublished> {
   late Timer _timer;
 
   void updateTimer() {
+    // Calculate the difference between the current time and the blog's posting time
     DateTime now = DateTime.now();
     DateTime posting = DateTime.parse(widget.blog.date);
     Duration difference = posting.difference(now);

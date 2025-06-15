@@ -10,19 +10,12 @@ buildscript {
     }
 }
 
-//apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 apply plugin: com.github.spotbugs.snom.SpotBugsPlugin
 apply plugin: se.bjurr.violations.gradle.plugin.ViolationsGradlePlugin
 
 def configDir = buildscript.sourceFile.parentFile
 def javaVersion = Integer.valueOf(JavaVersion.current().toString())
-
-//checkstyle {
-//    toolVersion = '10.12.4'
-//    ignoreFailures = true
-//    configFile = file("${configDir}/checkstyle.xml")
-//}
 
 spotbugs {
     toolVersion = '4.8.0'
@@ -61,7 +54,6 @@ task violations(type: se.bjurr.violations.gradle.plugin.ViolationsTask) {
     violations = [
             ["FINDBUGS", buildDir.path, ".*/spotbugs/.*\\.xml\$", "SpotBugs"],
             ["PMD", buildDir.path, ".*/pmd/.*\\.xml\$", "PMD"],
-//            ["CHECKSTYLE", buildDir.path, ".*/checkstyle/.*\\.xml\$", "Checkstyle"]
     ]
 }
 

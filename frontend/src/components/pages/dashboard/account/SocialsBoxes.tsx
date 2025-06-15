@@ -28,21 +28,21 @@ export function SocialsBoxes() {
     if (userDetails?.socials) {
       const initialInputs = userDetails.socials.reduce<SocialInput>((acc, social) => ({
         ...acc,
-        [social.name]: social.url || ''
+        [social.name]: social.url || '',
       }), {});
 
       setSocialInputs(initialInputs);
     }
   }, [userDetails]);
 
-  const handleInputChange = (socialName: string, value: string) => {
+  function handleInputChange(socialName: string, value: string) {
     setSocialInputs(prev => ({
       ...prev,
-      [socialName]: value
+      [socialName]: value,
     }));
-  };
+  }
 
-  const handleInputBlur = (socialName: string, value: string) => {
+  function handleInputBlur(socialName: string, value: string) {
     if (!setUserDetails || !userDetails) return;
 
     const socialExists = userDetails.socials.some(social => social.name === socialName);
@@ -58,7 +58,7 @@ export function SocialsBoxes() {
     } else {
       updatedSocials = [
         ...userDetails.socials,
-        { name: socialName, url: value }
+        { name: socialName, url: value },
       ];
     }
 
@@ -66,17 +66,17 @@ export function SocialsBoxes() {
     toast.promise(updateSocial(value, socialName), {
       loading: CustomLoading(t('user.profile.account.toast.socials.loading')),
       success: t('user.profile.account.toast.socials.success'),
-      error: t('user.profile.account.toast.socials.error')
-    })
-  };
+      error: t('user.profile.account.toast.socials.error'),
+    });
+  }
 
-  const getSocialUrl = (socialName: string): string => {
+  function getSocialUrl(socialName: string) {
     return socialInputs[socialName] !== undefined ? socialInputs[socialName] : '';
-  };
+  }
 
-  const isSocialChecked = (socialName: string): boolean => {
+  function isSocialChecked(socialName: string) {
     return socialInputs[socialName] !== undefined && socialInputs[socialName] !== '';
-  };
+  }
 
   const items: SocialItem[] = [
     { icon: <FaInstagram />, label: 'Instagram', name: 'Instagram' },
@@ -85,7 +85,6 @@ export function SocialsBoxes() {
     { icon: <FaMedium />, label: 'Medium', name: 'Medium' },
   ];
 
-  //TODO: The input must not be allowed to be more than 255 characters
   return (
     <motion.div
       initial={{ opacity: 0 }}

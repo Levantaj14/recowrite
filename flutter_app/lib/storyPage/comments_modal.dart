@@ -94,6 +94,7 @@ class _CommentsModalState extends State<CommentsModal> {
           ),
           Consumer<UserProvider>(
             builder: (context, userProvider, child) {
+              // Check if the user is logged in and display the comment input field
               return userProvider.user != null
                   ? SafeArea(
                     child: Form(

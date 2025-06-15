@@ -12,7 +12,7 @@ export function EmailField() {
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const [email, setEmail] = useState(userDetails ? userDetails.email : '');
 
-  const onSave = () => {
+  function onSave() {
     toast.promise(updateEmail(email), {
       loading: CustomLoading(t('user.profile.account.toast.email.loading')),
       success: () => {
@@ -25,7 +25,7 @@ export function EmailField() {
         return t('user.profile.account.toast.email.error');
       },
     });
-  };
+  }
 
   return (
     <motion.div

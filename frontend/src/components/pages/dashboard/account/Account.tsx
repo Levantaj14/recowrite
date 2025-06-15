@@ -20,7 +20,7 @@ export function Account() {
   const { t } = useTranslation();
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
 
-  const onUpload = (details: FileAcceptDetails) => {
+  function onUpload(details: FileAcceptDetails) {
     const file = details.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -41,7 +41,7 @@ export function Account() {
     if (file) {
       reader.readAsDataURL(file);
     }
-  };
+  }
 
   return (
     <>

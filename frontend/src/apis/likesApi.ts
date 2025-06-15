@@ -17,14 +17,14 @@ const likesApi = axios.create({
 });
 
 export async function getLiked(id: string | undefined): Promise<LikedType> {
-  const res = await likesApi.get(`/${id}`, {
+  const res = await likesApi.get(`/check/${id}`, {
     validateStatus: () => true
   });
   return res.data;
 }
 
 export async function getLikeCount(id: string | undefined): Promise<LikeCountType> {
-  const res = await likesApi.get(`/count/${id}`);
+  const res = await likesApi.get(`/${id}`);
   return res.data;
 }
 

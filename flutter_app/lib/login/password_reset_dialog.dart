@@ -53,7 +53,7 @@ class _PasswordResetDialogState extends State<PasswordResetDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('If we find an account linked to your email, we\'ll send you an email with the next steps.'),
+            Text("If we find an account linked to your email, we'll send you an email with the next steps."),
             SizedBox(height: 16.0,),
             TextFormField(
               autocorrect: false,

@@ -56,7 +56,6 @@ function User() {
 
   function userPage() {
     return (
-      // TODO: Make it look good on phones
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {(userDetails !== null && String(userDetails.id) === userId) && (
           <Alert.Root status="info" mb={6}>

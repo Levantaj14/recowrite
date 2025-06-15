@@ -95,6 +95,7 @@ class _StoryPageState extends State<StoryPage> {
                             ? SizedBox()
                             : Image(
                               image:
+                                  // Check if the banner is an image URL or base64 encoded
                                   blog.bannerType == "IMAGE_URL"
                                       ? CachedNetworkImageProvider(blog.banner)
                                       : MemoryImage(base64Decode(blog.banner)),
@@ -135,6 +136,7 @@ class _StoryPageState extends State<StoryPage> {
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
+                    // Show the content of the blog if it is published, otherwise show a countdown to publication
                     isPublished
                         ? [
                           Padding(
@@ -167,6 +169,7 @@ class _StoryPageState extends State<StoryPage> {
           );
         },
       ),
+      // Hide the like, comment and report buttons if the story is not published
       bottomNavigationBar: isPublished ? StoryOptionsBar(id: widget.id) : null,
     );
   }
