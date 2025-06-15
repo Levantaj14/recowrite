@@ -21,8 +21,10 @@ function BlogCard({ banner, title, description, content, date, href, index }: Pr
     if (new Date(date) > new Date()) {
       return t('content.story.unpublished');
     }
+    // If the description is empty, use the first 100 characters of content
     if (description === '') {
       let auxContent = content;
+      // Remove markdown patterns from content
       patternsToRemove.forEach(pattern => {
         auxContent = auxContent.replace(new RegExp(pattern, 'g'), '');
       });

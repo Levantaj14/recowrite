@@ -61,6 +61,7 @@ function LoginPage() {
     );
   }
 
+  // Once a successful signup occurs, the user is asked to verify their email
   return verify ? showVerify() : showLogin();
 }
 

@@ -16,6 +16,7 @@ function ErrorPage({code}: Props) {
   const [codeText, setCodeText] = useState('');
 
   useEffect(() => {
+    // Set the title, description, and icon based on the error code
     if (code === 400) {
       setTitle(t('navigation.badRequest.title'));
       setDescription(t('navigation.badRequest.desc'));

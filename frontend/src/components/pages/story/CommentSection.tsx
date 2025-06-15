@@ -85,7 +85,7 @@ export default function CommentSection() {
     });
   };
 
-  const selectedItem = (menuSelectionDetails: MenuSelectionDetails, selectedId: number, selectedContent: string) => {
+  function selectedItem(menuSelectionDetails: MenuSelectionDetails, selectedId: number, selectedContent: string) {
     setSelectedCommentId(selectedId);
     setSelectedCommentContent(selectedContent);
     switch (menuSelectionDetails.value) {
@@ -96,7 +96,7 @@ export default function CommentSection() {
         setDeleteDialogOpen(true);
         break;
     }
-  };
+  }
 
   function Comments() {
     if (!data || data.length === 0) {

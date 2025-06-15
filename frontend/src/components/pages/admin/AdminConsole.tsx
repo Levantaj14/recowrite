@@ -29,6 +29,7 @@ export default function AdminConsole() {
     });
   }, [t, userDetails]);
 
+  // If the user is not an admin, we do show a 404 error page.
   return isAuthorized ? (
     <>
       <Heading size="4xl" mb="6">

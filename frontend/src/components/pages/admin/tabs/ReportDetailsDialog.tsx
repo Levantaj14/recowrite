@@ -124,6 +124,7 @@ export default function ReportDetailsDialog({
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
               </Dialog.CloseTrigger>
+              {/*Deciding which button to show based on the status of the report*/}
               {selectedReport?.status === 'OPEN' && (
                 <Dialog.Footer>
                   <Button variant="outline" disabled={blockButtons}

@@ -35,6 +35,7 @@ export default function Posts() {
         </Flex>
         {data.length > 0 ? (
           data.map((blog, index) => (
+            // If the banner is an image URL, use it directly; otherwise, convert the base64 string to a data URL
             <BlogCard
               key={blog.id}
               banner={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}

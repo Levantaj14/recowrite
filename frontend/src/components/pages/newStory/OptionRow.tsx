@@ -22,7 +22,8 @@ type Props = {
 export function OptionRow({ setValue, getValues }: Props) {
   const { t } = useTranslation();
 
-  const getTextareaInfo = () => {
+  // Functions that handle text manipulation in the textarea for the Markdown editor
+  function getTextareaInfo() {
     const textarea = document.getElementById('content') as HTMLTextAreaElement;
     if (!textarea) return null;
 
@@ -33,9 +34,9 @@ export function OptionRow({ setValue, getValues }: Props) {
       end: textarea.selectionEnd,
       hasSelection: textarea.selectionStart !== textarea.selectionEnd,
     };
-  };
+  }
 
-  const updateTextarea = (newText: string, newCursorPos?: number) => {
+  function updateTextarea(newText: string, newCursorPos?: number) {
     setValue('content', newText);
 
     setTimeout(() => {
@@ -47,9 +48,9 @@ export function OptionRow({ setValue, getValues }: Props) {
         }
       }
     }, 0);
-  };
+  }
 
-  const wrapText = (prefix: string, suffix: string = prefix, placeholder: string = '') => {
+  function wrapText(prefix: string, suffix: string = prefix, placeholder: string = '') {
     const info = getTextareaInfo();
     if (!info) return;
 
@@ -60,9 +61,9 @@ export function OptionRow({ setValue, getValues }: Props) {
     const newCursorPos = hasSelection ? start + prefix.length + selectedText.length + suffix.length : start + prefix.length + placeholder.length;
 
     updateTextarea(newText, newCursorPos);
-  };
+  }
 
-  const insertText = (text: string) => {
+  function insertText(text: string) {
     const info = getTextareaInfo();
     if (!info) return;
 
@@ -71,9 +72,9 @@ export function OptionRow({ setValue, getValues }: Props) {
     const newCursorPos = end + text.length;
 
     updateTextarea(newText, newCursorPos);
-  };
+  }
 
-  const prefixLines = (prefix: string) => {
+  function prefixLines(prefix: string){
     const info = getTextareaInfo();
     if (!info) return;
 
@@ -110,7 +111,7 @@ export function OptionRow({ setValue, getValues }: Props) {
 
       updateTextarea(newText, start + prefix.length);
     }
-  };
+  }
 
   const buttons = [
     { icon: <MdFormatBold />, tooltip: t('content.newStory.write.markdown.bold'), action: () => wrapText('**') },

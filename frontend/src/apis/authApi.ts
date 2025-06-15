@@ -49,12 +49,12 @@ export async function checkCookie(): Promise<UserDetailType | null> {
 }
 
 export async function forgotPassword(email: string): Promise<boolean> {
-  const res = await authApi.post('/forgotPassword', { email });
+  const res = await authApi.post('/forgot-password', { email });
   return res.status === 200;
 }
 
 export async function validateToken(token: string | null): Promise<boolean> {
-  const res = await authApi.post('/forgotPassword/validate', { token }, {
+  const res = await authApi.post('/forgot-password/validate', { token }, {
     validateStatus: () => {
       return true;
     },
@@ -63,7 +63,7 @@ export async function validateToken(token: string | null): Promise<boolean> {
 }
 
 export async function resetPasswordWithToken(token: string | null, password: string): Promise<boolean> {
-  const res = await authApi.post('/forgotPassword/reset', { token, password });
+  const res = await authApi.post('/forgot-password/reset', { token, password });
   return res.status === 200;
 }
 
