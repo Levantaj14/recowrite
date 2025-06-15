@@ -11,9 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-from tfidf import tf_idf_new
+from tfidf import tf_idf
 
-tf_idf_new.setup()
+# Setting up the recommendation system when the server starts up
+tf_idf.setup()
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DjangoProject.settings")
 
