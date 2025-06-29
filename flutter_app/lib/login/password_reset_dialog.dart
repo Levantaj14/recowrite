@@ -19,7 +19,7 @@ class _PasswordResetDialogState extends State<PasswordResetDialog> {
 
   Future<bool> forgotPassword() async {
     final response = await http.post(
-      Uri.parse('${global.url}/authentication/forgotPassword'),
+      Uri.parse('${global.url}/authentication/forgot-password'),
       headers: <String, String>{'Content-Type': 'application/json'},
       body: jsonEncode(<String, String>{'email': emailController.text}),
     );
