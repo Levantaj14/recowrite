@@ -8,3 +8,4 @@
 .env
 */.scannerwork
 */sonar.txt
+api_requests
