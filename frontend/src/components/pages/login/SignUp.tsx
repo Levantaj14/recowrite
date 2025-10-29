@@ -1,7 +1,7 @@
 import { Button, Field, Fieldset, Input, Stack } from '@chakra-ui/react';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
 import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -38,10 +38,10 @@ export default function SignUp({ setVerify }: Props) {
   }, [t]);
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
@@ -56,6 +56,8 @@ export default function SignUp({ setVerify }: Props) {
     }
     return score;
   }
+
+  const password = useWatch({ control, name: 'password' });
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
@@ -110,7 +112,7 @@ export default function SignUp({ setVerify }: Props) {
             <Field.Label>{t('common.fields.password')}</Field.Label>
             <PasswordInput {...register('password')} />
             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
-            <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('password'))} />
+            <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(password)} />
           </Field.Root>
 
           <Field.Root invalid={!!errors.passwordConfirm}>

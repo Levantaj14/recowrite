@@ -4,7 +4,7 @@ import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { Provider } from '@/components/ui/provider.tsx';
 import { UserDetailContext, UserDetailType } from '@/contexts/userDetailContext.ts';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import StickyNavbar from '@/components/elements/navbar/Navbar.tsx';
+import Navbar from '@/components/elements/navbar/Navbar.tsx';
 import Story from '@/components/pages/story/Story.tsx';
 import User from '@/components/pages/User.tsx';
 import LoginPage from '@/components/pages/login/LoginPage.tsx';
@@ -98,7 +98,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <UserDetailContext.Provider value={userDetailContext}>
             <BrowserRouter>
-              <StickyNavbar />
+              <Navbar />
               <Container as="main" mt="4" mb="4" maxW="6xl">
                 <Routes>
                   <Route path="/" element={<Home />} />

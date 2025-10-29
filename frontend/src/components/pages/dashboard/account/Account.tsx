@@ -62,7 +62,7 @@ export function Account() {
       <EmailField />
       <PasswordChange />
       <BioDialog />
-      <SocialsBoxes />
+      <SocialsBoxes key="socials-boxes"/>
     </>
   );
 }

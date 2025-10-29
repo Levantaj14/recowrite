@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog.tsx';
 import { z } from 'zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
 import { toast } from 'sonner';
@@ -41,11 +41,11 @@ export function PasswordChange() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
+    control,
     register,
     handleSubmit,
     reset,
     formState: { errors },
-    watch,
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
@@ -85,6 +85,8 @@ export function PasswordChange() {
     });
   }, [reset, open]);
 
+  const newPassword = useWatch({ control, name: 'newPassword' });
+
   return (
     <>
       <DialogRoot placement="center" open={open} onOpenChange={(e) => setOpen(e.open)}>
@@ -105,7 +107,7 @@ export function PasswordChange() {
                   <Field.Label>{t('common.password.newPassword')}</Field.Label>
                   <PasswordInput {...register('newPassword')} />
                   <Field.ErrorText>{errors.newPassword?.message}</Field.ErrorText>
-                  <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(watch('newPassword'))} />
+                  <PasswordStrengthMeter width="xs" value={passwordStrengthMeter(newPassword)} />
                 </Field.Root>
 
                 <Field.Root invalid={!!errors.passwordConfirm}>

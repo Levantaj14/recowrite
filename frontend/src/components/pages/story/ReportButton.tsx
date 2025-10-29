@@ -1,6 +1,6 @@
 import { BlogType } from '@/apis/blogApi.ts';
 import { useTranslation } from 'react-i18next';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Button, Fieldset, RadioGroup, VStack } from '@chakra-ui/react';
 import { Tooltip } from '@/components/ui/tooltip.tsx';
@@ -28,9 +28,9 @@ type Props = {
 export default function ReportButton({ blogData }: Props) {
   const { t } = useTranslation();
   const { userDetails } = useContext(UserDetailContext);
-  const [available, setAvailable] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const available = blogData?.date ? new Date(blogData.date) <= new Date() : false;
 
   const schema = z.object({
     selected: z.string().nonempty(t('content.story.report.emptyError')),
@@ -47,6 +47,12 @@ export default function ReportButton({ blogData }: Props) {
     resolver: zodResolver(schema),
   });
 
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (prevOpen !== open) {
+    setPrevOpen(open);
+    reset({ selected: '' });
+  }
+
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(sendReport(Number(blogData?.id), Number(data.selected)), {
@@ -62,20 +68,6 @@ export default function ReportButton({ blogData }: Props) {
       },
     });
   };
-
-  useEffect(() => {
-    if (blogData?.date) {
-      const date = new Date(blogData.date);
-      setAvailable(date <= new Date());
-    }
-  }, [blogData]);
-
-  useEffect(() => {
-    reset({
-      selected: '',
-    });
-  }, [reset, open]);
-
 
   return available && (
     <>

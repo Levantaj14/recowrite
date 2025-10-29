@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { BlogType, fetchBlogRecommendation } from '@/apis/blogApi.ts';
 import { fetchUser } from '@/apis/userApi.ts';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
@@ -29,11 +29,9 @@ export default function ContinueReadingSection() {
     },
   });
 
-  useEffect(() => {
-    if (recData && !recIsLoading && !recIsError) {
-      setHasLoadedOnce(true);
-    }
-  }, [recData, recIsLoading, recIsError]);
+  if (recData && !recIsLoading && !recIsError && !hasLoadedOnce) {
+    setHasLoadedOnce(true);
+  }
 
   const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
 
@@ -70,7 +68,7 @@ export default function ContinueReadingSection() {
               transition={{ duration: 0.5, ease: 'easeInOut' }}
               viewport={{ once: true }}
             >
-              <Stack direction={{ base: "column", md: "row" }} >
+              <Stack direction={{ base: 'column', md: 'row' }}>
                 {recData?.map((recommendation) => (
                   <motion.div
                     key={recommendation.id}
@@ -81,7 +79,8 @@ export default function ContinueReadingSection() {
                   >
                     <Link to={`/blog/${recommendation.id}`}>
                       <Card.Root maxW="sm" overflow="hidden">
-                        <Image h="2xs" src={recommendation.banner_type === "IMAGE_URL" ? recommendation.banner : `data:image;base64,${recommendation.banner}`} />
+                        <Image h="2xs"
+                               src={recommendation.banner_type === 'IMAGE_URL' ? recommendation.banner : `data:image;base64,${recommendation.banner}`} />
                         <Card.Body gap="2">
                           <Text>{recommendation.authorName}</Text>
                           <Card.Title>{recommendation.title}</Card.Title>
