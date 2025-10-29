@@ -39,4 +39,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
+    
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.5.7'
 }
