@@ -12,24 +12,14 @@ import Posting from './Posting';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createBlog } from '@/apis/blogApi.ts';
+import { createBlog, CreateBlogType } from '@/apis/blogApi.ts';
 import { toast } from 'sonner';
 import ErrorPage from '@/components/pages/ErrorPage.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { getStrikeCount } from '@/apis/strikeApi.ts';
-
-export interface NewStoryFormFields {
-  content: string;
-  title: string;
-  description: string;
-  date: string;
-  banner: string;
-  banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
-  banner_name: string;
-}
+import NewStorySchema, { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
 
 export default function NewStory() {
   const { t } = useTranslation();
@@ -44,35 +34,7 @@ export default function NewStory() {
   });
 
   // Using a single schema and form for the 3 steps, only validating fields relevant to the current step
-  const schema = z.object({
-    content: z.string().nonempty(t('common.errors.required.field')),
-    title: z.string().nonempty(t('common.errors.required.field')).max(255, t('common.errors.validation.maxChars')),
-    description: z.string().max(255, t('common.errors.validation.maxChars')),
-    date: z.string().nonempty().refine(
-      (val) => !isNaN(Date.parse(val)) && val === new Date(val).toISOString(),
-      {
-        message: t('common.errors.validation.invalidDate'),
-      },
-    ),
-    banner: z.string().nonempty(t('common.errors.required.field')).refine(
-      (val) => {
-        if (getValues('banner_type') === 'IMAGE_URL') {
-          try {
-            new URL(val);
-            return true;
-          } catch {
-            return false;
-          }
-        }
-        return true;
-      },
-      {
-        message: t('common.errors.validation.invalidUrl'),
-      },
-    ),
-    banner_type: z.enum(['IMAGE_URL', 'IMAGE_UPLOAD']),
-    banner_name: z.string().optional(),
-  });
+  const schema = NewStorySchema(t);
 
   const {
     register,
@@ -94,7 +56,7 @@ export default function NewStory() {
 
   async function onSubmit(data: NewStoryFormFields) {
     setStep(step + 1);
-    const id = await createBlog(data);
+    const id = await createBlog(data as CreateBlogType);
     toast.success(t('content.newStory.posting.success'));
     navigate(`/blog/${id}`);
   }

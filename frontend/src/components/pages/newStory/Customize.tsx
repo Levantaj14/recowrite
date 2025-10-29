@@ -13,8 +13,8 @@ import './calendar-style.css';
 import { useColorMode } from '@/components/ui/color-mode';
 import { hu, ro, enUS } from 'react-day-picker/locale';
 import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { NewStoryFormFields } from '@/components/pages/newStory/NewStory.tsx';
 import { FileAcceptDetails } from '@zag-js/file-upload';
+import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
 
 type Props = {
   register: UseFormRegister<NewStoryFormFields>;

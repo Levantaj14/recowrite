@@ -11,8 +11,8 @@ import {
 import { Tooltip } from '@/components/ui/tooltip.tsx';
 import { TfiLayoutLineSolid } from 'react-icons/tfi';
 import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
-import { NewStoryFormFields } from '@/components/pages/newStory/NewStory.tsx';
 import { useTranslation } from 'react-i18next';
+import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
 
 type Props = {
   setValue: UseFormSetValue<NewStoryFormFields>;

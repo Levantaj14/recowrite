@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FieldErrors, UseFormClearErrors, UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { useEffect } from 'react';
-import { NewStoryFormFields } from './NewStory';
 import { OptionRow } from '@/components/pages/newStory/OptionRow.tsx';
+import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
 
 type Props = {
   register: UseFormRegister<NewStoryFormFields>;
