@@ -13,12 +13,17 @@ export default function Dashboard() {
   const { userDetails } = useContext(UserDetailContext);
   const [tabs, setTabs] = useState('preferences');
 
-  useEffect(() => {
-    document.title = t('dashboard.title');
+  const [prevUserDetails, setPrevUserDetails] = useState(userDetails);
+  if (prevUserDetails !== userDetails) {
+    setPrevUserDetails(userDetails);
     if (userDetails === null) {
       setTabs('preferences');
     }
-  }, [t, userDetails]);
+  }
+
+  useEffect(() => {
+    document.title = t('dashboard.title');
+  }, [t]);
 
   return (
     <>
