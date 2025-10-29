@@ -132,7 +132,7 @@ export default function ReportDetailsDialog({
                     {t('buttons.dismiss')}
                   </Button>
                   <Button colorPalette="red" disabled={blockButtons}
-                          onClick={() => buttonPressed('STRIKE_GIVEN', 'revokeStrike')}>
+                          onClick={() => buttonPressed('STRIKE_GIVEN', 'giveStrike')}>
                     {t('buttons.giveStrike')}
                   </Button>
                 </Dialog.Footer>

@@ -7,7 +7,7 @@ import { checkCookie } from '@/apis/authApi.ts';
 import { useTranslation } from 'react-i18next';
 import { testAdmin } from '@/apis/adminApi.ts';
 
-const StickyNavbar = () => {
+export default function Navbar() {
   const { t } = useTranslation();
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -16,13 +16,15 @@ const StickyNavbar = () => {
     checkCookie().then(setUserDetails);
   }, [setUserDetails]);
 
-  useEffect(() => {
+  const [prevUserDetails, setPrevUserDetails] = useState(userDetails);
+  if (prevUserDetails !== userDetails) {
+    setPrevUserDetails(userDetails);
     if (!userDetails) {
       setIsAdmin(false);
-      return;
+    } else {
+      testAdmin().then((response) => setIsAdmin(response));
     }
-    testAdmin().then((response) => setIsAdmin(response));
-  }, [userDetails]);
+  }
 
   return (
     <Box as="nav" position="sticky" top="0" zIndex="sticky" p={4} backdropFilter="saturate(180%) blur(5px)">
@@ -57,5 +59,3 @@ const StickyNavbar = () => {
     </Box>
   );
 };
-
-export default StickyNavbar;

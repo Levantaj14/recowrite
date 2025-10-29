@@ -1,7 +1,7 @@
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Button } from '@chakra-ui/react';
 import { BlogType } from '@/apis/blogApi.ts';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Tooltip } from '@/components/ui/tooltip.tsx';
 import { changeLike, LikeCountType, LikedType } from '@/apis/likesApi.ts';
@@ -19,7 +19,16 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
   const { userDetails } = useContext(UserDetailContext);
   const [localLiked, setLocalLiked] = useState(liked?.liked);
   const [localLikeCount, setLocalLikeCount] = useState(likeCount?.count);
-  const [available, setAvailable] = useState<boolean>(false);
+
+  const [prevUserDetails, setPrevUserDetails] = useState(userDetails);
+  if (prevUserDetails !== userDetails) {
+    setPrevUserDetails(userDetails);
+    if (userDetails === null) {
+      setLocalLiked(false);
+    }
+  }
+
+  const available = blogData?.date ? new Date(blogData.date) <= new Date() : false;
 
   async function clickedLike(){
     setLocalLiked(!localLiked);
@@ -32,19 +41,6 @@ export default function LikeButton({ blogData, liked, likeCount }: Props) {
     }
     await changeLike(blogData?.id);
   }
-
-  useEffect(() => {
-    if (userDetails === null) {
-      setLocalLiked(false);
-    }
-  }, [userDetails]);
-
-  useEffect(() => {
-    if (blogData?.date) {
-      const date = new Date(blogData.date);
-      setAvailable(date <= new Date());
-    }
-  }, [blogData]);
 
   // Only show the button if the blog is available
   return available && (

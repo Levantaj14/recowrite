@@ -40,12 +40,6 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
   }, [isVisible, setValidateFields]);
 
   useEffect(() => {
-    if (postingTime === 'now') {
-      setSelected(new Date());
-    }
-  }, [postingTime]);
-
-  useEffect(() => {
     setValue('date', selected.toISOString());
   }, [selected, setValue]);
 
@@ -66,6 +60,13 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
 
     if (file) {
       reader.readAsDataURL(file);
+    }
+  }
+
+  function handleDateChange(postSchedule: string) {
+    setPostingTime(postSchedule);
+    if (postSchedule === 'now') {
+      setSelected(new Date());
     }
   }
 
@@ -114,7 +115,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
                   {t('content.newStory.customize.fields.date.title')}
                   <Field.RequiredIndicator />
                 </Field.Label>
-                <RadioGroup value={postingTime} onValueChange={(e) => setPostingTime(e.value)}>
+                <RadioGroup value={postingTime} onValueChange={(e) => handleDateChange(e.value)}>
                   <HStack gap="6">
                     <Radio value="now">{t('content.newStory.customize.fields.date.options.now')}</Radio>
                     <Radio value="schedule">{t('content.newStory.customize.fields.date.options.schedule')}</Radio>

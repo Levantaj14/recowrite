@@ -21,11 +21,13 @@ export default function Preferences() {
     ],
   });
 
-  useEffect(() => {
+  const [prevUserDetails, setPrevUserDetails] = useState(userDetails);
+  if (prevUserDetails !== userDetails) {
+    setPrevUserDetails(userDetails);
     if (userDetails?.getEmail !== undefined) {
       setReceiveEmails(userDetails.getEmail);
     }
-  }, [userDetails]);
+  }
 
   useEffect(() => {
     document.title = t('dashboard.tabs.preferences');
@@ -35,7 +37,7 @@ export default function Preferences() {
     if (userDetails && receiveEmails !== undefined) {
       updatePreferences(selectedLanguage, receiveEmails);
     }
-  }, [selectedLanguage, receiveEmails, userDetails, setUserDetails]);
+  }, [selectedLanguage, receiveEmails, userDetails]);
 
   const languageChanged = (e: SelectValueChangeDetails) => {
     i18n.changeLanguage(e.value[0]);

@@ -3,7 +3,7 @@ import { CheckboxCard, CheckboxCardIndicator } from '@/components/ui/checkbox-ca
 import { motion } from 'motion/react';
 import { FaBluesky, FaInstagram, FaMedium, FaXTwitter } from 'react-icons/fa6';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { updateSocial } from '@/apis/accountApi.ts';
@@ -22,18 +22,12 @@ interface SocialItem {
 export function SocialsBoxes() {
   const { t } = useTranslation();
   const { userDetails, setUserDetails } = useContext(UserDetailContext);
-  const [socialInputs, setSocialInputs] = useState<SocialInput>({});
-
-  useEffect(() => {
-    if (userDetails?.socials) {
-      const initialInputs = userDetails.socials.reduce<SocialInput>((acc, social) => ({
-        ...acc,
-        [social.name]: social.url || '',
-      }), {});
-
-      setSocialInputs(initialInputs);
-    }
-  }, [userDetails]);
+  const [socialInputs, setSocialInputs] = useState<SocialInput>(() => {
+    return userDetails?.socials?.reduce<SocialInput>((acc, social) => ({
+      ...acc,
+      [social.name]: social.url || '',
+    }), {}) || {};
+  });
 
   function handleInputChange(socialName: string, value: string) {
     setSocialInputs(prev => ({

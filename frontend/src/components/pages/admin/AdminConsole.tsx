@@ -14,18 +14,26 @@ export default function AdminConsole() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [tabs, setTabs] = useState('reports');
 
-  useEffect(() => {
+  const [prevUserDetails, setPrevUserDetails] = useState(userDetails);
+  if (prevUserDetails !== userDetails) {
+    setPrevUserDetails(userDetails);
     if (!userDetails) {
       setIsAuthorized(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!userDetails) {
       return;
     }
+
     testAdmin().then((response) => {
       if (response) {
         document.title = t('admin.title');
         setIsAuthorized(true);
-        return;
+      } else {
+        setIsAuthorized(false);
       }
-      setIsAuthorized(false);
     });
   }, [t, userDetails]);
 
