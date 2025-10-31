@@ -14,14 +14,14 @@ import java.util.List;
 @Setter
 @Embeddable
 public class UserAssociations {
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BlogModel> blogs;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SocialsModel> socials;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeModel> likes;
 
     @OneToMany(mappedBy = "reporter", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
