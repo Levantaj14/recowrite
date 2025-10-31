@@ -30,10 +30,6 @@ export default function Preferences() {
   }
 
   useEffect(() => {
-    document.title = t('dashboard.tabs.preferences');
-  }, [t]);
-
-  useEffect(() => {
     if (userDetails && receiveEmails !== undefined) {
       updatePreferences(selectedLanguage, receiveEmails);
     }
