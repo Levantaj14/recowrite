@@ -45,7 +45,7 @@ public class LikeService implements LikeServiceInterface {
         Instant now = Instant.now();
         Instant blogDate = blogModel.getDate().toInstant();
         if (blogDate.isAfter(now)) {
-            throw new BlogNotAvailableException("Blog not available");
+            throw new BlogNotAvailableException("Blog with ID of " + blogId + " not available");
         }
         UserModel user = userService.getUserModelByUsername(username);
         Optional<LikeModel> likeModel = likeManager.findByBlog_IdAndUser(blogId, user);
