@@ -14,6 +14,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.CommentModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.CommentMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class CommentService implements CommentServiceInterface{
     private final CommentManager commentManager;
@@ -53,6 +55,7 @@ public class CommentService implements CommentServiceInterface{
     public List<AccountCommentDtoOut> findAllByAccount(String username) {
         Optional<UserModel> user = userManager.findByUsername(username);
         if (user.isPresent()) {
+            log.info("User {} listed all of it's comments", user.get().getId());
             List<CommentModel> comments = commentManager.findAllByUser(user.get());
             List<AccountCommentDtoOut> accountCommentDtos = new ArrayList<>();
             for (CommentModel commentModel : comments) {
@@ -83,6 +86,7 @@ public class CommentService implements CommentServiceInterface{
         }
         commentModel.setUser(user.get());
         commentModel.setBlog(blog.get());
+        log.info("User {} added comment under blog {}", user.get().getId(), blogModel.getId());
         return commentManager.save(commentModel).getId();
     }
 
@@ -102,12 +106,14 @@ public class CommentService implements CommentServiceInterface{
         if (comment.isEmpty()) {
             throw new CommentNotFoundException("Comment not found");
         }
+        log.info("Comment {} has been updated", comment.get().getId());
         comment.get().setComment(commentDtoIn.getComment());
         commentManager.save(comment.get());
     }
 
     @Override
     public void deleteCommentById(Long id) {
+        log.info("Comment {} has been deleted", id);
         commentManager.deleteById(id);
     }
 }

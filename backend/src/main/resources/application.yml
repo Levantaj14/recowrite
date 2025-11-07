@@ -13,8 +13,8 @@ spring:
     hibernate:
       ddl-auto: update
   mail:
-    host: smtp.gmail.com
-    port: 587
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
     username: ${EMAIL}
     password: ${EMAIL_PASSWORD}
     properties.mail.smtp:

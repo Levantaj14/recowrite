@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.StrikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class StrikeService implements StrikeServiceInterface {
     private final StrikeManager strikeManager;
@@ -52,6 +54,7 @@ public class StrikeService implements StrikeServiceInterface {
         strikeModel.setReport(reportModel);
         strikeModel.setUser(reportModel.getReportedUser());
         strikeManager.save(strikeModel);
+        log.info("A user has been given a strike");
 
         BlogModel blogModel = reportModel.getBlog();
         blogModel.setVisible(false);
@@ -77,6 +80,7 @@ public class StrikeService implements StrikeServiceInterface {
             return;
         }
         strikeManager.delete(strikeModel.get());
+        log.info("A user's strike has been removed");
 
         BlogModel blogModel = reportModel.getBlog();
         blogModel.setVisible(true);

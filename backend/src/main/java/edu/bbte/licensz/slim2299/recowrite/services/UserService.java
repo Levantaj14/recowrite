@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserService implements UserServiceInterface {
     private final UserManager userManager;
@@ -79,7 +81,9 @@ public class UserService implements UserServiceInterface {
         user.setSalt(salt);
         user.setRole(decideRole());
         user.setPassword(BCrypt.hashpw(user.getPassword(), salt));
-        return userManager.save(user);
+        UserModel createdUser = userManager.save(user);
+        log.info("Created user with id {}", createdUser.getId());
+        return createdUser;
     }
 
     private String decideRole() {
@@ -91,6 +95,7 @@ public class UserService implements UserServiceInterface {
     public void updateUserPreferences(String username, SettingsDtoIn settings) {
         Optional<UserModel> result = userManager.findByUsername(username);
         if (result.isPresent()) {
+            log.info("User {} changed it's preferences", result.get().getId());
             UserModel userModel = result.get();
             userModel.getPreferences().setLanguage(settings.getLanguage());
             userModel.getPreferences().setEmails(settings.isGetEmail());
