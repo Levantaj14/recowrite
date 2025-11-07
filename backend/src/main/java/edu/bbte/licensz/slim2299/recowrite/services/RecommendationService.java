@@ -20,7 +20,9 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -108,10 +110,10 @@ public class RecommendationService implements RecommendationServiceInterface {
             connection.setDoOutput(true);
             connection.connect();
             int responseCode = connection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                log.error("Couldn't add the blog with id {} to the recommendation system", blogId);
-            } else {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 log.info("Successfully added the blog with id {} to the recommendation system", blogId);
+            } else {
+                log.error("Couldn't add the blog with id {} to the recommendation system", blogId);
             }
             connection.disconnect();
         } catch (IOException e) {
@@ -134,14 +136,14 @@ public class RecommendationService implements RecommendationServiceInterface {
             connection.setRequestMethod("DELETE");
             connection.connect();
             int responseCode = connection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                log.error("Couldn't remove the blog with id {} from the recommendation system", blogId);
-            } else {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 log.info("Successfully removed the blog with id {} from the recommendation system", blogId);
+            } else {
+                log.error("Couldn't remove the blog with id {} from the recommendation system", blogId);
             }
             connection.disconnect();
         } catch (IOException e) {
-            log.error("Error processing data when removing the blog with id {} from the recommendation system",  blogId);
+            log.error("Error processing data when removing the blog with id {} from the recommendation system", blogId);
         }
     }
 }
