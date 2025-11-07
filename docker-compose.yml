@@ -24,6 +24,8 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - EMAIL=${EMAIL}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
       - RECOMMEND=recommendations
     platform: linux/amd64
     depends_on:
