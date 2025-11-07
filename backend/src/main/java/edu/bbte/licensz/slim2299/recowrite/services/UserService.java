@@ -77,8 +77,14 @@ public class UserService implements UserServiceInterface {
         UserModel user = userMapper.signupDtoToModel(signUpDtoIn);
         String salt = BCrypt.gensalt(12);
         user.setSalt(salt);
+        user.setRole(decideRole());
         user.setPassword(BCrypt.hashpw(user.getPassword(), salt));
         return userManager.save(user);
+    }
+
+    private String decideRole() {
+        List<UserModel> users = userManager.findAll();
+        return users.isEmpty() ? "ADMIN" : "USER";
     }
 
     @Override

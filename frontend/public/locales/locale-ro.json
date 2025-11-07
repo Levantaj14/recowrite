@@ -201,6 +201,14 @@
     }
   },
   "content": {
+    "noBlogs": {
+      "title": "Nu s-au găsit articole",
+      "desc": {
+        "auth": "De ce nu scrii unul chiar tu unul?",
+        "noAuth": "Conectează-te pentru a scrie primul articol"
+      },
+      "button": "Scrie primul articol"
+    },
     "story": {
       "written": "Scris de",
       "unpublished": "Acest blog nu este încă publicat",

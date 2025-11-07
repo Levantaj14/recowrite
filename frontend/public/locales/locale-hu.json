@@ -201,6 +201,14 @@
     }
   },
   "content": {
+    "noBlogs": {
+      "title": "Úgy tűnik, még nincsenek blogok",
+      "desc": {
+        "auth": "Miért ne te légy az első, aki posztol egyet?",
+        "noAuth": "Jelentkezz be, vagy regisztrálj, és légy te az első, aki posztol egyet!"
+      },
+      "button": "Első cikk írása"
+    },
     "story": {
       "written": "Írta",
       "unpublished": "Ez a blog még nem elérhető",
