@@ -15,12 +15,14 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportReasonsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.ReportsMapper;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 public class ReportService implements ReportServiceInterface {
     private final ReportManager reportManager;
@@ -84,6 +86,7 @@ public class ReportService implements ReportServiceInterface {
         reportModel.setReportDate(now);
         reportModel.setReportedUser(blogModel.getUser());
         reportModel.setReporter(reporterUser);
+        log.info("A report for blog {} has been created", report.getBlogId());
         return reportManager.save(reportModel).getId();
     }
 
@@ -110,6 +113,7 @@ public class ReportService implements ReportServiceInterface {
         if (!"".equals(reportStatusDtoIn.getNote())) {
             reportModel.setNote(reportStatusDtoIn.getNote());
         }
+        log.info("The status of report {} has been changed", reportStatusDtoIn.getReportStatus());
         reportManager.save(reportModel);
 
         if (ReportModel.ReportStatus.STRIKE_GIVEN.equals(reportStatusDtoIn.getReportStatus())) {

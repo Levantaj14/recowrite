@@ -10,6 +10,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsTypesModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class AccountService implements AccountServiceInterface {
     private final UserManager userManager;
@@ -41,6 +43,7 @@ public class AccountService implements AccountServiceInterface {
         Optional<UserModel> user = userManager.findByUsername(username);
         if (user.isPresent()) {
             UserModel userModel = user.get();
+            log.info("Updating the name of user with id {}", userModel.getId());
             userModel.setName(userNameDtoIn.getName());
             userManager.save(userModel);
             return;
@@ -53,6 +56,7 @@ public class AccountService implements AccountServiceInterface {
         Optional<UserModel> user = userManager.findByUsername(username);
         if (user.isPresent()) {
             UserModel userModel = user.get();
+            log.info("Updating the email of user with id {}", userModel.getId());
             userModel.setEmail(userEmailDtoIn.getEmail());
             userManager.save(userModel);
             return;
@@ -65,6 +69,7 @@ public class AccountService implements AccountServiceInterface {
         Optional<UserModel> result = userManager.findByUsername(username);
         if (result.isPresent()) {
             UserModel userModel = result.get();
+            log.info("Uploading avatar for user with id {}", userModel.getId());
             byte[] imageBytes = Base64.getDecoder().decode(userAvatarDtoIn.getPicture());
 
             String[] filenameParts = userAvatarDtoIn.getName().split("\\.");
@@ -85,6 +90,7 @@ public class AccountService implements AccountServiceInterface {
         Optional<UserModel> user = userManager.findByUsername(username);
         if (user.isPresent()) {
             UserModel userModel = user.get();
+            log.info("Updating the password of user with id {}", userModel.getId());
             if (!BCrypt.checkpw(userPasswordChangeDtoIn.getOldPassword(), userModel.getPassword())) {
                 throw new IncorrectPasswordException("Old password does not match");
             }
@@ -105,6 +111,7 @@ public class AccountService implements AccountServiceInterface {
         Optional<UserModel> user = userManager.findByUsername(username);
         if (user.isPresent()) {
             UserModel userModel = user.get();
+            log.info("Updating the {} account of user with id {}", socialDtoIn.getName(), userModel.getId());
             Optional<SocialsTypesModel> socialsTypes = socialsTypeManager.findByName(socialDtoIn.getName());
             if (socialsTypes.isPresent()) {
                 SocialsTypesModel socialsTypesModel = socialsTypes.get();
@@ -122,12 +129,13 @@ public class AccountService implements AccountServiceInterface {
                 }
                 return;
             }
-            throw new SocialMediaNotSupportedException("Social media not supported");
+            throw new SocialMediaNotSupportedException("Social media " + socialDtoIn.getName() + " not supported");
         }
         throw new UserNotFoundException("User not found");
     }
 
     private void createSocialEntry(SocialDtoIn socialDtoIn, UserModel userModel, SocialsTypesModel socialsTypesModel) {
+        log.info("Creating new social entry of {} for user with id {}", socialDtoIn.getName(), userModel.getId());
         if (!Objects.equals(socialDtoIn.getUsername(), "")) {
             SocialsModel newSocialsModel = new SocialsModel();
             newSocialsModel.setUser(userModel);
@@ -143,6 +151,7 @@ public class AccountService implements AccountServiceInterface {
         if (user.isEmpty()) {
             throw new UserNotFoundException("User not found");
         }
+        log.info("Updating bio of user with id {}", username);
         UserModel userModel = user.get();
         userModel.setBio(bioDtoIn.getBio());
         userManager.save(userModel);
@@ -154,6 +163,7 @@ public class AccountService implements AccountServiceInterface {
         if (user.isEmpty()) {
             throw new UserNotFoundException("User not found");
         }
+        log.info("Deleting account with id {}", accountId);
         userManager.delete(user.get());
     }
 
@@ -165,8 +175,10 @@ public class AccountService implements AccountServiceInterface {
         }
         UserModel userModel = user.get();
         if ("ADMIN".equals(userModel.getRole())) {
+            log.info("Changing role of user with id {} to ADMIN", accountId);
             userModel.setRole("USER");
         } else if ("USER".equals(userModel.getRole())) {
+            log.info("Changing role of user with id {} to USER", accountId);
             userModel.setRole("ADMIN");
         }
         userManager.save(userModel);

@@ -51,6 +51,7 @@ public class BlogService implements BlogServiceInterface {
     @Override
     public List<BlogDtoOut> getAllBlogsAsAdmin() {
         // Admins must see all blogs, even the ones that are "deleted"
+        log.info("Getting all blogs for an admin");
         List<BlogDtoOut> blogList = new ArrayList<>();
         for (BlogModel blog : blogManager.findAll()) {
             BlogDtoOut auxDto = createBlogDto(blog);
@@ -100,6 +101,7 @@ public class BlogService implements BlogServiceInterface {
         if (userResult.isEmpty()) {
             throw new UserNotFoundException("User with name " + username + " not found");
         }
+        log.info("User {} attempting to post a blog", userResult.get().getId());
 
         // Checking so a blog can't be posted in the past
         Instant now = Instant.now();

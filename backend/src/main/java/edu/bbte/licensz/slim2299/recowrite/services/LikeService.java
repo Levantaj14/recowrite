@@ -8,6 +8,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.LikeManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.LikeModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class LikeService implements LikeServiceInterface {
     private final LikeManager likeManager;
@@ -51,8 +53,10 @@ public class LikeService implements LikeServiceInterface {
         Optional<LikeModel> likeModel = likeManager.findByBlog_IdAndUser(blogId, user);
         if (likeModel.isPresent()) {
             LikeModel like = likeModel.get();
+            log.info("Like removed from blog {}", blogModel.getId());
             likeManager.delete(like);
         } else {
+            log.info("Like added to blog {}", blogModel.getId());
             LikeModel like = new LikeModel();
             like.setBlog(blogModel);
             like.setUser(user);

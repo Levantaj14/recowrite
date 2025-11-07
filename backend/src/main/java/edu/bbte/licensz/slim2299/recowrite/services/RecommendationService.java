@@ -110,6 +110,8 @@ public class RecommendationService implements RecommendationServiceInterface {
             int responseCode = connection.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 log.error("Couldn't add the blog with id {} to the recommendation system", blogId);
+            } else {
+                log.info("Successfully added the blog with id {} to the recommendation system", blogId);
             }
             connection.disconnect();
         } catch (IOException e) {
@@ -134,6 +136,8 @@ public class RecommendationService implements RecommendationServiceInterface {
             int responseCode = connection.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 log.error("Couldn't remove the blog with id {} from the recommendation system", blogId);
+            } else {
+                log.info("Successfully removed the blog with id {} from the recommendation system", blogId);
             }
             connection.disconnect();
         } catch (IOException e) {

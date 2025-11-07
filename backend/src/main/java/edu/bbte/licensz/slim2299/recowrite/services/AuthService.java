@@ -11,6 +11,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.TokenModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class AuthService implements AuthServiceInterface {
     private static final String USERNAME_STRING = "username";
@@ -50,6 +52,7 @@ public class AuthService implements AuthServiceInterface {
     public String login(LoginDtoIn user) {
         UserModel userModel = userService.getUserModelByUsername(user.getUsername());
         if (userModel.isValid()) {
+            log.info("Attempting to login with username {}", user.getUsername());
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
             Map<String, String> model = new ConcurrentHashMap<>();
@@ -65,8 +68,9 @@ public class AuthService implements AuthServiceInterface {
 
     @Override
     public void signup(SignUpDtoIn user) {
+        log.info("Attempting to signup with username {}", user.getUsername());
         UserModel userModel = userService.createUser(user);
-        // Generating a random token for email verification and saving to the database
+        // Generating a random token for email verification and saving it in the database
         TokenModel tokenModel = new TokenModel();
         tokenModel.setUser(userModel);
         tokenModel.setToken(UUID.randomUUID().toString());
@@ -93,6 +97,7 @@ public class AuthService implements AuthServiceInterface {
         Optional<TokenModel> tokenModel = tokenManager.findByToken(token);
         if (tokenModel.isPresent() && "EMAIL".equals(tokenModel.get().getType())) {
             // Validating the account and deleting the token
+            log.info("A token has been attempted to be validated");
             UserModel user = tokenModel.get().getUser();
             user.setValid(true);
             userManager.save(user);

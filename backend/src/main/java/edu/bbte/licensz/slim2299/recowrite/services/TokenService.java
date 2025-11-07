@@ -7,6 +7,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.TokenModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ExpiredTokenException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class TokenService implements TokenServiceInterface {
     private static final String PASSWORD_STRING = "PASSWORD";
@@ -73,6 +75,7 @@ public class TokenService implements TokenServiceInterface {
             userModel.setPassword(BCrypt.hashpw(tokenPasswordDtoIn.getPassword(), salt));
             userManager.save(userModel);
             tokenManager.delete(tokenModel.get());
+            log.info("A user's password has been changed using 'Forgot your password'");
             if (userModel.getPreferences().isEmails()) {
                 Map<String, String> model = new ConcurrentHashMap<>();
                 model.put("username", userModel.getUsername());
