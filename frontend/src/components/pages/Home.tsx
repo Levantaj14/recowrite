@@ -1,15 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { BlogType, fetchAllBlogs } from '@/apis/blogApi.ts';
 import { fetchAllUsers } from '@/apis/userApi.ts';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import { Box, Card, Grid, Image, Text } from '@chakra-ui/react';
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { motion } from 'motion/react';
+import { EmptyState } from '@/components/ui/empty-state.tsx';
+import { IoSadOutline } from 'react-icons/io5';
+import { Button } from '../ui/button';
+import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 
 function Home() {
   const { t } = useTranslation();
+  const { userDetails } = useContext(UserDetailContext);
   const { data, isLoading } = useQuery({
     queryKey: ['blogs'],
     queryFn: async () => {
@@ -45,7 +50,7 @@ function Home() {
   }
 
   function blogList() {
-    return (
+    return data?.blogData.length !== 0 ? (
       <>
         <Grid
           templateColumns="repeat(auto-fit, minmax(350px, 1fr))"
@@ -87,6 +92,25 @@ function Home() {
         </Grid>
         <Box mt="10" />
       </>
+    ) : (
+      <motion.div
+        key="no-blog-state"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <EmptyState
+          icon={<IoSadOutline />}
+          title={t('content.noBlogs.title')}
+          description={userDetails === null ? t('content.noBlogs.desc.noAuth') : t('content.noBlogs.desc.auth')}
+          size="lg"
+        >
+          {userDetails !== null && (
+            <NavLink to="/create">
+              <Button size="sm">{t('content.noBlogs.button')}</Button>
+            </NavLink>
+          )}
+        </EmptyState>
+      </motion.div>
     );
   }
 

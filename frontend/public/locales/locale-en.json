@@ -201,6 +201,14 @@
     }
   },
   "content": {
+    "noBlogs": {
+      "title": "It looks like there are no blogs here yet",
+      "desc": {
+        "auth": "Be the first to create one and share your thoughts with the world!",
+        "noAuth": "Login or sign up to create the first blog!"
+      },
+      "button": "Create the first blog"
+    },
     "story": {
       "written": "Written by",
       "unpublished": "This blog is not yet published",
