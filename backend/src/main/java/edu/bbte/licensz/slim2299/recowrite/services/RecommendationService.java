@@ -1,149 +1,145 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotAvailableException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
-import edu.bbte.licensz.slim2299.recowrite.services.exceptions.RecommendationServiceNotRespondingException;
+import edu.bbte.licensz.slim2299.recowrite.services.dto.RecommendationDataDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.services.exceptions.RecommendationServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
 public class RecommendationService implements RecommendationServiceInterface {
     private final BlogServiceInterface blogService;
     private final BlogManager blogManager;
+    private final WebClient webClient;
 
     @Autowired
     public RecommendationService(BlogServiceInterface blogService, BlogManager blogManager) {
         this.blogService = blogService;
         this.blogManager = blogManager;
+        this.webClient = WebClient.create("http://" + System.getenv("RECOMMEND") + ":8000");
     }
 
     @Override
     public List<BlogDtoOut> getRecommendations(String blogId) {
-        Optional<BlogModel> blogModel = blogManager.findByIdAndVisible(Long.parseLong(blogId), true);
-        if (blogModel.isEmpty()) {
-            throw new BlogNotFoundException("Blog not found");
-        }
-        Instant now = Instant.now();
-        Instant blogDate = blogModel.get().getDate().toInstant();
-        if (blogDate.isAfter(now)) {
-            throw new BlogNotAvailableException("Blog not available");
-        }
-        try {
-            // Crafting the URL to the recommendation system
-            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/recommend";
-            ObjectMapper objectMapper = new ObjectMapper();
-            URI uri = UriComponentsBuilder.fromUriString(apiHost)
-                    .queryParam("id", blogId)
-                    .queryParam("k", 3)
-                    .build()
-                    .toUri();
+        BlogModel blogModel = findVisibleBlog(blogId);
+        checkBlogAvailability(blogModel);
 
-            URL url = uri.toURL();
+        RecommendationDataDtoIn recommendationData = fetchRecommendations(blogId);
 
-            // Connection to it with GET
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.connect();
-
-            // Reading and processing the response
-            var sb = new StringBuilder();
-            try (var ir = new InputStreamReader(conn.getInputStream());
-                 var br = new BufferedReader(ir)) {
-                String output = br.readLine();
-                while (output != null) {
-                    sb.append(output);
-                    output = br.readLine();
-                }
-            }
-            List<String> data = objectMapper.readValue(
-                    objectMapper.readTree(sb.toString()).get("data").toString(),
-                    new TypeReference<>() {
-                    }
-            );
-
-            List<BlogDtoOut> blogs = new ArrayList<>();
-            for (String s : data) {
-                blogs.add(blogService.getBlogById(Long.parseLong(s)));
-            }
-
-            log.info("Response code: {}", conn.getResponseCode());
-            log.info("Response message: {}", data);
-            return blogs;
-        } catch (IOException e) {
-            log.error("Recommendation service not responding");
-            throw new RecommendationServiceNotRespondingException("Error getting recommendations");
-        }
+        return mapToBlogDto(recommendationData);
     }
+
 
     @Override
     public void addRecommendation(long blogId) {
         try {
-            // Crafting the URL to the recommendation system
-            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/add";
-            URI uri = UriComponentsBuilder.fromUriString(apiHost)
-                    .queryParam("id", blogId)
-                    .build()
-                    .toUri();
-            URL url = uri.toURL();
-            // Sending a POST request and checking if it worked
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                log.info("Successfully added the blog with id {} to the recommendation system", blogId);
+            ResponseEntity<?> response = webClient.post()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/add")
+                            .queryParam("id", blogId)
+                            .build()
+                    ).retrieve().toEntity(Void.class).block();
+            if (response != null) {
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    log.info("Successfully added the blog with id {} to the recommendation system", blogId);
+                } else {
+                    log.error("Couldn't add the blog with id {} to the recommendation system. Status code: {}", blogId, response.getStatusCode());
+                }
             } else {
-                log.error("Couldn't add the blog with id {} to the recommendation system", blogId);
+                log.error("We didn't hear back from the recommendation system");
+                throw new RecommendationServiceException("Error connection to recommendation system");
             }
-            connection.disconnect();
-        } catch (IOException e) {
-            log.error("Error processing data when trying to add the blog with id {}", blogId);
+        } catch (HttpServerErrorException.InternalServerError e) {
+            log.error("Something happened in the recommendation system");
         }
     }
 
     @Override
     public void removeRecommendation(long blogId) {
         try {
-            // Crafting the URL to the recommendation system
-            String apiHost = "http://" + System.getenv("RECOMMEND") + ":8000/remove";
-            URI uri = UriComponentsBuilder.fromUriString(apiHost)
-                    .queryParam("id", blogId)
-                    .build()
-                    .toUri();
-            URL url = uri.toURL();
-            // Sending a DELETE request and checking if it worked
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("DELETE");
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                log.info("Successfully removed the blog with id {} from the recommendation system", blogId);
+            ResponseEntity<?> response = webClient.delete()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/remove")
+                            .queryParam("id", blogId)
+                            .build()
+                    ).retrieve().toEntity(Void.class).block();
+            if (response != null) {
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    log.info("Successfully removed the blog with id {} from the recommendation system", blogId);
+                } else {
+                    log.error("Couldn't remove the blog with id {} from the recommendation system. Status code: {}", blogId, response.getStatusCode());
+                }
             } else {
-                log.error("Couldn't remove the blog with id {} from the recommendation system", blogId);
+                log.error("We didn't hear back from the recommendation system");
+                throw new RecommendationServiceException("Error connection to recommendation system");
             }
-            connection.disconnect();
-        } catch (IOException e) {
-            log.error("Error processing data when removing the blog with id {} from the recommendation system", blogId);
+        } catch (HttpServerErrorException.InternalServerError e) {
+            log.error("Something happened in the recommendation system");
         }
+    }
+
+    private BlogModel findVisibleBlog(String blogId) {
+        return blogManager.findByIdAndVisible(Long.parseLong(blogId), true)
+                .orElseThrow(() -> new BlogNotFoundException("Blog not found"));
+    }
+
+    private void checkBlogAvailability(BlogModel blogModel) {
+        Instant now = Instant.now();
+        Instant blogDate = blogModel.getDate().toInstant();
+        if (blogDate.isAfter(now)) {
+            throw new BlogNotAvailableException("Blog not available");
+        }
+    }
+
+    private RecommendationDataDtoIn fetchRecommendations(String blogId) {
+        try {
+            ResponseEntity<RecommendationDataDtoIn> response = webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/recommend")
+                            .queryParam("id", blogId)
+                            .queryParam("k", 3)
+                            .build()
+                    )
+                    .retrieve()
+                    .toEntity(RecommendationDataDtoIn.class)
+                    .block();
+
+            if (response == null) {
+                log.error("No response from recommendation system");
+                throw new RecommendationServiceException("Error connecting to recommendation system");
+            }
+
+            RecommendationDataDtoIn body = response.getBody();
+            if (body == null) {
+                log.error("Status code: {}", response.getStatusCode());
+                throw new RecommendationServiceException("Error getting recommendations");
+            }
+
+            log.info("Recommendation got successfully. Status code: {}", response.getStatusCode());
+            return body;
+
+        } catch (HttpServerErrorException.InternalServerError e) {
+            log.error("Exception in recommendation system", e);
+            throw new RecommendationServiceException("Error getting recommendations");
+        }
+    }
+
+    private List<BlogDtoOut> mapToBlogDto(RecommendationDataDtoIn recommendationData) {
+        return recommendationData.getData().stream()
+                .map(blogService::getBlogById)
+                .toList();
     }
 }
