@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -84,5 +85,16 @@ public class TokenService implements TokenServiceInterface {
             return;
         }
         throw new ExpiredTokenException("The token is expired");
+    }
+
+    @Override
+    public void deleteExpiredTokens() {
+        Optional<List<TokenModel>> tokens = tokenManager.findAllByExpiryDateBefore(LocalDateTime.now());
+        if (tokens.isPresent() && !tokens.get().isEmpty()) {
+            tokenManager.deleteAll(tokens.get());
+            log.info("Number of unused tokens removed: {}", tokens.get().size());
+        } else  {
+            log.info("No unused tokens removed");
+        }
     }
 }

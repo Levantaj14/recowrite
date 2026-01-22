@@ -9,4 +9,6 @@ public interface TokenServiceInterface {
     void validatePasswordToken(String token);
 
     void changePassword(TokenPasswordDtoIn tokenPasswordDtoIn);
+
+    void deleteExpiredTokens();
 }
