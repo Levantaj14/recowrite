@@ -7,11 +7,11 @@ import 'package:recowrite/formats/comment_format.dart';
 import 'package:recowrite/formats/like_count_format.dart';
 import 'package:recowrite/formats/liked_format.dart';
 import 'package:recowrite/providers/user_provider.dart';
-import 'package:recowrite/storyPage/comments_modal.dart';
-import 'package:recowrite/storyPage/report_dialog.dart';
+import 'package:recowrite/pages/storyPage/comments_modal.dart';
+import 'package:recowrite/pages/storyPage/report_dialog.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../globals.dart' as global;
+import '../../globals.dart' as global;
 
 class StoryOptionsBar extends StatefulWidget {
   final int id;

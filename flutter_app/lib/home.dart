@@ -9,6 +9,7 @@ import 'package:recowrite/components/article_card.dart';
 import 'package:recowrite/components/base64_avatar.dart';
 import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
+import 'package:recowrite/pages/new_post.dart';
 import 'package:recowrite/providers/user_provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage>
 
   late Future<List<BlogsFormat>> futureBlogs;
   late Future<Map<int, UserFormat>> futureAuthors;
+  bool canConnect = true;
   // Sample data for blogs, used for skeletonizer when the API is not available
   List<BlogsFormat> blogs = List<BlogsFormat>.generate(
     5,
@@ -45,28 +47,45 @@ class _HomePageState extends State<HomePage>
   );
 
   Future<List<BlogsFormat>> fetchBlogs() async {
-    final response = await http.get(Uri.parse('${global.url}/blogs'));
-    if (response.statusCode == 200) {
-      List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      blogs = jsonData.map((blog) => BlogsFormat.fromJson(blog)).toList();
-      return blogs;
-    } else {
+    canConnect = true;
+    try {
+      final response = await http.get(Uri.parse('${global.url}/blogs'));
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        blogs = jsonData.map((blog) => BlogsFormat.fromJson(blog)).toList();
+        return blogs;
+      } else {
+        throw Exception('Failed to load blogs');
+      }
+    } catch (e) {
+      setState(() {
+        canConnect = false;
+      });
       throw Exception('Failed to load blogs');
     }
   }
 
   Future<Map<int, UserFormat>> fetchAuthors() async {
-    final response = await http.get(Uri.parse('${global.url}/user'));
-    if (response.statusCode == 200) {
-      List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+    canConnect = true;
+    try {
+      final response = await http.get(Uri.parse('${global.url}/user'));
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        setState(() {
+          global.authors = {
+            for (var author in jsonData)
+              UserFormat.fromJson(author).id: UserFormat.fromJson(author),
+          };
+        });
+        return global.authors;
+      } else {
+        throw Exception('Failed to load blogs');
+      }
+    } catch (e) {
+      canConnect = false;
       setState(() {
-        global.authors = {
-          for (var author in jsonData)
-            UserFormat.fromJson(author).id: UserFormat.fromJson(author),
-        };
+        canConnect = false;
       });
-      return global.authors;
-    } else {
       throw Exception('Failed to load blogs');
     }
   }
@@ -139,87 +158,128 @@ class _HomePageState extends State<HomePage>
             });
             return futureBlogs;
           },
-          child: FutureBuilder<List<BlogsFormat>>(
-            future: futureBlogs,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:
-                        [
-                          const Icon(Icons.cloud_off, size: 50),
-                          const SizedBox(height: 11),
-                          const Text(
-                            'There was an error connecting to the server',
-                            textAlign: TextAlign.center,
+          child:
+              canConnect
+                  ? FutureBuilder<List<BlogsFormat>>(
+                    future: futureBlogs,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:
+                                [
+                                  const Icon(Icons.cloud_off, size: 50),
+                                  const SizedBox(height: 11),
+                                  const Text(
+                                    'There was an error connecting to the server',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  OutlinedButton(
+                                    style: ButtonStyle(
+                                      shape: WidgetStateProperty.all<
+                                        RoundedRectangleBorder
+                                      >(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8.0,
+                                          ),
+                                        ),
+                                      ),
+                                      splashFactory: NoSplash.splashFactory,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        futureBlogs = fetchBlogs();
+                                      });
+                                    },
+                                    child: const Text('Try again'),
+                                  ),
+                                ].animate(interval: .10.seconds).fadeIn(),
                           ),
-                          const SizedBox(height: 8),
-                          OutlinedButton(
-                            style: ButtonStyle(
-                              shape: WidgetStateProperty.all<
-                                RoundedRectangleBorder
-                              >(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                              splashFactory: NoSplash.splashFactory,
+                        );
+                      }
+                      return Skeletonizer(
+                        enableSwitchAnimation: true,
+                        enabled: !snapshot.hasData,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(
+                            right: 10.0,
+                            left: 10.0,
+                            bottom: 10.0,
+                          ),
+                          itemCount: blogs.length,
+                          itemBuilder: (context, index) {
+                            return ArticleCard(
+                              blog: blogs[index],
+                              author:
+                                  global.authors[blogs[index].author] ??
+                                  UserFormat(
+                                    id: 0,
+                                    name: 'Unknown',
+                                    bio: 'Unknown',
+                                    avatar: '',
+                                    username: 'Unknown',
+                                    socials: [],
+                                  ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  )
+                  : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:
+                          [
+                            const Icon(Icons.cloud_off, size: 50),
+                            const SizedBox(height: 11),
+                            const Text(
+                              'There was an error connecting to the server',
+                              textAlign: TextAlign.center,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                futureBlogs = fetchBlogs();
-                              });
-                            },
-                            child: const Text('Try again'),
-                          ),
-                        ].animate(interval: .10.seconds).fadeIn(),
+                            const SizedBox(height: 8),
+                            OutlinedButton(
+                              style: ButtonStyle(
+                                shape: WidgetStateProperty.all<
+                                  RoundedRectangleBorder
+                                >(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                splashFactory: NoSplash.splashFactory,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  futureBlogs = fetchBlogs();
+                                });
+                              },
+                              child: const Text('Try again'),
+                            ),
+                          ].animate(interval: .10.seconds).fadeIn(),
+                    ),
                   ),
-                );
-              }
-              return Skeletonizer(
-                enableSwitchAnimation: true,
-                enabled: !snapshot.hasData,
-                child: ListView.builder(
-                  padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-                  itemCount: blogs.length,
-                  itemBuilder: (context, index) {
-                    return ArticleCard(
-                      blog: blogs[index],
-                      author:
-                          global.authors[blogs[index].author] ??
-                          UserFormat(
-                            id: 0,
-                            name: 'Unknown',
-                            bio: 'Unknown',
-                            avatar: '',
-                            username: 'Unknown',
-                            socials: [],
-                          ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
         ),
       ),
       // Writing posts is not implemented yet, so the button is commented out
-      // floatingActionButton: Consumer<UserProvider>(
-      //   builder: (context, userProvider, child) {
-      //     return userProvider.user != null
-      //         ? FloatingActionButton(
-      //           onPressed: () {
-      //             Navigator.push(
-      //               context,
-      //               MaterialPageRoute(builder: (context) => const NewPost()),
-      //             );
-      //           },
-      //           child: Icon(Icons.add),
-      //         )
-      //         : Container();
-      //   },
-      // ),
+      floatingActionButton: Consumer<UserProvider>(
+        builder: (context, userProvider, child) {
+          return userProvider.user != null
+              ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NewPost()),
+                  );
+                },
+                child: Icon(Icons.add),
+              )
+              : Container();
+        },
+      ),
     );
   }
 }

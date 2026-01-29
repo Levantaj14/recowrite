@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../formats/blogs_format.dart';
-import '../storyPage/story.dart';
+import '../pages/storyPage/story.dart';
 
 class VerticalArticleCard extends StatelessWidget {
   final BlogsFormat blog;

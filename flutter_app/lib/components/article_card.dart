@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:recowrite/formats/user_format.dart';
 import 'package:recowrite/formats/blogs_format.dart';
-import 'package:recowrite/storyPage/story.dart';
+import 'package:recowrite/pages/storyPage/story.dart';
 
 class ArticleCard extends StatelessWidget {
   final BlogsFormat blog;

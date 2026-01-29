@@ -11,7 +11,7 @@ import 'package:recowrite/formats/user_format.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../globals.dart' as global;
+import '../../globals.dart' as global;
 
 class User extends StatefulWidget {
   final int id;

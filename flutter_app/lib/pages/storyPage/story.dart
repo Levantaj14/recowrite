@@ -7,14 +7,14 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:http/http.dart' as http;
 import 'package:lorem_ipsum/lorem_ipsum.dart';
 import 'package:markdown/markdown.dart' as markdown;
-import 'package:recowrite/storyPage/not_published.dart';
-import 'package:recowrite/storyPage/recommendation_carousel.dart';
-import 'package:recowrite/storyPage/story_options_bar.dart';
-import 'package:recowrite/userPage/user.dart';
+import 'package:recowrite/pages/storyPage/not_published.dart';
+import 'package:recowrite/pages/storyPage/recommendation_carousel.dart';
+import 'package:recowrite/pages/storyPage/story_options_bar.dart';
+import 'package:recowrite/pages/userPage/user.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../formats/blogs_format.dart';
-import '../globals.dart' as global;
+import '../../formats/blogs_format.dart';
+import '../../globals.dart' as global;
 
 class StoryPage extends StatefulWidget {
   final int id;

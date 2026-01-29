@@ -7,7 +7,7 @@ import 'package:recowrite/components/base64_avatar.dart';
 import 'package:recowrite/formats/comment_format.dart';
 import 'package:recowrite/providers/user_provider.dart';
 
-import '../globals.dart' as global;
+import '../../globals.dart' as global;
 
 class CommentsModal extends StatefulWidget {
   final List<CommentFormat> comments;

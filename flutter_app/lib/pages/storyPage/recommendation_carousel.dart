@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:recowrite/storyPage/story.dart';
+import 'package:recowrite/pages/storyPage/story.dart';
 
-import '../formats/blogs_format.dart';
-import '../globals.dart' as global;
+import '../../formats/blogs_format.dart';
+import '../../globals.dart' as global;
 
 class RecommendationCarousel extends StatefulWidget {
   final int id;
