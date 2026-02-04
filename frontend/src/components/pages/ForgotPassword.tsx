@@ -9,7 +9,6 @@ import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import ErrorPage from '@/components/pages/ErrorPage.tsx';
 
 export default function ForgotPassword() {
@@ -55,7 +54,7 @@ export default function ForgotPassword() {
   function onSubmit(data: FormFields) {
     setIsSubmitting(true);
     toast.promise(resetPasswordWithToken(searchParams.get('token'), data.password), {
-      loading: CustomLoading(t('common.password.toast.resetLoading')),
+      loading: t('common.password.toast.resetLoading'),
       success: async () => {
         navigate('/');
         setIsSubmitting(false);

@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { updateBio } from '@/apis/accountApi.ts';
 import { toast } from 'sonner';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 
 export function BioDialog() {
   const { t } = useTranslation();
@@ -46,7 +45,7 @@ export function BioDialog() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(updateBio(data.bio), {
-      loading: CustomLoading(t('user.profile.account.toast.bio.loading')),
+      loading: t('user.profile.account.toast.bio.loading'),
       success: () => {
         setIsSubmitting(false);
         setOpen(false);

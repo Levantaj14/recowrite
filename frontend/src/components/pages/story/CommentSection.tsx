@@ -24,7 +24,6 @@ import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import CustomLoading from '@/components/elements/CustomLoading';
 import { motion } from 'motion/react';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import DeleteDialog from '@/components/pages/story/DeleteDialog.tsx';
@@ -69,7 +68,7 @@ export default function CommentSection() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(postComment(blogId, data.comment), {
-      loading: CustomLoading(t('content.story.comments.toasts.post.loading')),
+      loading: t('content.story.comments.toasts.post.loading'),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],

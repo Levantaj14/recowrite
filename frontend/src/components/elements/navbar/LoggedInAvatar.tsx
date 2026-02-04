@@ -5,7 +5,6 @@ import { Box, MenuContent, MenuItem, MenuRoot, MenuSelectionDetails, MenuTrigger
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { logout } from '@/apis/authApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading';
 import { useTranslation } from 'react-i18next';
 
 export default function LoggedInAvatar() {
@@ -23,7 +22,7 @@ export default function LoggedInAvatar() {
         break;
       case 'logout':
         toast.promise(logout, {
-          loading: CustomLoading(t('auth.logout.loading')),
+          loading: t('auth.logout.loading'),
           success: () => {
             setUserDetails(null);
             return t('auth.logout.success');

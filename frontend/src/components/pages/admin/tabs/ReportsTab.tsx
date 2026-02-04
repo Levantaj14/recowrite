@@ -6,7 +6,6 @@ import { BlogType } from '@/apis/blogApi.ts';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import ReportDetailsDialog from '@/components/pages/admin/tabs/ReportDetailsDialog.tsx';
@@ -49,7 +48,7 @@ export default function ReportsTab({ setIsAuthorized }: Props) {
     if (selectedReport) {
       setBlockButtons(true);
       toast.promise(changeStatus({ reportId: selectedReport.id, reportStatus: status, note: adminNotes }), {
-        loading: CustomLoading(t(`admin.toast.${key}.loading`)),
+        loading: t(`admin.toast.${key}.loading`),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['reports'],
