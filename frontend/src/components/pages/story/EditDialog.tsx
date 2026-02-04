@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { editComments } from '@/apis/commentApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -58,7 +57,7 @@ export default function EditDialog({ open, setOpen, commentId, commentContent }:
   const clickedEdit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(editComments(commentId, data.comment), {
-      loading: CustomLoading(t('content.story.comments.toasts.edit.loading')),
+      loading: t('content.story.comments.toasts.edit.loading'),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],

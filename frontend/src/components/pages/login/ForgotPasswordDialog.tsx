@@ -7,7 +7,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { forgotPassword } from '@/apis/authApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 
 type Props = {
   open: boolean;
@@ -37,7 +36,7 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(forgotPassword(data.email), {
-      loading: CustomLoading(t('auth.forgotPassword.dialog.toast.loading')),
+      loading: t('auth.forgotPassword.dialog.toast.loading'),
       success: () => {
         setIsSubmitting(false);
         setOpen(false);

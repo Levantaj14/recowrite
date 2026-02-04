@@ -6,7 +6,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { signup } from '@/apis/authApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
@@ -62,7 +61,7 @@ export default function SignUp({ setVerify }: Props) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(signup(data), {
-      loading: CustomLoading(t('auth.signup.toast.loading')),
+      loading: t('auth.signup.toast.loading'),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['blog'],

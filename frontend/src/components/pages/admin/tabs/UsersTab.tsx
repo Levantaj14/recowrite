@@ -8,7 +8,6 @@ import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { changeRole, deleteAccount, fetchAllAdmins } from '@/apis/adminApi.ts';
 import { toast } from 'sonner';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 
@@ -37,7 +36,7 @@ export default function UsersTab({ setIsAuthorized }: Props) {
     toast.promise(
       changeRole(userId),
       {
-        loading: CustomLoading(t('admin.toast.roleChange.loading')),
+        loading: t('admin.toast.roleChange.loading'),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['users'],
@@ -55,7 +54,7 @@ export default function UsersTab({ setIsAuthorized }: Props) {
     toast.promise(
       deleteAccount(userId),
       {
-        loading: CustomLoading(t('admin.toast.userDelete.loading')),
+        loading: t('admin.toast.userDelete.loading'),
         success: async () => {
           await queryClient.invalidateQueries({
             queryKey: ['users'],

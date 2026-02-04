@@ -2,7 +2,6 @@ import { useContext, useEffect } from 'react';
 import { toast } from 'sonner';
 import { verifyEmail } from '@/apis/authApi.ts';
 import { useNavigate, useSearchParams } from 'react-router';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useTranslation } from 'react-i18next';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
@@ -18,7 +17,7 @@ export function VerifyEmail() {
     if (searchParams.get('token')) {
       toast
         .promise(verifyEmail(searchParams.get('token')), {
-          loading: CustomLoading(t('auth.emailVerification.toast.loading')),
+          loading: t('auth.emailVerification.toast.loading'),
           success: () => {
             navigate('/login');
             return t('auth.emailVerification.toast.success');

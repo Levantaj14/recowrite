@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Container } from '@chakra-ui/react';
+import { Container, Spinner } from '@chakra-ui/react';
 import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { Provider } from '@/components/ui/provider.tsx';
 import { UserDetailContext, UserDetailType } from '@/contexts/userDetailContext.ts';
@@ -69,7 +69,6 @@ function ThemeFavicon() {
     }
 
     link.href = faviconPath;
-
   }, [isDarkMode, darkIcon, lightIcon]);
 
   return null;
@@ -79,10 +78,7 @@ function App() {
   const { i18n } = useTranslation();
 
   const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
-  const userDetailContext = useMemo(
-    () => ({ userDetails, setUserDetails }),
-    [userDetails],
-  );
+  const userDetailContext = useMemo(() => ({ userDetails, setUserDetails }), [userDetails]);
 
   useEffect(() => {
     if (userDetails) {
@@ -116,7 +112,12 @@ function App() {
             </BrowserRouter>
           </UserDetailContext.Provider>
         </QueryClientProvider>
-        <Toaster theme="system" />
+        <Toaster
+          theme="system"
+          icons={{
+            loading: <Spinner />,
+          }}
+        />
       </Provider>
     </StrictMode>
   );

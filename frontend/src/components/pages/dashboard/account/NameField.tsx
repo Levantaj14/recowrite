@@ -4,7 +4,6 @@ import { useContext, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { toast } from 'sonner';
 import { updateName } from '@/apis/accountApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { useTranslation } from 'react-i18next';
 
 export function NameField() {
@@ -14,7 +13,7 @@ export function NameField() {
 
   function saveName() {
     toast.promise(updateName(name), {
-      loading: CustomLoading(t('user.profile.account.toast.name.loading')),
+      loading: t('user.profile.account.toast.name.loading'),
       success: () => {
         if (userDetails) {
           setUserDetails({ ...userDetails, name });

@@ -18,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { sendReport } from '@/apis/reportApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading';
 import { reportReasons } from '@/apis/adminApi.ts';
 
 type Props = {
@@ -56,7 +55,7 @@ export default function ReportButton({ blogData }: Props) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(sendReport(Number(blogData?.id), Number(data.selected)), {
-      loading: CustomLoading(t('content.story.report.toast.loading')),
+      loading: t('content.story.report.toast.loading'),
       success: () => {
         setOpen(false);
         setIsSubmitting(false);

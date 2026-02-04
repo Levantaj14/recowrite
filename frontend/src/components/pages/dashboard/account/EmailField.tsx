@@ -4,7 +4,6 @@ import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { useContext, useState } from 'react';
 import { toast } from 'sonner';
 import { updateEmail } from '@/apis/accountApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { useTranslation } from 'react-i18next';
 
 export function EmailField() {
@@ -14,7 +13,7 @@ export function EmailField() {
 
   function onSave() {
     toast.promise(updateEmail(email), {
-      loading: CustomLoading(t('user.profile.account.toast.email.loading')),
+      loading: t('user.profile.account.toast.email.loading'),
       success: () => {
         return t('user.profile.account.toast.email.success');
       },

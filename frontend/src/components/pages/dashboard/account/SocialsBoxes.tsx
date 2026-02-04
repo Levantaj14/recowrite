@@ -7,7 +7,6 @@ import { useContext, useState, JSX } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { updateSocial } from '@/apis/accountApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 
 interface SocialInput {
   [key: string]: string;
@@ -58,7 +57,7 @@ export function SocialsBoxes() {
 
     setUserDetails({ ...userDetails, socials: updatedSocials });
     toast.promise(updateSocial(value, socialName), {
-      loading: CustomLoading(t('user.profile.account.toast.socials.loading')),
+      loading: t('user.profile.account.toast.socials.loading'),
       success: t('user.profile.account.toast.socials.success'),
       error: t('user.profile.account.toast.socials.error'),
     });

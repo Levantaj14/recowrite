@@ -12,7 +12,6 @@ import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { deleteComment } from '@/apis/commentApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +31,7 @@ export default function DeleteDialog({ open, setOpen, commentId }: Props) {
   function clickedDelete() {
     setIsSubmitting(true);
     toast.promise(deleteComment(commentId), {
-      loading: CustomLoading(t('content.story.comments.toasts.delete.loading')),
+      loading: t('content.story.comments.toasts.delete.loading'),
       success: async () => {
         await queryClient.invalidateQueries({
           queryKey: ['comment', blogId],

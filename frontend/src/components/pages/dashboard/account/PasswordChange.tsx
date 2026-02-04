@@ -19,7 +19,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { PasswordInput, PasswordStrengthMeter } from '@/components/ui/password-input.tsx';
 import { toast } from 'sonner';
 import { updatePassword } from '@/apis/accountApi.ts';
-import CustomLoading from '@/components/elements/CustomLoading.tsx';
 import { useTranslation } from 'react-i18next';
 
 export function PasswordChange() {
@@ -65,7 +64,7 @@ export function PasswordChange() {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
     toast.promise(updatePassword(data.oldPassword, data.newPassword), {
-      loading: CustomLoading(t('common.password.toast.loading')),
+      loading: t('common.password.toast.loading'),
       success: () => {
         setIsSubmitting(false);
         setOpen(false);
