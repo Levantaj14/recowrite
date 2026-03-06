@@ -37,4 +37,6 @@ public class BlogDtoIn {
     private String banner_type;
 
     private String banner_name;
+
+    private boolean ai;
 }

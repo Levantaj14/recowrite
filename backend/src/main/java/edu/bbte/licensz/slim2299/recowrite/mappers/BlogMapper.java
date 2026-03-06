@@ -31,6 +31,7 @@ public class BlogMapper {
             blogDtoOut.setDescription(blog.getDescription());
             blogDtoOut.setContent(blog.getContent());
         }
+        blogDtoOut.setAi(blog.isAiGenerated());
         return blogDtoOut;
     }
 
@@ -48,6 +49,7 @@ public class BlogMapper {
         } catch (DateTimeParseException e) {
             log.error("Error parsing with Instant: {}", e.getMessage());
         }
+        blogModel.setAiGenerated(blog.isAi());
         return blogModel;
     }
 }
