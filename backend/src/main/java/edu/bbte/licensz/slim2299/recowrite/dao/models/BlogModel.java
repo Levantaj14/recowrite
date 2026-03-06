@@ -28,7 +28,7 @@ public class BlogModel extends BaseEntity {
     private String banner;
     private Date date;
     private boolean visible = true;
-    private boolean aiGenerated = false;
+    private boolean aiGenerated;
 
     @Enumerated(EnumType.STRING)
     private BannerImageSource bannerType;
