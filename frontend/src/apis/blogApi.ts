@@ -10,7 +10,8 @@ export type BlogType = {
   banner: string;
   banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
   authorName?: string;
-}
+  ai: boolean;
+};
 
 export type CreateBlogType = {
   title: string;
@@ -20,11 +21,11 @@ export type CreateBlogType = {
   banner: string;
   banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
   banner_name: string;
-}
+};
 
 type BlogIdType = {
   id: number;
-}
+};
 
 const blogApi = axios.create({
   baseURL: `${import.meta.env.VITE_BASE_URL}/blogs`,

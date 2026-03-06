@@ -212,6 +212,7 @@
     "story": {
       "written": "Írta",
       "unpublished": "Ez a blog még nem elérhető",
+      "ai": "Ez a tartalom Mesterséges Intelligencia segítségével készült",
       "like": {
         "noLogin": "Be kell légy jelentkezve"
       },
@@ -316,6 +317,7 @@
         "fields": {
           "title": "Cím",
           "desc": "Leírás",
+          "ai": "Használtál Mesterséges Intelligenciát a cikk megírásához?",
           "picture": {
             "name": "Kép",
             "radio": {

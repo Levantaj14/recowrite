@@ -26,7 +26,9 @@ export default function NewStory() {
   const navigate = useNavigate();
   const { userDetails } = useContext(UserDetailContext);
   const [step, setStep] = useState(0);
-  const [validateFields, setValidateFields] = useState<('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[]>([]);
+  const [validateFields, setValidateFields] = useState<
+    ('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name' | 'ai')[]
+  >([]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['strike'],
@@ -68,7 +70,9 @@ export default function NewStory() {
     }
   }
 
-  return userDetails === null ? <ErrorPage code={401} /> : (
+  return userDetails === null ? (
+    <ErrorPage code={401} />
+  ) : (
     <>
       <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} count={3}>
         <StepsList>
@@ -121,8 +125,11 @@ export default function NewStory() {
                 </Button>
               )}
             </Group>
-            {!isLoading && data && data.count > 0 &&
-              <Badge colorPalette="red" size="md">{data.count} {t('content.newStory.strike')}</Badge>}
+            {!isLoading && data && data.count > 0 && (
+              <Badge colorPalette="red" size="md">
+                {data.count} {t('content.newStory.strike')}
+              </Badge>
+            )}
           </Flex>
         )}
       </StepsRoot>

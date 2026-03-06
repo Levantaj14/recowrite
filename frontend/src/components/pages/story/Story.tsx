@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Heading,
-  Image,
-  Link as ChakraLink,
-  Stack,
-  Text,
-  Separator,
-  Box,
-} from '@chakra-ui/react';
+import { Flex, Heading, Image, Link as ChakraLink, Stack, Text, Separator, Box } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { HoverCardArrow, HoverCardContent, HoverCardRoot, HoverCardTrigger } from '../../ui/hover-card.tsx';
 import { Avatar } from '@/components/ui/avatar.tsx';
@@ -27,6 +18,7 @@ import PostOpening from '@/components/pages/story/PostOpening.tsx';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import ReportButton from '@/components/pages/story/ReportButton.tsx';
 import ErrorPage from '@/components/pages/ErrorPage.tsx';
+import { FaInfoCircle } from 'react-icons/fa';
 
 function Story() {
   const { t } = useTranslation();
@@ -51,7 +43,9 @@ function Story() {
   }, [data?.blogData.title]);
 
   function blogPost() {
-    return isError ? <ErrorPage code={404} /> : (
+    return isError ? (
+      <ErrorPage code={404} />
+    ) : (
       <motion.div
         key={blogId}
         initial={{ opacity: 0, y: 30 }}
@@ -61,51 +55,66 @@ function Story() {
         <Heading size="4xl" mb="1">
           {data?.blogData.title}
         </Heading>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={3}>
-          <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
-            <Text textStyle="md" mr={1}>
-              {t('content.story.written')}
-            </Text>
-            <HoverCardRoot>
-              <HoverCardTrigger>
-                <Link to={`/user/${data?.blogData.author}`}>
-                  <ChakraLink>@{data?.userData.username}</ChakraLink>
-                </Link>
-              </HoverCardTrigger>
-              <HoverCardContent>
-                <HoverCardArrow />
-                <Stack gap="4" direction="row">
-                  <Avatar name={data?.userData.name} src={`data:image;base64,${data?.userData.avatar}`} />
-                  <Stack gap={3}>
-                    <Stack gap="1">
-                      <Text textStyle="sm" fontWeight="semibold">
-                        {data?.userData.name}
-                      </Text>
-                      <Text textStyle="sm" color="fg.muted">
-                        {data?.userData.bio}
-                      </Text>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Box>
+            <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
+              <Text textStyle="md" mr={1}>
+                {t('content.story.written')}
+              </Text>
+              <HoverCardRoot>
+                <HoverCardTrigger>
+                  <Link to={`/user/${data?.blogData.author}`}>
+                    <ChakraLink>@{data?.userData.username}</ChakraLink>
+                  </Link>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <HoverCardArrow />
+                  <Stack gap="4" direction="row">
+                    <Avatar name={data?.userData.name} src={`data:image;base64,${data?.userData.avatar}`} />
+                    <Stack gap={3}>
+                      <Stack gap="1">
+                        <Text textStyle="sm" fontWeight="semibold">
+                          {data?.userData.name}
+                        </Text>
+                        <Text textStyle="sm" color="fg.muted">
+                          {data?.userData.bio}
+                        </Text>
+                      </Stack>
                     </Stack>
                   </Stack>
-                </Stack>
-              </HoverCardContent>
-            </HoverCardRoot>
-          </Flex>
+                </HoverCardContent>
+              </HoverCardRoot>
+            </Flex>
+            {data?.blogData.ai && (
+              <Flex flexDirection="row" alignItems="center" mt={1}>
+                <FaInfoCircle color="gray" />
+                <Text ml={2} color="fg.muted">
+                  {t('content.story.ai')}
+                </Text>
+              </Flex>
+            )}
+          </Box>
           <Box>
             <LikeButton blogData={data?.blogData} liked={data?.liked} likeCount={data?.likeCount} />
             <ReportButton blogData={data?.blogData} />
           </Box>
         </Flex>
-        <Image rounded="lg" maxH="300px" w="100%"
-               src={data?.blogData.banner_type === 'IMAGE_URL' ? data?.blogData.banner : `data:image;base64,${data?.blogData.banner}`}
-               objectFit="cover" />
+        <Box mb={3} />
+        <Image
+          rounded="lg"
+          maxH="300px"
+          w="100%"
+          src={
+            data?.blogData.banner_type === 'IMAGE_URL'
+              ? data?.blogData.banner
+              : `data:image;base64,${data?.blogData.banner}`
+          }
+          objectFit="cover"
+        />
         {(date && date > new Date()) || data?.blogData.content === '' ? (
           <PostOpening data={data} setDate={setDate} />
         ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
             <Prose size="lg" maxWidth="100%" mb="6">
               <Markdown>{data?.blogData.content}</Markdown>
             </Prose>

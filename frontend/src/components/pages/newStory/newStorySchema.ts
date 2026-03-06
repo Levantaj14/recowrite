@@ -15,6 +15,7 @@ function createBaseSchema(t: TFunction) {
     banner: z.string().nonempty(t('common.errors.required.field')),
     banner_type: z.enum(['IMAGE_URL', 'IMAGE_UPLOAD']),
     banner_name: z.string().optional(),
+    ai: z.boolean(),
   });
 }
 

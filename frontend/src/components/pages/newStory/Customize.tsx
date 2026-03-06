@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { FileUploadList, FileUploadRoot, FileUploadTrigger } from '@/components/ui/file-upload';
 import { Radio, RadioGroup } from '@/components/ui/radio';
-import { Field, Fieldset, Heading, HStack, Input, Portal, Textarea } from '@chakra-ui/react';
+import { Checkbox, Field, Fieldset, Heading, HStack, Input, Portal, Textarea } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +20,9 @@ type Props = {
   register: UseFormRegister<NewStoryFormFields>;
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
-  setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[]) => void;
+  setValidateFields: (
+    validateFields: ('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[],
+  ) => void;
   setValue: UseFormSetValue<NewStoryFormFields>;
 };
 
@@ -30,8 +32,9 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
   const { colorMode } = useColorMode();
   const [postingTime, setPostingTime] = useState<string>('now');
   const [selected, setSelected] = useState<Date>(new Date());
+  const [ai, setAi] = useState<boolean>(false);
 
-  const localizeCalendarFormat = () => ({ hu, ro }[i18n.language] || enUS);
+  const localizeCalendarFormat = () => ({ hu, ro })[i18n.language] || enUS;
 
   useEffect(() => {
     if (isVisible) {
@@ -47,6 +50,10 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
     setValue('banner', '');
     setValue('banner_type', imageType);
   }, [imageType, setValue]);
+
+  useEffect(() => {
+    setValue('ai', ai);
+  }, [ai, setValue]);
 
   function convertBannerImage(banner: FileAcceptDetails) {
     const file = banner.files[0];
@@ -110,6 +117,18 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.08 }}
             >
+              <Checkbox.Root mt={4} checked={ai} onCheckedChange={(e) => setAi(!!e.checked)}>
+                <Checkbox.HiddenInput />
+                <Checkbox.Control />
+                <Checkbox.Label>{t("content.newStory.customize.fields.ai")}</Checkbox.Label>
+              </Checkbox.Root>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.12 }}
+            >
               <Field.Root required mt="4" invalid={!!errors.date}>
                 <Field.Label>
                   {t('content.newStory.customize.fields.date.title')}
@@ -162,12 +181,12 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
             >
               <Field.Root mt="4">
                 <Field.Label>{t('content.newStory.customize.fields.picture.name')}</Field.Label>
-                <RadioGroup value={imageType}
-                            onValueChange={(e) => setImageType(e.value as 'IMAGE_UPLOAD' | 'IMAGE_URL')}>
+                <RadioGroup
+                  value={imageType}
+                  onValueChange={(e) => setImageType(e.value as 'IMAGE_UPLOAD' | 'IMAGE_URL')}
+                >
                   <HStack gap="6">
-                    <Radio value="IMAGE_UPLOAD">
-                      {t('content.newStory.customize.fields.picture.radio.upload')}
-                    </Radio>
+                    <Radio value="IMAGE_UPLOAD">{t('content.newStory.customize.fields.picture.radio.upload')}</Radio>
                     <Radio value="IMAGE_URL">{t('content.newStory.customize.fields.picture.radio.online')}</Radio>
                   </HStack>
                 </RadioGroup>

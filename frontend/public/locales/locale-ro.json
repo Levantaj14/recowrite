@@ -212,6 +212,7 @@
     "story": {
       "written": "Scris de",
       "unpublished": "Acest blog nu este încă publicat",
+      "ai": "Acest conținut a fost creat cu ajutorul Inteligenței Artificiale",
       "like": {
         "noLogin": "Trebuie să fii autentificat"
       },
@@ -318,6 +319,7 @@
         "fields": {
           "title": "Titlu",
           "desc": "Descriere",
+          "ai": "Ai folosit Inteligența Artificială pentru a crea acest articol?",
           "picture": {
             "name": "Imagine",
             "radio": {
