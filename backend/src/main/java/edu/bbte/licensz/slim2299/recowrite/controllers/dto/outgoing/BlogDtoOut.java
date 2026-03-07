@@ -16,4 +16,5 @@ public class BlogDtoOut {
     private String banner;
     private String banner_type;
     private String date;
+    private boolean ai;
 }

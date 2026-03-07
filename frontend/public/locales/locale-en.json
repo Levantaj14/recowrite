@@ -212,6 +212,7 @@
     "story": {
       "written": "Written by",
       "unpublished": "This blog is not yet published",
+      "ai": "This content was created with the help of Artificial Intelligence",
       "like": {
         "noLogin": "You must be logged in"
       },
@@ -318,6 +319,7 @@
         "fields": {
           "title": "Title",
           "desc": "Description",
+          "ai": "Did you use Artificial Intelligence to create this story?",
           "picture": {
             "name": "Picture",
             "radio": {
