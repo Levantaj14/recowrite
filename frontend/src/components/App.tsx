@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Container, Spinner } from '@chakra-ui/react';
+import { Container, Flex, Spinner } from '@chakra-ui/react';
 import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { Provider } from '@/components/ui/provider.tsx';
 import { UserDetailContext, UserDetailType } from '@/contexts/userDetailContext.ts';
@@ -18,6 +18,7 @@ import NewStory from './pages/newStory/NewStory.tsx';
 import ForgotPassword from '@/components/pages/ForgotPassword.tsx';
 import { VerifyEmail } from '@/components/pages/VerifyEmail.tsx';
 import AdminConsole from '@/components/pages/admin/AdminConsole.tsx';
+import Footer from './elements/Footer.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -95,20 +96,24 @@ function App() {
           <UserDetailContext.Provider value={userDetailContext}>
             <BrowserRouter>
               <Navbar />
-              <Container as="main" mt="4" mb="4" maxW="6xl">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/create" element={<NewStory />} />
-                  <Route path="/blog/:blogId" element={<Story />} />
-                  <Route path="/user/:userId" element={<User />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/management" element={<AdminConsole />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/verify/email" element={<VerifyEmail />} />
-                  <Route path="*" element={<ErrorPage code={404} />} />
-                </Routes>
-              </Container>
+              {/* Flex column layout for footer placement */}
+              <Flex direction="column" minHeight="100vh" mt="4">
+                <Container as="main" maxW="6xl" flex={1}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/create" element={<NewStory />} />
+                    <Route path="/blog/:blogId" element={<Story />} />
+                    <Route path="/user/:userId" element={<User />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/management" element={<AdminConsole />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/verify/email" element={<VerifyEmail />} />
+                    <Route path="*" element={<ErrorPage code={404} />} />
+                  </Routes>
+                </Container>
+                <Footer />
+              </Flex>
             </BrowserRouter>
           </UserDetailContext.Provider>
         </QueryClientProvider>
