@@ -1,14 +1,21 @@
-import axios from 'axios';
 import { UserType } from '@/apis/userApi.ts';
 import { BlogType } from '@/apis/blogApi.ts';
 
-const adminApi = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}/admin`,
-  withCredentials: true,
-  headers: {
-    Accept: 'application/json',
-  },
-});
+async function adminApi(path: string, options = {}) {
+  const url = `${import.meta.env.VITE_BASE_URL}/admin${path}`;
+  const response = await fetch(url, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    ...options,
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response;
+}
 
 export type StatusType = 'OPEN' | 'DISMISSED' | 'STRIKE_GIVEN';
 
@@ -41,39 +48,42 @@ export type ReportStatusChangeType = {
 }
 
 export async function testAdmin(): Promise<boolean> {
-  try {
-    const res = await adminApi.get('');
-    return res.status === 200;
-  } catch {
-    return false;
-  }
+  const res = await adminApi('');
+  return res.status === 200;
 }
 
 export async function fetchAllBlogsAsAdmin(): Promise<BlogType[]> {
-  const res = await adminApi.get<BlogType[]>('/blogs');
-  return res.data;
+  const res = await adminApi('/blogs');
+  return res.json();
 }
 
 export async function getAllReports(): Promise<ReportType[]> {
-  const res = await adminApi.get('/reports');
-  return res.data;
+  const res = await adminApi('/reports');
+  return res.json();
 }
 
 export async function changeStatus(reportChange: ReportStatusChangeType): Promise<void> {
-  await adminApi.put('/reports', reportChange);
+  await adminApi('/reports', {
+    method: 'PUT',
+    body: JSON.stringify(reportChange),
+  });
 }
 
 export async function fetchAllAdmins(): Promise<UserType[]> {
-  const res = await adminApi.get('/admins');
-  return res.data;
+  const res = await adminApi('/admins');
+  return res.json();
 }
 
 export async function changeRole(id: number): Promise<boolean> {
-  const res = await adminApi.put(`/account/${id}`);
+  const res = await adminApi(`/account/${id}`, {
+    method: 'PUT',
+  });
   return res.status === 200;
 }
 
 export async function deleteAccount(id: number): Promise<boolean> {
-  const res = await adminApi.delete(`/account/${id}`);
+  const res = await adminApi(`/account/${id}`, {
+    method: 'DELETE',
+  });
   return res.status === 200;
 }

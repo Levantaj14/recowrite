@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export type LikedType = {
   liked: boolean;
 }
@@ -8,26 +6,42 @@ export type LikeCountType = {
   count: number;
 }
 
-const likesApi = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}/likes`,
-  withCredentials: true,
-  headers: {
-    Accept: 'application/json',
-  },
-});
+async function likesApi(path: string, options = {}) {
+  const url = `${import.meta.env.VITE_BASE_URL}/likes${path}`;
+  const response = await fetch(url, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    ...options,
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response;
+}
 
 export async function getLiked(id: string | undefined): Promise<LikedType> {
-  const res = await likesApi.get(`/check/${id}`, {
-    validateStatus: () => true
+  const url = `${import.meta.env.VITE_BASE_URL}/likes/check/${id}`;
+  const response = await fetch(url, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    }
   });
-  return res.data;
+
+  return response.json();
 }
 
 export async function getLikeCount(id: string | undefined): Promise<LikeCountType> {
-  const res = await likesApi.get(`/${id}`);
-  return res.data;
+  const res = await likesApi(`/${id}`);
+  return res.json();
 }
 
 export async function changeLike(id: string | undefined): Promise<void> {
-  await likesApi.put(`/${id}`);
+  await likesApi(`/${id}`, {
+    method: 'PUT',
+  });
 }

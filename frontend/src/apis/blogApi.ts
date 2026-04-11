@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export type BlogType = {
   id: string;
   author: number;
@@ -23,39 +21,48 @@ export type CreateBlogType = {
   banner_name: string;
 };
 
-type BlogIdType = {
-  id: number;
-};
-
-const blogApi = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}/blogs`,
-  withCredentials: true,
-  headers: {
-    Accept: 'application/json',
-  },
-});
+async function blogApi(path: string, options = {}) {
+  const url = `${import.meta.env.VITE_BASE_URL}/blogs${path}`;
+  const response = await fetch(url, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    ...options,
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response;
+}
 
 export async function fetchAllBlogs(): Promise<BlogType[]> {
-  const res = await blogApi.get<BlogType[]>('');
-  return res.data;
+  const res = await blogApi('');
+  return res.json();
 }
 
 export async function fetchBlog(blogId: string | null | undefined): Promise<BlogType> {
-  const res = await blogApi.get<BlogType>(`/${blogId}`);
-  return res.data;
+  const res = await blogApi(`/${blogId}`);
+  return res.json();
 }
 
 export async function fetchBlogsByAuthor(authorId: string | null | undefined): Promise<BlogType[]> {
-  const res = await blogApi.get<BlogType[]>(`/author?id=${authorId}`);
-  return res.data;
+  const params = new URLSearchParams({ id: authorId || '' });
+  const res = await blogApi(`/author?${params}`);
+  return res.json();
 }
 
 export async function fetchBlogRecommendation(blogId: string | null | undefined): Promise<BlogType[]> {
-  const res = await blogApi.get<BlogType[]>(`/recommendation?id=${blogId}`);
-  return res.data;
+  const params = new URLSearchParams({ id: blogId || '' });
+  const res = await blogApi(`/recommendation?${params}`);
+  return res.json();
 }
 
 export async function createBlog(blog: CreateBlogType): Promise<number> {
-  const res = await blogApi.post<BlogIdType>('', blog);
-  return res.data.id;
+  const res = await blogApi('', {
+    method: 'POST',
+    body: JSON.stringify(blog),
+  });
+  return (await res.json()).id;
 }
