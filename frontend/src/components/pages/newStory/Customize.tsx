@@ -70,7 +70,8 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
     }
   }
 
-  function handleDateChange(postSchedule: string) {
+  function handleDateChange(postSchedule: string | null) {
+    if (!postSchedule) return;
     setPostingTime(postSchedule);
     if (postSchedule === 'now') {
       setSelected(new Date());
