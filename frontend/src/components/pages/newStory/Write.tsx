@@ -9,6 +9,8 @@ import Tiptap from './Tiptap';
 import StarterKit from '@tiptap/starter-kit';
 import { Placeholder } from '@tiptap/extensions';
 import Typography from '@tiptap/extension-typography';
+import Highlight from '@tiptap/extension-highlight'
+import Link from '@tiptap/extension-link';
 import { useEditor } from '@tiptap/react';
 
 type Props = {
@@ -37,11 +39,17 @@ export default function Write({
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: {
+          levels: [2, 3, 4, 5],
+        }
+      }),
       Placeholder.configure({
         placeholder: t('content.newStory.write.placeholder'),
       }),
       Typography,
+      Highlight,
+      Link
     ],
   });
 

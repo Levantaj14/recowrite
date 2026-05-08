@@ -289,9 +289,12 @@
         "desc": "Feel free to use <1>Markdown</1> formatting to enhance your story",
         "placeholder": "Write your story here...",
         "markdown": {
+          "undo": "Undo",
+          "redo": "Redo",
           "heading": "Heading",
           "bold": "Bold",
           "underline": "Underline",
+          "highlight": "Highlight",
           "quote": "Quote",
           "unorderedList": "Bullet list",
           "orderedList": "Ordered list",
@@ -308,8 +311,7 @@
           "code": {
             "tooltip": "Code",
             "text": "Insert your code here"
-          },
-          "info": "We support Markdown syntax for formatting your story. Click here to learn more."
+          }
         }
       },
       "preview": {
