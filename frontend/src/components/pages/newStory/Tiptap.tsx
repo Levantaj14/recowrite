@@ -1,25 +1,10 @@
 import { Box, useRecipe } from '@chakra-ui/react';
-import { Placeholder } from '@tiptap/extensions';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { useTranslation } from 'react-i18next';
-import Typography from '@tiptap/extension-typography';
 import { Prose } from '@/components/ui/prose';
+import { Editor, EditorContent } from '@tiptap/react';
 
-const Tiptap = () => {
-  const { t } = useTranslation();
+const Tiptap = ({ editor }: { editor: Editor | null }) => {
   const recipe = useRecipe({ key: 'textarea' });
   const textareaStyles = recipe({ variant: 'outline' });
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Placeholder.configure({
-        placeholder: t('content.newStory.write.placeholder'),
-      }),
-      Typography,
-    ],
-  });
 
   return (
     <Box

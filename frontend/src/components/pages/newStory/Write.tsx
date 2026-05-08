@@ -6,6 +6,10 @@ import { useEffect } from 'react';
 import { OptionRow } from '@/components/pages/newStory/OptionRow.tsx';
 import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
 import Tiptap from './Tiptap';
+import StarterKit from '@tiptap/starter-kit';
+import { Placeholder } from '@tiptap/extensions';
+import Typography from '@tiptap/extension-typography';
+import { useEditor } from '@tiptap/react';
 
 type Props = {
   register: UseFormRegister<NewStoryFormFields>;
@@ -22,8 +26,6 @@ export default function Write({
                                 errors,
                                 isVisible,
                                 setValidateFields,
-                                setValue,
-                                getValue,
                               }: Props) {
   const { t } = useTranslation();
 
@@ -33,10 +35,20 @@ export default function Write({
     }
   }, [isVisible, setValidateFields]);
 
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder: t('content.newStory.write.placeholder'),
+      }),
+      Typography,
+    ],
+  });
+
   return (
     <>
       <Heading size="2xl">{t('content.newStory.write.title')}</Heading>
-      <OptionRow setValue={setValue} getValues={getValue} />
+      <OptionRow editor={editor} />
       {isVisible && (
         <motion.div
           initial={{ opacity: 0, x: 10 }}
@@ -46,7 +58,7 @@ export default function Write({
           <Fieldset.Root>
             <Fieldset.Content>
               <Field.Root invalid={!!errors.content}>
-                <Tiptap />
+                <Tiptap editor={editor} />
                 <Field.ErrorText>{errors.content?.message}</Field.ErrorText>
               </Field.Root>
             </Fieldset.Content>

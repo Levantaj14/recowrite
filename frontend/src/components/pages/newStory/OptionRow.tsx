@@ -4,143 +4,64 @@ import {
   MdFormatBold,
   MdFormatListBulleted,
   MdFormatListNumbered,
-  MdFormatQuote, MdOutlineImage,
-  MdOutlineInsertLink,
+  MdFormatQuote,
   MdTitle,
 } from 'react-icons/md';
 import { Tooltip } from '@/components/ui/tooltip.tsx';
 import { TfiLayoutLineSolid } from 'react-icons/tfi';
-import { UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
+import { Editor, useEditorState } from '@tiptap/react';
 
-type Props = {
-  setValue: UseFormSetValue<NewStoryFormFields>;
-  getValues: UseFormGetValues<NewStoryFormFields>;
-};
-
-export function OptionRow({ setValue, getValues }: Props) {
+export function OptionRow({ editor }: { editor: Editor }) {
   const { t } = useTranslation();
-
-  // Functions that handle text manipulation in the textarea for the Markdown editor
-  function getTextareaInfo() {
-    const textarea = document.getElementById('content') as HTMLTextAreaElement;
-    if (!textarea) return null;
-
-    return {
-      textarea,
-      value: getValues('content'),
-      start: textarea.selectionStart,
-      end: textarea.selectionEnd,
-      hasSelection: textarea.selectionStart !== textarea.selectionEnd,
-    };
-  }
-
-  function updateTextarea(newText: string, newCursorPos?: number) {
-    setValue('content', newText);
-
-    setTimeout(() => {
-      const textarea = document.getElementById('content') as HTMLTextAreaElement;
-      if (textarea) {
-        textarea.focus();
-        if (newCursorPos !== undefined) {
-          textarea.setSelectionRange(newCursorPos, newCursorPos);
-        }
-      }
-    }, 0);
-  }
-
-  function wrapText(prefix: string, suffix: string = prefix, placeholder: string = '') {
-    const info = getTextareaInfo();
-    if (!info) return;
-
-    const { value, start, end, hasSelection } = info;
-    const selectedText = hasSelection ? value.substring(start, end) : placeholder;
-    const newText = value.substring(0, start) + prefix + selectedText + suffix + value.substring(end);
-
-    const newCursorPos = hasSelection ? start + prefix.length + selectedText.length + suffix.length : start + prefix.length + placeholder.length;
-
-    updateTextarea(newText, newCursorPos);
-  }
-
-  function insertText(text: string) {
-    const info = getTextareaInfo();
-    if (!info) return;
-
-    const { value, end } = info;
-    const newText = value.substring(0, end) + text + value.substring(end);
-    const newCursorPos = end + text.length;
-
-    updateTextarea(newText, newCursorPos);
-  }
-
-  function prefixLines(prefix: string){
-    const info = getTextareaInfo();
-    if (!info) return;
-
-    const { value, start, end, hasSelection } = info;
-
-    if (hasSelection) {
-      const selectedText = value.substring(start, end);
-      const lines = selectedText.split('\n');
-
-      const modifiedLines = lines.map(line =>
-        line.trimStart().startsWith(prefix.trimEnd()) ? line : prefix + line);
-
-      const modifiedText = modifiedLines.join('\n');
-      const newText = value.substring(0, start) + modifiedText + value.substring(end);
-
-      updateTextarea(newText, start + modifiedText.length);
-    } else {
-      const beforeCursor = value.substring(0, start);
-      const afterCursor = value.substring(start);
-
-      const lastNewlineBeforeCursor = beforeCursor.lastIndexOf('\n');
-      const lineStart = lastNewlineBeforeCursor === -1 ? 0 : lastNewlineBeforeCursor + 1;
-
-      const currentLine = beforeCursor.substring(lineStart);
-      if (currentLine.trimStart().startsWith(prefix.trimEnd())) {
-        return;
-      }
-
-      const newText =
-        beforeCursor.substring(0, lineStart) +
-        prefix +
-        beforeCursor.substring(lineStart) +
-        afterCursor;
-
-      updateTextarea(newText, start + prefix.length);
-    }
-  }
+  const editorState = useEditorState({
+    editor,
+    selector: (ctx) => ({
+      isBold: ctx.editor.isActive('bold'),
+      isBlockquote: ctx.editor.isActive('blockquote'),
+      isBulletList: ctx.editor.isActive('bulletList'),
+      isOrderedList: ctx.editor.isActive('orderedList'),
+      isHorizontalRule: ctx.editor.isActive('horizontalRule'),
+      isCodeBlock: ctx.editor.isActive('codeBlock'),
+    }),
+  });
 
   const buttons = [
-    { icon: <MdFormatBold />, tooltip: t('content.newStory.write.markdown.bold'), action: () => wrapText('**') },
-    { icon: <MdFormatQuote />, tooltip: t('content.newStory.write.markdown.quote'), action: () => prefixLines('> ') },
+    {
+      icon: <MdFormatBold />,
+      tooltip: t('content.newStory.write.markdown.bold'),
+      action: () => editor.commands.toggleBold(),
+      active: editorState.isBold,
+    },
+    {
+      icon: <MdFormatQuote />,
+      tooltip: t('content.newStory.write.markdown.quote'),
+      action: () => editor.commands.toggleBlockquote(),
+      active: editorState.isBlockquote,
+    },
     {
       icon: <MdFormatListBulleted />,
       tooltip: t('content.newStory.write.markdown.unorderedList'),
-      action: () => prefixLines('- '),
+      action: () => editor.commands.toggleBulletList(),
+      active: editorState.isBulletList,
     },
     {
       icon: <MdFormatListNumbered />,
       tooltip: t('content.newStory.write.markdown.orderedList'),
-      action: () => prefixLines('1. '),
-    },
-    { icon: <TfiLayoutLineSolid />, tooltip: t('content.newStory.write.markdown.hr'), action: () => insertText('\n\n---\n\n') },
-    {
-      icon: <MdOutlineInsertLink />,
-      tooltip: t('content.newStory.write.markdown.link.tooltip'),
-      action: () => wrapText('[', '](URL)', t('content.newStory.write.markdown.link.title')),
+      action: () => editor.commands.toggleOrderedList(),
+      active: editorState.isOrderedList,
     },
     {
-      icon: <MdOutlineImage />,
-      tooltip: t('content.newStory.write.markdown.image.tooltip'),
-      action: () => insertText(`![${t('content.newStory.write.markdown.image.alt')}](${t('content.newStory.write.markdown.image.url')})`),
+      icon: <TfiLayoutLineSolid />,
+      tooltip: t('content.newStory.write.markdown.hr'),
+      action: () => editor.commands.setHorizontalRule(),
+      active: editorState.isHorizontalRule,
     },
     {
       icon: <MdCode />,
       tooltip: t('content.newStory.write.markdown.code.tooltip'),
-      action: () => wrapText('\n```\n', '\n```\n', t('content.newStory.write.markdown.code.text')),
+      action: () => editor.commands.toggleCodeBlock(),
+      active: editorState.isCodeBlock,
     },
   ];
 
@@ -165,11 +86,7 @@ export function OptionRow({ setValue, getValues }: Props) {
           <Menu.Positioner>
             <Menu.Content>
               {headingOptions.map((option) => (
-                <Menu.Item
-                  key={option.level}
-                  value={option.level}
-                  onClick={() => prefixLines('#'.repeat(Number(option.level)) + ' ')}
-                >
+                <Menu.Item key={option.level} value={option.level} onClick={() => {}}>
                   <Heading size={option.size}>{option.text}</Heading>
                 </Menu.Item>
               ))}
@@ -179,15 +96,10 @@ export function OptionRow({ setValue, getValues }: Props) {
       </Menu.Root>
 
       {buttons.map((button) => (
-        <Tooltip
-          key={button.tooltip}
-          content={button.tooltip}
-          openDelay={500}
-          closeDelay={100}
-        >
+        <Tooltip key={button.tooltip} content={button.tooltip} openDelay={500} closeDelay={100}>
           <IconButton
             size="xs"
-            variant="outline"
+            variant={button.active ? 'solid' : 'outline'}
             onClick={button.action}
             aria-label={button.tooltip}
           >
