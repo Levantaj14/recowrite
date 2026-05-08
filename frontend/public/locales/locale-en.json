@@ -291,8 +291,9 @@
         "markdown": {
           "heading": "Heading",
           "bold": "Bold",
+          "underline": "Underline",
           "quote": "Quote",
-          "unorderedList": "Unordered list",
+          "unorderedList": "Bullet list",
           "orderedList": "Ordered list",
           "hr": "Horizontal line",
           "link": {

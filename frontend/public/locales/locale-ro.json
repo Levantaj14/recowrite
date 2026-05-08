@@ -291,6 +291,7 @@
         "markdown": {
           "heading": "Titlu",
           "bold": "Îngroșat",
+          "underline": "Subliniat",
           "quote": "Citat",
           "unorderedList": "Listă neordonată",
           "orderedList": "Listă ordonată",

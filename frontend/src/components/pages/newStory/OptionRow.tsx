@@ -5,6 +5,7 @@ import {
   MdFormatListBulleted,
   MdFormatListNumbered,
   MdFormatQuote,
+  MdFormatUnderlined,
   MdTitle,
 } from 'react-icons/md';
 import { Tooltip } from '@/components/ui/tooltip.tsx';
@@ -17,7 +18,9 @@ export function OptionRow({ editor }: { editor: Editor }) {
   const editorState = useEditorState({
     editor,
     selector: (ctx) => ({
+      isHeading: ctx.editor.isActive('heading'),
       isBold: ctx.editor.isActive('bold'),
+      isUnderline: ctx.editor.isActive('underline'),
       isBlockquote: ctx.editor.isActive('blockquote'),
       isBulletList: ctx.editor.isActive('bulletList'),
       isOrderedList: ctx.editor.isActive('orderedList'),
@@ -32,6 +35,12 @@ export function OptionRow({ editor }: { editor: Editor }) {
       tooltip: t('content.newStory.write.markdown.bold'),
       action: () => editor.commands.toggleBold(),
       active: editorState.isBold,
+    },
+    {
+      icon: <MdFormatUnderlined />,
+      tooltip: t('content.newStory.write.markdown.underline'),
+      action: () => editor.commands.toggleUnderline(),
+      active: editorState.isUnderline,
     },
     {
       icon: <MdFormatQuote />,
@@ -77,7 +86,7 @@ export function OptionRow({ editor }: { editor: Editor }) {
       <Menu.Root positioning={{ placement: 'bottom-start' }}>
         <Menu.Trigger>
           <Tooltip content={t('content.newStory.write.markdown.heading')} openDelay={500} closeDelay={100}>
-            <IconButton variant="outline" size="xs">
+            <IconButton variant={editorState.isHeading ? 'solid' : 'outline'} size="xs">
               <MdTitle />
             </IconButton>
           </Tooltip>
@@ -86,7 +95,7 @@ export function OptionRow({ editor }: { editor: Editor }) {
           <Menu.Positioner>
             <Menu.Content>
               {headingOptions.map((option) => (
-                <Menu.Item key={option.level} value={option.level} onClick={() => {}}>
+                <Menu.Item key={option.level} value={option.level} onClick={() => editor.commands.toggleHeading({ level: Number(option.level) as 1 | 2 | 3 | 4 | 5 | 6 })}>
                   <Heading size={option.size}>{option.text}</Heading>
                 </Menu.Item>
               ))}
