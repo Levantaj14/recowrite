@@ -1,10 +1,11 @@
-import { Heading, Textarea, Fieldset, Field } from '@chakra-ui/react';
+import { Heading, Fieldset, Field } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FieldErrors, UseFormClearErrors, UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { useEffect } from 'react';
 import { OptionRow } from '@/components/pages/newStory/OptionRow.tsx';
 import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
+import Tiptap from './Tiptap';
 
 type Props = {
   register: UseFormRegister<NewStoryFormFields>;
@@ -18,12 +19,9 @@ type Props = {
 };
 
 export default function Write({
-                                register,
                                 errors,
                                 isVisible,
                                 setValidateFields,
-                                trigger,
-                                clearErrors,
                                 setValue,
                                 getValue,
                               }: Props) {
@@ -34,13 +32,6 @@ export default function Write({
       setValidateFields(['content']);
     }
   }, [isVisible, setValidateFields]);
-
-  async function clearContentError() {
-    const correct = await trigger('content');
-    if (correct) {
-      clearErrors('content');
-    }
-  }
 
   return (
     <>
@@ -55,16 +46,7 @@ export default function Write({
           <Fieldset.Root>
             <Fieldset.Content>
               <Field.Root invalid={!!errors.content}>
-                <Textarea
-                  id="content"
-                  placeholder={t('content.newStory.write.placeholder')}
-                  mt="2"
-                  height="calc(100vh - 400px)"
-                  resize="none"
-                  {...register('content', {
-                    onChange: clearContentError,
-                  })}
-                />
+                <Tiptap />
                 <Field.ErrorText>{errors.content?.message}</Field.ErrorText>
               </Field.Root>
             </Fieldset.Content>

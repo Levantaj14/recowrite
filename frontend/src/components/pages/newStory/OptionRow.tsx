@@ -1,10 +1,10 @@
-import { Heading, HStack, IconButton, Menu, Portal, Spacer } from '@chakra-ui/react';
+import { Heading, HStack, IconButton, Menu, Portal } from '@chakra-ui/react';
 import {
   MdCode,
   MdFormatBold,
   MdFormatListBulleted,
   MdFormatListNumbered,
-  MdFormatQuote, MdOutlineImage, MdOutlineInfo,
+  MdFormatQuote, MdOutlineImage,
   MdOutlineInsertLink,
   MdTitle,
 } from 'react-icons/md';
@@ -195,22 +195,6 @@ export function OptionRow({ setValue, getValues }: Props) {
           </IconButton>
         </Tooltip>
       ))}
-      <Spacer />
-      <Tooltip
-        key={'info'}
-        content={t('content.newStory.write.markdown.info')}
-        openDelay={500}
-        closeDelay={100}
-      >
-        <IconButton
-          size="xs"
-          variant="outline"
-          onClick={() => window.open("https://www.markdownguide.org/basic-syntax", "_blank")}
-          aria-label={'info'}
-        >
-          <MdOutlineInfo />
-        </IconButton>
-      </Tooltip>
     </HStack>
   );
 }
