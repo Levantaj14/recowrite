@@ -10,9 +10,10 @@ import StarterKit from '@tiptap/starter-kit';
 import { Placeholder } from '@tiptap/extensions';
 import Typography from '@tiptap/extension-typography';
 import Highlight from '@tiptap/extension-highlight';
-import { useEditor } from '@tiptap/react';
+import { Editor, useEditor } from '@tiptap/react';
 
 type Props = {
+  editorRef: React.RefObject<Editor | null>;
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
   setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 export default function Write({
+  editorRef,
   setValue,
   errors,
   isVisible,
@@ -51,6 +53,7 @@ export default function Write({
       Highlight,
     ],
     onUpdate: ({ editor }) => {
+      editorRef.current = editor;
       setValue('content', JSON.stringify(editor.getJSON()));
       if (editor.isEmpty) {
         setError('content', { message: t('common.errors.required.field') });
