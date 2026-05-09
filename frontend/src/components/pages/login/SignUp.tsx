@@ -9,23 +9,36 @@ import { signup } from '@/apis/authApi.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-type Props = {
-  setVerify: (v: boolean) => void;
+function passwordStrengthMeter(password: string) {
+  let score = 0;
+  if (password !== undefined) {
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+  }
+  return score;
 }
 
-export default function SignUp({ setVerify }: Props) {
+type Props = {
+  setVerify: (v: boolean) => void;
+};
+
+export default function SignUp({ setVerify }: Readonly<Props>) {
   const { t } = useTranslation();
 
-  const schema = z.object({
-    name: z.string().nonempty(t('common.errors.required.name')),
-    email: z.string().email(t('common.errors.validation.email')),
-    username: z.string().nonempty(t('common.errors.required.username')),
-    password: z.string().min(8, t('common.password.errors.minLength')),
-    passwordConfirm: z.string(),
-  }).refine((data) => data.password === data.passwordConfirm, {
-    message: t('common.password.errors.passwordMatch'),
-    path: ['passwordConfirm'],
-  });
+  const schema = z
+    .object({
+      name: z.string().nonempty(t('common.errors.required.name')),
+      email: z.email(t('common.errors.validation.email')),
+      username: z.string().nonempty(t('common.errors.required.username')),
+      password: z.string().min(8, t('common.password.errors.minLength')),
+      passwordConfirm: z.string(),
+    })
+    .refine((data) => data.password === data.passwordConfirm, {
+      message: t('common.password.errors.passwordMatch'),
+      path: ['passwordConfirm'],
+    });
 
   type FormFields = z.infer<typeof schema>;
 
@@ -45,39 +58,31 @@ export default function SignUp({ setVerify }: Props) {
     resolver: zodResolver(schema),
   });
 
-  function passwordStrengthMeter(password: string) {
-    let score = 0;
-    if (password !== undefined) {
-      if (password.length >= 8) score++;
-      if (/[A-Z]/.test(password)) score++;
-      if (/\d/.test(password)) score++;
-      if (/[^A-Za-z0-9]/.test(password)) score++;
-    }
-    return score;
-  }
-
   const password = useWatch({ control, name: 'password' });
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);
-    toast.promise(signup(data), {
-      loading: t('auth.signup.toast.loading'),
-      success: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: ['blog'],
-          refetchType: 'all',
-          exact: false,
-        });
-        setVerify(true);
-        return t('auth.signup.toast.success');
-      },
-      error: () => {
+    toast
+      .promise(signup(data), {
+        loading: t('auth.signup.toast.loading'),
+        success: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: ['blog'],
+            refetchType: 'all',
+            exact: false,
+          });
+          setVerify(true);
+          return t('auth.signup.toast.success');
+        },
+        error: () => {
+          setIsSubmitting(false);
+          return t('auth.signup.toast.error');
+        },
+      })
+      .unwrap()
+      .then(() => {
         setIsSubmitting(false);
-        return t('auth.signup.toast.error');
-      },
-    }).unwrap().then(() => {
-      setIsSubmitting(false);
-    });
+      });
   };
 
   return (

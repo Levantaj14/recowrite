@@ -213,6 +213,7 @@
       "written": "Írta",
       "unpublished": "Ez a blog még nem elérhető",
       "ai": "Ez a tartalom Mesterséges Intelligencia segítségével készült",
+      "image_source": "Kép forrása",
       "like": {
         "noLogin": "Be kell légy jelentkezve"
       },
@@ -287,8 +288,12 @@
         "desc": "Nyugodtan használd a <1>Markdown</1> formázást, hogy a cikked fejleszd",
         "placeholder": "Írd ide a cikked...",
         "markdown": {
+          "undo": "Visszavonás",
+          "redo": "Ismétlés",
           "heading": "Fejléc",
           "bold": "Félkövér",
+          "underline": "Aláhúzott",
+          "highlight": "Kiemelés",
           "quote": "Idézet",
           "unorderedList": "Rendezetlen lista",
           "orderedList": "Rendezett lista",
@@ -305,8 +310,7 @@
           "code": {
             "tooltip": "Kód",
             "text": "Illeszd be a kódod ide"
-          },
-          "info": "Támogatjuk a Markdown szintaxist a cikk formázásához. Kattints ide további információért."
+          }
         }
       },
       "preview": {

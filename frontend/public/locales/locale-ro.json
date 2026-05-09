@@ -213,6 +213,7 @@
       "written": "Scris de",
       "unpublished": "Acest blog nu este încă publicat",
       "ai": "Acest conținut a fost creat cu ajutorul Inteligenței Artificiale",
+      "image_source": "Sursa imaginii",
       "like": {
         "noLogin": "Trebuie să fii autentificat"
       },
@@ -289,8 +290,12 @@
         "desc": "Poți utiliza formatarea <1>Markdown</1> pentru ați îmbunătăți povestea",
         "placeholder": "Scriți articolul aici...",
         "markdown": {
+          "undo": "Anulează",
+          "redo": "Refă",
           "heading": "Titlu",
           "bold": "Îngroșat",
+          "underline": "Subliniat",
+          "highlight": "Evidențiare",
           "quote": "Citat",
           "unorderedList": "Listă neordonată",
           "orderedList": "Listă ordonată",
@@ -307,8 +312,7 @@
           "code": {
             "tooltip": "Cod",
             "text": "Introduceți codul aici"
-          },
-          "info": "Suportăm sintaxa Markdown pentru formatarea poveștii tale. Apasă aici pentru a afla mai mult."
+          }
         }
       },
       "preview": {

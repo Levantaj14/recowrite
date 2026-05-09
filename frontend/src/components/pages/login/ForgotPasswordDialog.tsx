@@ -11,13 +11,15 @@ import { forgotPassword } from '@/apis/authApi.ts';
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
-}
+};
 
-export default function ForgotPasswordDialog({ open, setOpen }: Props) {
+export default function ForgotPasswordDialog({ open, setOpen }: Readonly<Props>) {
   const { t } = useTranslation();
 
   const schema = z.object({
-    email: z.string().email(t('auth.forgotPassword.dialog.error.email.incorrect')).nonempty(t('auth.forgotPassword.dialog.error.email.mandatory')),
+    email: z
+      .email(t('auth.forgotPassword.dialog.error.email.incorrect'))
+      .nonempty(t('auth.forgotPassword.dialog.error.email.mandatory')),
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -56,44 +58,42 @@ export default function ForgotPasswordDialog({ open, setOpen }: Props) {
   }, [reset, open]);
 
   return (
-    <>
-      <Dialog.Root placement="center" open={open} onOpenChange={(e) => setOpen(e.open)}>
-        <Portal>
-          <Dialog.Backdrop />
-          <Dialog.Positioner>
-            <Dialog.Content>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Dialog.Header>
-                  <Stack gap={2}>
-                    <Dialog.Title>{t('auth.forgotPassword.title')}</Dialog.Title>
-                    <Dialog.Description>{t('auth.forgotPassword.dialog.desc')}</Dialog.Description>
-                  </Stack>
-                </Dialog.Header>
-                <Dialog.Body>
-                  <Fieldset.Root>
-                    <Field.Root invalid={!!errors.email}>
-                      <Field.Label>{t('auth.forgotPassword.dialog.email')}</Field.Label>
-                      <Input {...register('email')} />
-                      <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
-                    </Field.Root>
-                  </Fieldset.Root>
-                </Dialog.Body>
-                <Dialog.Footer>
-                  <Dialog.ActionTrigger asChild>
-                    <Button variant="outline" disabled={isSubmitting}>
-                      {t('buttons.cancel')}
-                    </Button>
-                  </Dialog.ActionTrigger>
-                  <Button type="submit" disabled={isSubmitting}>
-                    {t('buttons.submit')}
+    <Dialog.Root placement="center" open={open} onOpenChange={(e) => setOpen(e.open)}>
+      <Portal>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Dialog.Header>
+                <Stack gap={2}>
+                  <Dialog.Title>{t('auth.forgotPassword.title')}</Dialog.Title>
+                  <Dialog.Description>{t('auth.forgotPassword.dialog.desc')}</Dialog.Description>
+                </Stack>
+              </Dialog.Header>
+              <Dialog.Body>
+                <Fieldset.Root>
+                  <Field.Root invalid={!!errors.email}>
+                    <Field.Label>{t('auth.forgotPassword.dialog.email')}</Field.Label>
+                    <Input {...register('email')} />
+                    <Field.ErrorText>{errors.email?.message}</Field.ErrorText>
+                  </Field.Root>
+                </Fieldset.Root>
+              </Dialog.Body>
+              <Dialog.Footer>
+                <Dialog.ActionTrigger asChild>
+                  <Button variant="outline" disabled={isSubmitting}>
+                    {t('buttons.cancel')}
                   </Button>
-                </Dialog.Footer>
-                <Dialog.CloseTrigger />
-              </form>
-            </Dialog.Content>
-          </Dialog.Positioner>
-        </Portal>
-      </Dialog.Root>
-    </>
+                </Dialog.ActionTrigger>
+                <Button type="submit" disabled={isSubmitting}>
+                  {t('buttons.submit')}
+                </Button>
+              </Dialog.Footer>
+              <Dialog.CloseTrigger />
+            </form>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
   );
 }

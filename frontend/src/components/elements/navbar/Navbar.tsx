@@ -19,10 +19,10 @@ export default function Navbar() {
   const [prevUserDetails, setPrevUserDetails] = useState(userDetails);
   if (prevUserDetails !== userDetails) {
     setPrevUserDetails(userDetails);
-    if (!userDetails) {
-      setIsAdmin(false);
-    } else {
+    if (userDetails) {
       testAdmin().then((response) => setIsAdmin(response));
+    } else {
+      setIsAdmin(false);
     }
   }
 

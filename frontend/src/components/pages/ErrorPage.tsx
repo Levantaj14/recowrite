@@ -8,7 +8,7 @@ type Props = {
   code: number;
 }
 
-function ErrorPage({ code }: Props) {
+function ErrorPage({ code }: Readonly<Props>) {
   const { t } = useTranslation();
 
   function getErrorConfig(code: number) {

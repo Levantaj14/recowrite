@@ -21,18 +21,32 @@ import { toast } from 'sonner';
 import { updatePassword } from '@/apis/accountApi.ts';
 import { useTranslation } from 'react-i18next';
 
+function passwordStrengthMeter(password: string) {
+  // Calculate password strength based on length, uppercase, digits, and special characters
+  let score = 0;
+  if (password !== undefined) {
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+  }
+  return score;
+}
+
 export function PasswordChange() {
   const { t } = useTranslation();
 
-  const schema = z.object({
-    oldPassword: z.string().nonempty(t('common.password.errors.required')),
-    newPassword: z.string().min(8, t('common.password.errors.minLength')),
-    passwordConfirm: z.string(),
-    // Ensure newPassword and passwordConfirm match
-  }).refine((data) => data.newPassword === data.passwordConfirm, {
-    message: t('common.password.errors.passwordMatch'),
-    path: ['passwordConfirm'],
-  });
+  const schema = z
+    .object({
+      oldPassword: z.string().nonempty(t('common.password.errors.required')),
+      newPassword: z.string().min(8, t('common.password.errors.minLength')),
+      passwordConfirm: z.string(),
+      // Ensure newPassword and passwordConfirm match
+    })
+    .refine((data) => data.newPassword === data.passwordConfirm, {
+      message: t('common.password.errors.passwordMatch'),
+      path: ['passwordConfirm'],
+    });
 
   type FormFields = z.infer<typeof schema>;
 
@@ -48,18 +62,6 @@ export function PasswordChange() {
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
-
-  function passwordStrengthMeter(password: string) {
-    // Calculate password strength based on length, uppercase, digits, and special characters
-    let score = 0;
-    if (password !== undefined) {
-      if (password.length >= 8) score++;
-      if (/[A-Z]/.test(password)) score++;
-      if (/\d/.test(password)) score++;
-      if (/[^A-Za-z0-9]/.test(password)) score++;
-    }
-    return score;
-  }
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     setIsSubmitting(true);

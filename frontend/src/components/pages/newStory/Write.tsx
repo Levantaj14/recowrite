@@ -1,32 +1,36 @@
-import { Heading, Textarea, Fieldset, Field } from '@chakra-ui/react';
+import { Heading, Fieldset, Field } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FieldErrors, UseFormClearErrors, UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { FieldErrors, UseFormClearErrors, UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import { useEffect } from 'react';
 import { OptionRow } from '@/components/pages/newStory/OptionRow.tsx';
 import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
+import Tiptap from './Tiptap';
+import StarterKit from '@tiptap/starter-kit';
+import { Placeholder } from '@tiptap/extensions';
+import Typography from '@tiptap/extension-typography';
+import Highlight from '@tiptap/extension-highlight';
+import { Editor, useEditor } from '@tiptap/react';
 
 type Props = {
-  register: UseFormRegister<NewStoryFormFields>;
+  editorRef: React.RefObject<Editor | null>;
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
   setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
-  trigger: (field: ('content' | 'title' | 'description' | 'date' | 'banner')) => Promise<boolean>;
   clearErrors: UseFormClearErrors<NewStoryFormFields>;
   setValue: UseFormSetValue<NewStoryFormFields>;
-  getValue: UseFormGetValues<NewStoryFormFields>;
+  setError: UseFormSetError<NewStoryFormFields>;
 };
 
 export default function Write({
-                                register,
-                                errors,
-                                isVisible,
-                                setValidateFields,
-                                trigger,
-                                clearErrors,
-                                setValue,
-                                getValue,
-                              }: Props) {
+  editorRef,
+  setValue,
+  errors,
+  isVisible,
+  setValidateFields,
+  clearErrors,
+  setError,
+}: Readonly<Props>) {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -35,17 +39,34 @@ export default function Write({
     }
   }, [isVisible, setValidateFields]);
 
-  async function clearContentError() {
-    const correct = await trigger('content');
-    if (correct) {
-      clearErrors('content');
-    }
-  }
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [2, 3, 4, 5],
+        },
+      }),
+      Placeholder.configure({
+        placeholder: t('content.newStory.write.placeholder'),
+      }),
+      Typography,
+      Highlight,
+    ],
+    onUpdate: ({ editor }) => {
+      editorRef.current = editor;
+      setValue('content', JSON.stringify(editor.getJSON()));
+      if (editor.isEmpty) {
+        setError('content', { message: t('common.errors.required.field') });
+      } else {
+        clearErrors('content');
+      }
+    },
+  });
 
   return (
     <>
       <Heading size="2xl">{t('content.newStory.write.title')}</Heading>
-      <OptionRow setValue={setValue} getValues={getValue} />
+      <OptionRow editor={editor} />
       {isVisible && (
         <motion.div
           initial={{ opacity: 0, x: 10 }}
@@ -55,16 +76,7 @@ export default function Write({
           <Fieldset.Root>
             <Fieldset.Content>
               <Field.Root invalid={!!errors.content}>
-                <Textarea
-                  id="content"
-                  placeholder={t('content.newStory.write.placeholder')}
-                  mt="2"
-                  height="calc(100vh - 400px)"
-                  resize="none"
-                  {...register('content', {
-                    onChange: clearContentError,
-                  })}
-                />
+                <Tiptap editor={editor} error={!!errors.content} />
                 <Field.ErrorText>{errors.content?.message}</Field.ErrorText>
               </Field.Root>
             </Fieldset.Content>

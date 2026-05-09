@@ -15,7 +15,7 @@ type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
 };
 
-export default function UsersTab({ setIsAuthorized }: Props) {
+export default function UsersTab({ setIsAuthorized }: Readonly<Props>) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 

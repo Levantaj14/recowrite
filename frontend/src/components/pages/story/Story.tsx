@@ -19,6 +19,20 @@ import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import ReportButton from '@/components/pages/story/ReportButton.tsx';
 import ErrorPage from '@/components/pages/ErrorPage.tsx';
 import { FaInfoCircle } from 'react-icons/fa';
+import DOMPurify from 'dompurify';
+import { generateHTML } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Typography from '@tiptap/extension-typography';
+import Highlight from '@tiptap/extension-highlight';
+
+function isJsonString(str: string) {
+  try {
+    JSON.parse(str);
+  } catch {
+    return false;
+  }
+  return true;
+}
 
 function Story() {
   const { t } = useTranslation();
@@ -111,12 +125,38 @@ function Story() {
           }
           objectFit="cover"
         />
+        {data?.blogData.banner_type === 'IMAGE_URL' && (
+          <Text mt={2} textStyle="sm" color="fg.muted">
+            {t('content.story.image_source')}:{' '}
+            <ChakraLink href={data?.blogData.banner} color="fg.muted" variant="underline" target="_blank">
+              {data?.blogData.banner}
+            </ChakraLink>
+          </Text>
+        )}
         {(date && date > new Date()) || data?.blogData.content === '' ? (
           <PostOpening data={data} setDate={setDate} />
         ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
             <Prose size="lg" maxWidth="100%" mb="6">
-              <Markdown>{data?.blogData.content}</Markdown>
+              {isJsonString(data?.blogData.content ?? '{}') ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      generateHTML(JSON.parse(data?.blogData.content ?? '{}'), [
+                        StarterKit.configure({
+                          heading: {
+                            levels: [2, 3, 4, 5],
+                          },
+                        }),
+                        Typography,
+                        Highlight,
+                      ]),
+                    ),
+                  }}
+                />
+              ) : (
+                <Markdown>{data?.blogData.content ?? ''}</Markdown>
+              )}
             </Prose>
             <Separator />
             <CommentSection />

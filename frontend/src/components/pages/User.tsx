@@ -76,9 +76,8 @@ function User() {
           <Spacer />
           <Box>
             <Flex direction="row">
-              {data !== undefined &&
-                data.userData.socials.map((data) => (
-                  <LinkBox>
+              {data?.userData.socials.map((data) => (
+                  <LinkBox key={data.name}>
                     <IconButton variant="ghost">
                       <LinkOverlay href={`${urlMap[data.name]}${data.url}`} target="_blank">
                         {iconMap[data.name]}

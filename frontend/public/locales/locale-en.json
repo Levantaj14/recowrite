@@ -213,6 +213,7 @@
       "written": "Written by",
       "unpublished": "This blog is not yet published",
       "ai": "This content was created with the help of Artificial Intelligence",
+      "image_source": "Image source",
       "like": {
         "noLogin": "You must be logged in"
       },
@@ -289,10 +290,14 @@
         "desc": "Feel free to use <1>Markdown</1> formatting to enhance your story",
         "placeholder": "Write your story here...",
         "markdown": {
+          "undo": "Undo",
+          "redo": "Redo",
           "heading": "Heading",
           "bold": "Bold",
+          "underline": "Underline",
+          "highlight": "Highlight",
           "quote": "Quote",
-          "unorderedList": "Unordered list",
+          "unorderedList": "Bullet list",
           "orderedList": "Ordered list",
           "hr": "Horizontal line",
           "link": {
@@ -307,8 +312,7 @@
           "code": {
             "tooltip": "Code",
             "text": "Insert your code here"
-          },
-          "info": "We support Markdown syntax for formatting your story. Click here to learn more."
+          }
         }
       },
       "preview": {

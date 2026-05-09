@@ -28,7 +28,7 @@ export default function ReportDetailsDialog({
                                               selectedReportedByUser,
                                               setAdminNotes,
                                               adminNotes,
-                                            }: Props) {
+                                            }: Readonly<Props>) {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const badges = {
