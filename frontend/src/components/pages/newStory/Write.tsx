@@ -9,8 +9,7 @@ import Tiptap from './Tiptap';
 import StarterKit from '@tiptap/starter-kit';
 import { Placeholder } from '@tiptap/extensions';
 import Typography from '@tiptap/extension-typography';
-import Highlight from '@tiptap/extension-highlight'
-import Link from '@tiptap/extension-link';
+import Highlight from '@tiptap/extension-highlight';
 import { useEditor } from '@tiptap/react';
 
 type Props = {
@@ -18,17 +17,13 @@ type Props = {
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
   setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
-  trigger: (field: ('content' | 'title' | 'description' | 'date' | 'banner')) => Promise<boolean>;
+  trigger: (field: 'content' | 'title' | 'description' | 'date' | 'banner') => Promise<boolean>;
   clearErrors: UseFormClearErrors<NewStoryFormFields>;
   setValue: UseFormSetValue<NewStoryFormFields>;
   getValue: UseFormGetValues<NewStoryFormFields>;
 };
 
-export default function Write({
-                                errors,
-                                isVisible,
-                                setValidateFields,
-                              }: Props) {
+export default function Write({ setValue, errors, isVisible, setValidateFields }: Props) {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -42,15 +37,17 @@ export default function Write({
       StarterKit.configure({
         heading: {
           levels: [2, 3, 4, 5],
-        }
+        },
       }),
       Placeholder.configure({
         placeholder: t('content.newStory.write.placeholder'),
       }),
       Typography,
       Highlight,
-      Link
     ],
+    onUpdate: ({ editor }) => {
+      setValue('content', JSON.stringify(editor.getJSON()));
+    }
   });
 
   return (
