@@ -15,7 +15,7 @@ type Props = {
   isVisible: boolean;
 };
 
-export default function Preview({ content, setValidateFields, isVisible }: Props) {
+export default function Preview({ content, setValidateFields, isVisible }: Readonly<Props>) {
   const { t } = useTranslation();
   const parsedContent = content ? JSON.parse(content) : { type: 'doc', content: [] };
   const html = generateHTML(parsedContent, [

@@ -25,6 +25,15 @@ import StarterKit from '@tiptap/starter-kit';
 import Typography from '@tiptap/extension-typography';
 import Highlight from '@tiptap/extension-highlight';
 
+function isJsonString(str: string) {
+  try {
+    JSON.parse(str);
+  } catch {
+    return false;
+  }
+  return true;
+}
+
 function Story() {
   const { t } = useTranslation();
   const { blogId } = useParams();
@@ -46,15 +55,6 @@ function Story() {
     window.scrollTo(0, 0);
     document.title = data?.blogData.title ?? 'Loading...';
   }, [data?.blogData.title]);
-
-  function isJsonString(str: string) {
-    try {
-      JSON.parse(str);
-    } catch {
-      return false;
-    }
-    return true;
-  }
 
   function blogPost() {
     return isError ? (

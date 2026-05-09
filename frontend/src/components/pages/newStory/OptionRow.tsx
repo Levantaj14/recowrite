@@ -16,7 +16,7 @@ import { TfiLayoutLineSolid } from 'react-icons/tfi';
 import { useTranslation } from 'react-i18next';
 import { Editor, useEditorState } from '@tiptap/react';
 
-export function OptionRow({ editor }: { editor: Editor }) {
+export function OptionRow({ editor }: Readonly<{ editor: Editor }>) {
   const { t } = useTranslation();
   const editorState = useEditorState({
     editor,

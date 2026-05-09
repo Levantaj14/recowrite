@@ -36,13 +36,13 @@ function ThemeFavicon() {
 
   useEffect(() => {
     const checkSystemTheme = () => {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const prefersDark = globalThis.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(prefersDark);
     };
 
     checkSystemTheme();
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)');
 
     const handleThemeChange = (e: MediaQueryListEvent) => {
       setIsDarkMode(e.matches);

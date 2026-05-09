@@ -64,7 +64,7 @@ export function SocialsBoxes() {
   }
 
   function getSocialUrl(socialName: string) {
-    return socialInputs[socialName] !== undefined ? socialInputs[socialName] : '';
+    return socialInputs[socialName] ?? '';
   }
 
   function isSocialChecked(socialName: string) {

@@ -2,7 +2,7 @@ import { Box, useRecipe } from '@chakra-ui/react';
 import { Prose } from '@/components/ui/prose';
 import { Editor, EditorContent } from '@tiptap/react';
 
-const Tiptap = ({ editor }: { editor: Editor | null }) => {
+const Tiptap = ({ editor, error }: { editor: Editor | null; error: boolean }) => {
   const recipe = useRecipe({ key: 'textarea' });
   const textareaStyles = recipe({ variant: 'outline' });
 
@@ -12,14 +12,15 @@ const Tiptap = ({ editor }: { editor: Editor | null }) => {
       mt="2"
       css={{
         ...textareaStyles,
+        borderColor: error ? 'red.500' : textareaStyles.borderColor,
         height: 'calc(100vh - 400px)',
         overflowY: 'auto',
         cursor: 'text',
         display: 'block',
         padding: '0',
         _focusWithin: {
-          outline: '2px solid',
-          outlineColor: 'colorPalette.focusRing',
+          outline: '1px solid',
+          outlineColor: error ? 'red.500' : 'colorPalette.focusRing',
         },
       }}
       onClick={() => editor?.chain().focus().run()}

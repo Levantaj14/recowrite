@@ -1,7 +1,7 @@
 import { Heading, Fieldset, Field } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FieldErrors, UseFormClearErrors, UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { FieldErrors, UseFormClearErrors, UseFormSetError, UseFormSetValue } from 'react-hook-form';
 import { useEffect } from 'react';
 import { OptionRow } from '@/components/pages/newStory/OptionRow.tsx';
 import { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
@@ -13,17 +13,22 @@ import Highlight from '@tiptap/extension-highlight';
 import { useEditor } from '@tiptap/react';
 
 type Props = {
-  register: UseFormRegister<NewStoryFormFields>;
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
   setValidateFields: (validateFields: ('content' | 'title' | 'description' | 'date' | 'banner')[]) => void;
-  trigger: (field: 'content' | 'title' | 'description' | 'date' | 'banner') => Promise<boolean>;
   clearErrors: UseFormClearErrors<NewStoryFormFields>;
   setValue: UseFormSetValue<NewStoryFormFields>;
-  getValue: UseFormGetValues<NewStoryFormFields>;
+  setError: UseFormSetError<NewStoryFormFields>;
 };
 
-export default function Write({ setValue, errors, isVisible, setValidateFields }: Props) {
+export default function Write({
+  setValue,
+  errors,
+  isVisible,
+  setValidateFields,
+  clearErrors,
+  setError,
+}: Readonly<Props>) {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -47,7 +52,12 @@ export default function Write({ setValue, errors, isVisible, setValidateFields }
     ],
     onUpdate: ({ editor }) => {
       setValue('content', JSON.stringify(editor.getJSON()));
-    }
+      if (editor.isEmpty) {
+        setError('content', { message: t('common.errors.required.field') });
+      } else {
+        clearErrors('content');
+      }
+    },
   });
 
   return (
@@ -63,7 +73,7 @@ export default function Write({ setValue, errors, isVisible, setValidateFields }
           <Fieldset.Root>
             <Fieldset.Content>
               <Field.Root invalid={!!errors.content}>
-                <Tiptap editor={editor} />
+                <Tiptap editor={editor} error={!!errors.content} />
                 <Field.ErrorText>{errors.content?.message}</Field.ErrorText>
               </Field.Root>
             </Fieldset.Content>

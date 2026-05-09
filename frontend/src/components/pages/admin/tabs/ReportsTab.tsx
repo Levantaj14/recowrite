@@ -14,7 +14,7 @@ type Props = {
   setIsAuthorized: (isAuthorized: boolean) => void;
 };
 
-export default function ReportsTab({ setIsAuthorized }: Props) {
+export default function ReportsTab({ setIsAuthorized }: Readonly<Props>) {
   const { t } = useTranslation();
   const [selectedReport, setSelectedReport] = useState<ReportType | null>(null);
   const [selectedReportedUser, setSelectedReportedUser] = useState<UserType | undefined>(undefined);

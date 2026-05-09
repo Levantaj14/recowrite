@@ -13,9 +13,9 @@ type Props = {
   index: number;
 };
 
-function BlogCard({ banner, title, description, content, date, href, index }: Props) {
+function BlogCard({ banner, title, description, content, date, href, index }: Readonly<Props>) {
   const { t } = useTranslation();
-  const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
+  const patternsToRemove = [String.raw`\*\*`, String.raw`\[`, String.raw`\]`, String.raw`\(.*?\)`, '#', '```'];
 
   function decideDescription() {
     if (new Date(date) > new Date()) {
@@ -25,7 +25,7 @@ function BlogCard({ banner, title, description, content, date, href, index }: Pr
     if (description === '') {
       let auxContent = content;
       // Remove markdown patterns from content
-      patternsToRemove.forEach(pattern => {
+      patternsToRemove.forEach((pattern) => {
         auxContent = auxContent.replace(new RegExp(pattern, 'g'), '');
       });
       auxContent = auxContent.slice(0, 100);

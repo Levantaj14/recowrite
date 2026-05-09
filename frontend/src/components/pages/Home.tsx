@@ -29,7 +29,7 @@ function Home() {
     document.title = 'recowrite';
   }, [data]);
 
-  const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
+  const patternsToRemove = [String.raw`\*\*`, String.raw`\[`, String.raw`\]`, String.raw`\(.*?\)`, '#', '```'];
 
   function decideDescription(blog: BlogType) {
     if (new Date(blog.date) > new Date()) {
@@ -37,7 +37,7 @@ function Home() {
     }
     if (blog.description === '') {
       let auxContent = blog.content;
-      patternsToRemove.forEach(pattern => {
+      patternsToRemove.forEach((pattern) => {
         auxContent = auxContent.replace(new RegExp(pattern, 'g'), '');
       });
       auxContent = auxContent.slice(0, 100);
@@ -50,54 +50,8 @@ function Home() {
   }
 
   function blogList() {
-    return data?.blogData.length !== 0 ? (
-      <>
-        <Grid
-          templateColumns="repeat(auto-fit, minmax(350px, 1fr))"
-          gap="20px"
-          maxW="100%"
-          px="4"
-        >
-          {data?.blogData.map((blog: BlogType) => (
-            <motion.div
-              key={blog.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              whileHover={{
-                scale: 1.02,
-                transition: { duration: 0.2, ease: 'easeInOut' },
-              }}
-            >
-              <Link to={`/blog/${blog.id}`}>
-                <Card.Root overflow="hidden" h="500px" w="full" display="flex" flexDirection="column">
-                  <Image h="2xs"
-                         src={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
-                         objectFit="cover" />
-                  <Card.Body gap="2" display="flex" flexDirection="column" flex="1" overflow="hidden" p="5">
-                    <Text fontSize="sm">
-                      {data?.userData.find((u) => u.id === blog.author)?.name ?? 'unknown'}
-                    </Text>
-                    <Card.Title>
-                      {blog.title}
-                    </Card.Title>
-                    <Card.Description>
-                      {decideDescription(blog)}
-                    </Card.Description>
-                  </Card.Body>
-                </Card.Root>
-              </Link>
-            </motion.div>
-          ))}
-        </Grid>
-        <Box mt="10" />
-      </>
-    ) : (
-      <motion.div
-        key="no-blog-state"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
+    return data?.blogData.length === 0 ? (
+      <motion.div key="no-blog-state" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <EmptyState
           icon={<IoSadOutline />}
           title={t('content.noBlogs.title')}
@@ -111,6 +65,39 @@ function Home() {
           )}
         </EmptyState>
       </motion.div>
+    ) : (
+      <>
+        <Grid templateColumns="repeat(auto-fit, minmax(350px, 1fr))" gap="20px" maxW="100%" px="4">
+          {data?.blogData.map((blog: BlogType) => (
+            <motion.div
+              key={blog.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.2, ease: 'easeInOut' },
+              }}
+            >
+              <Link to={`/blog/${blog.id}`}>
+                <Card.Root overflow="hidden" h="500px" w="full" display="flex" flexDirection="column">
+                  <Image
+                    h="2xs"
+                    src={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
+                    objectFit="cover"
+                  />
+                  <Card.Body gap="2" display="flex" flexDirection="column" flex="1" overflow="hidden" p="5">
+                    <Text fontSize="sm">{data?.userData.find((u) => u.id === blog.author)?.name ?? 'unknown'}</Text>
+                    <Card.Title>{blog.title}</Card.Title>
+                    <Card.Description>{decideDescription(blog)}</Card.Description>
+                  </Card.Body>
+                </Card.Root>
+              </Link>
+            </motion.div>
+          ))}
+        </Grid>
+        <Box mt="10" />
+      </>
     );
   }
 

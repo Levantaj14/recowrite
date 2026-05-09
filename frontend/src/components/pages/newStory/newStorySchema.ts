@@ -7,7 +7,7 @@ function createBaseSchema(t: TFunction) {
     title: z.string().nonempty(t('common.errors.required.field')).max(255, t('common.errors.validation.maxChars')),
     description: z.string().max(255, t('common.errors.validation.maxChars')),
     date: z.string().nonempty().refine(
-      (val) => !isNaN(Date.parse(val)) && val === new Date(val).toISOString(),
+      (val) => !Number.isNaN(Date.parse(val)) && val === new Date(val).toISOString(),
       {
         message: t('common.errors.validation.invalidDate'),
       },

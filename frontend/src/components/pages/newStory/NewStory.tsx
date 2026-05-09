@@ -46,6 +46,7 @@ export default function NewStory() {
     getValues,
     setValue,
     clearErrors,
+    setError,
   } = useForm<NewStoryFormFields>({
     resolver: zodResolver(schema),
   });
@@ -73,66 +74,62 @@ export default function NewStory() {
   return userDetails === null ? (
     <ErrorPage code={401} />
   ) : (
-    <>
-      <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} count={3}>
-        <StepsList>
-          <StepsItem index={0} title={t('content.newStory.tabs.write')} icon={<LuPencil />} />
-          <StepsItem index={1} title={t('content.newStory.tabs.preview')} icon={<IoDocumentTextOutline />} />
-          <StepsItem index={2} title={t('content.newStory.tabs.customize')} icon={<BsStars />} />
-        </StepsList>
+    <StepsRoot step={step} onStepChange={(e) => setStep(e.step)} count={3}>
+      <StepsList>
+        <StepsItem index={0} title={t('content.newStory.tabs.write')} icon={<LuPencil />} />
+        <StepsItem index={1} title={t('content.newStory.tabs.preview')} icon={<IoDocumentTextOutline />} />
+        <StepsItem index={2} title={t('content.newStory.tabs.customize')} icon={<BsStars />} />
+      </StepsList>
 
-        <StepsContent index={0}>
-          <Write
-            isVisible={step === 0}
-            register={register}
-            errors={errors}
-            setValidateFields={setValidateFields}
-            trigger={trigger}
-            getValue={getValues}
-            setValue={setValue}
-            clearErrors={clearErrors}
-          />
-        </StepsContent>
-        <StepsContent index={1}>
-          <Preview content={getValues('content')} setValidateFields={setValidateFields} isVisible={step === 1} />
-        </StepsContent>
-        <StepsContent index={2}>
-          <Customize
-            isVisible={step === 2}
-            register={register}
-            errors={errors}
-            setValidateFields={setValidateFields}
-            setValue={setValue}
-          />
-        </StepsContent>
-        <StepsCompletedContent>
-          <Posting isVisible={step === 3} />
-        </StepsCompletedContent>
+      <StepsContent index={0}>
+        <Write
+          isVisible={step === 0}
+          errors={errors}
+          setValidateFields={setValidateFields}
+          setValue={setValue}
+          clearErrors={clearErrors}
+          setError={setError}
+        />
+      </StepsContent>
+      <StepsContent index={1}>
+        <Preview content={getValues('content')} setValidateFields={setValidateFields} isVisible={step === 1} />
+      </StepsContent>
+      <StepsContent index={2}>
+        <Customize
+          isVisible={step === 2}
+          register={register}
+          errors={errors}
+          setValidateFields={setValidateFields}
+          setValue={setValue}
+        />
+      </StepsContent>
+      <StepsCompletedContent>
+        <Posting isVisible={step === 3} />
+      </StepsCompletedContent>
 
-        {step < 3 && (
-          <Flex align="center" justify="space-between" mb={10}>
-            <Group>
-              <Button variant="outline" size="sm" onClick={() => setStep(step - 1)} disabled={step === 0}>
-                {t('content.newStory.buttons.prev')}
+      {step < 3 && (
+        <Flex align="center" justify="space-between" mb={10}>
+          <Group>
+            <Button variant="outline" size="sm" onClick={() => setStep(step - 1)} disabled={step === 0}>
+              {t('content.newStory.buttons.prev')}
+            </Button>
+            {step === 2 ? (
+              <Button type="submit" variant="outline" size="sm" onClick={handleSubmit(onSubmit)}>
+                {t('content.newStory.buttons.post')}
               </Button>
-              {step === 2 ? (
-                <Button type="submit" variant="outline" size="sm" onClick={handleSubmit(onSubmit)}>
-                  {t('content.newStory.buttons.post')}
-                </Button>
-              ) : (
-                <Button variant="outline" size="sm" onClick={checkPageCorrectness}>
-                  {t('content.newStory.buttons.next')}
-                </Button>
-              )}
-            </Group>
-            {!isLoading && data && data.count > 0 && (
-              <Badge colorPalette="red" size="md">
-                {data.count} {t('content.newStory.strike')}
-              </Badge>
+            ) : (
+              <Button variant="outline" size="sm" onClick={checkPageCorrectness}>
+                {t('content.newStory.buttons.next')}
+              </Button>
             )}
-          </Flex>
-        )}
-      </StepsRoot>
-    </>
+          </Group>
+          {!isLoading && data && data.count > 0 && (
+            <Badge colorPalette="red" size="md">
+              {data.count} {t('content.newStory.strike')}
+            </Badge>
+          )}
+        </Flex>
+      )}
+    </StepsRoot>
   );
 }

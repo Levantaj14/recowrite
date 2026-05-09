@@ -17,8 +17,7 @@ export default function Comments() {
 
   function content() {
     return (
-      <>
-        <motion.div
+      <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -33,7 +32,7 @@ export default function Comments() {
               </Table.Header>
 
               <Table.Body>
-                {data && data.map((item) => (
+                {data?.map((item) => (
                   <Table.Row key={item.id} onClick={() => navigate(`/blog/${item.blogId}`)}>
                     <Table.Cell>{item.comment}</Table.Cell>
                     <Table.Cell>{item.title}</Table.Cell>
@@ -43,7 +42,6 @@ export default function Comments() {
             </Table.Root>
           </Table.ScrollArea>
         </motion.div>
-      </>
     );
   }
 
