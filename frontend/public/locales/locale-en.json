@@ -213,6 +213,7 @@
       "written": "Written by",
       "unpublished": "This blog is not yet published",
       "ai": "This content was created with the help of Artificial Intelligence",
+      "image_source": "Image source",
       "like": {
         "noLogin": "You must be logged in"
       },

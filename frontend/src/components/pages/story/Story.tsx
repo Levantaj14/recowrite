@@ -125,6 +125,14 @@ function Story() {
           }
           objectFit="cover"
         />
+        {data?.blogData.banner_type === 'IMAGE_URL' && (
+          <Text mt={2} textStyle="sm" color="fg.muted">
+            {t('content.story.image_source')}:{' '}
+            <ChakraLink href={data?.blogData.banner} color="fg.muted" variant="underline" target="_blank">
+              {data?.blogData.banner}
+            </ChakraLink>
+          </Text>
+        )}
         {(date && date > new Date()) || data?.blogData.content === '' ? (
           <PostOpening data={data} setDate={setDate} />
         ) : (
