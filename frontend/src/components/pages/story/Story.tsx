@@ -19,6 +19,11 @@ import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 import ReportButton from '@/components/pages/story/ReportButton.tsx';
 import ErrorPage from '@/components/pages/ErrorPage.tsx';
 import { FaInfoCircle } from 'react-icons/fa';
+import DOMPurify from 'dompurify';
+import { generateHTML } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Typography from '@tiptap/extension-typography';
+import Highlight from '@tiptap/extension-highlight';
 
 function Story() {
   const { t } = useTranslation();
@@ -41,6 +46,15 @@ function Story() {
     window.scrollTo(0, 0);
     document.title = data?.blogData.title ?? 'Loading...';
   }, [data?.blogData.title]);
+
+  function isJsonString(str: string) {
+    try {
+      JSON.parse(str);
+    } catch {
+      return false;
+    }
+    return true;
+  }
 
   function blogPost() {
     return isError ? (
@@ -116,7 +130,25 @@ function Story() {
         ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: 'easeOut' }}>
             <Prose size="lg" maxWidth="100%" mb="6">
-              <Markdown>{data?.blogData.content}</Markdown>
+              {isJsonString(data?.blogData.content ?? '{}') ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      generateHTML(JSON.parse(data?.blogData.content ?? '{}'), [
+                        StarterKit.configure({
+                          heading: {
+                            levels: [2, 3, 4, 5],
+                          },
+                        }),
+                        Typography,
+                        Highlight,
+                      ]),
+                    ),
+                  }}
+                />
+              ) : (
+                <Markdown>{data?.blogData.content ?? ''}</Markdown>
+              )}
             </Prose>
             <Separator />
             <CommentSection />
