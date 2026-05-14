@@ -44,7 +44,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { // NOPMD
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) { // NOPMD
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/*", "/likes/*", "/user/*", "/blogs", "/actuator/health").permitAll()
                         .requestMatchers("/authentication/**", "/error", "/blogs/*", "/user").permitAll()
@@ -78,8 +78,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
@@ -90,7 +89,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { // NOPMD
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) { // NOPMD
         return config.getAuthenticationManager();
     }
 

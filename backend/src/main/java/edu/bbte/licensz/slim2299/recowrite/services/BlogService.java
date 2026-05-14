@@ -114,11 +114,11 @@ public class BlogService implements BlogServiceInterface {
         }
 
         BlogModel model = blogMapper.dtoToModel(blog);
-        if ("IMAGE_UPLOAD".equals(blog.getBanner_type())) {
+        if ("IMAGE_UPLOAD".equals(blog.getBannerType())) {
             // Saving an uploaded picture on the server
             byte[] imageBytes = Base64.getDecoder().decode(blog.getBanner());
 
-            String[] filenameParts = blog.getBanner_name().split("\\.");
+            String[] filenameParts = blog.getBannerName().split("\\.");
             String fileName = UUID.randomUUID() + "." + filenameParts[filenameParts.length - 1];
             String filePath = UPLOAD_DIR + fileName;
 

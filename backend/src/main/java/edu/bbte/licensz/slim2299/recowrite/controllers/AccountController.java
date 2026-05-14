@@ -40,7 +40,7 @@ public class AccountController {
     }
 
     @PutMapping("/preferences")
-    public ResponseEntity<?> updateSettings(HttpServletRequest request, @RequestBody @Valid SettingsDtoIn settingsDtoIn) {
+    public ResponseEntity<MessageDtoOut> updateSettings(HttpServletRequest request, @RequestBody @Valid SettingsDtoIn settingsDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             userService.updateUserPreferences(jwtUtil.extractUsername(cookie.getValue()), settingsDtoIn);
@@ -50,7 +50,7 @@ public class AccountController {
     }
 
     @GetMapping("/likes/given")
-    public ResponseEntity<?> getGivenLikes(HttpServletRequest request) {
+    public ResponseEntity<Object> getGivenLikes(HttpServletRequest request) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.OK).body(likeService.getLikedBlogs(jwtUtil.extractUsername(cookie.getValue())));
@@ -59,7 +59,7 @@ public class AccountController {
     }
 
     @GetMapping("/likes/received")
-    public ResponseEntity<?> getReceivedLikes(HttpServletRequest request) {
+    public ResponseEntity<Object> getReceivedLikes(HttpServletRequest request) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new LikeCountDtoOut(likeService.receivedLikeCount(jwtUtil.extractUsername(cookie.getValue()))));
@@ -68,7 +68,7 @@ public class AccountController {
     }
 
     @GetMapping("/comments")
-    public ResponseEntity<?> getComments(HttpServletRequest request) {
+    public ResponseEntity<Object> getComments(HttpServletRequest request) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             return ResponseEntity.status(HttpStatus.OK).body(commentService.findAllByAccount(jwtUtil.extractUsername(cookie.getValue())));
@@ -77,7 +77,7 @@ public class AccountController {
     }
 
     @PutMapping("/name")
-    public ResponseEntity<?> changeName(HttpServletRequest request, @RequestBody @Valid UserNameDtoIn userNameDtoIn) {
+    public ResponseEntity<MessageDtoOut> changeName(HttpServletRequest request, @RequestBody @Valid UserNameDtoIn userNameDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updateName(jwtUtil.extractUsername(cookie.getValue()), userNameDtoIn);
@@ -87,7 +87,7 @@ public class AccountController {
     }
 
     @PutMapping("/email")
-    public ResponseEntity<?> changeEmail(HttpServletRequest request, @RequestBody @Valid UserEmailDtoIn userEmailDtoIn) {
+    public ResponseEntity<MessageDtoOut> changeEmail(HttpServletRequest request, @RequestBody @Valid UserEmailDtoIn userEmailDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updateEmail(jwtUtil.extractUsername(cookie.getValue()), userEmailDtoIn);
@@ -97,7 +97,7 @@ public class AccountController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<?> changePassword(HttpServletRequest request, @RequestBody @Valid UserPasswordChangeDtoIn userPasswordChangeDtoIn) {
+    public ResponseEntity<MessageDtoOut> changePassword(HttpServletRequest request, @RequestBody @Valid UserPasswordChangeDtoIn userPasswordChangeDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updatePassword(jwtUtil.extractUsername(cookie.getValue()), userPasswordChangeDtoIn);
@@ -107,7 +107,7 @@ public class AccountController {
     }
 
     @PostMapping("/avatar")
-    public ResponseEntity<?> changeAvatar(HttpServletRequest request, @RequestBody @Valid UserAvatarDtoIn userAvatarDtoIn) throws IOException {
+    public ResponseEntity<MessageDtoOut> changeAvatar(HttpServletRequest request, @RequestBody @Valid UserAvatarDtoIn userAvatarDtoIn) throws IOException {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.uploadAvatar(jwtUtil.extractUsername(cookie.getValue()), userAvatarDtoIn);
@@ -117,7 +117,7 @@ public class AccountController {
     }
 
     @PutMapping("/socials")
-    public ResponseEntity<?> changeSocials(HttpServletRequest request, @RequestBody @Valid SocialDtoIn socialDtoIn) {
+    public ResponseEntity<MessageDtoOut> changeSocials(HttpServletRequest request, @RequestBody @Valid SocialDtoIn socialDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updateSocial(jwtUtil.extractUsername(cookie.getValue()), socialDtoIn);
@@ -127,7 +127,7 @@ public class AccountController {
     }
 
     @PutMapping("/bio")
-    public ResponseEntity<?> changeBio(HttpServletRequest request, @RequestBody @Valid BioDtoIn bioDtoIn) {
+    public ResponseEntity<MessageDtoOut> changeBio(HttpServletRequest request, @RequestBody @Valid BioDtoIn bioDtoIn) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             accountService.updateBio(jwtUtil.extractUsername(cookie.getValue()), bioDtoIn);

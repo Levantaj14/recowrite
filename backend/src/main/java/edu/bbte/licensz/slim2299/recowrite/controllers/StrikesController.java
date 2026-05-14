@@ -28,7 +28,7 @@ public class StrikesController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getStrikeCount(HttpServletRequest request) {
+    public ResponseEntity<Object> getStrikeCount(HttpServletRequest request) {
         Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
         if (cookie != null) {
             int count = strikeService.getStrikeCount(jwtUtil.extractUsername(cookie.getValue()));

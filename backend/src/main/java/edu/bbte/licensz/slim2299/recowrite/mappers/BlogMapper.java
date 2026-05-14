@@ -19,7 +19,7 @@ public class BlogMapper {
         blogDtoOut.setId(blog.getId());
         blogDtoOut.setTitle(blog.getTitle());
         blogDtoOut.setBanner(blog.getBanner());
-        blogDtoOut.setBanner_type(String.valueOf(blog.getBannerType()));
+        blogDtoOut.setBannerType(String.valueOf(blog.getBannerType()));
         blogDtoOut.setAuthor(blog.getUser().getId());
         Instant now = Instant.now();
         Instant blogDate = blog.getDate().toInstant();
@@ -41,7 +41,7 @@ public class BlogMapper {
         blogModel.setDescription(blog.getDescription());
         blogModel.setContent(blog.getContent());
         blogModel.setBanner(blog.getBanner());
-        blogModel.setBannerType(BlogModel.BannerImageSource.valueOf(blog.getBanner_type()));
+        blogModel.setBannerType(BlogModel.BannerImageSource.valueOf(blog.getBannerType()));
         try {
             Instant instant = Instant.parse(blog.getDate());
             Date date = Date.from(instant);

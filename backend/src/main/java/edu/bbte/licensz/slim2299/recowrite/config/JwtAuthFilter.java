@@ -10,6 +10,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,8 +36,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
         Cookie auhtCookie = searchAuthCookie(request.getCookies());
         if (auhtCookie == null) {
             filterChain.doFilter(request, response);
@@ -59,7 +60,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private void checkUser(HttpServletRequest request, String username, String jwt) {
         try {
             UserModel user = userService.getUserModelByUsername(username);
-            if (jwtUtil.validateToken(jwt, user.getUsername())) {
+            if (Boolean.TRUE.equals(jwtUtil.validateToken(jwt, user.getUsername()))) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         user, null, Collections.singleton(
                         new SimpleGrantedAuthority("ROLE_" + user.getRole())));
