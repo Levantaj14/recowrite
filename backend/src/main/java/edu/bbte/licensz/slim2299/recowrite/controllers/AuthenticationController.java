@@ -36,7 +36,7 @@ public class AuthenticationController {
     public ResponseEntity<LoginDtoOut> login(@RequestBody @Valid LoginDtoIn loginDtoIn) {
         ResponseCookie cookie = ResponseCookie.from("auth", authenticationService.login(loginDtoIn))
                 .httpOnly(true)
-                .maxAge(7 * 24 * 60 * 60)
+                .maxAge((long) 7 * 24 * 60 * 60)
                 .path("/")
                 .build();
         return ResponseEntity.status(HttpStatus.OK)
@@ -45,17 +45,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDtoIn signUpDtoIn) {
+    public ResponseEntity<MessageDtoOut> signUp(@RequestBody @Valid SignUpDtoIn signUpDtoIn) {
         authenticationService.signup(signUpDtoIn);
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageDtoOut("A verification email has been sent."));
     }
 
     @PostMapping("/verify/email")
-    public ResponseEntity<?> verifyEmail(@RequestParam String token) {
+    public ResponseEntity<LoginDtoOut> verifyEmail(@RequestParam String token) {
         String jwt = authenticationService.validateEmail(token);
         ResponseCookie cookie = ResponseCookie.from("auth", jwt)
                 .httpOnly(true)
-                .maxAge(7 * 24 * 60 * 60)
+                .maxAge((long) 7 * 24 * 60 * 60)
                 .path("/")
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -80,7 +80,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/check")
-    public ResponseEntity<?> check(HttpServletRequest request) {
+    public ResponseEntity<Object> check(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -94,19 +94,19 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgot-password/reset")
-    public ResponseEntity<?> resetPassword(@RequestBody @Valid TokenPasswordDtoIn tokenPasswordDtoIn) {
+    public ResponseEntity<MessageDtoOut> resetPassword(@RequestBody @Valid TokenPasswordDtoIn tokenPasswordDtoIn) {
         tokenService.changePassword(tokenPasswordDtoIn);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Password reset successfully"));
     }
 
     @PostMapping("/forgot-password/validate")
-    public ResponseEntity<?> validateToken(@RequestBody @Valid TokenDtoIn tokenDtoIn) {
+    public ResponseEntity<MessageDtoOut> validateToken(@RequestBody @Valid TokenDtoIn tokenDtoIn) {
         tokenService.validatePasswordToken(tokenDtoIn.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Token validated successfully"));
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody @Valid EmailDtoIn emailDtoIn) {
+    public ResponseEntity<MessageDtoOut> forgotPassword(@RequestBody @Valid EmailDtoIn emailDtoIn) {
         tokenService.createPasswordToken(emailDtoIn);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Forgot password request received"));
     }

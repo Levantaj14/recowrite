@@ -34,9 +34,9 @@ public class BlogDtoIn {
 
     @NotNull
     @NotEmpty
-    private String banner_type;
+    private String bannerType;
 
-    private String banner_name;
+    private String bannerName;
 
     private boolean ai;
 }

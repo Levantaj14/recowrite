@@ -3,10 +3,14 @@ package edu.bbte.licensz.slim2299.recowrite.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,11 +18,18 @@ import java.util.function.Function;
 
 import static io.jsonwebtoken.Jwts.builder;
 
+@Slf4j
 @Service
 public class JwtUtil {
 
     @Value("${security.jwt.secret-key}")
     private String secret;
+    private SecretKey key;
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -34,8 +45,8 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        JwtParser parser = Jwts.parser().setSigningKey(secret).build();
-        return parser.parseClaimsJws(token).getBody();
+        JwtParser parser = Jwts.parser().verifyWith(key).build();
+        return parser.parseSignedClaims(token).getPayload();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -44,9 +55,8 @@ public class JwtUtil {
 
     public String generateToken(String username) {
         Map<String, Object> claims = new ConcurrentHashMap<>();
-        return builder().setClaims(claims).setSubject(username).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+        return builder().claims(claims).subject(username).issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 604800000)).signWith(key).compact();
     }
 
     public Boolean validateToken(String token, String username) {
