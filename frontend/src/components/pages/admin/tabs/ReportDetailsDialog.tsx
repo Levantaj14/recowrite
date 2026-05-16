@@ -16,19 +16,19 @@ type Props = {
   setAdminNotes: (notes: string) => void;
   blockButtons: boolean;
   buttonPressed: (status: StatusType, key: string) => void;
-}
+};
 
 export default function ReportDetailsDialog({
-                                              selectedReport,
-                                              setSelectedReport,
-                                              selectedReportedUser,
-                                              selectedBlog,
-                                              buttonPressed,
-                                              blockButtons,
-                                              selectedReportedByUser,
-                                              setAdminNotes,
-                                              adminNotes,
-                                            }: Readonly<Props>) {
+  selectedReport,
+  setSelectedReport,
+  selectedReportedUser,
+  selectedBlog,
+  buttonPressed,
+  blockButtons,
+  selectedReportedByUser,
+  setAdminNotes,
+  adminNotes,
+}: Readonly<Props>) {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const badges = {
@@ -70,7 +70,7 @@ export default function ReportDetailsDialog({
                           <Avatar.Image src={`data:image;base64,${selectedReportedByUser?.avatar ?? ''}`} />
                           <Avatar.Fallback name={selectedReportedByUser?.name ?? ''} />
                         </Avatar.Root>
-                        {selectedReportedByUser?.name ?? ''}
+                        {selectedReportedByUser?.name ?? 'System'}
                       </HStack>
                     </DataList.ItemValue>
                   </DataList.Item>
@@ -89,7 +89,9 @@ export default function ReportDetailsDialog({
                   <DataList.Item>
                     <DataList.ItemLabel>{t('admin.report.table.dialog.blogTitle')}</DataList.ItemLabel>
                     <DataList.ItemValue>
-                      {selectedReport?.status === 'STRIKE_GIVEN' ? (selectedBlog?.title ?? 'unknown') : (
+                      {selectedReport?.status === 'STRIKE_GIVEN' ? (
+                        (selectedBlog?.title ?? 'unknown')
+                      ) : (
                         <Link onClick={() => navigate(`/blog/${selectedBlog?.id}`)}>
                           {selectedBlog?.title ?? 'unknown'}
                         </Link>
@@ -99,7 +101,16 @@ export default function ReportDetailsDialog({
 
                   <DataList.Item>
                     <DataList.ItemLabel>{t('admin.report.table.dialog.reason')}</DataList.ItemLabel>
-                    <DataList.ItemValue>{selectedReport && t(reportReasons[selectedReport.reasonId])}</DataList.ItemValue>
+                    {selectedReport?.reasonId === 9 ? (
+                      <DataList.ItemValue>{t('content.story.report.options.malicious')}</DataList.ItemValue>
+                    ) : (
+                      <DataList.ItemValue>
+                        {selectedReport && t(reportReasons[selectedReport.reasonId])}
+                      </DataList.ItemValue>
+                    )}
+                    <DataList.ItemValue>
+                      {selectedReport && t(reportReasons[selectedReport.reasonId])}
+                    </DataList.ItemValue>
                   </DataList.Item>
 
                   <DataList.Item>
@@ -117,9 +128,13 @@ export default function ReportDetailsDialog({
                   </DataList.Item>
                 </DataList.Root>
 
-                <Textarea placeholder={t('admin.report.table.dialog.adminNotes')} mt="8"
-                          disabled={selectedReport?.status !== 'OPEN'} value={adminNotes ?? ''}
-                          onChange={(e) => setAdminNotes(e.target.value)} />
+                <Textarea
+                  placeholder={t('admin.report.table.dialog.adminNotes')}
+                  mt="8"
+                  disabled={selectedReport?.status !== 'OPEN'}
+                  value={adminNotes ?? ''}
+                  onChange={(e) => setAdminNotes(e.target.value)}
+                />
               </Dialog.Body>
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" onClick={() => setSelectedReport(null)} disabled={blockButtons} />
@@ -127,28 +142,36 @@ export default function ReportDetailsDialog({
               {/*Deciding which button to show based on the status of the report*/}
               {selectedReport?.status === 'OPEN' && (
                 <Dialog.Footer>
-                  <Button variant="outline" disabled={blockButtons}
-                          onClick={() => buttonPressed('DISMISSED', 'report')}>
+                  <Button
+                    variant="outline"
+                    disabled={blockButtons}
+                    onClick={() => buttonPressed('DISMISSED', 'report')}
+                  >
                     {t('buttons.dismiss')}
                   </Button>
-                  <Button colorPalette="red" disabled={blockButtons}
-                          onClick={() => buttonPressed('STRIKE_GIVEN', 'giveStrike')}>
+                  <Button
+                    colorPalette="red"
+                    disabled={blockButtons}
+                    onClick={() => buttonPressed('STRIKE_GIVEN', 'giveStrike')}
+                  >
                     {t('buttons.giveStrike')}
                   </Button>
                 </Dialog.Footer>
               )}
               {selectedReport?.status === 'DISMISSED' && (
                 <Dialog.Footer>
-                  <Button variant="outline" disabled={blockButtons}
-                          onClick={() => buttonPressed('OPEN', 'reopen')}>
+                  <Button variant="outline" disabled={blockButtons} onClick={() => buttonPressed('OPEN', 'reopen')}>
                     {t('buttons.reopen')}
                   </Button>
                 </Dialog.Footer>
               )}
               {selectedReport?.status === 'STRIKE_GIVEN' && (
                 <Dialog.Footer>
-                  <Button variant="outline" disabled={blockButtons}
-                          onClick={() => buttonPressed('OPEN', 'revokeStrike')}>
+                  <Button
+                    variant="outline"
+                    disabled={blockButtons}
+                    onClick={() => buttonPressed('OPEN', 'revokeStrike')}
+                  >
                     {t('buttons.revokeStrike')}
                   </Button>
                 </Dialog.Footer>

@@ -1,10 +1,7 @@
 package edu.bbte.licensz.slim2299.recowrite.dao.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "reports")
 public class ReportModel extends BaseEntity {
     public enum ReportStatus {
@@ -21,7 +19,7 @@ public class ReportModel extends BaseEntity {
         STRIKE_GIVEN
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserModel reporter;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -34,6 +32,8 @@ public class ReportModel extends BaseEntity {
     private ReportReasonsModel reason;
 
     private String note;
+
+    private boolean unrevocable = false;
 
     @Enumerated(EnumType.STRING)
     private ReportStatus status = ReportStatus.OPEN;

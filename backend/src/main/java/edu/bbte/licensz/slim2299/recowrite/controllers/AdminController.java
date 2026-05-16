@@ -1,15 +1,10 @@
 package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.PendingBlogStatusDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportStatusDtoIn;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.MessageDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.services.AccountServiceInterface;
-import edu.bbte.licensz.slim2299.recowrite.services.BlogService;
-import edu.bbte.licensz.slim2299.recowrite.services.ReportServiceInterface;
-import edu.bbte.licensz.slim2299.recowrite.services.UserServiceInterface;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.*;
+import edu.bbte.licensz.slim2299.recowrite.services.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -29,16 +24,19 @@ public class AdminController {
     private final AuthCookieFinder authCookieFinder;
     private final JwtUtil jwtUtil;
     private final BlogService blogService;
+    private final PendingBlogServiceInterface pendingBlogService;
 
     @Autowired
     public AdminController(ReportServiceInterface reportService, AccountServiceInterface accountService,
-                           UserServiceInterface userService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil, BlogService blogService) {
+                           UserServiceInterface userService, AuthCookieFinder authCookieFinder, JwtUtil jwtUtil,
+                           BlogService blogService, PendingBlogServiceInterface pendingBlogService) {
         this.reportService = reportService;
         this.accountService = accountService;
         this.userService = userService;
         this.authCookieFinder = authCookieFinder;
         this.jwtUtil = jwtUtil;
         this.blogService = blogService;
+        this.pendingBlogService = pendingBlogService;
     }
 
     @GetMapping()
@@ -86,5 +84,23 @@ public class AdminController {
     public ResponseEntity<MessageDtoOut> changeRole(@PathVariable("id") long id) {
         accountService.changeRole(id);
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Account role changed successfully"));
+    }
+
+    @GetMapping("/pending-blog")
+    public ResponseEntity<PendingBlogsDtoOut> getPendingBlogs() {
+        PendingBlogsDtoOut pendingBlogsDtoOut = new PendingBlogsDtoOut(pendingBlogService.getPendingBlogs());
+        return ResponseEntity.ok(pendingBlogsDtoOut);
+    }
+
+    @PutMapping("/pending-blog/{id}")
+    public ResponseEntity<MessageDtoOut> changePendingBlog(@PathVariable("id") long id,
+                                                           @RequestBody PendingBlogStatusDtoIn pendingBlogStatusDtoIn,
+                                                           HttpServletRequest request) {
+        Cookie cookie = authCookieFinder.serachAuthCookie(request.getCookies());
+        if (cookie != null) {
+            pendingBlogService.changeStatus(id, pendingBlogStatusDtoIn.getStatus(), jwtUtil.extractUsername(cookie.getValue()));
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Pending blog status changed successfully"));
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }

@@ -1,8 +1,8 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.AddBlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
-import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,7 +16,5 @@ public interface BlogServiceInterface {
 
     BlogDtoOut getBlogById(long id);
 
-    BlogModel getBlogModelById(long id);
-
-    Long addBlog(BlogDtoIn blog, String username) throws IOException;
+    AddBlogDtoOut addBlog(BlogDtoIn blog, String username) throws IOException;
 }
