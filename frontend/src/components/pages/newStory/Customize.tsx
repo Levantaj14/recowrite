@@ -20,7 +20,7 @@ type Props = {
   errors: FieldErrors<NewStoryFormFields>;
   isVisible: boolean;
   setValidateFields: (
-    validateFields: ('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name')[],
+    validateFields: ('content' | 'title' | 'description' | 'date' | 'banner' | 'bannerType' | 'bannerName')[],
   ) => void;
   setValue: UseFormSetValue<NewStoryFormFields>;
 };
@@ -47,7 +47,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
 
   useEffect(() => {
     setValue('banner', '');
-    setValue('banner_type', imageType);
+    setValue('bannerType', imageType);
   }, [imageType, setValue]);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function Customize({ register, errors, isVisible, setValidateFiel
       const base64String = reader.result as string;
       const cleanBase64 = base64String.split(',')[1];
       setValue('banner', cleanBase64);
-      setValue('banner_name', file.name);
+      setValue('bannerName', file.name);
     };
 
     if (file) {

@@ -119,13 +119,13 @@ function Story() {
           maxH="300px"
           w="100%"
           src={
-            data?.blogData.banner_type === 'IMAGE_URL'
+            data?.blogData.bannerType === 'IMAGE_URL'
               ? data?.blogData.banner
               : `data:image;base64,${data?.blogData.banner}`
           }
           objectFit="cover"
         />
-        {data?.blogData.banner_type === 'IMAGE_URL' && (
+        {data?.blogData.bannerType === 'IMAGE_URL' && (
           <Text mt={2} textStyle="sm" color="fg.muted">
             {t('content.story.image_source')}:{' '}
             <ChakraLink href={data?.blogData.banner} color="fg.muted" variant="underline" target="_blank">

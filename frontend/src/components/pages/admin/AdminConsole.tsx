@@ -48,12 +48,14 @@ export default function AdminConsole() {
         <Tabs.List>
           <Tabs.Trigger value="reports">{t('admin.report.title')}</Tabs.Trigger>
           <Tabs.Trigger value="users">{t('admin.users.title')}</Tabs.Trigger>
+          <Tabs.Trigger value="pendingBlogs">{t('admin.pendingBlogs.title')}</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="preferences">
           <Preferences />
         </Tabs.Content>
         <Tabs.Content value="reports"><ReportsTab setIsAuthorized={setIsAuthorized} /></Tabs.Content>
         <Tabs.Content value="users"><UsersTab setIsAuthorized={setIsAuthorized} /></Tabs.Content>
+        <Tabs.Content value="pendingBlogs"></Tabs.Content>
       </Tabs.Root>
     </>
   ) : (

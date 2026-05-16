@@ -28,7 +28,7 @@ export default function NewStory() {
   const { userDetails } = useContext(UserDetailContext);
   const [step, setStep] = useState(0);
   const [validateFields, setValidateFields] = useState<
-    ('content' | 'title' | 'description' | 'date' | 'banner' | 'banner_type' | 'banner_name' | 'ai')[]
+    ('content' | 'title' | 'description' | 'date' | 'banner' | 'bannerType' | 'bannerName' | 'ai')[]
   >([]);
 
   const { data, isLoading } = useQuery({

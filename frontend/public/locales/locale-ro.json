@@ -268,7 +268,8 @@
           "violent": "Conținut violent sau grafic",
           "misinformation": "Dezinformare",
           "copyright": "Încălcare a drepturilor de autor",
-          "plagiarism": "Plagiat"
+          "plagiarism": "Plagiat",
+          "malicious": "Conținut rău intenționat sau dăunător"
         }
       }
     },
@@ -469,6 +470,9 @@
           "delete": "Șterge"
         }
       }
+    },
+    "pendingBlogs": {
+      "title": ""
     }
   }
 }

@@ -13,8 +13,8 @@ function createBaseSchema(t: TFunction) {
       },
     ),
     banner: z.string().nonempty(t('common.errors.required.field')),
-    banner_type: z.enum(['IMAGE_URL', 'IMAGE_UPLOAD']),
-    banner_name: z.string().optional(),
+    bannerType: z.enum(['IMAGE_URL', 'IMAGE_UPLOAD']),
+    bannerName: z.string().optional(),
     ai: z.boolean(),
   });
 }
@@ -24,7 +24,7 @@ export type NewStoryFormFields = z.infer<ReturnType<typeof createBaseSchema>>;
 export default function NewStorySchema(t: TFunction) {
   return createBaseSchema(t).refine(
     (data) => {
-      if (data.banner_type === 'IMAGE_URL') {
+      if (data.bannerType === 'IMAGE_URL') {
         try {
           new URL(data.banner);
           return true;

@@ -268,7 +268,8 @@
           "violent": "Violent or graphic content",
           "misinformation": "Misinformation",
           "copyright": "Copyright infringement",
-          "plagiarism": "Plagiarism"
+          "plagiarism": "Plagiarism",
+          "malicious": "Malicious or harmful content"
         }
       }
     },
@@ -469,6 +470,9 @@
           "delete": "Delete"
         }
       }
+    },
+    "pendingBlogs": {
+      "title": "Pending Blogs"
     }
   }
 }
