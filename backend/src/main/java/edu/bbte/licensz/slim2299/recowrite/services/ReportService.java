@@ -102,9 +102,7 @@ public class ReportService implements ReportServiceInterface {
 
         ReportModel reportModel = report.get();
 
-        if ("Malicious act".equals(reportModel.getReason().getLabel())) {
-            throw new UnchangeableStatusException("The report is reported as malicious act, thus the status can not be changed");
-        }
+        checkMalicious(reportModel);
 
         if (ReportModel.ReportStatus.OPEN.equals(reportStatusDtoIn.getReportStatus())) {
             reportReopened(reportModel);
@@ -139,5 +137,11 @@ public class ReportService implements ReportServiceInterface {
         reportModel.setReviewer(null);
         reportModel.setNote(null);
         reportManager.save(reportModel);
+    }
+
+    private void checkMalicious(ReportModel reportModel) {
+        if ("Malicious act".equals(reportModel.getReason().getLabel())) {
+            throw new UnchangeableStatusException("The report is reported as malicious act, thus the status can not be changed");
+        }
     }
 }
