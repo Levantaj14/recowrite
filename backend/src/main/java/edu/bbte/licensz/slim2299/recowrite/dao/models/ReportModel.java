@@ -33,10 +33,10 @@ public class ReportModel extends BaseEntity {
 
     private String note;
 
-    private boolean unrevocable = false;
+    private boolean unrevocable;
 
     @Enumerated(EnumType.STRING)
-    private ReportStatus status = ReportStatus.OPEN;
+    private ReportStatus status;
 
     private LocalDateTime reportDate;
 

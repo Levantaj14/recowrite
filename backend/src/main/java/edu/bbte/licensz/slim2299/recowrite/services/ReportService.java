@@ -15,12 +15,15 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportReasonsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.ReportsMapper;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
+import edu.bbte.licensz.slim2299.recowrite.services.exceptions.UnchangeableStatusException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -98,6 +101,11 @@ public class ReportService implements ReportServiceInterface {
         }
 
         ReportModel reportModel = report.get();
+
+        if ("Malicious act".equals(reportModel.getReason().getLabel())) {
+            throw new UnchangeableStatusException("The report is reported as malicious act, thus the status can not be changed");
+        }
+
         if (ReportModel.ReportStatus.OPEN.equals(reportStatusDtoIn.getReportStatus())) {
             reportReopened(reportModel);
             return;

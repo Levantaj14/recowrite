@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -119,6 +120,24 @@ public class BlogService implements BlogServiceInterface {
         }
 
         BlogModel model = blogMapper.dtoToModel(blog);
+        handleBlogBanner(blog, model);
+        model.setUser(userResult.get());
+        BlogModel finalModel = blogManager.save(model);
+        if (!model.isVisible()) {
+            PendingBlog pendingBlog = PendingBlog.builder()
+                    .blog(finalModel)
+                    .approveStatus(ApproveStatus.PENDING)
+                    .reason("Banner Image URL must be checked for sanitization")
+                    .build();
+            pendingBlogsManager.save(pendingBlog);
+        }
+        return AddBlogDtoOut.builder()
+                .id(finalModel.getId())
+                .review(model.isVisible())
+                .build();
+    }
+
+    private void handleBlogBanner(BlogDtoIn blog, BlogModel model) throws IOException {
         if ("IMAGE_URL".equals(blog.getBannerType())) {
             try {
                 URL url = new URI(blog.getBanner()).toURL();
@@ -126,7 +145,7 @@ public class BlogService implements BlogServiceInterface {
                 if (allowedHosts.isEmpty()) {
                     model.setVisible(false);
                 }
-            } catch (URISyntaxException e) {
+            } catch (URISyntaxException | MalformedURLException e) {
                 log.error("Invalid banner URI {}", blog.getBanner());
                 throw new InvalidUrlException("Invalid banner URI " + blog.getBanner());
             }
@@ -142,20 +161,6 @@ public class BlogService implements BlogServiceInterface {
 
             model.setBanner(filePath);
         }
-        model.setUser(userResult.get());
-        Long blogId = blogManager.save(model).getId();
-        if (!model.isVisible()) {
-            PendingBlog pendingBlog = PendingBlog.builder()
-                    .blog(model)
-                    .approveStatus(ApproveStatus.PENDING)
-                    .reason("Banner Image URL must be checked for sanitization")
-                    .build();
-            pendingBlogsManager.save(pendingBlog);
-        }
-        return AddBlogDtoOut.builder()
-                .id(blogId)
-                .review(model.isVisible())
-                .build();
     }
 
     private BlogDtoOut createBlogDto(BlogModel blog) {
