@@ -158,23 +158,27 @@ export default function ReportDetailsDialog({
                   </Button>
                 </Dialog.Footer>
               )}
-              {selectedReport?.status === 'DISMISSED' && (
-                <Dialog.Footer>
-                  <Button variant="outline" disabled={blockButtons} onClick={() => buttonPressed('OPEN', 'reopen')}>
-                    {t('buttons.reopen')}
-                  </Button>
-                </Dialog.Footer>
-              )}
-              {selectedReport?.status === 'STRIKE_GIVEN' && (
-                <Dialog.Footer>
-                  <Button
-                    variant="outline"
-                    disabled={blockButtons}
-                    onClick={() => buttonPressed('OPEN', 'revokeStrike')}
-                  >
-                    {t('buttons.revokeStrike')}
-                  </Button>
-                </Dialog.Footer>
+              {selectedReport?.reasonId !== 9 && (
+                <>
+                  {selectedReport?.status === 'DISMISSED' && (
+                    <Dialog.Footer>
+                      <Button variant="outline" disabled={blockButtons} onClick={() => buttonPressed('OPEN', 'reopen')}>
+                        {t('buttons.reopen')}
+                      </Button>
+                    </Dialog.Footer>
+                  )}
+                  {selectedReport?.status === 'STRIKE_GIVEN' && (
+                    <Dialog.Footer>
+                      <Button
+                        variant="outline"
+                        disabled={blockButtons}
+                        onClick={() => buttonPressed('OPEN', 'revokeStrike')}
+                      >
+                        {t('buttons.revokeStrike')}
+                      </Button>
+                    </Dialog.Footer>
+                  )}
+                </>
               )}
             </Dialog.Content>
           </Dialog.Positioner>
