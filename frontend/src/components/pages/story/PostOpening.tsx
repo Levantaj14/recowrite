@@ -18,7 +18,7 @@ type Props = {
   setDate: (date: Date) => void;
 }
 
-export default function PostOpening({ data, setDate }: Props) {
+export default function PostOpening({ data, setDate }: Readonly<Props>) {
   const { t } = useTranslation();
   const { blogId } = useParams();
   const queryClient = useQueryClient();

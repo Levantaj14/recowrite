@@ -7,10 +7,12 @@ import { Tooltip } from '@/components/ui/tooltip.tsx';
 import { FiAlertTriangle } from 'react-icons/fi';
 import {
   DialogActionTrigger,
-  DialogBody, DialogCloseTrigger,
+  DialogBody,
+  DialogCloseTrigger,
   DialogContent,
   DialogFooter,
-  DialogHeader, DialogRoot,
+  DialogHeader,
+  DialogRoot,
   DialogTitle,
 } from '@/components/ui/dialog.tsx';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -22,7 +24,7 @@ import { reportReasons } from '@/apis/adminApi.ts';
 
 type Props = {
   blogData: BlogType | undefined;
-}
+};
 
 export default function ReportButton({ blogData }: Props) {
   const { t } = useTranslation();
@@ -68,21 +70,21 @@ export default function ReportButton({ blogData }: Props) {
     });
   };
 
-  return available && (
-    <>
-      <DialogRoot placement="center" open={open} onOpenChange={(e) => setOpen(e.open)}>
-        <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogHeader>
-              <DialogTitle>{t('content.story.report.title')}</DialogTitle>
-            </DialogHeader>
-            <DialogBody>
-              <Fieldset.Root>
-                <Controller
-                  name="selected"
-                  control={control}
-                  render={({ field }) => (
-                    <>
+  return (
+    available && (
+      <>
+        <DialogRoot placement="center" open={open} onOpenChange={(e) => setOpen(e.open)}>
+          <DialogContent>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <DialogHeader>
+                <DialogTitle>{t('content.story.report.title')}</DialogTitle>
+              </DialogHeader>
+              <DialogBody>
+                <Fieldset.Root>
+                  <Controller
+                    name="selected"
+                    control={control}
+                    render={({ field }) => (
                       <RadioGroup.Root
                         name={field.name}
                         value={field.value}
@@ -100,40 +102,38 @@ export default function ReportButton({ blogData }: Props) {
                           ))}
                         </VStack>
                       </RadioGroup.Root>
-                    </>
-                  )}
-                />
-                {errors.selected && (
-                  <Fieldset.ErrorText>{errors.selected?.message}</Fieldset.ErrorText>
-                )}
-              </Fieldset.Root>
-            </DialogBody>
-            <DialogFooter>
-              <DialogActionTrigger asChild>
-                <Button variant="outline" disabled={isSubmitting}>
-                  {t('buttons.cancel')}
+                    )}
+                  />
+                  {errors.selected && <Fieldset.ErrorText>{errors.selected?.message}</Fieldset.ErrorText>}
+                </Fieldset.Root>
+              </DialogBody>
+              <DialogFooter>
+                <DialogActionTrigger asChild>
+                  <Button variant="outline" disabled={isSubmitting}>
+                    {t('buttons.cancel')}
+                  </Button>
+                </DialogActionTrigger>
+                <Button type="submit" disabled={isSubmitting}>
+                  {t('buttons.report')}
                 </Button>
-              </DialogActionTrigger>
-              <Button type="submit" disabled={isSubmitting}>
-                {t('buttons.report')}
-              </Button>
-            </DialogFooter>
-            <DialogCloseTrigger />
-          </form>
-        </DialogContent>
-      </DialogRoot>
-      <Tooltip
-        content={userDetails === null && t('content.story.like.noLogin')}
-        disabled={userDetails !== null}
-        openDelay={100}
-        closeDelay={100}
-        positioning={{ placement: 'top' }}
-      >
-        <Button variant="ghost" disabled={userDetails === null} onClick={() => setOpen(true)}>
-          <FiAlertTriangle />
-          {t('buttons.report')}
-        </Button>
-      </Tooltip>
-    </>
+              </DialogFooter>
+              <DialogCloseTrigger />
+            </form>
+          </DialogContent>
+        </DialogRoot>
+        <Tooltip
+          content={userDetails === null && t('content.story.like.noLogin')}
+          disabled={userDetails !== null}
+          openDelay={100}
+          closeDelay={100}
+          positioning={{ placement: 'top' }}
+        >
+          <Button variant="ghost" disabled={userDetails === null} onClick={() => setOpen(true)}>
+            <FiAlertTriangle />
+            {t('buttons.report')}
+          </Button>
+        </Tooltip>
+      </>
+    )
   );
 }

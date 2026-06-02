@@ -65,6 +65,29 @@ export default function ReportsTab({ setIsAuthorized }: Readonly<Props>) {
     }
   }
 
+  function generateTableRow(report: ReportType) {
+    return (
+      <Table.Row
+        cursor="pointer"
+        key={report.id}
+        onClick={() => {
+          setSelectedReport(report);
+          setAdminNotes(report.note);
+          setSelectedReportedUser(data?.users.find((u) => u.id === report.reportedUserId));
+          setSelectedBlog(data?.blogs.find((b) => Number(b.id) === report.blogId));
+          setSelectedReportedByUser(data?.users.find((u) => u.id === report.reporterId));
+        }}
+      >
+        <Table.Cell>{report.id}</Table.Cell>
+        <Table.Cell>{data?.users.find((u) => u.id === report.reportedUserId)?.name ?? 'unknown'}</Table.Cell>
+        <Table.Cell>
+          <Badge colorPalette={badges[report.status].color}>{badges[report.status].label}</Badge>
+        </Table.Cell>
+        <Table.Cell>{data?.blogs.find((b) => Number(b.id) === report.blogId)?.title ?? 'unknown'}</Table.Cell>
+      </Table.Row>
+    );
+  }
+
   function content() {
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
@@ -79,28 +102,7 @@ export default function ReportsTab({ setIsAuthorized }: Readonly<Props>) {
               </Table.Row>
             </Table.Header>
 
-            <Table.Body>
-              {data?.reports.map((report) => (
-                <Table.Row
-                  cursor="pointer"
-                  key={report.id}
-                  onClick={() => {
-                    setSelectedReport(report);
-                    setAdminNotes(report.note);
-                    setSelectedReportedUser(data?.users.find((u) => u.id === report.reportedUserId));
-                    setSelectedBlog(data?.blogs.find((b) => Number(b.id) === report.blogId));
-                    setSelectedReportedByUser(data?.users.find((u) => u.id === report.reporterId));
-                  }}
-                >
-                  <Table.Cell>{report.id}</Table.Cell>
-                  <Table.Cell>{data?.users.find((u) => u.id === report.reportedUserId)?.name ?? 'unknown'}</Table.Cell>
-                  <Table.Cell>
-                    <Badge colorPalette={badges[report.status].color}>{badges[report.status].label}</Badge>
-                  </Table.Cell>
-                  <Table.Cell>{data?.blogs.find((b) => Number(b.id) === report.blogId)?.title ?? 'unknown'}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
+            <Table.Body>{data?.reports.map((report) => generateTableRow(report))}</Table.Body>
           </Table.Root>
         </Table.ScrollArea>
       </motion.div>

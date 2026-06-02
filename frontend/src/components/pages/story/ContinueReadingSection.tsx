@@ -33,7 +33,7 @@ export default function ContinueReadingSection() {
     setHasLoadedOnce(true);
   }
 
-  const patternsToRemove = ['\\*\\*', '\\[', '\\]', '\\(.*?\\)', '#', '```'];
+  const patternsToRemove = [String.raw`\*\*`, String.raw`\[`, String.raw`\]`, String.raw`\(.*?\)`, '#', '```'];
 
   function decideDescription(blog: BlogType) {
     if (new Date(blog.date) > new Date()) {

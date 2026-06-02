@@ -22,7 +22,7 @@ type Props = {
   setOpen: (open: boolean) => void;
 };
 
-export default function DeleteDialog({ open, setOpen, commentId }: Props) {
+export default function DeleteDialog({ open, setOpen, commentId }: Readonly<Props>) {
   const { t } = useTranslation();
   const { blogId } = useParams();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

@@ -26,7 +26,7 @@ type Props = {
   setOpen: (open: boolean) => void;
 };
 
-export default function EditDialog({ open, setOpen, commentId, commentContent }: Props) {
+export default function EditDialog({ open, setOpen, commentId, commentContent }: Readonly<Props>) {
   const { t } = useTranslation();
 
   const schema = z.object({
