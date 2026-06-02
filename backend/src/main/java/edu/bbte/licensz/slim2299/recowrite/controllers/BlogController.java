@@ -53,9 +53,9 @@ public class BlogController {
         Cookie authCookie = authCookieFinder.serachAuthCookie(request.getCookies());
         AddBlogDtoOut blogId = blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue()));
         if (!blogId.isReview()) {
-            recommendationService.addRecommendation(blogId.getId());
             return new IdDtoOut(null);
         }
+        recommendationService.addRecommendation(blogId.getId());
         return new IdDtoOut(blogId.getId());
     }
 

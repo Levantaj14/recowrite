@@ -20,5 +20,5 @@ public class PendingBlog extends BaseEntity {
     private ApproveStatus approveStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserModel approvedBy;
+    private UserModel reviewedBy;
 }

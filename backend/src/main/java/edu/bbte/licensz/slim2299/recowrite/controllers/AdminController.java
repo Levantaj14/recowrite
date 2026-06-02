@@ -5,6 +5,7 @@ import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.PendingBlogS
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportStatusDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.*;
 import edu.bbte.licensz.slim2299.recowrite.services.*;
+import edu.bbte.licensz.slim2299.recowrite.services.dto.PendingBlogDtoOut;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -86,13 +87,17 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(new MessageDtoOut("Account role changed successfully"));
     }
 
-    @GetMapping("/pending-blog")
-    public ResponseEntity<PendingBlogsDtoOut> getPendingBlogs() {
-        PendingBlogsDtoOut pendingBlogsDtoOut = new PendingBlogsDtoOut(pendingBlogService.getPendingBlogs());
-        return ResponseEntity.ok(pendingBlogsDtoOut);
+    @GetMapping("/blog/pending")
+    public ResponseEntity<List<PendingBlogDtoOut>> getPendingBlogs() {
+        return ResponseEntity.ok(pendingBlogService.getPendingBlogs());
     }
 
-    @PutMapping("/pending-blog/{id}")
+    @GetMapping("/blog/pending/{id}")
+    public ResponseEntity<PendingDtoOut> getPendingBlogs(@PathVariable("id") long id) {
+        return ResponseEntity.ok(pendingBlogService.getPendingBlogById(id));
+    }
+
+    @PutMapping("/blog/pending/{id}")
     public ResponseEntity<MessageDtoOut> changePendingBlog(@PathVariable("id") long id,
                                                            @RequestBody PendingBlogStatusDtoIn pendingBlogStatusDtoIn,
                                                            HttpServletRequest request) {

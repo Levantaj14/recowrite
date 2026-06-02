@@ -17,6 +17,7 @@ public class PendingBlogMapper {
                 .id(pendingBlog.getId())
                 .blog(blogMapper.modelToDto(pendingBlog.getBlog()))
                 .reason(pendingBlog.getReason())
+                .approveStatus(pendingBlog.getApproveStatus())
                 .build();
     }
 }
