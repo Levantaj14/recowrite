@@ -7,7 +7,7 @@ services:
     volumes:
       - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
     environment:
-      - MYSQL_ROOT_PASSWORD=kerekecske
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
     healthcheck:
       test: mysqladmin ping -h localhost
       interval: 10s
@@ -20,7 +20,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=kerekecske
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
       - EMAIL=${EMAIL}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
@@ -44,7 +44,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=kerekecske
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     platform: linux/amd64
     depends_on:
       backend:
