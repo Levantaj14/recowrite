@@ -7,7 +7,7 @@ COPY requirements.txt .
 SHELL ["/bin/bash", "-c"]
 RUN source activate myenv && pip install --upgrade pip && pip install -r requirements.txt
 
-ENV PATH /opt/conda/envs/myenv/bin:$PATH
+ENV PATH=/opt/conda/envs/myenv/bin:$PATH
 ENV CONDA_DEFAULT_ENV=myenv
 
 COPY . ./
