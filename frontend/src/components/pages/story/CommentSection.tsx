@@ -18,7 +18,7 @@ import { useContext, useState } from 'react';
 import { UserDetailContext } from '@/contexts/userDetailContext.ts';
 import { Avatar } from '@/components/ui/avatar.tsx';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { CommentType, getComments, postComment } from '@/apis/commentApi.ts';
+import { getComments, postComment } from '@/apis/commentApi.ts';
 import { NavLink, useParams } from 'react-router';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -31,106 +31,11 @@ import EditDialog from '@/components/pages/story/EditDialog.tsx';
 import { useTranslation } from 'react-i18next';
 import LoadingAnimation from '@/components/elements/LoadingAnimation.tsx';
 
-function Comments(data : CommentType[] | undefined ) {
-  const [showAll, setShowAll] = useState(false);
-  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
-  const [selectedCommentContent, setSelectedCommentContent] = useState<string | undefined>(undefined);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const { t } = useTranslation();
-  const { userDetails } = useContext(UserDetailContext);
-
-  if (!data || data.length === 0) {
-    return <Text>{t('content.story.comments.none')}</Text>;
-  }
-
-  const visibleComments = showAll ? data : [data[0]];
-  const remainingComments = data.length - 1;
-
-  function selectedItem(menuSelectionDetails: MenuSelectionDetails, selectedId: number, selectedContent: string) {
-    setSelectedCommentId(selectedId);
-    setSelectedCommentContent(selectedContent);
-    switch (menuSelectionDetails.value) {
-      case 'edit':
-        setEditDialogOpen(true);
-        break;
-      case 'delete':
-        setDeleteDialogOpen(true);
-        break;
-    }
-  }
-
-  return (
-    <>
-      <DeleteDialog open={deleteDialogOpen} setOpen={setDeleteDialogOpen} commentId={selectedCommentId} />
-      <EditDialog
-        open={editDialogOpen}
-        setOpen={setEditDialogOpen}
-        commentId={selectedCommentId}
-        commentContent={selectedCommentContent}
-      />
-      {visibleComments.map((comment) => (
-        <motion.div
-          key={comment.id}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
-        >
-          <Flex mt={4} ml={2} flexDirection="row" justifyContent="start">
-            <Avatar size="xs" mr={4} name={comment.authorName} src={`data:image;base64,${comment.authorAvatar}`} />
-            <Flex flexDirection="column">
-              <Link asChild>
-                <NavLink to={`/user/${comment.authorId}`}>
-                  <Heading size="md">{comment.authorName}</Heading>
-                </NavLink>
-              </Link>
-              <Text>{comment.comment}</Text>
-            </Flex>
-            <Spacer />
-            {userDetails?.id === comment.authorId && (
-              <Box position="relative">
-                <MenuRoot
-                  positioning={{ placement: 'bottom-end' }}
-                  onSelect={(e) => selectedItem(e, comment.id, comment.comment)}
-                >
-                  <MenuTrigger asChild>
-                    <Button variant="ghost">
-                      <HiOutlineDotsHorizontal />
-                    </Button>
-                  </MenuTrigger>
-                  <MenuContent zIndex="popover" position="absolute" right="0">
-                    <MenuItem value="edit">{t('buttons.edit')}</MenuItem>
-                    <MenuItem value="delete" color="fg.error" _hover={{ bg: 'bg.error', color: 'fg.error' }}>
-                      {t('buttons.delete')}
-                    </MenuItem>
-                  </MenuContent>
-                </MenuRoot>
-              </Box>
-            )}
-          </Flex>
-        </motion.div>
-      ))}
-
-      {remainingComments > 0 && !showAll && (
-        <Button mt={4} onClick={() => setShowAll(true)}>
-          {t('content.story.comments.showMore.base', {
-            count: remainingComments,
-            comment: t('content.story.comments.showMore.comment', { count: remainingComments }),
-          })}
-        </Button>
-      )}
-    </>
-  );
-}
-
 export default function CommentSection() {
   const { t } = useTranslation();
 
   const schema = z.object({
-    comment: z
-      .string()
-      .nonempty(t('common.errors.required.comment'))
-      .max(255, t('common.errors.validation.commentLength')),
+    comment: z.string().nonempty(t('common.errors.required.comment')).max(255, t('common.errors.validation.commentLength')),
   });
 
   type FormFields = z.infer<typeof schema>;
@@ -138,7 +43,11 @@ export default function CommentSection() {
   const { blogId } = useParams();
   const { userDetails } = useContext(UserDetailContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [showAll, setShowAll] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
+  const [selectedCommentContent, setSelectedCommentContent] = useState<string | undefined>(undefined);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -175,6 +84,90 @@ export default function CommentSection() {
     });
   };
 
+  function selectedItem(menuSelectionDetails: MenuSelectionDetails, selectedId: number, selectedContent: string) {
+    setSelectedCommentId(selectedId);
+    setSelectedCommentContent(selectedContent);
+    switch (menuSelectionDetails.value) {
+      case 'edit':
+        setEditDialogOpen(true);
+        break;
+      case 'delete':
+        setDeleteDialogOpen(true);
+        break;
+    }
+  }
+
+  function Comments() {
+    if (!data || data.length === 0) {
+      return <Text>{t('content.story.comments.none')}</Text>;
+    }
+
+    const visibleComments = showAll ? data : [data[0]];
+    const remainingComments = data.length - 1;
+
+    return (
+      <>
+        <DeleteDialog open={deleteDialogOpen} setOpen={setDeleteDialogOpen} commentId={selectedCommentId} />
+        <EditDialog
+          open={editDialogOpen}
+          setOpen={setEditDialogOpen}
+          commentId={selectedCommentId}
+          commentContent={selectedCommentContent}
+        />
+        {visibleComments.map((comment) => (
+          <motion.div
+            key={comment.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          >
+            <Flex mt={4} ml={2} flexDirection="row" justifyContent="start">
+              <Avatar size="xs" mr={4} name={comment.authorName} src={`data:image;base64,${comment.authorAvatar}`} />
+              <Flex flexDirection="column">
+                <Link asChild>
+                  <NavLink to={`/user/${comment.authorId}`}>
+                    <Heading size="md">{comment.authorName}</Heading>
+                  </NavLink>
+                </Link>
+                <Text>{comment.comment}</Text>
+              </Flex>
+              <Spacer />
+              {userDetails?.id === comment.authorId && (
+                <Box position="relative">
+                  <MenuRoot
+                    positioning={{ placement: 'bottom-end' }}
+                    onSelect={(e) => selectedItem(e, comment.id, comment.comment)}
+                  >
+                    <MenuTrigger asChild>
+                      <Button variant="ghost">
+                        <HiOutlineDotsHorizontal />
+                      </Button>
+                    </MenuTrigger>
+                    <MenuContent zIndex="popover" position="absolute" right="0">
+                      <MenuItem value="edit">{t('buttons.edit')}</MenuItem>
+                      <MenuItem value="delete" color="fg.error" _hover={{ bg: 'bg.error', color: 'fg.error' }}>
+                        {t('buttons.delete')}
+                      </MenuItem>
+                    </MenuContent>
+                  </MenuRoot>
+                </Box>
+              )}
+            </Flex>
+          </motion.div>
+        ))}
+
+        {remainingComments > 0 && !showAll && (
+          <Button mt={4} onClick={() => setShowAll(true)}>
+            {t('content.story.comments.showMore.base', {
+              count: remainingComments,
+              comment: t('content.story.comments.showMore.comment', { count: remainingComments }),
+            })}
+          </Button>
+        )}
+      </>
+    );
+  }
+
   return (
     <Box mt={5} mb={7}>
       <Heading size="3xl" mb={3}>
@@ -194,7 +187,7 @@ export default function CommentSection() {
           </Button>
         </form>
       )}
-      {isLoading ? <LoadingAnimation /> : Comments(data)}
+      {isLoading ? <LoadingAnimation /> : Comments()}
     </Box>
   );
 }
