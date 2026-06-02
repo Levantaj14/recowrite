@@ -14,19 +14,22 @@ import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createBlog, CreateBlogType } from '@/apis/blogApi.ts';
+import { createBlog } from '@/apis/blogApi.ts';
 import { toast } from 'sonner';
 import ErrorPage from '@/components/pages/ErrorPage.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { getStrikeCount } from '@/apis/strikeApi.ts';
 import NewStorySchema, { NewStoryFormFields } from '@/components/pages/newStory/newStorySchema.ts';
 import { Editor } from '@tiptap/react';
+import { EmptyState } from '@/components/ui/empty-state';
+import { FiAlertCircle } from 'react-icons/fi';
 
 export default function NewStory() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { userDetails } = useContext(UserDetailContext);
   const [step, setStep] = useState(0);
+  const [manualValidation, setManualValidation] = useState(false);
   const [validateFields, setValidateFields] = useState<
     ('content' | 'title' | 'description' | 'date' | 'banner' | 'bannerType' | 'bannerName' | 'ai')[]
   >([]);
@@ -62,7 +65,11 @@ export default function NewStory() {
 
   async function onSubmit(data: NewStoryFormFields) {
     setStep(step + 1);
-    const id = await createBlog(data as CreateBlogType);
+    const id = await createBlog(data);
+    if (id === null) {
+      setManualValidation(true);
+      return;
+    }
     toast.success(t('content.newStory.posting.success'));
     navigate(`/blog/${id}`);
   }
@@ -113,7 +120,20 @@ export default function NewStory() {
         />
       </StepsContent>
       <StepsCompletedContent>
-        <Posting isVisible={step === 3} />
+        {manualValidation ? (
+          <EmptyState
+            icon={<FiAlertCircle />}
+            title={t('content.newStory.manualValidation.title')}
+            description={t('content.newStory.manualValidation.desc')}
+            size="lg"
+          >
+            <Button onClick={() => navigate('/')} variant="outline">
+              {t('content.newStory.manualValidation.button')}
+            </Button>
+          </EmptyState>
+        ) : (
+          <Posting isVisible={step === 3} />
+        )}
       </StepsCompletedContent>
 
       {step < 3 && (

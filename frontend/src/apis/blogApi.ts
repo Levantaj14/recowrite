@@ -58,7 +58,7 @@ export async function fetchBlogRecommendation(blogId: string | null | undefined)
   return res.json();
 }
 
-export async function createBlog(blog: CreateBlogType): Promise<number> {
+export async function createBlog(blog: CreateBlogType): Promise<number | null> {
   const res = await blogApi('', {
     method: 'POST',
     body: JSON.stringify(blog),

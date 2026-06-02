@@ -103,7 +103,7 @@ function User() {
           data.userBlogs.map((blog, index) => (
             <BlogCard
               key={blog.id}
-              banner={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
+              banner={blog.bannerType === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
               title={blog.title}
               description={blog.description}
               href={`/blog/${blog.id}`}
