@@ -38,7 +38,7 @@ export default function Posts() {
             // If the banner is an image URL, use it directly; otherwise, convert the base64 string to a data URL
             <BlogCard
               key={blog.id}
-              banner={blog.banner_type === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
+              banner={blog.bannerType === 'IMAGE_URL' ? blog.banner : `data:image;base64,${blog.banner}`}
               title={blog.title}
               description={new Date(blog.date) > new Date() ? t('content.story.unpublished') : blog.description}
               href={`/blog/${blog.id}`}

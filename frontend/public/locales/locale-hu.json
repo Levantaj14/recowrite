@@ -266,7 +266,8 @@
           "violent": "Erőszakos vagy grafikus tartalom",
           "misinformation": "Hamis információ",
           "copyright": "Szerzői jog megsértése",
-          "plagiarism": "Plágium"
+          "plagiarism": "Plágium",
+          "malicious": "Rosszindulatú cselekedet"
         }
       }
     },
@@ -343,7 +344,12 @@
       "posting": {
         "success": "Poszt sikeresen feltöltve",
         "loading": "Poszt feltöltése"
-      }
+      },
+      "manualValidation": {
+        "title": "Szükséges manuális ellenőrzés",
+        "desc": "A történeted manuális ellenőrzés alá került. Csapatunk hamarosan áttekinti és visszajelzést ad neked!",
+        "button": "Vissza a főoldalra"
+       }
     }
   },
   "dashboard": {
@@ -465,6 +471,34 @@
         "buttons": {
           "role": "Szerepkör modósítása",
           "delete": "Törlés"
+        }
+      }
+    },
+    "pendingBlogs": {
+      "title": "Függőben lévő blogok",
+      "table": {
+        "header": {
+          "title": "Cím",
+          "author": "Író",
+          "reason": "Ok",
+          "status": "Státusz"
+        },
+        "status": {
+          "pending": "Függőben",
+          "approved": "Jóváhagyva",
+          "rejected": "Elutasítva"
+        }
+      },
+      "blogPage": {
+        "imageAlert": "Ez a kép nem lesz automatikusan betöltve, mivel biztonsági problémákat okozhat",
+        "buttons": {
+          "approve": "Jóváhagyás",
+          "reject": "Elutasítás"
+        },
+        "toast": {
+          "loading": "Változtatás mentése...",
+          "success": "Változtatás sikeresen mentve",
+          "error": "Hiba történt a változtatás mentése közben"
         }
       }
     }

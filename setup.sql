@@ -26,3 +26,4 @@ INSERT INTO recowrite.report_reasons (id, label) VALUES (5, 'Violent or graphic 
 INSERT INTO recowrite.report_reasons (id, label) VALUES (6, 'Misinformation');
 INSERT INTO recowrite.report_reasons (id, label) VALUES (7, 'Copyright infringement');
 INSERT INTO recowrite.report_reasons (id, label) VALUES (8, 'Plagiarism');
+INSERT INTO recowrite.report_reasons (id, label) VALUES (9, 'Miscellaneous act');

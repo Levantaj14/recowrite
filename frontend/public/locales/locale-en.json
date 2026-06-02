@@ -268,7 +268,8 @@
           "violent": "Violent or graphic content",
           "misinformation": "Misinformation",
           "copyright": "Copyright infringement",
-          "plagiarism": "Plagiarism"
+          "plagiarism": "Plagiarism",
+          "malicious": "Malicious action"
         }
       }
     },
@@ -345,6 +346,11 @@
       "posting": {
         "success": "Post uploaded successfully",
         "loading": "Uploading your post"
+      },
+      "manualValidation": {
+        "title": "Manual Validation Required",
+        "desc": "Your story has been flagged for manual review. Our team will review it and get back to you shortly.",
+        "button": "Go to homepage"
       }
     }
   },
@@ -467,6 +473,34 @@
         "buttons": {
           "role": "Change Role",
           "delete": "Delete"
+        }
+      }
+    },
+    "pendingBlogs": {
+      "title": "Pending Blogs",
+      "table": {
+        "header": {
+          "title": "Title",
+          "author": "Author",
+          "reason": "Reason",
+          "status": "Status"
+        },
+        "badge": {
+          "pending": "Pending",
+          "approved": "Approved",
+          "rejected": "Rejected"
+        }
+      },
+      "blogPage": {
+        "imageAlert": "The image will not be loaded automatically since it could be a security issue",
+        "buttons": {
+          "approve": "Approve",
+          "reject": "Reject"
+        },
+        "toast": {
+          "loading": "Setting the state of the pending blog...",
+          "success": "Pending blog state updated successfully",
+          "error": "Error updating the pending blog state"
         }
       }
     }

@@ -19,6 +19,7 @@ import ForgotPassword from '@/components/pages/ForgotPassword.tsx';
 import { VerifyEmail } from '@/components/pages/VerifyEmail.tsx';
 import AdminConsole from '@/components/pages/admin/AdminConsole.tsx';
 import Footer from './elements/Footer.tsx';
+import PendingBlog from './pages/admin/PendingBlog.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -107,6 +108,7 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/management" element={<AdminConsole />} />
+                    <Route path="/pending-blog/:blogId" element={<PendingBlog />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/verify/email" element={<VerifyEmail />} />
                     <Route path="*" element={<ErrorPage code={404} />} />

@@ -7,6 +7,7 @@ import Preferences from '@/components/pages/dashboard/Preferences.tsx';
 import ReportsTab from '@/components/pages/admin/tabs/ReportsTab.tsx';
 import { useTranslation } from 'react-i18next';
 import UsersTab from '@/components/pages/admin/tabs/UsersTab.tsx';
+import PendingBlogs from './tabs/PendingBlogs';
 
 export default function AdminConsole() {
   const { t } = useTranslation();
@@ -48,12 +49,14 @@ export default function AdminConsole() {
         <Tabs.List>
           <Tabs.Trigger value="reports">{t('admin.report.title')}</Tabs.Trigger>
           <Tabs.Trigger value="users">{t('admin.users.title')}</Tabs.Trigger>
+          <Tabs.Trigger value="pendingBlogs">{t('admin.pendingBlogs.title')}</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="preferences">
           <Preferences />
         </Tabs.Content>
         <Tabs.Content value="reports"><ReportsTab setIsAuthorized={setIsAuthorized} /></Tabs.Content>
         <Tabs.Content value="users"><UsersTab setIsAuthorized={setIsAuthorized} /></Tabs.Content>
+        <Tabs.Content value="pendingBlogs"><PendingBlogs setIsAuthorized={setIsAuthorized} /></Tabs.Content>
       </Tabs.Root>
     </>
   ) : (

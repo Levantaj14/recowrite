@@ -3,6 +3,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportStatusDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.enums.ReportStatus;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
@@ -15,12 +16,15 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportReasonsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.ReportsMapper;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
+import edu.bbte.licensz.slim2299.recowrite.services.exceptions.UnchangeableStatusException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -86,6 +90,7 @@ public class ReportService implements ReportServiceInterface {
         reportModel.setReportDate(now);
         reportModel.setReportedUser(blogModel.getUser());
         reportModel.setReporter(reporterUser);
+        reportModel.setStatus(ReportStatus.OPEN);
         log.info("A report for blog {} has been created", report.getBlogId());
         return reportManager.save(reportModel).getId();
     }
@@ -98,7 +103,10 @@ public class ReportService implements ReportServiceInterface {
         }
 
         ReportModel reportModel = report.get();
-        if (ReportModel.ReportStatus.OPEN.equals(reportStatusDtoIn.getReportStatus())) {
+
+        checkMalicious(reportModel);
+
+        if (ReportStatus.OPEN.equals(reportStatusDtoIn.getReportStatus())) {
             reportReopened(reportModel);
             return;
         }
@@ -116,20 +124,26 @@ public class ReportService implements ReportServiceInterface {
         log.info("The status of report {} has been changed", reportStatusDtoIn.getReportStatus());
         reportManager.save(reportModel);
 
-        if (ReportModel.ReportStatus.STRIKE_GIVEN.equals(reportStatusDtoIn.getReportStatus())) {
+        if (ReportStatus.STRIKE_GIVEN.equals(reportStatusDtoIn.getReportStatus())) {
             strikeService.handleStrikeGiven(reportModel);
         }
     }
 
     private void reportReopened(ReportModel reportModel) {
         // If there was a strike, we should delete it and notify the user that it's gone now
-        if (reportModel.getStatus().equals(ReportModel.ReportStatus.STRIKE_GIVEN)) {
+        if (reportModel.getStatus().equals(ReportStatus.STRIKE_GIVEN)) {
             strikeService.handleStrikeRemoved(reportModel);
         }
 
-        reportModel.setStatus(ReportModel.ReportStatus.OPEN);
+        reportModel.setStatus(ReportStatus.OPEN);
         reportModel.setReviewer(null);
         reportModel.setNote(null);
         reportManager.save(reportModel);
+    }
+
+    private void checkMalicious(ReportModel reportModel) {
+        if ("Malicious act".equals(reportModel.getReason().getLabel())) {
+            throw new UnchangeableStatusException("The report is reported as malicious act, thus the status can not be changed");
+        }
     }
 }

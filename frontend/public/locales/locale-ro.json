@@ -268,7 +268,8 @@
           "violent": "Conținut violent sau grafic",
           "misinformation": "Dezinformare",
           "copyright": "Încălcare a drepturilor de autor",
-          "plagiarism": "Plagiat"
+          "plagiarism": "Plagiat",
+          "malicious": "Acțiune rău intenționată"
         }
       }
     },
@@ -345,7 +346,12 @@
       "posting": {
         "success": "Postare încărcată cu succes",
         "loading": "Se încarcă postarea ta"
-      }
+      },
+      "manualValidation": {
+        "title": "Sunt necesare verificări manuale",
+        "desc": "Povestea ta a fost marcată pentru revizuire manuală. Echipa noastră o va revizui și îți va răspunde în curând.",
+        "button": "Mergi la pagina principală"
+       }
     }
   },
   "dashboard": {
@@ -467,6 +473,34 @@
         "buttons": {
           "role": "Schimbă rolul",
           "delete": "Șterge"
+        }
+      }
+    },
+    "pendingBlogs": {
+      "title": "Bloguri în așteptare",
+      "table": {
+        "header": {
+          "title": "Titlu",
+          "author": "Autor",
+          "reason": "Motiv",
+          "status": "Status"
+        },
+        "status": {
+          "pending": "În așteptare",
+          "approved": "Aprobat",
+          "rejected": "Respins"
+        }
+      },
+      "blogPage": {
+        "imageAlert": "Această imagine nu va fi încărcată automat, deoarece ar putea cauza probleme de securitate",
+        "buttons": {
+          "approve": "Aprobă",
+          "reject": "Respinge"
+        },
+        "toast": {
+          "loading": "Se actualizează starea blogului...",
+          "success": "Starea blogului a fost actualizată cu succes",
+          "error": "Actualizarea stării blogului a eșuat"
         }
       }
     }

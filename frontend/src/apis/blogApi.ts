@@ -6,7 +6,7 @@ export type BlogType = {
   description: string;
   date: string;
   banner: string;
-  banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
+  bannerType: 'IMAGE_URL' | 'IMAGE_UPLOAD';
   authorName?: string;
   ai: boolean;
 };
@@ -17,8 +17,7 @@ export type CreateBlogType = {
   description: string;
   date: string;
   banner: string;
-  banner_type: 'IMAGE_URL' | 'IMAGE_UPLOAD';
-  banner_name: string;
+  bannerType: 'IMAGE_URL' | 'IMAGE_UPLOAD';
 };
 
 async function blogApi(path: string, options = {}) {
@@ -59,7 +58,7 @@ export async function fetchBlogRecommendation(blogId: string | null | undefined)
   return res.json();
 }
 
-export async function createBlog(blog: CreateBlogType): Promise<number> {
+export async function createBlog(blog: CreateBlogType): Promise<number | null> {
   const res = await blogApi('', {
     method: 'POST',
     body: JSON.stringify(blog),

@@ -67,8 +67,7 @@ export default function ReportsTab({ setIsAuthorized }: Readonly<Props>) {
 
   function content() {
     return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
         <Table.ScrollArea borderWidth="1px" rounded="sm" height="calc(100vh - 300px)">
           <Table.Root size="sm" stickyHeader interactive>
             <Table.Header>
@@ -83,6 +82,7 @@ export default function ReportsTab({ setIsAuthorized }: Readonly<Props>) {
             <Table.Body>
               {data?.reports.map((report) => (
                 <Table.Row
+                  cursor="pointer"
                   key={report.id}
                   onClick={() => {
                     setSelectedReport(report);
@@ -109,10 +109,17 @@ export default function ReportsTab({ setIsAuthorized }: Readonly<Props>) {
 
   return (
     <>
-      <ReportDetailsDialog selectedReport={selectedReport} setSelectedReport={setSelectedReport}
-                           selectedReportedUser={selectedReportedUser} selectedReportedByUser={selectedReportedByUser}
-                           selectedBlog={selectedBlog} adminNotes={adminNotes} setAdminNotes={setAdminNotes}
-                           blockButtons={blockButtons} buttonPressed={buttonPressed} />
+      <ReportDetailsDialog
+        selectedReport={selectedReport}
+        setSelectedReport={setSelectedReport}
+        selectedReportedUser={selectedReportedUser}
+        selectedReportedByUser={selectedReportedByUser}
+        selectedBlog={selectedBlog}
+        adminNotes={adminNotes}
+        setAdminNotes={setAdminNotes}
+        blockButtons={blockButtons}
+        buttonPressed={buttonPressed}
+      />
       {isLoading ? <LoadingAnimation /> : content()}
     </>
   );

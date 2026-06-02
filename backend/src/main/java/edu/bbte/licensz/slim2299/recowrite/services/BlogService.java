@@ -1,13 +1,20 @@
 package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.AddBlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.enums.ApproveStatus;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogDateIsInThePastException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
+import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.InvalidUrlException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.AllowedHostsManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.managers.PendingBlogsManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.AllowedHostsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
+import edu.bbte.licensz.slim2299.recowrite.dao.models.PendingBlog;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.BlogMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,13 +40,17 @@ public class BlogService implements BlogServiceInterface {
     private final BlogManager blogManager;
     private final BlogMapper blogMapper;
     private final UserManager userManager;
+    private final AllowedHostsManager allowedHostsManager;
+    private final PendingBlogsManager pendingBlogsManager;
     private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/banners/";
 
     @Autowired
-    public BlogService(BlogManager blogManager, BlogMapper blogMapper, UserManager userManager) {
+    public BlogService(BlogManager blogManager, BlogMapper blogMapper, UserManager userManager, AllowedHostsManager allowedHostsManager, PendingBlogsManager pendingBlogsManager) {
         this.blogManager = blogManager;
         this.blogMapper = blogMapper;
         this.userManager = userManager;
+        this.allowedHostsManager = allowedHostsManager;
+        this.pendingBlogsManager = pendingBlogsManager;
     }
 
     @Override
@@ -87,16 +102,7 @@ public class BlogService implements BlogServiceInterface {
     }
 
     @Override
-    public BlogModel getBlogModelById(long id) {
-        Optional<BlogModel> blog = blogManager.findByIdAndVisible(id, true);
-        if (blog.isPresent()) {
-            return blog.get();
-        }
-        throw new BlogNotFoundException("Blog with id " + id + " not found");
-    }
-
-    @Override
-    public Long addBlog(BlogDtoIn blog, String username) throws IOException {
+    public AddBlogDtoOut addBlog(BlogDtoIn blog, String username) throws IOException {
         Optional<UserModel> userResult = userManager.findByUsername(username);
         if (userResult.isEmpty()) {
             throw new UserNotFoundException("User with name " + username + " not found");
@@ -114,7 +120,36 @@ public class BlogService implements BlogServiceInterface {
         }
 
         BlogModel model = blogMapper.dtoToModel(blog);
-        if ("IMAGE_UPLOAD".equals(blog.getBannerType())) {
+        handleBlogBanner(blog, model);
+        model.setUser(userResult.get());
+        BlogModel finalModel = blogManager.save(model);
+        if (!model.isVisible()) {
+            PendingBlog pendingBlog = PendingBlog.builder()
+                    .blog(finalModel)
+                    .approveStatus(ApproveStatus.PENDING)
+                    .reason("Banner Image URL must be checked for sanitization")
+                    .build();
+            pendingBlogsManager.save(pendingBlog);
+        }
+        return AddBlogDtoOut.builder()
+                .id(finalModel.getId())
+                .review(model.isVisible())
+                .build();
+    }
+
+    private void handleBlogBanner(BlogDtoIn blog, BlogModel model) throws IOException {
+        if ("IMAGE_URL".equals(blog.getBannerType())) {
+            try {
+                URL url = new URI(blog.getBanner()).toURL();
+                Optional<AllowedHostsModel> allowedHosts = allowedHostsManager.findByHostName(url.getHost());
+                if (allowedHosts.isEmpty()) {
+                    model.setVisible(false);
+                }
+            } catch (URISyntaxException | MalformedURLException e) {
+                log.error("Invalid banner URI {}", blog.getBanner());
+                throw new InvalidUrlException("Invalid banner URI " + blog.getBanner());
+            }
+        } else if ("IMAGE_UPLOAD".equals(blog.getBannerType())) {
             // Saving an uploaded picture on the server
             byte[] imageBytes = Base64.getDecoder().decode(blog.getBanner());
 
@@ -126,8 +161,6 @@ public class BlogService implements BlogServiceInterface {
 
             model.setBanner(filePath);
         }
-        model.setUser(userResult.get());
-        return blogManager.save(model).getId();
     }
 
     private BlogDtoOut createBlogDto(BlogModel blog) {

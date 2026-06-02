@@ -14,7 +14,9 @@ public class ReportsMapper {
         dto.setStatus(String.valueOf(reportModel.getStatus()));
         dto.setBlogId(reportModel.getBlog().getId());
         dto.setReportedUserId(reportModel.getReportedUser().getId());
-        dto.setReporterId(reportModel.getReporter().getId());
+        if (reportModel.getReporter() != null) {
+            dto.setReporterId(reportModel.getReporter().getId());
+        }
         dto.setNote(reportModel.getNote());
         return dto;
     }

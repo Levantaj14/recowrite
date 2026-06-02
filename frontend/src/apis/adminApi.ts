@@ -1,6 +1,24 @@
 import { UserType } from '@/apis/userApi.ts';
 import { BlogType } from '@/apis/blogApi.ts';
 
+export type PendingBlogType = {
+  id: number;
+  blog: BlogType;
+  reason: string;
+  approveStatus: 'PENDING' | 'APPROVED' | 'REJECTED';
+}
+
+export type InReviewBlogType = {
+  id: number;
+  title: string;
+  content: string;
+  author: number;
+  banner: string;
+  bannerType: string;
+  ai: boolean;
+  approveStatus: 'PENDING' | 'APPROVED' | 'REJECTED';
+}
+
 async function adminApi(path: string, options = {}) {
   const url = `${import.meta.env.VITE_BASE_URL}/admin${path}`;
   const response = await fetch(url, {
@@ -86,4 +104,21 @@ export async function deleteAccount(id: number): Promise<boolean> {
     method: 'DELETE',
   });
   return res.status === 200;
+}
+
+export async function getAllPendingBlogs(): Promise<PendingBlogType[]> {
+  const res = await adminApi('/blog/pending');
+  return res.json();
+}
+
+export async function getPendingBlog(blogId: string | null | undefined): Promise<InReviewBlogType> {
+  const res = await adminApi(`/blog/pending/${blogId}`);
+  return res.json();
+}
+
+export async function setStateOfPendingBlog(blogId: string | undefined, status: string): Promise<void> {
+  await adminApi(`/blog/pending/${blogId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ status }),
+  });
 }

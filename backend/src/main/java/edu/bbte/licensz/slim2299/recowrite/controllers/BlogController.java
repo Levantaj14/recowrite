@@ -2,6 +2,7 @@ package edu.bbte.licensz.slim2299.recowrite.controllers;
 
 import edu.bbte.licensz.slim2299.recowrite.config.JwtUtil;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.BlogDtoIn;
+import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.AddBlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.BlogDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.IdDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.services.BlogServiceInterface;
@@ -50,9 +51,12 @@ public class BlogController {
     @PostMapping()
     public IdDtoOut addBlog(HttpServletRequest request, @RequestBody @Valid BlogDtoIn blog) throws IOException {
         Cookie authCookie = authCookieFinder.serachAuthCookie(request.getCookies());
-        long blogId = blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue()));
-        recommendationService.addRecommendation(blogId);
-        return new IdDtoOut(blogId);
+        AddBlogDtoOut blogId = blogService.addBlog(blog, jwtUtil.extractUsername(authCookie.getValue()));
+        if (!blogId.isReview()) {
+            return new IdDtoOut(null);
+        }
+        recommendationService.addRecommendation(blogId.getId());
+        return new IdDtoOut(blogId.getId());
     }
 
     @GetMapping("/recommendation")
