@@ -1,5 +1,6 @@
 package edu.bbte.licensz.slim2299.recowrite.dao.models;
 
+import edu.bbte.licensz.slim2299.recowrite.dao.enums.ReportStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,11 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "reports")
 public class ReportModel extends BaseEntity {
-    public enum ReportStatus {
-        OPEN,
-        DISMISSED,
-        STRIKE_GIVEN
-    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserModel reporter;

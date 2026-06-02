@@ -3,6 +3,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.ReportStatusDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.ReportDtoOut;
+import edu.bbte.licensz.slim2299.recowrite.dao.enums.ReportStatus;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.BlogManager;
@@ -89,6 +90,7 @@ public class ReportService implements ReportServiceInterface {
         reportModel.setReportDate(now);
         reportModel.setReportedUser(blogModel.getUser());
         reportModel.setReporter(reporterUser);
+        reportModel.setStatus(ReportStatus.OPEN);
         log.info("A report for blog {} has been created", report.getBlogId());
         return reportManager.save(reportModel).getId();
     }
@@ -104,7 +106,7 @@ public class ReportService implements ReportServiceInterface {
 
         checkMalicious(reportModel);
 
-        if (ReportModel.ReportStatus.OPEN.equals(reportStatusDtoIn.getReportStatus())) {
+        if (ReportStatus.OPEN.equals(reportStatusDtoIn.getReportStatus())) {
             reportReopened(reportModel);
             return;
         }
@@ -122,18 +124,18 @@ public class ReportService implements ReportServiceInterface {
         log.info("The status of report {} has been changed", reportStatusDtoIn.getReportStatus());
         reportManager.save(reportModel);
 
-        if (ReportModel.ReportStatus.STRIKE_GIVEN.equals(reportStatusDtoIn.getReportStatus())) {
+        if (ReportStatus.STRIKE_GIVEN.equals(reportStatusDtoIn.getReportStatus())) {
             strikeService.handleStrikeGiven(reportModel);
         }
     }
 
     private void reportReopened(ReportModel reportModel) {
         // If there was a strike, we should delete it and notify the user that it's gone now
-        if (reportModel.getStatus().equals(ReportModel.ReportStatus.STRIKE_GIVEN)) {
+        if (reportModel.getStatus().equals(ReportStatus.STRIKE_GIVEN)) {
             strikeService.handleStrikeRemoved(reportModel);
         }
 
-        reportModel.setStatus(ReportModel.ReportStatus.OPEN);
+        reportModel.setStatus(ReportStatus.OPEN);
         reportModel.setReviewer(null);
         reportModel.setNote(null);
         reportManager.save(reportModel);

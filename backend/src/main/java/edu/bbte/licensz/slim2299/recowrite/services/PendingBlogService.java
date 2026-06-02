@@ -2,6 +2,7 @@ package edu.bbte.licensz.slim2299.recowrite.services;
 
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.PendingDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.enums.ApproveStatus;
+import edu.bbte.licensz.slim2299.recowrite.dao.enums.ReportStatus;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.BlogNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.exceptions.UserNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.dao.managers.*;
@@ -80,7 +81,7 @@ public class PendingBlogService implements PendingBlogServiceInterface {
                     .reason(reportReasonsModel)
                     .note("Automatically flagged by the system due to malicious act, using the image URL feature")
                     .unrevocable(true)
-                    .status(ReportModel.ReportStatus.STRIKE_GIVEN)
+                    .status(ReportStatus.STRIKE_GIVEN)
                     .reportDate(now)
                     .reviewer(reviewer)
                     .build();
