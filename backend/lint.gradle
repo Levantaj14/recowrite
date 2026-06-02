@@ -1,12 +1,12 @@
 buildscript {
     repositories {
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url = 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url = 'https://plugins.gradle.org/m2/' }
     }
 
     dependencies {
-        classpath group: 'com.github.spotbugs.snom', name: 'spotbugs-gradle-plugin', version: '6.0.0-rc.2'
-        classpath group: 'se.bjurr.violations', name: 'violations-gradle-plugin', version: '1.52.7'
+        classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.0.0-rc.2"
+        classpath "se.bjurr.violations:violations-gradle-plugin:1.52.7"
     }
 }
 
@@ -39,11 +39,11 @@ pmd {
     rulesMinimumPriority = 5
     try {
         incrementalAnalysis = true
-    } catch (def e) {
+    } catch (def ignored) {
     }
 }
 
-task violations(type: se.bjurr.violations.gradle.plugin.ViolationsTask) {
+tasks.register('violations', se.bjurr.violations.gradle.plugin.ViolationsTask) {
     maxRuleColumnWidth = 25
     maxMessageColumnWidth = 80
 
