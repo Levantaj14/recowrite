@@ -52,6 +52,7 @@ export default function PendingBlogs({ setIsAuthorized }: Readonly<Props>) {
             <Table.Body>
               {data?.pendingBlogs.map((pendingBlog) => (
                 <Table.Row
+                  cursor={pendingBlog.approveStatus === 'REJECTED' ? 'default' : 'pointer'}
                   key={pendingBlog.id}
                   onClick={() => {
                     switch (pendingBlog.approveStatus) {
