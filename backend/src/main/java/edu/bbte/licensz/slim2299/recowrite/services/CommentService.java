@@ -13,8 +13,8 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.CommentModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
-import edu.bbte.licensz.slim2299.recowrite.mappers.CommentMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +27,16 @@ import java.util.Optional;
 @Service
 public class CommentService implements CommentServiceInterface{
     private final CommentManager commentManager;
-    private final CommentMapper commentMapper;
     private final BlogManager blogManager;
     private final UserManager userManager;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CommentService(CommentManager commentManager, CommentMapper commentMapper, BlogManager blogManager, UserManager userManager) {
+    public CommentService(CommentManager commentManager, BlogManager blogManager, UserManager userManager, ModelMapper modelMapper) {
         this.commentManager = commentManager;
-        this.commentMapper = commentMapper;
         this.blogManager = blogManager;
         this.userManager = userManager;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CommentService implements CommentServiceInterface{
         List<CommentDtoOut> commentDtos = new ArrayList<>();
         if (comments.isPresent()) {
             for (CommentModel commentModel : comments.get()) {
-                commentDtos.add(commentMapper.modelToDto(commentModel));
+                commentDtos.add(modelMapper.map(commentModel, CommentDtoOut.class));
             }
         }
         return commentDtos;
@@ -59,7 +59,7 @@ public class CommentService implements CommentServiceInterface{
             List<CommentModel> comments = commentManager.findAllByUser(user.get());
             List<AccountCommentDtoOut> accountCommentDtos = new ArrayList<>();
             for (CommentModel commentModel : comments) {
-                accountCommentDtos.add(commentMapper.modelToAccountDto(commentModel));
+                accountCommentDtos.add(modelMapper.map(commentModel, AccountCommentDtoOut.class));
             }
             return accountCommentDtos;
         }

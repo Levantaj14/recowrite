@@ -9,6 +9,7 @@ import edu.bbte.licensz.slim2299.recowrite.dao.managers.UserManager;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import edu.bbte.licensz.slim2299.recowrite.mappers.UserMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -22,18 +23,20 @@ import java.util.Optional;
 public class UserService implements UserServiceInterface {
     private final UserManager userManager;
     private final UserMapper userMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserManager userManager, UserMapper userMapper) {
+    public UserService(UserManager userManager, UserMapper userMapper, ModelMapper modelMapper) {
         this.userManager = userManager;
         this.userMapper = userMapper;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<UserDtoOut> getAllUsers() {
         List<UserDtoOut> users = new ArrayList<>();
         for (UserModel user : userManager.findAll()) {
-            users.add(userMapper.modelToDto(user));
+            users.add(modelMapper.map(user, UserDtoOut.class));
         }
         return users;
     }
@@ -76,7 +79,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public UserModel createUser(SignUpDtoIn signUpDtoIn) throws UserAlreadyExistsException {
-        UserModel user = userMapper.signupDtoToModel(signUpDtoIn);
+        UserModel user = modelMapper.map(signUpDtoIn, UserModel.class);
         String salt = BCrypt.gensalt(12);
         user.setSalt(salt);
         user.setRole(decideRole());

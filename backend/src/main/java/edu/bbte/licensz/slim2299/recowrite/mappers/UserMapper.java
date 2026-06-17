@@ -1,12 +1,12 @@
 package edu.bbte.licensz.slim2299.recowrite.mappers;
 
-import edu.bbte.licensz.slim2299.recowrite.controllers.dto.incoming.SignUpDtoIn;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.LoginDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.SocialMediaDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.controllers.dto.outgoing.UserDtoOut;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.SocialsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +21,11 @@ import java.util.List;
 @Slf4j
 @Component
 public class UserMapper {
-    private final SocialsMapper socialsMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserMapper(SocialsMapper socialsMapper) {
-        this.socialsMapper = socialsMapper;
+    public UserMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
     public UserDtoOut modelToDto(UserModel user) {
@@ -48,20 +48,11 @@ public class UserMapper {
         List<SocialMediaDtoOut> socials = new ArrayList<>();
         if (user.getAssociations().getSocials() != null) {
             for (SocialsModel social : user.getAssociations().getSocials()) {
-                socials.add(socialsMapper.modelToDto(social));
+                socials.add(modelMapper.map(social, SocialMediaDtoOut.class));
             }
         }
         dto.setSocials(socials);
         return dto;
-    }
-
-    public UserModel signupDtoToModel(SignUpDtoIn signupDtoIn) {
-        UserModel userModel = new UserModel();
-        userModel.setName(signupDtoIn.getName());
-        userModel.setUsername(signupDtoIn.getUsername());
-        userModel.setEmail(signupDtoIn.getEmail());
-        userModel.setPassword(signupDtoIn.getPassword());
-        return userModel;
     }
 
     public LoginDtoOut modelToLoginDto(UserModel userModel) {
@@ -87,7 +78,7 @@ public class UserMapper {
         List<SocialMediaDtoOut> socials = new ArrayList<>();
         if (userModel.getAssociations().getSocials() != null) {
             for (SocialsModel social : userModel.getAssociations().getSocials()) {
-                socials.add(socialsMapper.modelToDto(social));
+                socials.add(modelMapper.map(social, SocialMediaDtoOut.class));
             }
         }
         dto.setSocials(socials);

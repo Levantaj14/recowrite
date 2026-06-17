@@ -14,11 +14,11 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.ReportReasonsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
-import edu.bbte.licensz.slim2299.recowrite.mappers.ReportsMapper;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.ReportNotFoundException;
 import edu.bbte.licensz.slim2299.recowrite.services.exceptions.UnchangeableStatusException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,33 +27,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class ReportService implements ReportServiceInterface {
     private final ReportManager reportManager;
     private final BlogManager blogManager;
     private final UserManager userManager;
-    private final ReportsMapper reportsMapper;
     private final StrikeServiceInterface strikeService;
     private final ReportReasonsManager reportReasonsManager;
-
-    @Autowired
-    public ReportService(ReportManager reportManager, BlogManager blogManager, UserManager userManager,
-                         ReportsMapper reportsMapper, StrikeServiceInterface strikeService,
-                         ReportReasonsManager reportReasonsManager) {
-        this.reportManager = reportManager;
-        this.blogManager = blogManager;
-        this.userManager = userManager;
-        this.reportsMapper = reportsMapper;
-        this.strikeService = strikeService;
-        this.reportReasonsManager = reportReasonsManager;
-    }
+    private final ModelMapper modelMapper;
 
     @Override
     public List<ReportDtoOut> getAllReports() {
         List<ReportModel> reportsModel = reportManager.findAll();
         List<ReportDtoOut> reportDtoOutList = new ArrayList<>();
         for (ReportModel reportModel : reportsModel) {
-            reportDtoOutList.add(reportsMapper.modelToDto(reportModel));
+            reportDtoOutList.add(modelMapper.map(reportModel, ReportDtoOut.class));
         }
         return reportDtoOutList;
     }
@@ -62,7 +51,7 @@ public class ReportService implements ReportServiceInterface {
     public ReportDtoOut getReportById(long id) {
         Optional<ReportModel> reportsModel = reportManager.findById(id);
         if (reportsModel.isPresent()) {
-            return reportsMapper.modelToDto(reportsModel.get());
+            return modelMapper.map(reportsModel.get(), ReportDtoOut.class);
         }
         throw new ReportNotFoundException("Report with id " + id + " not found");
     }

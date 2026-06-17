@@ -16,8 +16,8 @@ import edu.bbte.licensz.slim2299.recowrite.dao.models.AllowedHostsModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.BlogModel;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.PendingBlog;
 import edu.bbte.licensz.slim2299.recowrite.dao.models.UserModel;
-import edu.bbte.licensz.slim2299.recowrite.mappers.BlogMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,19 +38,19 @@ import java.util.*;
 @Service
 public class BlogService implements BlogServiceInterface {
     private final BlogManager blogManager;
-    private final BlogMapper blogMapper;
     private final UserManager userManager;
     private final AllowedHostsManager allowedHostsManager;
     private final PendingBlogsManager pendingBlogsManager;
     private static final String UPLOAD_DIR = Paths.get("").toAbsolutePath() + "/uploads/banners/";
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public BlogService(BlogManager blogManager, BlogMapper blogMapper, UserManager userManager, AllowedHostsManager allowedHostsManager, PendingBlogsManager pendingBlogsManager) {
+    public BlogService(BlogManager blogManager, UserManager userManager, AllowedHostsManager allowedHostsManager, PendingBlogsManager pendingBlogsManager, ModelMapper modelMapper) {
         this.blogManager = blogManager;
-        this.blogMapper = blogMapper;
         this.userManager = userManager;
         this.allowedHostsManager = allowedHostsManager;
         this.pendingBlogsManager = pendingBlogsManager;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class BlogService implements BlogServiceInterface {
             throw new BlogDateIsInThePastException("Blog date " + blog.getDate() + " is before " + nowDate);
         }
 
-        BlogModel model = blogMapper.dtoToModel(blog);
+        BlogModel model = modelMapper.map(blog, BlogModel.class);
         handleBlogBanner(blog, model);
         model.setUser(userResult.get());
         BlogModel finalModel = blogManager.save(model);
@@ -164,7 +164,7 @@ public class BlogService implements BlogServiceInterface {
     }
 
     private BlogDtoOut createBlogDto(BlogModel blog) {
-        BlogDtoOut blogDto = blogMapper.modelToDto(blog);
+        BlogDtoOut blogDto = modelMapper.map(blog, BlogDtoOut.class);
         if (BlogModel.BannerImageSource.valueOf("IMAGE_UPLOAD").equals(blog.getBannerType())) {
             // Converting the picture into base64 so it can be sent in the JSON response
             Path path = Paths.get(blog.getBanner());
